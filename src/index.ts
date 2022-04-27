@@ -2,7 +2,7 @@
  * Tinkoff Invest API.
  */
 import { createChannel, createClient, Client, Channel } from 'nice-grpc';
-import { createCredentialsWithToken } from './credentials.js';
+import { createGrpcCredentials } from './helpers.js';
 import { InstrumentsServiceDefinition } from './generated/instruments.js';
 import { MarketDataServiceDefinition } from './generated/marketdata.js';
 import { OperationsServiceDefinition } from './generated/operations.js';
@@ -23,6 +23,7 @@ type Service = typeof InstrumentsServiceDefinition
 
 export interface TinkoffInvestApiOptions {
   token: string;
+  appName?: string;
 }
 
 export class TinkoffInvestApi {
@@ -42,7 +43,10 @@ export class TinkoffInvestApi {
   get users() { return this.getOrCreateClient(UsersServiceDefinition); }
 
   private createChannel() {
-    const credentials = createCredentialsWithToken(this.options.token);
+    const credentials = createGrpcCredentials({
+      'Authorization': `Bearer ${this.options.token}`,
+      'x-app-name': this.options.appName,
+    });
     return createChannel(TINKOFF_API_URL, credentials);
   }
 
