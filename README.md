@@ -1,5 +1,5 @@
 # tinkoff-invest-api
-Node.js клиент для работы с [Tinkoff invest API](https://tinkoff.github.io/investAPI/).
+Node.js клиент для работы с [Tinkoff Invest API](https://tinkoff.github.io/investAPI/).
 
 ## Установка
 ```
