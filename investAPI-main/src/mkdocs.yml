@@ -1,0 +1,62 @@
+site_name: 'TINKOFF INVEST API'
+docs_dir: docs
+repo_url: https://github.com/Tinkoff/investAPI
+theme:
+  name: material
+  language: 'ru'
+  palette:
+    primary: black
+    accent: yellow
+  # custom_dir: swagger-iu/
+
+nav:
+- Начало работы: index.md
+- Полезная информация:
+  - Глоссарий: glossary.md
+  - "Протокол взаимодействия": grpc.md
+  - "Лимитная политика": limits.md
+  - "Токен доступа": token.md
+  - "Идентификация торговых инструментов": faq_identification.md
+  - "Нестандартные типы данных": faq_custom_types.md
+  - "Алгоритмический трейдинг": algorithmic_trading.md
+  - "Индикаторы технического анализа": tech_indicators.md
+  - "Торговые площадки и режимы торгов": markets.md
+  - "Торговые статусы инструментов и расписание торгов": faq_trading_status.md
+  - "Порядок работы с историческими данными": load_history.md
+  - "Работа с торговыми поручениями": orders_details.md
+  - "Квалифицированный инвестор": accredited_investor.md
+  - "Правила обработки корпоративных действий": faq_corp_action.md
+- Ответы на частые вопросы: faq.md
+- Языки программирования:
+  - Python: faq_python.md
+  - Java: faq_java.md
+  - С#: faq_csharp.md
+- Сервис аккаунтов:
+  - Описание: head-users.md
+  - Методы: users.md
+  - "FAQ Сервиса аккаунтов": faq_users.md
+- Сервис инструментов: 
+  - Описание: head-instruments.md
+  - Методы: instruments.md
+  - FAQ: faq_instruments.md
+- Сервис торговых поручений:
+  - Описание: head-orders.md
+  - Методы: orders.md
+  - FAQ: faq_orders.md
+- Сервис операций:
+  - Описание: head-operations.md
+  - Методы: operations.md
+  - FAQ: faq_operations.md
+- Сервис котировок:
+  - Описание: head-marketdata.md
+  - Методы: marketdata.md
+  - FAQ: faq_marketdata.md
+- Сервис стоп-заявок:
+  - Описание: head-stoporders.md
+  - Методы: stoporders.md
+  - FAQ: faq_stoporders.md
+- Песочница:
+  - Описание: head-sandbox.md
+  - Методы: sandbox.md
+  - FAQ: faq_sandbox.md
+- Коды ошибок: errors.md
