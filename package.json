@@ -1,7 +1,6 @@
 {
   "name": "tinkoff-invest-api",
   "version": "1.0.0",
-  "author": "Vitaliy Potapov",
   "type": "module",
   "main": "dist/index.js",
   "files": [
@@ -12,10 +11,10 @@
   "scripts": {
     "lint": "eslint src test --ext .ts",
     "tsc": "tsc --noEmit",
+    "check": "ts-node-esm scripts/check.ts",
+    "test": "echo tbd",
     "pull-proto": "./scripts/pull-proto.sh",
     "compile-proto": "./scripts/compile-proto.sh",
-    "check": "ts-node-esm scripts/check.ts",
-    "test": "mocha -n loader=ts-node/esm test/setup.ts test/specs/*.ts",
     "build": "rm -rf dist && tsc -p tsconfig.build.json",
     "release": "npm run lint && npm t && npm run build && np --yolo --no-release-draft"
   },
@@ -42,6 +41,7 @@
     "ts-proto": "^1.110.4",
     "typescript": "^4.6.3"
   },
+  "author": "Vitaliy Potapov",
   "repository": {
     "type": "git",
     "url": "git://github.com/vitalets/tinkoff-invest-api.git"

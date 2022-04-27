@@ -1,0 +1,7 @@
+#!/bin/sh
+# Setup: git config core.hooksPath ./scripts/.hooks
+
+# Exit on any error
+set -euo pipefail
+
+npx lint-staged
