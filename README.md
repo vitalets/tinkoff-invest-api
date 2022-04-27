@@ -12,7 +12,7 @@ npm i tinkoff-invest-api
 import { TinkoffInvestApi } from 'tinkoff-invest-api';
 
 // создать клиента с заданным токеном
-const api = new TinkoffInvestApi({ token: process.env.TINKOFF_API_TOKEN! });
+const api = new TinkoffInvestApi({ token: '<your-token>' });
 
 // получить список счетов
 const { accounts } = await api.users.getAccounts({});
