@@ -170,7 +170,7 @@ export interface Quotation {
 /** Проверка активности стрима. */
 export interface Ping {
   /** Время проверки. */
-  time: Date | undefined;
+  time?: Date;
 }
 
 function createBaseMoneyValue(): MoneyValue {

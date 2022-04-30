@@ -47,13 +47,13 @@ export interface SandboxPayInRequest {
   /** Номер счёта */
   accountId: string;
   /** Сумма пополнения счёта в рублях */
-  amount: MoneyValue | undefined;
+  amount?: MoneyValue;
 }
 
 /** Результат пополнения счёта, текущий баланс. */
 export interface SandboxPayInResponse {
   /** Текущий баланс счёта */
-  balance: MoneyValue | undefined;
+  balance?: MoneyValue;
 }
 
 function createBaseOpenSandboxAccountRequest(): OpenSandboxAccountRequest {

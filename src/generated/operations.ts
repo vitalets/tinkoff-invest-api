@@ -1,8 +1,8 @@
 /* eslint-disable */
 import Long from "long";
 import _m0 from "protobufjs/minimal.js";
-import { Timestamp } from "./google/protobuf/timestamp.js";
 import { MoneyValue, Quotation } from "./common.js";
+import { Timestamp } from "./google/protobuf/timestamp.js";
 
 export const protobufPackage = "tinkoff.public.invest.api.contract.v1";
 
@@ -389,9 +389,9 @@ export interface OperationsRequest {
   /** Идентификатор счёта клиента. */
   accountId: string;
   /** Начало периода (по UTC). */
-  from: Date | undefined;
+  from?: Date;
   /** Окончание периода (по UTC). */
-  to: Date | undefined;
+  to?: Date;
   /** Статус запрашиваемых операций. */
   state: OperationState;
   /** Figi-идентификатор инструмента для фильтрации. */
@@ -413,9 +413,9 @@ export interface Operation {
   /** Валюта операции. */
   currency: string;
   /** Сумма операции. */
-  payment: MoneyValue | undefined;
+  payment?: MoneyValue;
   /** Цена операции за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
-  price: MoneyValue | undefined;
+  price?: MoneyValue;
   /** Статус операции. */
   state: OperationState;
   /** Количество лотов инструмента. */
@@ -427,7 +427,7 @@ export interface Operation {
   /** Тип инструмента. Возможные значения: </br>**bond** — облигация; </br>**share** — акция; </br>**currency** — валюта; </br>**etf** — фонд; </br>**futures** — фьючерс. */
   instrumentType: string;
   /** Дата и время операции в формате часовом поясе UTC. */
-  date: Date | undefined;
+  date?: Date;
   /** Текстовое описание типа операции. */
   type: string;
   /** Тип операции. */
@@ -441,11 +441,11 @@ export interface OperationTrade {
   /** Идентификатор сделки. */
   tradeId: string;
   /** Дата и время сделки в часовом поясе UTC. */
-  dateTime: Date | undefined;
+  dateTime?: Date;
   /** Количество инструментов. */
   quantity: number;
   /** Цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
-  price: MoneyValue | undefined;
+  price?: MoneyValue;
 }
 
 /** Запрос получения текущего портфеля по счёту. */
@@ -457,17 +457,17 @@ export interface PortfolioRequest {
 /** Текущий портфель по счёту. */
 export interface PortfolioResponse {
   /** Общая стоимость акций в портфеле в рублях. */
-  totalAmountShares: MoneyValue | undefined;
+  totalAmountShares?: MoneyValue;
   /** Общая стоимость облигаций в портфеле в рублях. */
-  totalAmountBonds: MoneyValue | undefined;
+  totalAmountBonds?: MoneyValue;
   /** Общая стоимость фондов в портфеле в рублях. */
-  totalAmountEtf: MoneyValue | undefined;
+  totalAmountEtf?: MoneyValue;
   /** Общая стоимость валют в портфеле в рублях. */
-  totalAmountCurrencies: MoneyValue | undefined;
+  totalAmountCurrencies?: MoneyValue;
   /** Общая стоимость фьючерсов в портфеле в рублях. */
-  totalAmountFutures: MoneyValue | undefined;
+  totalAmountFutures?: MoneyValue;
   /** Текущая относительная доходность портфеля, в %. */
-  expectedYield: Quotation | undefined;
+  expectedYield?: Quotation;
   /** Список позиций портфеля. */
   positions: PortfolioPosition[];
 }
@@ -515,21 +515,21 @@ export interface PortfolioPosition {
   /** Тип инструмента. */
   instrumentType: string;
   /** Количество инструмента в портфеле в штуках. */
-  quantity: Quotation | undefined;
+  quantity?: Quotation;
   /** Средневзвешенная цена позиции. **Возможна задержка до секунды для пересчёта**. */
-  averagePositionPrice: MoneyValue | undefined;
+  averagePositionPrice?: MoneyValue;
   /** Текущая рассчитанная относительная доходность позиции, в %. */
-  expectedYield: Quotation | undefined;
+  expectedYield?: Quotation;
   /** Текущий НКД. */
-  currentNkd: MoneyValue | undefined;
+  currentNkd?: MoneyValue;
   /** Средняя цена лота в позиции в пунктах (для фьючерсов). **Возможна задержка до секунды для пересчёта**. */
-  averagePositionPricePt: Quotation | undefined;
+  averagePositionPricePt?: Quotation;
   /** Текущая цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента.. */
-  currentPrice: MoneyValue | undefined;
+  currentPrice?: MoneyValue;
   /** Средняя цена лота в позиции по методу FIFO. **Возможна задержка до секунды для пересчёта**. */
-  averagePositionPriceFifo: MoneyValue | undefined;
+  averagePositionPriceFifo?: MoneyValue;
   /** Количество лотов в портфеле. */
-  quantityLots: Quotation | undefined;
+  quantityLots?: Quotation;
 }
 
 /** Баланс позиции ценной бумаги. */
@@ -553,22 +553,22 @@ export interface PositionsFutures {
 }
 
 export interface BrokerReportRequest {
-  generateBrokerReportRequest: GenerateBrokerReportRequest | undefined;
-  getBrokerReportRequest: GetBrokerReportRequest | undefined;
+  generateBrokerReportRequest?: GenerateBrokerReportRequest | undefined;
+  getBrokerReportRequest?: GetBrokerReportRequest | undefined;
 }
 
 export interface BrokerReportResponse {
-  generateBrokerReportResponse: GenerateBrokerReportResponse | undefined;
-  getBrokerReportResponse: GetBrokerReportResponse | undefined;
+  generateBrokerReportResponse?: GenerateBrokerReportResponse | undefined;
+  getBrokerReportResponse?: GetBrokerReportResponse | undefined;
 }
 
 export interface GenerateBrokerReportRequest {
   /** Идентификатор счёта клиента. */
   accountId: string;
   /** Начало периода в часовом поясе UTC. */
-  from: Date | undefined;
+  from?: Date;
   /** Окончание периода в часовом поясе UTC. */
-  to: Date | undefined;
+  to?: Date;
 }
 
 export interface GenerateBrokerReportResponse {
@@ -603,7 +603,7 @@ export interface BrokerReport {
   /** Признак исполнения. */
   executeSign: string;
   /** Дата и время заключения в часовом поясе UTC. */
-  tradeDatetime: Date | undefined;
+  tradeDatetime?: Date;
   /** Торговая площадка. */
   exchange: string;
   /** Режим торгов. */
@@ -615,29 +615,29 @@ export interface BrokerReport {
   /** Код актива. */
   ticker: string;
   /** Цена за единицу. */
-  price: MoneyValue | undefined;
+  price?: MoneyValue;
   /** Количество. */
   quantity: number;
   /** Сумма (без НКД). */
-  orderAmount: MoneyValue | undefined;
+  orderAmount?: MoneyValue;
   /** НКД. */
-  aciValue: Quotation | undefined;
+  aciValue?: Quotation;
   /** Сумма сделки. */
-  totalOrderAmount: MoneyValue | undefined;
+  totalOrderAmount?: MoneyValue;
   /** Комиссия брокера. */
-  brokerCommission: MoneyValue | undefined;
+  brokerCommission?: MoneyValue;
   /** Комиссия биржи. */
-  exchangeCommission: MoneyValue | undefined;
+  exchangeCommission?: MoneyValue;
   /** Комиссия клир. центра. */
-  exchangeClearingCommission: MoneyValue | undefined;
+  exchangeClearingCommission?: MoneyValue;
   /** Ставка РЕПО (%). */
-  repoRate: Quotation | undefined;
+  repoRate?: Quotation;
   /** Контрагент/Брокер. */
   party: string;
   /** Дата расчётов в часовом поясе UTC. */
-  clearValueDate: Date | undefined;
+  clearValueDate?: Date;
   /** Дата поставки в часовом поясе UTC. */
-  secValueDate: Date | undefined;
+  secValueDate?: Date;
   /** Статус брокера. */
   brokerStatus: string;
   /** Тип дог. */
@@ -652,20 +652,22 @@ export interface BrokerReport {
 
 export interface GetDividendsForeignIssuerRequest {
   /** Объект запроса формирования отчёта. */
-  generateDivForeignIssuerReport:
+  generateDivForeignIssuerReport?:
     | GenerateDividendsForeignIssuerReportRequest
     | undefined;
   /** Объект запроса сформированного отчёта. */
-  getDivForeignIssuerReport: GetDividendsForeignIssuerReportRequest | undefined;
+  getDivForeignIssuerReport?:
+    | GetDividendsForeignIssuerReportRequest
+    | undefined;
 }
 
 export interface GetDividendsForeignIssuerResponse {
   /** Объект результата задачи запуска формирования отчёта. */
-  generateDivForeignIssuerReportResponse:
+  generateDivForeignIssuerReportResponse?:
     | GenerateDividendsForeignIssuerReportResponse
     | undefined;
   /** Отчёт "Справка о доходах за пределами РФ". */
-  divForeignIssuerReport: GetDividendsForeignIssuerReportResponse | undefined;
+  divForeignIssuerReport?: GetDividendsForeignIssuerReportResponse | undefined;
 }
 
 /** Объект запроса формирования отчёта "Справка о доходах за пределами РФ". */
@@ -673,9 +675,9 @@ export interface GenerateDividendsForeignIssuerReportRequest {
   /** Идентификатор счёта клиента. */
   accountId: string;
   /** Начало периода (по UTC). */
-  from: Date | undefined;
+  from?: Date;
   /** Окончание периода (по UTC). */
-  to: Date | undefined;
+  to?: Date;
 }
 
 /** Объект запроса сформированного отчёта "Справка о доходах за пределами РФ". */
@@ -705,9 +707,9 @@ export interface GetDividendsForeignIssuerReportResponse {
 /** Отчёт "Справка о доходах за пределами РФ". */
 export interface DividendsForeignIssuerReport {
   /** Дата фиксации реестра. */
-  recordDate: Date | undefined;
+  recordDate?: Date;
   /** Дата выплаты. */
-  paymentDate: Date | undefined;
+  paymentDate?: Date;
   /** Наименование ценной бумаги. */
   securityName: string;
   /** ISIN-идентификатор ценной бумаги. */
@@ -717,15 +719,15 @@ export interface DividendsForeignIssuerReport {
   /** Количество ценных бумаг. */
   quantity: number;
   /** Выплаты на одну бумагу */
-  dividend: Quotation | undefined;
+  dividend?: Quotation;
   /** Комиссия внешних платёжных агентов. */
-  externalCommission: Quotation | undefined;
+  externalCommission?: Quotation;
   /** Сумма до удержания налога. */
-  dividendGross: Quotation | undefined;
+  dividendGross?: Quotation;
   /** Сумма налога, удержанного агентом. */
-  tax: Quotation | undefined;
+  tax?: Quotation;
   /** Итоговая сумма выплаты. */
-  dividendAmount: Quotation | undefined;
+  dividendAmount?: Quotation;
   /** Валюта. */
   currency: string;
 }

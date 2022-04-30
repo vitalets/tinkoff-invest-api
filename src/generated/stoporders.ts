@@ -1,8 +1,8 @@
 /* eslint-disable */
 import Long from "long";
 import _m0 from "protobufjs/minimal.js";
-import { Timestamp } from "./google/protobuf/timestamp.js";
 import { Quotation, MoneyValue } from "./common.js";
+import { Timestamp } from "./google/protobuf/timestamp.js";
 
 export const protobufPackage = "tinkoff.public.invest.api.contract.v1";
 
@@ -150,9 +150,9 @@ export interface PostStopOrderRequest {
   /** Количество лотов. */
   quantity: number;
   /** Цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
-  price: Quotation | undefined;
+  price?: Quotation;
   /** Стоп-цена заявки за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
-  stopPrice: Quotation | undefined;
+  stopPrice?: Quotation;
   /** Направление операции. */
   direction: StopOrderDirection;
   /** Номер счёта. */
@@ -162,7 +162,7 @@ export interface PostStopOrderRequest {
   /** Тип заявки. */
   stopOrderType: StopOrderType;
   /** Дата и время окончания действия стоп-заявки в часовом поясе UTC. **Для ExpirationType = GoodTillDate заполнение обязательно**. */
-  expireDate: Date | undefined;
+  expireDate?: Date;
 }
 
 /** Результат выставления стоп-заявки. */
@@ -194,7 +194,7 @@ export interface CancelStopOrderRequest {
 /** Результат отмены выставленной стоп-заявки. */
 export interface CancelStopOrderResponse {
   /** Время отмены заявки в часовом поясе UTC. */
-  time: Date | undefined;
+  time?: Date;
 }
 
 /** Информация о стоп-заявке. */
@@ -212,15 +212,15 @@ export interface StopOrder {
   /** Тип стоп-заявки. */
   orderType: StopOrderType;
   /** Дата и время выставления заявки в часовом поясе UTC. */
-  createDate: Date | undefined;
+  createDate?: Date;
   /** Дата и время конвертации стоп-заявки в биржевую в часовом поясе UTC. */
-  activationDateTime: Date | undefined;
+  activationDateTime?: Date;
   /** Дата и время снятия заявки в часовом поясе UTC. */
-  expirationTime: Date | undefined;
+  expirationTime?: Date;
   /** Цена заявки за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
-  price: MoneyValue | undefined;
+  price?: MoneyValue;
   /** Цена активации стоп-заявки за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
-  stopPrice: MoneyValue | undefined;
+  stopPrice?: MoneyValue;
 }
 
 function createBasePostStopOrderRequest(): PostStopOrderRequest {

@@ -2,9 +2,9 @@
 import Long from "long";
 import _m0 from "protobufjs/minimal.js";
 import {
+  Quotation,
   SecurityTradingStatus,
   Ping,
-  Quotation,
   securityTradingStatusFromJSON,
   securityTradingStatusToJSON,
 } from "./common.js";
@@ -285,41 +285,41 @@ export function candleIntervalToJSON(object: CandleInterval): string {
 /** Запрос подписки или отписки на определённые биржевые данные. */
 export interface MarketDataRequest {
   /** Запрос подписки на свечи. */
-  subscribeCandlesRequest: SubscribeCandlesRequest | undefined;
+  subscribeCandlesRequest?: SubscribeCandlesRequest | undefined;
   /** Запрос подписки на стаканы. */
-  subscribeOrderBookRequest: SubscribeOrderBookRequest | undefined;
+  subscribeOrderBookRequest?: SubscribeOrderBookRequest | undefined;
   /** Запрос подписки на ленту обезличенных сделок. */
-  subscribeTradesRequest: SubscribeTradesRequest | undefined;
+  subscribeTradesRequest?: SubscribeTradesRequest | undefined;
   /** Запрос подписки на торговые статусы инструментов. */
-  subscribeInfoRequest: SubscribeInfoRequest | undefined;
+  subscribeInfoRequest?: SubscribeInfoRequest | undefined;
   /** Запрос подписки на последние цены. */
-  subscribeLastPriceRequest: SubscribeLastPriceRequest | undefined;
+  subscribeLastPriceRequest?: SubscribeLastPriceRequest | undefined;
 }
 
 /** Пакет биржевой информации по подписке. */
 export interface MarketDataResponse {
   /** Результат подписки на свечи. */
-  subscribeCandlesResponse: SubscribeCandlesResponse | undefined;
+  subscribeCandlesResponse?: SubscribeCandlesResponse | undefined;
   /** Результат подписки на стаканы. */
-  subscribeOrderBookResponse: SubscribeOrderBookResponse | undefined;
+  subscribeOrderBookResponse?: SubscribeOrderBookResponse | undefined;
   /** Результат подписки на поток обезличенных сделок. */
-  subscribeTradesResponse: SubscribeTradesResponse | undefined;
+  subscribeTradesResponse?: SubscribeTradesResponse | undefined;
   /** Результат подписки на торговые статусы инструментов. */
-  subscribeInfoResponse: SubscribeInfoResponse | undefined;
+  subscribeInfoResponse?: SubscribeInfoResponse | undefined;
   /** Свеча. */
-  candle: Candle | undefined;
+  candle?: Candle | undefined;
   /** Сделки. */
-  trade: Trade | undefined;
+  trade?: Trade | undefined;
   /** Стакан. */
-  orderbook: OrderBook | undefined;
+  orderbook?: OrderBook | undefined;
   /** Торговый статус. */
-  tradingStatus: TradingStatus | undefined;
+  tradingStatus?: TradingStatus | undefined;
   /** Проверка активности стрима. */
-  ping: Ping | undefined;
+  ping?: Ping | undefined;
   /** Результат подписки на последние цены инструментов. */
-  subscribeLastPriceResponse: SubscribeLastPriceResponse | undefined;
+  subscribeLastPriceResponse?: SubscribeLastPriceResponse | undefined;
   /** Последняя цена. */
-  lastPrice: LastPrice | undefined;
+  lastPrice?: LastPrice | undefined;
 }
 
 /** subscribeCandles | Изменения статуса подписки на свечи. */
@@ -487,19 +487,19 @@ export interface Candle {
   /** Интервал свечи. */
   interval: SubscriptionInterval;
   /** Цена открытия за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
-  open: Quotation | undefined;
+  open?: Quotation;
   /** Максимальная цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
-  high: Quotation | undefined;
+  high?: Quotation;
   /** Минимальная цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
-  low: Quotation | undefined;
+  low?: Quotation;
   /** Цена закрытия за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
-  close: Quotation | undefined;
+  close?: Quotation;
   /** Объём сделок в лотах. */
   volume: number;
   /** Время начала интервала свечи в часовом поясе UTC. */
-  time: Date | undefined;
+  time?: Date;
   /** Время последней сделки, вошедшей в свечу в часовом поясе UTC. */
-  lastTradeTs: Date | undefined;
+  lastTradeTs?: Date;
 }
 
 /** Пакет стаканов в рамках стрима. */
@@ -515,17 +515,17 @@ export interface OrderBook {
   /** Массив спроса. */
   asks: Order[];
   /** Время формирования стакана в часовом поясе UTC по времени биржи. */
-  time: Date | undefined;
+  time?: Date;
   /** Верхний лимит цены за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
-  limitUp: Quotation | undefined;
+  limitUp?: Quotation;
   /** Нижний лимит цены за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
-  limitDown: Quotation | undefined;
+  limitDown?: Quotation;
 }
 
 /** Массив предложений/спроса. */
 export interface Order {
   /** Цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
-  price: Quotation | undefined;
+  price?: Quotation;
   /** Количество в лотах. */
   quantity: number;
 }
@@ -537,11 +537,11 @@ export interface Trade {
   /** Направление сделки. */
   direction: TradeDirection;
   /** Цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
-  price: Quotation | undefined;
+  price?: Quotation;
   /** Количество лотов. */
   quantity: number;
   /** Время сделки в часовом поясе UTC по времени биржи. */
-  time: Date | undefined;
+  time?: Date;
 }
 
 /** Пакет изменения торгового статуса. */
@@ -551,7 +551,7 @@ export interface TradingStatus {
   /** Статус торговли инструментом. */
   tradingStatus: SecurityTradingStatus;
   /** Время изменения торгового статуса в часовом поясе UTC. */
-  time: Date | undefined;
+  time?: Date;
   /** Признак доступности выставления лимитной заявки по инструменту. */
   limitOrderAvailableFlag: boolean;
   /** Признак доступности выставления рыночной заявки по инструменту. */
@@ -563,9 +563,9 @@ export interface GetCandlesRequest {
   /** Figi-идентификатор инструмента. */
   figi: string;
   /** Начало запрашиваемого периода в часовом поясе UTC. */
-  from: Date | undefined;
+  from?: Date;
   /** Окончание запрашиваемого периода в часовом поясе UTC. */
-  to: Date | undefined;
+  to?: Date;
   /** Интервал запрошенных свечей. */
   interval: CandleInterval;
 }
@@ -579,17 +579,17 @@ export interface GetCandlesResponse {
 /** Информация о свече. */
 export interface HistoricCandle {
   /** Цена открытия за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
-  open: Quotation | undefined;
+  open?: Quotation;
   /** Максимальная цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
-  high: Quotation | undefined;
+  high?: Quotation;
   /** Минимальная цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
-  low: Quotation | undefined;
+  low?: Quotation;
   /** Цена закрытия за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
-  close: Quotation | undefined;
+  close?: Quotation;
   /** Объём торгов в лотах. */
   volume: number;
   /** Время свечи в часовом поясе UTC. */
-  time: Date | undefined;
+  time?: Date;
   /** Признак завершённости свечи. **false** значит, свеча за текущие интервал ещё сформирована не полностью. */
   isComplete: boolean;
 }
@@ -611,9 +611,9 @@ export interface LastPrice {
   /** Идентификатор инструмента. */
   figi: string;
   /** Последняя цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
-  price: Quotation | undefined;
+  price?: Quotation;
   /** Время получения последней цены в часовом поясе UTC по времени биржи. */
-  time: Date | undefined;
+  time?: Date;
 }
 
 /** Запрос стакана. */
@@ -635,13 +635,13 @@ export interface GetOrderBookResponse {
   /** Множество пар значений на продажу. */
   asks: Order[];
   /** Цена последней сделки за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
-  lastPrice: Quotation | undefined;
+  lastPrice?: Quotation;
   /** Цена закрытия за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
-  closePrice: Quotation | undefined;
+  closePrice?: Quotation;
   /** Верхний лимит цены за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
-  limitUp: Quotation | undefined;
+  limitUp?: Quotation;
   /** Нижний лимит цены за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
-  limitDown: Quotation | undefined;
+  limitDown?: Quotation;
 }
 
 /** Запрос получения торгового статуса. */
@@ -669,9 +669,9 @@ export interface GetLastTradesRequest {
   /** Figi-идентификатор инструмента */
   figi: string;
   /** Начало запрашиваемого периода в часовом поясе UTC. */
-  from: Date | undefined;
+  from?: Date;
   /** Окончание запрашиваемого периода в часовом поясе UTC. */
-  to: Date | undefined;
+  to?: Date;
 }
 
 /** Последние обезличенные сделки по инструменту. */

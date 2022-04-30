@@ -1,8 +1,8 @@
 /* eslint-disable */
 import Long from "long";
 import _m0 from "protobufjs/minimal.js";
+import { Quotation, MoneyValue, Ping } from "./common.js";
 import { Timestamp } from "./google/protobuf/timestamp.js";
-import { Ping, Quotation, MoneyValue } from "./common.js";
 
 export const protobufPackage = "tinkoff.public.invest.api.contract.v1";
 
@@ -165,9 +165,9 @@ export interface TradesStreamRequest {
 /** Информация о торговых поручениях. */
 export interface TradesStreamResponse {
   /** Информация об исполнении торгового поручения. */
-  orderTrades: OrderTrades | undefined;
+  orderTrades?: OrderTrades | undefined;
   /** Проверка активности стрима. */
-  ping: Ping | undefined;
+  ping?: Ping | undefined;
 }
 
 /** Информация об исполнении торгового поручения. */
@@ -175,7 +175,7 @@ export interface OrderTrades {
   /** Идентификатор торгового поручения. */
   orderId: string;
   /** Дата и время создания сообщения в часовом поясе UTC. */
-  createdAt: Date | undefined;
+  createdAt?: Date;
   /** Направление сделки. */
   direction: OrderDirection;
   /** Figi-идентификатор инструмента. */
@@ -189,9 +189,9 @@ export interface OrderTrades {
 /** Информация о сделке. */
 export interface OrderTrade {
   /** Дата и время совершения сделки в часовом поясе UTC. */
-  dateTime: Date | undefined;
+  dateTime?: Date;
   /** Цена одного инструмента, по которой совершена сделка. */
-  price: Quotation | undefined;
+  price?: Quotation;
   /** Количество лотов в сделке. */
   quantity: number;
 }
@@ -203,7 +203,7 @@ export interface PostOrderRequest {
   /** Количество лотов. */
   quantity: number;
   /** Цена одного инструмента. Для получения стоимости лота требуется умножить на лотность инструмента. */
-  price: Quotation | undefined;
+  price?: Quotation;
   /** Направление операции. */
   direction: OrderDirection;
   /** Номер счёта. */
@@ -225,29 +225,29 @@ export interface PostOrderResponse {
   /** Исполнено лотов. */
   lotsExecuted: number;
   /** Начальная цена заявки. Произведение количества запрошенных лотов на цену. */
-  initialOrderPrice: MoneyValue | undefined;
+  initialOrderPrice?: MoneyValue;
   /** Исполненная цена заявки. Произведение средней цены покупки на количество лотов. */
-  executedOrderPrice: MoneyValue | undefined;
+  executedOrderPrice?: MoneyValue;
   /** Итоговая стоимость заявки, включающая все комиссии. */
-  totalOrderAmount: MoneyValue | undefined;
+  totalOrderAmount?: MoneyValue;
   /** Начальная комиссия. Комиссия рассчитанная при выставлении заявки. */
-  initialCommission: MoneyValue | undefined;
+  initialCommission?: MoneyValue;
   /** Фактическая комиссия по итогам исполнения заявки. */
-  executedCommission: MoneyValue | undefined;
+  executedCommission?: MoneyValue;
   /** Значение НКД (накопленного купонного дохода) на дату. Подробнее: [НКД при выставлении торговых поручений](https://tinkoff.github.io/investAPI/head-orders#coupon) */
-  aciValue: MoneyValue | undefined;
+  aciValue?: MoneyValue;
   /** Figi-идентификатор инструмента. */
   figi: string;
   /** Направление сделки. */
   direction: OrderDirection;
   /** Начальная цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
-  initialSecurityPrice: MoneyValue | undefined;
+  initialSecurityPrice?: MoneyValue;
   /** Тип заявки. */
   orderType: OrderType;
   /** Дополнительные данные об исполнении заявки. */
   message: string;
   /** Начальная цена заявки в пунктах (для фьючерсов). */
-  initialOrderPricePt: Quotation | undefined;
+  initialOrderPricePt?: Quotation;
 }
 
 /** Запрос отмены торгового поручения. */
@@ -261,7 +261,7 @@ export interface CancelOrderRequest {
 /** Результат отмены торгового поручения. */
 export interface CancelOrderResponse {
   /** Дата и время отмены заявки в часовом поясе UTC. */
-  time: Date | undefined;
+  time?: Date;
 }
 
 /** Запрос получения статуса торгового поручения. */
@@ -295,39 +295,39 @@ export interface OrderState {
   /** Исполнено лотов. */
   lotsExecuted: number;
   /** Начальная цена заявки. Произведение количества запрошенных лотов на цену. */
-  initialOrderPrice: MoneyValue | undefined;
+  initialOrderPrice?: MoneyValue;
   /** Исполненная цена заявки. Произведение средней цены покупки на количество лотов. */
-  executedOrderPrice: MoneyValue | undefined;
+  executedOrderPrice?: MoneyValue;
   /** Итоговая стоимость заявки, включающая все комиссии. */
-  totalOrderAmount: MoneyValue | undefined;
+  totalOrderAmount?: MoneyValue;
   /** Средняя цена позиции по сделке. */
-  averagePositionPrice: MoneyValue | undefined;
+  averagePositionPrice?: MoneyValue;
   /** Начальная комиссия. Комиссия, рассчитанная на момент подачи заявки. */
-  initialCommission: MoneyValue | undefined;
+  initialCommission?: MoneyValue;
   /** Фактическая комиссия по итогам исполнения заявки. */
-  executedCommission: MoneyValue | undefined;
+  executedCommission?: MoneyValue;
   /** Figi-идентификатор инструмента. */
   figi: string;
   /** Направление заявки. */
   direction: OrderDirection;
   /** Начальная цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
-  initialSecurityPrice: MoneyValue | undefined;
+  initialSecurityPrice?: MoneyValue;
   /** Стадии выполнения заявки. */
   stages: OrderStage[];
   /** Сервисная комиссия. */
-  serviceCommission: MoneyValue | undefined;
+  serviceCommission?: MoneyValue;
   /** Валюта заявки. */
   currency: string;
   /** Тип заявки. */
   orderType: OrderType;
   /** Дата и время выставления заявки в часовом поясе UTC. */
-  orderDate: Date | undefined;
+  orderDate?: Date;
 }
 
 /** Сделки в рамках торгового поручения. */
 export interface OrderStage {
   /** Цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента.. */
-  price: MoneyValue | undefined;
+  price?: MoneyValue;
   /** Количество лотов. */
   quantity: number;
   /** Идентификатор торговой операции. */

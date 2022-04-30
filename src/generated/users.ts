@@ -1,8 +1,8 @@
 /* eslint-disable */
 import Long from "long";
 import _m0 from "protobufjs/minimal.js";
-import { Timestamp } from "./google/protobuf/timestamp.js";
 import { MoneyValue, Quotation } from "./common.js";
+import { Timestamp } from "./google/protobuf/timestamp.js";
 
 export const protobufPackage = "tinkoff.public.invest.api.contract.v1";
 
@@ -173,9 +173,9 @@ export interface Account {
   /** Статус счёта. */
   status: AccountStatus;
   /** Дата открытия счёта в часовом поясе UTC. */
-  openedDate: Date | undefined;
+  openedDate?: Date;
   /** Дата закрытия счёта в часовом поясе UTC. */
-  closedDate: Date | undefined;
+  closedDate?: Date;
   /** Уровень доступа к текущему счёту (определяется токеном). */
   accessLevel: AccessLevel;
 }
@@ -189,15 +189,15 @@ export interface GetMarginAttributesRequest {
 /** Маржинальные показатели по счёту. */
 export interface GetMarginAttributesResponse {
   /** Ликвидная стоимость портфеля. Подробнее: [что такое ликвидный портфель?](https://help.tinkoff.ru/margin-trade/short/liquid-portfolio/). */
-  liquidPortfolio: MoneyValue | undefined;
+  liquidPortfolio?: MoneyValue;
   /** Начальная маржа — начальное обеспечение для совершения новой сделки. Подробнее: [начальная и минимальная маржа](https://help.tinkoff.ru/margin-trade/short/initial-and-maintenance-margin/). */
-  startingMargin: MoneyValue | undefined;
+  startingMargin?: MoneyValue;
   /** Минимальная маржа — это минимальное обеспечение для поддержания позиции, которую вы уже открыли. Подробнее: [начальная и минимальная маржа](https://help.tinkoff.ru/margin-trade/short/initial-and-maintenance-margin/). */
-  minimalMargin: MoneyValue | undefined;
+  minimalMargin?: MoneyValue;
   /** Уровень достаточности средств. Соотношение стоимости ликвидного портфеля к начальной марже. */
-  fundsSufficiencyLevel: Quotation | undefined;
+  fundsSufficiencyLevel?: Quotation;
   /** Объем недостающих средств. Разница между стартовой маржой и ликвидной стоимости портфеля. */
-  amountOfMissingFunds: MoneyValue | undefined;
+  amountOfMissingFunds?: MoneyValue;
 }
 
 /** Запрос текущих лимитов пользователя. */

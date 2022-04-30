@@ -2,9 +2,9 @@
 import Long from "long";
 import _m0 from "protobufjs/minimal.js";
 import {
-  SecurityTradingStatus,
   MoneyValue,
   Quotation,
+  SecurityTradingStatus,
   securityTradingStatusFromJSON,
   securityTradingStatusToJSON,
 } from "./common.js";
@@ -466,9 +466,9 @@ export interface TradingSchedulesRequest {
   /** Наименование биржи или расчетного календаря. </br>Если не передаётся, возвращается информация по всем доступным торговым площадкам. */
   exchange: string;
   /** Начало периода по часовому поясу UTC. */
-  from: Date | undefined;
+  from?: Date;
   /** Окончание периода по часовому поясу UTC. */
-  to: Date | undefined;
+  to?: Date;
 }
 
 /** Список торговых площадок */
@@ -488,31 +488,31 @@ export interface TradingSchedule {
 /** Информация о времени торгов. */
 export interface TradingDay {
   /** Дата. */
-  date: Date | undefined;
+  date?: Date;
   /** Признак торгового дня на бирже. */
   isTradingDay: boolean;
   /** Время начала торгов по часовому поясу UTC. */
-  startTime: Date | undefined;
+  startTime?: Date;
   /** Время окончания торгов по часовому поясу UTC. */
-  endTime: Date | undefined;
+  endTime?: Date;
   /** Время начала аукциона открытия в часовом поясе UTC. */
-  openingAuctionStartTime: Date | undefined;
+  openingAuctionStartTime?: Date;
   /** Время окончания аукциона закрытия в часовом поясе UTC. */
-  closingAuctionEndTime: Date | undefined;
+  closingAuctionEndTime?: Date;
   /** Время начала аукциона открытия вечерней сессии в часовом поясе UTC. */
-  eveningOpeningAuctionStartTime: Date | undefined;
+  eveningOpeningAuctionStartTime?: Date;
   /** Время начала вечерней сессии в часовом поясе UTC. */
-  eveningStartTime: Date | undefined;
+  eveningStartTime?: Date;
   /** Время окончания вечерней сессии в часовом поясе UTC. */
-  eveningEndTime: Date | undefined;
+  eveningEndTime?: Date;
   /** Время начала основного клиринга в часовом поясе UTC. */
-  clearingStartTime: Date | undefined;
+  clearingStartTime?: Date;
   /** Время окончания основного клиринга в часовом поясе UTC. */
-  clearingEndTime: Date | undefined;
+  clearingEndTime?: Date;
   /** Время начала премаркета в часовом поясе UTC. */
-  premarketStartTime: Date | undefined;
+  premarketStartTime?: Date;
   /** Время окончания премаркета в часовом поясе UTC. */
-  premarketEndTime: Date | undefined;
+  premarketEndTime?: Date;
 }
 
 /** Запрос получения инструмента по идентификатору. */
@@ -534,7 +534,7 @@ export interface InstrumentsRequest {
 /** Информация об облигации. */
 export interface BondResponse {
   /** Информация об облигации. */
-  instrument: Bond | undefined;
+  instrument?: Bond;
 }
 
 /** Список облигаций. */
@@ -548,9 +548,9 @@ export interface GetBondCouponsRequest {
   /** Figi-идентификатор инструмента. */
   figi: string;
   /** Начало запрашиваемого периода в часовом поясе UTC. Фильтрация по coupon_date (дата выплаты купона) */
-  from: Date | undefined;
+  from?: Date;
   /** Окончание запрашиваемого периода в часовом поясе UTC. Фильтрация по coupon_date (дата выплаты купона) */
-  to: Date | undefined;
+  to?: Date;
 }
 
 /** Купоны по облигации. */
@@ -563,19 +563,19 @@ export interface Coupon {
   /** Figi-идентификатор инструмента. */
   figi: string;
   /** Дата выплаты купона */
-  couponDate: Date | undefined;
+  couponDate?: Date;
   /** Номер купона */
   couponNumber: number;
   /** (Опционально) Дата фиксации реестра для выплаты купона */
-  fixDate: Date | undefined;
+  fixDate?: Date;
   /** Выплата на одну облигацию */
-  payOneBond: MoneyValue | undefined;
+  payOneBond?: MoneyValue;
   /** Тип купона */
   couponType: CouponType;
   /** Начало купонного периода. */
-  couponStartDate: Date | undefined;
+  couponStartDate?: Date;
   /** Окончание купонного периода. */
-  couponEndDate: Date | undefined;
+  couponEndDate?: Date;
   /** Купонный период в днях. */
   couponPeriod: number;
 }
@@ -583,7 +583,7 @@ export interface Coupon {
 /** Данные по валюте. */
 export interface CurrencyResponse {
   /** Информация о валюте. */
-  instrument: Currency | undefined;
+  instrument?: Currency;
 }
 
 /** Данные по валютам. */
@@ -595,7 +595,7 @@ export interface CurrenciesResponse {
 /** Данные по фонду. */
 export interface EtfResponse {
   /** Информация о фонде. */
-  instrument: Etf | undefined;
+  instrument?: Etf;
 }
 
 /** Данные по фондам. */
@@ -607,7 +607,7 @@ export interface EtfsResponse {
 /** Данные по фьючерсу. */
 export interface FutureResponse {
   /** Информация о фьючерсу. */
-  instrument: Future | undefined;
+  instrument?: Future;
 }
 
 /** Данные по фьючерсам. */
@@ -619,7 +619,7 @@ export interface FuturesResponse {
 /** Данные по акции. */
 export interface ShareResponse {
   /** Информация об акции. */
-  instrument: Share | undefined;
+  instrument?: Share;
 }
 
 /** Данные по акциям. */
@@ -643,17 +643,17 @@ export interface Bond {
   /** Валюта расчётов. */
   currency: string;
   /** Коэффициент ставки риска длинной позиции по инструменту. */
-  klong: Quotation | undefined;
+  klong?: Quotation;
   /** Коэффициент ставки риска короткой позиции по инструменту. */
-  kshort: Quotation | undefined;
+  kshort?: Quotation;
   /** Ставка риска минимальной маржи в лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
-  dlong: Quotation | undefined;
+  dlong?: Quotation;
   /** Ставка риска минимальной маржи в шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
-  dshort: Quotation | undefined;
+  dshort?: Quotation;
   /** Ставка риска начальной маржи в лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
-  dlongMin: Quotation | undefined;
+  dlongMin?: Quotation;
   /** Ставка риска начальной маржи в шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
-  dshortMin: Quotation | undefined;
+  dshortMin?: Quotation;
   /** Признак доступности для операций в шорт. */
   shortEnabledFlag: boolean;
   /** Название инструмента. */
@@ -663,17 +663,17 @@ export interface Bond {
   /** Количество выплат по купонам в год. */
   couponQuantityPerYear: number;
   /** Дата погашения облигации в часовом поясе UTC. */
-  maturityDate: Date | undefined;
+  maturityDate?: Date;
   /** Номинал облигации. */
-  nominal: MoneyValue | undefined;
+  nominal?: MoneyValue;
   /** Дата выпуска облигации в часовом поясе UTC. */
-  stateRegDate: Date | undefined;
+  stateRegDate?: Date;
   /** Дата размещения в часовом поясе UTC. */
-  placementDate: Date | undefined;
+  placementDate?: Date;
   /** Цена размещения. */
-  placementPrice: MoneyValue | undefined;
+  placementPrice?: MoneyValue;
   /** Значение НКД (накопленного купонного дохода) на дату. */
-  aciValue: MoneyValue | undefined;
+  aciValue?: MoneyValue;
   /** Код страны риска, т.е. страны, в которой компания ведёт основной бизнес. */
   countryOfRisk: string;
   /** Наименование страны риска, т.е. страны, в которой компания ведёт основной бизнес. */
@@ -701,7 +701,7 @@ export interface Bond {
   /** Признак облигации с амортизацией долга. */
   amortizationFlag: boolean;
   /** Шаг цены. */
-  minPriceIncrement: Quotation | undefined;
+  minPriceIncrement?: Quotation;
   /** Признак доступности торгов через API. */
   apiTradeAvailableFlag: boolean;
   /** Уникальный идентификатор инструмента. */
@@ -725,17 +725,17 @@ export interface Currency {
   /** Валюта расчётов. */
   currency: string;
   /** Коэффициент ставки риска длинной позиции по инструменту. */
-  klong: Quotation | undefined;
+  klong?: Quotation;
   /** Коэффициент ставки риска короткой позиции по инструменту. */
-  kshort: Quotation | undefined;
+  kshort?: Quotation;
   /** Ставка риска минимальной маржи в лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
-  dlong: Quotation | undefined;
+  dlong?: Quotation;
   /** Ставка риска минимальной маржи в шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
-  dshort: Quotation | undefined;
+  dshort?: Quotation;
   /** Ставка риска начальной маржи в лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
-  dlongMin: Quotation | undefined;
+  dlongMin?: Quotation;
   /** Ставка риска начальной маржи в шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
-  dshortMin: Quotation | undefined;
+  dshortMin?: Quotation;
   /** Признак доступности для операций в шорт. */
   shortEnabledFlag: boolean;
   /** Название инструмента. */
@@ -743,7 +743,7 @@ export interface Currency {
   /** Торговая площадка. */
   exchange: string;
   /** Номинал. */
-  nominal: MoneyValue | undefined;
+  nominal?: MoneyValue;
   /** Код страны риска, т.е. страны, в которой компания ведёт основной бизнес. */
   countryOfRisk: string;
   /** Наименование страны риска, т.е. страны, в которой компания ведёт основной бизнес. */
@@ -759,7 +759,7 @@ export interface Currency {
   /** Строковый ISO-код валюты. */
   isoCurrencyName: string;
   /** Шаг цены. */
-  minPriceIncrement: Quotation | undefined;
+  minPriceIncrement?: Quotation;
   /** Признак доступности торгов через API. */
   apiTradeAvailableFlag: boolean;
   /** Уникальный идентификатор инструмента. */
@@ -783,17 +783,17 @@ export interface Etf {
   /** Валюта расчётов. */
   currency: string;
   /** Коэффициент ставки риска длинной позиции по инструменту. */
-  klong: Quotation | undefined;
+  klong?: Quotation;
   /** Коэффициент ставки риска короткой позиции по инструменту. */
-  kshort: Quotation | undefined;
+  kshort?: Quotation;
   /** Ставка риска минимальной маржи в лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
-  dlong: Quotation | undefined;
+  dlong?: Quotation;
   /** Ставка риска минимальной маржи в шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
-  dshort: Quotation | undefined;
+  dshort?: Quotation;
   /** Ставка риска начальной маржи в лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
-  dlongMin: Quotation | undefined;
+  dlongMin?: Quotation;
   /** Ставка риска начальной маржи в шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
-  dshortMin: Quotation | undefined;
+  dshortMin?: Quotation;
   /** Признак доступности для операций в шорт. */
   shortEnabledFlag: boolean;
   /** Название инструмента. */
@@ -801,13 +801,13 @@ export interface Etf {
   /** Торговая площадка. */
   exchange: string;
   /** Размер фиксированной комиссии фонда. */
-  fixedCommission: Quotation | undefined;
+  fixedCommission?: Quotation;
   /** Возможные значения: </br>**equity** — акции;</br>**fixed_income** — облигации;</br>**mixed_allocation** — смешанный;</br>**money_market** — денежный рынок;</br>**real_estate** — недвижимость;</br>**commodity** — товары;</br>**specialty** — специальный;</br>**private_equity** — private equity;</br>**alternative_investment** — альтернативные инвестиции. */
   focusType: string;
   /** Дата выпуска в часовом поясе UTC. */
-  releasedDate: Date | undefined;
+  releasedDate?: Date;
   /** Количество акций фонда в обращении. */
-  numShares: Quotation | undefined;
+  numShares?: Quotation;
   /** Код страны риска, т.е. страны, в которой компания ведёт основной бизнес. */
   countryOfRisk: string;
   /** Наименование страны риска, т.е. страны, в которой компания ведёт основной бизнес. */
@@ -825,7 +825,7 @@ export interface Etf {
   /** Признак доступности для продажи. */
   sellAvailableFlag: boolean;
   /** Шаг цены. */
-  minPriceIncrement: Quotation | undefined;
+  minPriceIncrement?: Quotation;
   /** Признак доступности торгов через API. */
   apiTradeAvailableFlag: boolean;
   /** Уникальный идентификатор инструмента. */
@@ -847,17 +847,17 @@ export interface Future {
   /** Валюта расчётов. */
   currency: string;
   /** Коэффициент ставки риска длинной позиции по клиенту. */
-  klong: Quotation | undefined;
+  klong?: Quotation;
   /** Коэффициент ставки риска короткой позиции по клиенту. */
-  kshort: Quotation | undefined;
+  kshort?: Quotation;
   /** Ставка риска минимальной маржи в лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
-  dlong: Quotation | undefined;
+  dlong?: Quotation;
   /** Ставка риска минимальной маржи в шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
-  dshort: Quotation | undefined;
+  dshort?: Quotation;
   /** Ставка риска начальной маржи в лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
-  dlongMin: Quotation | undefined;
+  dlongMin?: Quotation;
   /** Ставка риска начальной маржи в шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
-  dshortMin: Quotation | undefined;
+  dshortMin?: Quotation;
   /** Признак доступности для операций шорт. */
   shortEnabledFlag: boolean;
   /** Название инструмента. */
@@ -865,9 +865,9 @@ export interface Future {
   /** Торговая площадка. */
   exchange: string;
   /** Дата начала обращения контракта в часовом поясе UTC. */
-  firstTradeDate: Date | undefined;
+  firstTradeDate?: Date;
   /** Дата в часовом поясе UTC, до которой возможно проведение операций с фьючерсом. */
-  lastTradeDate: Date | undefined;
+  lastTradeDate?: Date;
   /** Тип фьючерса. Возможные значения: </br>**physical_delivery** — физические поставки; </br>**cash_settlement** — денежный эквивалент. */
   futuresType: string;
   /** Тип актива. Возможные значения: </br>**commodity** — товар; </br>**currency** — валюта; </br>**security** — ценная бумага; </br>**index** — индекс. */
@@ -875,7 +875,7 @@ export interface Future {
   /** Основной актив. */
   basicAsset: string;
   /** Размер основного актива. */
-  basicAssetSize: Quotation | undefined;
+  basicAssetSize?: Quotation;
   /** Код страны риска, т.е. страны, в которой компания ведёт основной бизнес. */
   countryOfRisk: string;
   /** Наименование страны риска, т.е. страны, в которой компания ведёт основной бизнес. */
@@ -883,7 +883,7 @@ export interface Future {
   /** Сектор экономики. */
   sector: string;
   /** Дата истечения срока в часов поясе UTC. */
-  expirationDate: Date | undefined;
+  expirationDate?: Date;
   /** Текущий режим торгов инструмента. */
   tradingStatus: SecurityTradingStatus;
   /** Признак внебиржевой ценной бумаги. */
@@ -893,7 +893,7 @@ export interface Future {
   /** Признак доступности для продажи. */
   sellAvailableFlag: boolean;
   /** Шаг цены. */
-  minPriceIncrement: Quotation | undefined;
+  minPriceIncrement?: Quotation;
   /** Признак доступности торгов через API. */
   apiTradeAvailableFlag: boolean;
   /** Уникальный идентификатор инструмента. */
@@ -917,17 +917,17 @@ export interface Share {
   /** Валюта расчётов. */
   currency: string;
   /** Коэффициент ставки риска длинной позиции по инструменту. */
-  klong: Quotation | undefined;
+  klong?: Quotation;
   /** Коэффициент ставки риска короткой позиции по инструменту. */
-  kshort: Quotation | undefined;
+  kshort?: Quotation;
   /** Ставка риска минимальной маржи в лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
-  dlong: Quotation | undefined;
+  dlong?: Quotation;
   /** Ставка риска минимальной маржи в шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
-  dshort: Quotation | undefined;
+  dshort?: Quotation;
   /** Ставка риска начальной маржи в лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
-  dlongMin: Quotation | undefined;
+  dlongMin?: Quotation;
   /** Ставка риска начальной маржи в шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
-  dshortMin: Quotation | undefined;
+  dshortMin?: Quotation;
   /** Признак доступности для операций в шорт. */
   shortEnabledFlag: boolean;
   /** Название инструмента. */
@@ -935,7 +935,7 @@ export interface Share {
   /** Торговая площадка. */
   exchange: string;
   /** Дата IPO акции в часовом поясе UTC. */
-  ipoDate: Date | undefined;
+  ipoDate?: Date;
   /** Размер выпуска. */
   issueSize: number;
   /** Код страны риска, т.е. страны, в которой компания ведёт основной бизнес. */
@@ -947,7 +947,7 @@ export interface Share {
   /** Плановый размер выпуска. */
   issueSizePlan: number;
   /** Номинал. */
-  nominal: MoneyValue | undefined;
+  nominal?: MoneyValue;
   /** Текущий режим торгов инструмента. */
   tradingStatus: SecurityTradingStatus;
   /** Признак внебиржевой ценной бумаги. */
@@ -961,7 +961,7 @@ export interface Share {
   /** Тип акции. Возможные значения: [ShareType](https://tinkoff.github.io/investAPI/instruments#sharetype) */
   shareType: ShareType;
   /** Шаг цены. */
-  minPriceIncrement: Quotation | undefined;
+  minPriceIncrement?: Quotation;
   /** Признак доступности торгов через API. */
   apiTradeAvailableFlag: boolean;
   /** Уникальный идентификатор инструмента. */
@@ -975,9 +975,9 @@ export interface GetAccruedInterestsRequest {
   /** Figi-идентификатор инструмента. */
   figi: string;
   /** Начало запрашиваемого периода в часовом поясе UTC. */
-  from: Date | undefined;
+  from?: Date;
   /** Окончание запрашиваемого периода в часовом поясе UTC. */
-  to: Date | undefined;
+  to?: Date;
 }
 
 /** НКД облигации */
@@ -989,13 +989,13 @@ export interface GetAccruedInterestsResponse {
 /** Операция начисления купонов. */
 export interface AccruedInterest {
   /** Дата и время выплаты в часовом поясе UTC. */
-  date: Date | undefined;
+  date?: Date;
   /** Величина выплаты. */
-  value: Quotation | undefined;
+  value?: Quotation;
   /** Величина выплаты в процентах от номинала. */
-  valuePercent: Quotation | undefined;
+  valuePercent?: Quotation;
   /** Номинал облигации. */
-  nominal: Quotation | undefined;
+  nominal?: Quotation;
 }
 
 /** Запрос информации о фьючерсе */
@@ -1007,19 +1007,19 @@ export interface GetFuturesMarginRequest {
 /** Данные по фьючерсу */
 export interface GetFuturesMarginResponse {
   /** Гарантийное обеспечение при покупке. */
-  initialMarginOnBuy: MoneyValue | undefined;
+  initialMarginOnBuy?: MoneyValue;
   /** Гарантийное обеспечение при продаже. */
-  initialMarginOnSell: MoneyValue | undefined;
+  initialMarginOnSell?: MoneyValue;
   /** Шаг цены. */
-  minPriceIncrement: Quotation | undefined;
+  minPriceIncrement?: Quotation;
   /** Стоимость шага цены. */
-  minPriceIncrementAmount: Quotation | undefined;
+  minPriceIncrementAmount?: Quotation;
 }
 
 /** Данные по инструменту. */
 export interface InstrumentResponse {
   /** Основная информация об инструменте. */
-  instrument: Instrument | undefined;
+  instrument?: Instrument;
 }
 
 /** Объект передачи основной информации об инструменте. */
@@ -1037,17 +1037,17 @@ export interface Instrument {
   /** Валюта расчётов. */
   currency: string;
   /** Коэффициент ставки риска длинной позиции по инструменту. */
-  klong: Quotation | undefined;
+  klong?: Quotation;
   /** Коэффициент ставки риска короткой позиции по инструменту. */
-  kshort: Quotation | undefined;
+  kshort?: Quotation;
   /** Ставка риска минимальной маржи в лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
-  dlong: Quotation | undefined;
+  dlong?: Quotation;
   /** Ставка риска минимальной маржи в шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
-  dshort: Quotation | undefined;
+  dshort?: Quotation;
   /** Ставка риска начальной маржи в лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
-  dlongMin: Quotation | undefined;
+  dlongMin?: Quotation;
   /** Ставка риска начальной маржи в шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
-  dshortMin: Quotation | undefined;
+  dshortMin?: Quotation;
   /** Признак доступности для операций в шорт. */
   shortEnabledFlag: boolean;
   /** Название инструмента. */
@@ -1069,7 +1069,7 @@ export interface Instrument {
   /** Признак доступности для продажи. */
   sellAvailableFlag: boolean;
   /** Шаг цены. */
-  minPriceIncrement: Quotation | undefined;
+  minPriceIncrement?: Quotation;
   /** Признак доступности торгов через API. */
   apiTradeAvailableFlag: boolean;
   /** Уникальный идентификатор инструмента. */
@@ -1083,9 +1083,9 @@ export interface GetDividendsRequest {
   /** Figi-идентификатор инструмента. */
   figi: string;
   /** Начало запрашиваемого периода в часовом поясе UTC. Фильтрация происходит по параметру *record_date* (дата фиксации реестра). */
-  from: Date | undefined;
+  from?: Date;
   /** Окончание запрашиваемого периода в часовом поясе UTC. Фильтрация происходит по параметру *record_date* (дата фиксации реестра). */
-  to: Date | undefined;
+  to?: Date;
 }
 
 /** Дивиденды. */
@@ -1096,25 +1096,25 @@ export interface GetDividendsResponse {
 /** Информация о выплате. */
 export interface Dividend {
   /** Величина дивиденда на 1 ценную бумагу (включая валюту). */
-  dividendNet: MoneyValue | undefined;
+  dividendNet?: MoneyValue;
   /** Дата фактических выплат в часовом поясе UTC. */
-  paymentDate: Date | undefined;
+  paymentDate?: Date;
   /** Дата объявления дивидендов в часовом поясе UTC. */
-  declaredDate: Date | undefined;
+  declaredDate?: Date;
   /** Последний день (включительно) покупки для получения выплаты в часовом поясе UTC. */
-  lastBuyDate: Date | undefined;
+  lastBuyDate?: Date;
   /** Тип выплаты. Возможные значения: Regular Cash – регулярные выплаты, Cancelled – выплата отменена, Daily Accrual – ежедневное начисление, Return of Capital – возврат капитала, прочие типы выплат. */
   dividendType: string;
   /** Дата фиксации реестра в часовом поясе UTC. */
-  recordDate: Date | undefined;
+  recordDate?: Date;
   /** Регулярность выплаты. Возможные значения: Annual – ежегодная, Semi-Anl – каждые полгода, прочие типы выплат. */
   regularity: string;
   /** Цена закрытия инструмента на момент ex_dividend_date. */
-  closePrice: MoneyValue | undefined;
+  closePrice?: MoneyValue;
   /** Величина доходности. */
-  yieldValue: Quotation | undefined;
+  yieldValue?: Quotation;
   /** Дата и время создания записи в часовом поясе UTC. */
-  createdAt: Date | undefined;
+  createdAt?: Date;
 }
 
 /** Запрос актива по идентификатору. */
@@ -1126,7 +1126,7 @@ export interface AssetRequest {
 /** Данные по активу. */
 export interface AssetResponse {
   /** Актив. */
-  asset: AssetFull | undefined;
+  asset?: AssetFull;
 }
 
 /** Запрос списка активов. */
@@ -1150,13 +1150,13 @@ export interface AssetFull {
   /** Описание актива. */
   description: string;
   /** Дата и время удаления актива. */
-  deletedAt: Date | undefined;
+  deletedAt?: Date;
   /** Тестирование клиентов. */
   requiredTests: string[];
   /** Валюта. Обязательно и заполняется только для type = "ASSET_TYPE_CURRENCY". */
-  currency: AssetCurrency | undefined;
+  currency?: AssetCurrency | undefined;
   /** Ценная бумага. Обязательно и заполняется только для type = "ASSET_TYPE_SECURITY". */
-  security: AssetSecurity | undefined;
+  security?: AssetSecurity | undefined;
   /** Номер государственной регистрации. */
   gosRegCode: string;
   /** Код CFI. */
@@ -1166,9 +1166,9 @@ export interface AssetFull {
   /** Статус актива. */
   status: string;
   /** Бренд. */
-  brand: Brand | undefined;
+  brand?: Brand;
   /** Дата и время последнего обновления записи. */
-  updatedAt: Date | undefined;
+  updatedAt?: Date;
   /** Код типа ц.б. по классификации Банка России. */
   brCode: string;
   /** Наименование кода типа ц.б. по классификации Банка России. */
@@ -1202,15 +1202,15 @@ export interface AssetSecurity {
   /** Тип ценной бумаги. */
   type: string;
   /** Акция. Заполняется только для акций (тип актива asset.type = "ASSET_TYPE_SECURITY" и security.type = share). */
-  share: AssetShare | undefined;
+  share?: AssetShare | undefined;
   /** Облигация. Заполняется только для облигаций (тип актива asset.type = "ASSET_TYPE_SECURITY" и security.type = bond). */
-  bond: AssetBond | undefined;
+  bond?: AssetBond | undefined;
   /** Структурная нота. Заполняется только для структурных продуктов (тип актива asset.type = "ASSET_TYPE_SECURITY" и security.type = sp). */
-  sp: AssetStructuredProduct | undefined;
+  sp?: AssetStructuredProduct | undefined;
   /** Фонд. Заполняется только для фондов (тип актива asset.type = "ASSET_TYPE_SECURITY" и security.type = etf). */
-  etf: AssetEtf | undefined;
+  etf?: AssetEtf | undefined;
   /** Клиринговый сертификат участия. Заполняется только для клиринговых сертификатов (тип актива asset.type = "ASSET_TYPE_SECURITY" и security.type = clearing_certificate). */
-  clearingCertificate: AssetClearingCertificate | undefined;
+  clearingCertificate?: AssetClearingCertificate | undefined;
 }
 
 /** Акция. */
@@ -1218,45 +1218,45 @@ export interface AssetShare {
   /** Тип акции. */
   type: ShareType;
   /** Объем выпуска (шт.). */
-  issueSize: Quotation | undefined;
+  issueSize?: Quotation;
   /** Номинал. */
-  nominal: Quotation | undefined;
+  nominal?: Quotation;
   /** Валюта номинала. */
   nominalCurrency: string;
   /** Индекс (Bloomberg). */
   primaryIndex: string;
   /** Ставка дивиденда (для привилегированных акций). */
-  dividendRate: Quotation | undefined;
+  dividendRate?: Quotation;
   /** Тип привилегированных акций. */
   preferredShareType: string;
   /** Дата IPO. */
-  ipoDate: Date | undefined;
+  ipoDate?: Date;
   /** Дата регистрации. */
-  registryDate: Date | undefined;
+  registryDate?: Date;
   /** Признак наличия дивидендной доходности. */
   divYieldFlag: boolean;
   /** Форма выпуска ФИ. */
   issueKind: string;
   /** Дата размещения акции. */
-  placementDate: Date | undefined;
+  placementDate?: Date;
   /** ISIN базового актива. */
   represIsin: string;
   /** Объявленное количество шт. */
-  issueSizePlan: Quotation | undefined;
+  issueSizePlan?: Quotation;
   /** Количество акций в свободном обращении. */
-  totalFloat: Quotation | undefined;
+  totalFloat?: Quotation;
 }
 
 /** Облигация. */
 export interface AssetBond {
   /** Текущий номинал. */
-  currentNominal: Quotation | undefined;
+  currentNominal?: Quotation;
   /** Наименование заемщика. */
   borrowName: string;
   /** Объем эмиссии облигации (стоимость). */
-  issueSize: Quotation | undefined;
+  issueSize?: Quotation;
   /** Номинал облигации. */
-  nominal: Quotation | undefined;
+  nominal?: Quotation;
   /** Валюта номинала. */
   nominalCurrency: string;
   /** Форма выпуска облигации. */
@@ -1280,17 +1280,17 @@ export interface AssetBond {
   /** Признак бессрочной облигации. */
   perpetualFlag: boolean;
   /** Дата погашения облигации. */
-  maturityDate: Date | undefined;
+  maturityDate?: Date;
   /** Описание и условия получения дополнительного дохода. */
   returnCondition: string;
   /** Дата выпуска облигации. */
-  stateRegDate: Date | undefined;
+  stateRegDate?: Date;
   /** Дата размещения облигации. */
-  placementDate: Date | undefined;
+  placementDate?: Date;
   /** Цена размещения облигации. */
-  placementPrice: Quotation | undefined;
+  placementPrice?: Quotation;
   /** Объявленное количество шт. */
-  issueSizePlan: Quotation | undefined;
+  issueSizePlan?: Quotation;
 }
 
 /** Структурная нота. */
@@ -1298,7 +1298,7 @@ export interface AssetStructuredProduct {
   /** Наименование заемщика. */
   borrowName: string;
   /** Номинал. */
-  nominal: Quotation | undefined;
+  nominal?: Quotation;
   /** Валюта номинала. */
   nominalCurrency: string;
   /** Тип структурной ноты. */
@@ -1310,15 +1310,15 @@ export interface AssetStructuredProduct {
   /** Вид базового актива в зависимости от типа базового актива. */
   basicAsset: string;
   /** Барьер сохранности (в процентах). */
-  safetyBarrier: Quotation | undefined;
+  safetyBarrier?: Quotation;
   /** Дата погашения. */
-  maturityDate: Date | undefined;
+  maturityDate?: Date;
   /** Объявленное количество шт. */
-  issueSizePlan: Quotation | undefined;
+  issueSizePlan?: Quotation;
   /** Объем размещения. */
-  issueSize: Quotation | undefined;
+  issueSize?: Quotation;
   /** Дата размещения ноты. */
-  placementDate: Date | undefined;
+  placementDate?: Date;
   /** Форма выпуска. */
   issueKind: string;
 }
@@ -1326,21 +1326,21 @@ export interface AssetStructuredProduct {
 /** Фонд. */
 export interface AssetEtf {
   /** Суммарные расходы фонда (в %). */
-  totalExpense: Quotation | undefined;
+  totalExpense?: Quotation;
   /** Барьерная ставка доходности после которой фонд имеет право на perfomance fee (в процентах). */
-  hurdleRate: Quotation | undefined;
+  hurdleRate?: Quotation;
   /** Комиссия за успешные результаты фонда (в процентах). */
-  performanceFee: Quotation | undefined;
+  performanceFee?: Quotation;
   /** Фиксированная комиссия за управление (в процентах). */
-  fixedCommission: Quotation | undefined;
+  fixedCommission?: Quotation;
   /** Тип распределения доходов от выплат по бумагам. */
   paymentType: string;
   /** Признак необходимости выхода фонда в плюс для получения комиссии. */
   watermarkFlag: boolean;
   /** Премия (надбавка к цене) при покупке доли в фонде (в процентах). */
-  buyPremium: Quotation | undefined;
+  buyPremium?: Quotation;
   /** Ставка дисконта (вычет из цены) при продаже доли в фонде (в процентах). */
-  sellDiscount: Quotation | undefined;
+  sellDiscount?: Quotation;
   /** Признак ребалансируемости портфеля фонда. */
   rebalancingFlag: boolean;
   /** Периодичность ребалансировки. */
@@ -1354,11 +1354,11 @@ export interface AssetEtf {
   /** Признак использования заемных активов (плечо). */
   leveragedFlag: boolean;
   /** Количество акций в обращении. */
-  numShare: Quotation | undefined;
+  numShare?: Quotation;
   /** Признак обязательства по отчетности перед регулятором. */
   ucitsFlag: boolean;
   /** Дата выпуска. */
-  releasedDate: Date | undefined;
+  releasedDate?: Date;
   /** Описание фонда. */
   description: string;
   /** Описание индекса, за которым следует фонд. */
@@ -1366,15 +1366,15 @@ export interface AssetEtf {
   /** Основные компании, в которые вкладывается фонд. */
   primaryIndexCompany: string;
   /** Срок восстановления индекса (после просадки). */
-  indexRecoveryPeriod: Quotation | undefined;
+  indexRecoveryPeriod?: Quotation;
   /** IVAV-код. */
   inavCode: string;
   /** Признак наличия дивидендной доходности. */
   divYieldFlag: boolean;
   /** Комиссия на покрытие расходов фонда (в процентах). */
-  expenseCommission: Quotation | undefined;
+  expenseCommission?: Quotation;
   /** Ошибка следования за индексом (в процентах). */
-  primaryIndexTrackingError: Quotation | undefined;
+  primaryIndexTrackingError?: Quotation;
   /** Плановая ребалансировка портфеля. */
   rebalancingPlan: string;
   /** Ставки налогообложения дивидендов и купонов. */
@@ -1384,7 +1384,7 @@ export interface AssetEtf {
   /** Форма выпуска. */
   issueKind: string;
   /** Номинал. */
-  nominal: Quotation | undefined;
+  nominal?: Quotation;
   /** Валюта номинала. */
   nominalCurrency: string;
 }
@@ -1392,7 +1392,7 @@ export interface AssetEtf {
 /** Клиринговый сертификат участия. */
 export interface AssetClearingCertificate {
   /** Номинал. */
-  nominal: Quotation | undefined;
+  nominal?: Quotation;
   /** Валюта номинала. */
   nominalCurrency: string;
 }
