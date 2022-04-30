@@ -817,40 +817,6 @@ export const MarketDataRequest = {
         : undefined);
     return obj;
   },
-
-  fromPartial(object: DeepPartial<MarketDataRequest>): MarketDataRequest {
-    const message = createBaseMarketDataRequest();
-    message.subscribeCandlesRequest =
-      object.subscribeCandlesRequest !== undefined &&
-      object.subscribeCandlesRequest !== null
-        ? SubscribeCandlesRequest.fromPartial(object.subscribeCandlesRequest)
-        : undefined;
-    message.subscribeOrderBookRequest =
-      object.subscribeOrderBookRequest !== undefined &&
-      object.subscribeOrderBookRequest !== null
-        ? SubscribeOrderBookRequest.fromPartial(
-            object.subscribeOrderBookRequest
-          )
-        : undefined;
-    message.subscribeTradesRequest =
-      object.subscribeTradesRequest !== undefined &&
-      object.subscribeTradesRequest !== null
-        ? SubscribeTradesRequest.fromPartial(object.subscribeTradesRequest)
-        : undefined;
-    message.subscribeInfoRequest =
-      object.subscribeInfoRequest !== undefined &&
-      object.subscribeInfoRequest !== null
-        ? SubscribeInfoRequest.fromPartial(object.subscribeInfoRequest)
-        : undefined;
-    message.subscribeLastPriceRequest =
-      object.subscribeLastPriceRequest !== undefined &&
-      object.subscribeLastPriceRequest !== null
-        ? SubscribeLastPriceRequest.fromPartial(
-            object.subscribeLastPriceRequest
-          )
-        : undefined;
-    return message;
-  },
 };
 
 function createBaseMarketDataResponse(): MarketDataResponse {
@@ -1061,64 +1027,6 @@ export const MarketDataResponse = {
         : undefined);
     return obj;
   },
-
-  fromPartial(object: DeepPartial<MarketDataResponse>): MarketDataResponse {
-    const message = createBaseMarketDataResponse();
-    message.subscribeCandlesResponse =
-      object.subscribeCandlesResponse !== undefined &&
-      object.subscribeCandlesResponse !== null
-        ? SubscribeCandlesResponse.fromPartial(object.subscribeCandlesResponse)
-        : undefined;
-    message.subscribeOrderBookResponse =
-      object.subscribeOrderBookResponse !== undefined &&
-      object.subscribeOrderBookResponse !== null
-        ? SubscribeOrderBookResponse.fromPartial(
-            object.subscribeOrderBookResponse
-          )
-        : undefined;
-    message.subscribeTradesResponse =
-      object.subscribeTradesResponse !== undefined &&
-      object.subscribeTradesResponse !== null
-        ? SubscribeTradesResponse.fromPartial(object.subscribeTradesResponse)
-        : undefined;
-    message.subscribeInfoResponse =
-      object.subscribeInfoResponse !== undefined &&
-      object.subscribeInfoResponse !== null
-        ? SubscribeInfoResponse.fromPartial(object.subscribeInfoResponse)
-        : undefined;
-    message.candle =
-      object.candle !== undefined && object.candle !== null
-        ? Candle.fromPartial(object.candle)
-        : undefined;
-    message.trade =
-      object.trade !== undefined && object.trade !== null
-        ? Trade.fromPartial(object.trade)
-        : undefined;
-    message.orderbook =
-      object.orderbook !== undefined && object.orderbook !== null
-        ? OrderBook.fromPartial(object.orderbook)
-        : undefined;
-    message.tradingStatus =
-      object.tradingStatus !== undefined && object.tradingStatus !== null
-        ? TradingStatus.fromPartial(object.tradingStatus)
-        : undefined;
-    message.ping =
-      object.ping !== undefined && object.ping !== null
-        ? Ping.fromPartial(object.ping)
-        : undefined;
-    message.subscribeLastPriceResponse =
-      object.subscribeLastPriceResponse !== undefined &&
-      object.subscribeLastPriceResponse !== null
-        ? SubscribeLastPriceResponse.fromPartial(
-            object.subscribeLastPriceResponse
-          )
-        : undefined;
-    message.lastPrice =
-      object.lastPrice !== undefined && object.lastPrice !== null
-        ? LastPrice.fromPartial(object.lastPrice)
-        : undefined;
-    return message;
-  },
 };
 
 function createBaseSubscribeCandlesRequest(): SubscribeCandlesRequest {
@@ -1191,16 +1099,6 @@ export const SubscribeCandlesRequest = {
     }
     return obj;
   },
-
-  fromPartial(
-    object: DeepPartial<SubscribeCandlesRequest>
-  ): SubscribeCandlesRequest {
-    const message = createBaseSubscribeCandlesRequest();
-    message.subscriptionAction = object.subscriptionAction ?? 0;
-    message.instruments =
-      object.instruments?.map((e) => CandleInstrument.fromPartial(e)) || [];
-    return message;
-  },
 };
 
 function createBaseCandleInstrument(): CandleInstrument {
@@ -1257,13 +1155,6 @@ export const CandleInstrument = {
     message.interval !== undefined &&
       (obj.interval = subscriptionIntervalToJSON(message.interval));
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<CandleInstrument>): CandleInstrument {
-    const message = createBaseCandleInstrument();
-    message.figi = object.figi ?? "";
-    message.interval = object.interval ?? 0;
-    return message;
   },
 };
 
@@ -1334,18 +1225,6 @@ export const SubscribeCandlesResponse = {
     }
     return obj;
   },
-
-  fromPartial(
-    object: DeepPartial<SubscribeCandlesResponse>
-  ): SubscribeCandlesResponse {
-    const message = createBaseSubscribeCandlesResponse();
-    message.trackingId = object.trackingId ?? "";
-    message.candlesSubscriptions =
-      object.candlesSubscriptions?.map((e) =>
-        CandleSubscription.fromPartial(e)
-      ) || [];
-    return message;
-  },
 };
 
 function createBaseCandleSubscription(): CandleSubscription {
@@ -1415,14 +1294,6 @@ export const CandleSubscription = {
         message.subscriptionStatus
       ));
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<CandleSubscription>): CandleSubscription {
-    const message = createBaseCandleSubscription();
-    message.figi = object.figi ?? "";
-    message.interval = object.interval ?? 0;
-    message.subscriptionStatus = object.subscriptionStatus ?? 0;
-    return message;
   },
 };
 
@@ -1496,16 +1367,6 @@ export const SubscribeOrderBookRequest = {
     }
     return obj;
   },
-
-  fromPartial(
-    object: DeepPartial<SubscribeOrderBookRequest>
-  ): SubscribeOrderBookRequest {
-    const message = createBaseSubscribeOrderBookRequest();
-    message.subscriptionAction = object.subscriptionAction ?? 0;
-    message.instruments =
-      object.instruments?.map((e) => OrderBookInstrument.fromPartial(e)) || [];
-    return message;
-  },
 };
 
 function createBaseOrderBookInstrument(): OrderBookInstrument {
@@ -1559,13 +1420,6 @@ export const OrderBookInstrument = {
     message.figi !== undefined && (obj.figi = message.figi);
     message.depth !== undefined && (obj.depth = Math.round(message.depth));
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<OrderBookInstrument>): OrderBookInstrument {
-    const message = createBaseOrderBookInstrument();
-    message.figi = object.figi ?? "";
-    message.depth = object.depth ?? 0;
-    return message;
   },
 };
 
@@ -1636,18 +1490,6 @@ export const SubscribeOrderBookResponse = {
     }
     return obj;
   },
-
-  fromPartial(
-    object: DeepPartial<SubscribeOrderBookResponse>
-  ): SubscribeOrderBookResponse {
-    const message = createBaseSubscribeOrderBookResponse();
-    message.trackingId = object.trackingId ?? "";
-    message.orderBookSubscriptions =
-      object.orderBookSubscriptions?.map((e) =>
-        OrderBookSubscription.fromPartial(e)
-      ) || [];
-    return message;
-  },
 };
 
 function createBaseOrderBookSubscription(): OrderBookSubscription {
@@ -1717,16 +1559,6 @@ export const OrderBookSubscription = {
         message.subscriptionStatus
       ));
     return obj;
-  },
-
-  fromPartial(
-    object: DeepPartial<OrderBookSubscription>
-  ): OrderBookSubscription {
-    const message = createBaseOrderBookSubscription();
-    message.figi = object.figi ?? "";
-    message.depth = object.depth ?? 0;
-    message.subscriptionStatus = object.subscriptionStatus ?? 0;
-    return message;
   },
 };
 
@@ -1800,16 +1632,6 @@ export const SubscribeTradesRequest = {
     }
     return obj;
   },
-
-  fromPartial(
-    object: DeepPartial<SubscribeTradesRequest>
-  ): SubscribeTradesRequest {
-    const message = createBaseSubscribeTradesRequest();
-    message.subscriptionAction = object.subscriptionAction ?? 0;
-    message.instruments =
-      object.instruments?.map((e) => TradeInstrument.fromPartial(e)) || [];
-    return message;
-  },
 };
 
 function createBaseTradeInstrument(): TradeInstrument {
@@ -1855,12 +1677,6 @@ export const TradeInstrument = {
     const obj: any = {};
     message.figi !== undefined && (obj.figi = message.figi);
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<TradeInstrument>): TradeInstrument {
-    const message = createBaseTradeInstrument();
-    message.figi = object.figi ?? "";
-    return message;
   },
 };
 
@@ -1931,17 +1747,6 @@ export const SubscribeTradesResponse = {
     }
     return obj;
   },
-
-  fromPartial(
-    object: DeepPartial<SubscribeTradesResponse>
-  ): SubscribeTradesResponse {
-    const message = createBaseSubscribeTradesResponse();
-    message.trackingId = object.trackingId ?? "";
-    message.tradeSubscriptions =
-      object.tradeSubscriptions?.map((e) => TradeSubscription.fromPartial(e)) ||
-      [];
-    return message;
-  },
 };
 
 function createBaseTradeSubscription(): TradeSubscription {
@@ -2000,13 +1805,6 @@ export const TradeSubscription = {
         message.subscriptionStatus
       ));
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<TradeSubscription>): TradeSubscription {
-    const message = createBaseTradeSubscription();
-    message.figi = object.figi ?? "";
-    message.subscriptionStatus = object.subscriptionStatus ?? 0;
-    return message;
   },
 };
 
@@ -2080,14 +1878,6 @@ export const SubscribeInfoRequest = {
     }
     return obj;
   },
-
-  fromPartial(object: DeepPartial<SubscribeInfoRequest>): SubscribeInfoRequest {
-    const message = createBaseSubscribeInfoRequest();
-    message.subscriptionAction = object.subscriptionAction ?? 0;
-    message.instruments =
-      object.instruments?.map((e) => InfoInstrument.fromPartial(e)) || [];
-    return message;
-  },
 };
 
 function createBaseInfoInstrument(): InfoInstrument {
@@ -2133,12 +1923,6 @@ export const InfoInstrument = {
     const obj: any = {};
     message.figi !== undefined && (obj.figi = message.figi);
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<InfoInstrument>): InfoInstrument {
-    const message = createBaseInfoInstrument();
-    message.figi = object.figi ?? "";
-    return message;
   },
 };
 
@@ -2207,17 +1991,6 @@ export const SubscribeInfoResponse = {
     }
     return obj;
   },
-
-  fromPartial(
-    object: DeepPartial<SubscribeInfoResponse>
-  ): SubscribeInfoResponse {
-    const message = createBaseSubscribeInfoResponse();
-    message.trackingId = object.trackingId ?? "";
-    message.infoSubscriptions =
-      object.infoSubscriptions?.map((e) => InfoSubscription.fromPartial(e)) ||
-      [];
-    return message;
-  },
 };
 
 function createBaseInfoSubscription(): InfoSubscription {
@@ -2276,13 +2049,6 @@ export const InfoSubscription = {
         message.subscriptionStatus
       ));
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<InfoSubscription>): InfoSubscription {
-    const message = createBaseInfoSubscription();
-    message.figi = object.figi ?? "";
-    message.subscriptionStatus = object.subscriptionStatus ?? 0;
-    return message;
   },
 };
 
@@ -2356,16 +2122,6 @@ export const SubscribeLastPriceRequest = {
     }
     return obj;
   },
-
-  fromPartial(
-    object: DeepPartial<SubscribeLastPriceRequest>
-  ): SubscribeLastPriceRequest {
-    const message = createBaseSubscribeLastPriceRequest();
-    message.subscriptionAction = object.subscriptionAction ?? 0;
-    message.instruments =
-      object.instruments?.map((e) => LastPriceInstrument.fromPartial(e)) || [];
-    return message;
-  },
 };
 
 function createBaseLastPriceInstrument(): LastPriceInstrument {
@@ -2411,12 +2167,6 @@ export const LastPriceInstrument = {
     const obj: any = {};
     message.figi !== undefined && (obj.figi = message.figi);
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<LastPriceInstrument>): LastPriceInstrument {
-    const message = createBaseLastPriceInstrument();
-    message.figi = object.figi ?? "";
-    return message;
   },
 };
 
@@ -2487,18 +2237,6 @@ export const SubscribeLastPriceResponse = {
     }
     return obj;
   },
-
-  fromPartial(
-    object: DeepPartial<SubscribeLastPriceResponse>
-  ): SubscribeLastPriceResponse {
-    const message = createBaseSubscribeLastPriceResponse();
-    message.trackingId = object.trackingId ?? "";
-    message.lastPriceSubscriptions =
-      object.lastPriceSubscriptions?.map((e) =>
-        LastPriceSubscription.fromPartial(e)
-      ) || [];
-    return message;
-  },
 };
 
 function createBaseLastPriceSubscription(): LastPriceSubscription {
@@ -2560,15 +2298,6 @@ export const LastPriceSubscription = {
         message.subscriptionStatus
       ));
     return obj;
-  },
-
-  fromPartial(
-    object: DeepPartial<LastPriceSubscription>
-  ): LastPriceSubscription {
-    const message = createBaseLastPriceSubscription();
-    message.figi = object.figi ?? "";
-    message.subscriptionStatus = object.subscriptionStatus ?? 0;
-    return message;
   },
 };
 
@@ -2709,32 +2438,6 @@ export const Candle = {
     message.lastTradeTs !== undefined &&
       (obj.lastTradeTs = message.lastTradeTs.toISOString());
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<Candle>): Candle {
-    const message = createBaseCandle();
-    message.figi = object.figi ?? "";
-    message.interval = object.interval ?? 0;
-    message.open =
-      object.open !== undefined && object.open !== null
-        ? Quotation.fromPartial(object.open)
-        : undefined;
-    message.high =
-      object.high !== undefined && object.high !== null
-        ? Quotation.fromPartial(object.high)
-        : undefined;
-    message.low =
-      object.low !== undefined && object.low !== null
-        ? Quotation.fromPartial(object.low)
-        : undefined;
-    message.close =
-      object.close !== undefined && object.close !== null
-        ? Quotation.fromPartial(object.close)
-        : undefined;
-    message.volume = object.volume ?? 0;
-    message.time = object.time ?? undefined;
-    message.lastTradeTs = object.lastTradeTs ?? undefined;
-    return message;
   },
 };
 
@@ -2877,25 +2580,6 @@ export const OrderBook = {
         : undefined);
     return obj;
   },
-
-  fromPartial(object: DeepPartial<OrderBook>): OrderBook {
-    const message = createBaseOrderBook();
-    message.figi = object.figi ?? "";
-    message.depth = object.depth ?? 0;
-    message.isConsistent = object.isConsistent ?? false;
-    message.bids = object.bids?.map((e) => Order.fromPartial(e)) || [];
-    message.asks = object.asks?.map((e) => Order.fromPartial(e)) || [];
-    message.time = object.time ?? undefined;
-    message.limitUp =
-      object.limitUp !== undefined && object.limitUp !== null
-        ? Quotation.fromPartial(object.limitUp)
-        : undefined;
-    message.limitDown =
-      object.limitDown !== undefined && object.limitDown !== null
-        ? Quotation.fromPartial(object.limitDown)
-        : undefined;
-    return message;
-  },
 };
 
 function createBaseOrder(): Order {
@@ -2948,16 +2632,6 @@ export const Order = {
     message.quantity !== undefined &&
       (obj.quantity = Math.round(message.quantity));
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<Order>): Order {
-    const message = createBaseOrder();
-    message.price =
-      object.price !== undefined && object.price !== null
-        ? Quotation.fromPartial(object.price)
-        : undefined;
-    message.quantity = object.quantity ?? 0;
-    return message;
   },
 };
 
@@ -3049,19 +2723,6 @@ export const Trade = {
       (obj.quantity = Math.round(message.quantity));
     message.time !== undefined && (obj.time = message.time.toISOString());
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<Trade>): Trade {
-    const message = createBaseTrade();
-    message.figi = object.figi ?? "";
-    message.direction = object.direction ?? 0;
-    message.price =
-      object.price !== undefined && object.price !== null
-        ? Quotation.fromPartial(object.price)
-        : undefined;
-    message.quantity = object.quantity ?? 0;
-    message.time = object.time ?? undefined;
-    return message;
   },
 };
 
@@ -3161,16 +2822,6 @@ export const TradingStatus = {
       (obj.marketOrderAvailableFlag = message.marketOrderAvailableFlag);
     return obj;
   },
-
-  fromPartial(object: DeepPartial<TradingStatus>): TradingStatus {
-    const message = createBaseTradingStatus();
-    message.figi = object.figi ?? "";
-    message.tradingStatus = object.tradingStatus ?? 0;
-    message.time = object.time ?? undefined;
-    message.limitOrderAvailableFlag = object.limitOrderAvailableFlag ?? false;
-    message.marketOrderAvailableFlag = object.marketOrderAvailableFlag ?? false;
-    return message;
-  },
 };
 
 function createBaseGetCandlesRequest(): GetCandlesRequest {
@@ -3252,15 +2903,6 @@ export const GetCandlesRequest = {
       (obj.interval = candleIntervalToJSON(message.interval));
     return obj;
   },
-
-  fromPartial(object: DeepPartial<GetCandlesRequest>): GetCandlesRequest {
-    const message = createBaseGetCandlesRequest();
-    message.figi = object.figi ?? "";
-    message.from = object.from ?? undefined;
-    message.to = object.to ?? undefined;
-    message.interval = object.interval ?? 0;
-    return message;
-  },
 };
 
 function createBaseGetCandlesResponse(): GetCandlesResponse {
@@ -3314,13 +2956,6 @@ export const GetCandlesResponse = {
       obj.candles = [];
     }
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<GetCandlesResponse>): GetCandlesResponse {
-    const message = createBaseGetCandlesResponse();
-    message.candles =
-      object.candles?.map((e) => HistoricCandle.fromPartial(e)) || [];
-    return message;
   },
 };
 
@@ -3433,30 +3068,6 @@ export const HistoricCandle = {
     message.isComplete !== undefined && (obj.isComplete = message.isComplete);
     return obj;
   },
-
-  fromPartial(object: DeepPartial<HistoricCandle>): HistoricCandle {
-    const message = createBaseHistoricCandle();
-    message.open =
-      object.open !== undefined && object.open !== null
-        ? Quotation.fromPartial(object.open)
-        : undefined;
-    message.high =
-      object.high !== undefined && object.high !== null
-        ? Quotation.fromPartial(object.high)
-        : undefined;
-    message.low =
-      object.low !== undefined && object.low !== null
-        ? Quotation.fromPartial(object.low)
-        : undefined;
-    message.close =
-      object.close !== undefined && object.close !== null
-        ? Quotation.fromPartial(object.close)
-        : undefined;
-    message.volume = object.volume ?? 0;
-    message.time = object.time ?? undefined;
-    message.isComplete = object.isComplete ?? false;
-    return message;
-  },
 };
 
 function createBaseGetLastPricesRequest(): GetLastPricesRequest {
@@ -3511,12 +3122,6 @@ export const GetLastPricesRequest = {
       obj.figi = [];
     }
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<GetLastPricesRequest>): GetLastPricesRequest {
-    const message = createBaseGetLastPricesRequest();
-    message.figi = object.figi?.map((e) => e) || [];
-    return message;
   },
 };
 
@@ -3574,15 +3179,6 @@ export const GetLastPricesResponse = {
       obj.lastPrices = [];
     }
     return obj;
-  },
-
-  fromPartial(
-    object: DeepPartial<GetLastPricesResponse>
-  ): GetLastPricesResponse {
-    const message = createBaseGetLastPricesResponse();
-    message.lastPrices =
-      object.lastPrices?.map((e) => LastPrice.fromPartial(e)) || [];
-    return message;
   },
 };
 
@@ -3652,17 +3248,6 @@ export const LastPrice = {
     message.time !== undefined && (obj.time = message.time.toISOString());
     return obj;
   },
-
-  fromPartial(object: DeepPartial<LastPrice>): LastPrice {
-    const message = createBaseLastPrice();
-    message.figi = object.figi ?? "";
-    message.price =
-      object.price !== undefined && object.price !== null
-        ? Quotation.fromPartial(object.price)
-        : undefined;
-    message.time = object.time ?? undefined;
-    return message;
-  },
 };
 
 function createBaseGetOrderBookRequest(): GetOrderBookRequest {
@@ -3716,13 +3301,6 @@ export const GetOrderBookRequest = {
     message.figi !== undefined && (obj.figi = message.figi);
     message.depth !== undefined && (obj.depth = Math.round(message.depth));
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<GetOrderBookRequest>): GetOrderBookRequest {
-    const message = createBaseGetOrderBookRequest();
-    message.figi = object.figi ?? "";
-    message.depth = object.depth ?? 0;
-    return message;
   },
 };
 
@@ -3870,31 +3448,6 @@ export const GetOrderBookResponse = {
         : undefined);
     return obj;
   },
-
-  fromPartial(object: DeepPartial<GetOrderBookResponse>): GetOrderBookResponse {
-    const message = createBaseGetOrderBookResponse();
-    message.figi = object.figi ?? "";
-    message.depth = object.depth ?? 0;
-    message.bids = object.bids?.map((e) => Order.fromPartial(e)) || [];
-    message.asks = object.asks?.map((e) => Order.fromPartial(e)) || [];
-    message.lastPrice =
-      object.lastPrice !== undefined && object.lastPrice !== null
-        ? Quotation.fromPartial(object.lastPrice)
-        : undefined;
-    message.closePrice =
-      object.closePrice !== undefined && object.closePrice !== null
-        ? Quotation.fromPartial(object.closePrice)
-        : undefined;
-    message.limitUp =
-      object.limitUp !== undefined && object.limitUp !== null
-        ? Quotation.fromPartial(object.limitUp)
-        : undefined;
-    message.limitDown =
-      object.limitDown !== undefined && object.limitDown !== null
-        ? Quotation.fromPartial(object.limitDown)
-        : undefined;
-    return message;
-  },
 };
 
 function createBaseGetTradingStatusRequest(): GetTradingStatusRequest {
@@ -3943,14 +3496,6 @@ export const GetTradingStatusRequest = {
     const obj: any = {};
     message.figi !== undefined && (obj.figi = message.figi);
     return obj;
-  },
-
-  fromPartial(
-    object: DeepPartial<GetTradingStatusRequest>
-  ): GetTradingStatusRequest {
-    const message = createBaseGetTradingStatusRequest();
-    message.figi = object.figi ?? "";
-    return message;
   },
 };
 
@@ -4051,18 +3596,6 @@ export const GetTradingStatusResponse = {
       (obj.apiTradeAvailableFlag = message.apiTradeAvailableFlag);
     return obj;
   },
-
-  fromPartial(
-    object: DeepPartial<GetTradingStatusResponse>
-  ): GetTradingStatusResponse {
-    const message = createBaseGetTradingStatusResponse();
-    message.figi = object.figi ?? "";
-    message.tradingStatus = object.tradingStatus ?? 0;
-    message.limitOrderAvailableFlag = object.limitOrderAvailableFlag ?? false;
-    message.marketOrderAvailableFlag = object.marketOrderAvailableFlag ?? false;
-    message.apiTradeAvailableFlag = object.apiTradeAvailableFlag ?? false;
-    return message;
-  },
 };
 
 function createBaseGetLastTradesRequest(): GetLastTradesRequest {
@@ -4136,14 +3669,6 @@ export const GetLastTradesRequest = {
     message.to !== undefined && (obj.to = message.to.toISOString());
     return obj;
   },
-
-  fromPartial(object: DeepPartial<GetLastTradesRequest>): GetLastTradesRequest {
-    const message = createBaseGetLastTradesRequest();
-    message.figi = object.figi ?? "";
-    message.from = object.from ?? undefined;
-    message.to = object.to ?? undefined;
-    return message;
-  },
 };
 
 function createBaseGetLastTradesResponse(): GetLastTradesResponse {
@@ -4198,14 +3723,6 @@ export const GetLastTradesResponse = {
       obj.trades = [];
     }
     return obj;
-  },
-
-  fromPartial(
-    object: DeepPartial<GetLastTradesResponse>
-  ): GetLastTradesResponse {
-    const message = createBaseGetLastTradesResponse();
-    message.trades = object.trades?.map((e) => Trade.fromPartial(e)) || [];
-    return message;
   },
 };
 
@@ -4288,25 +3805,6 @@ var globalThis: any = (() => {
   if (typeof global !== "undefined") return global;
   throw "Unable to locate global object";
 })();
-
-type Builtin =
-  | Date
-  | Function
-  | Uint8Array
-  | string
-  | number
-  | boolean
-  | undefined;
-
-export type DeepPartial<T> = T extends Builtin
-  ? T
-  : T extends Array<infer U>
-  ? Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U>
-  ? ReadonlyArray<DeepPartial<U>>
-  : T extends {}
-  ? { [K in keyof T]?: DeepPartial<T[K]> }
-  : Partial<T>;
 
 function toTimestamp(date: Date): Timestamp {
   const seconds = date.getTime() / 1_000;

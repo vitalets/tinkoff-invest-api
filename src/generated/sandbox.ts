@@ -94,13 +94,6 @@ export const OpenSandboxAccountRequest = {
     const obj: any = {};
     return obj;
   },
-
-  fromPartial(
-    _: DeepPartial<OpenSandboxAccountRequest>
-  ): OpenSandboxAccountRequest {
-    const message = createBaseOpenSandboxAccountRequest();
-    return message;
-  },
 };
 
 function createBaseOpenSandboxAccountResponse(): OpenSandboxAccountResponse {
@@ -149,14 +142,6 @@ export const OpenSandboxAccountResponse = {
     const obj: any = {};
     message.accountId !== undefined && (obj.accountId = message.accountId);
     return obj;
-  },
-
-  fromPartial(
-    object: DeepPartial<OpenSandboxAccountResponse>
-  ): OpenSandboxAccountResponse {
-    const message = createBaseOpenSandboxAccountResponse();
-    message.accountId = object.accountId ?? "";
-    return message;
   },
 };
 
@@ -207,14 +192,6 @@ export const CloseSandboxAccountRequest = {
     message.accountId !== undefined && (obj.accountId = message.accountId);
     return obj;
   },
-
-  fromPartial(
-    object: DeepPartial<CloseSandboxAccountRequest>
-  ): CloseSandboxAccountRequest {
-    const message = createBaseCloseSandboxAccountRequest();
-    message.accountId = object.accountId ?? "";
-    return message;
-  },
 };
 
 function createBaseCloseSandboxAccountResponse(): CloseSandboxAccountResponse {
@@ -254,13 +231,6 @@ export const CloseSandboxAccountResponse = {
   toJSON(_: CloseSandboxAccountResponse): unknown {
     const obj: any = {};
     return obj;
-  },
-
-  fromPartial(
-    _: DeepPartial<CloseSandboxAccountResponse>
-  ): CloseSandboxAccountResponse {
-    const message = createBaseCloseSandboxAccountResponse();
-    return message;
   },
 };
 
@@ -321,16 +291,6 @@ export const SandboxPayInRequest = {
         : undefined);
     return obj;
   },
-
-  fromPartial(object: DeepPartial<SandboxPayInRequest>): SandboxPayInRequest {
-    const message = createBaseSandboxPayInRequest();
-    message.accountId = object.accountId ?? "";
-    message.amount =
-      object.amount !== undefined && object.amount !== null
-        ? MoneyValue.fromPartial(object.amount)
-        : undefined;
-    return message;
-  },
 };
 
 function createBaseSandboxPayInResponse(): SandboxPayInResponse {
@@ -384,15 +344,6 @@ export const SandboxPayInResponse = {
         ? MoneyValue.toJSON(message.balance)
         : undefined);
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<SandboxPayInResponse>): SandboxPayInResponse {
-    const message = createBaseSandboxPayInResponse();
-    message.balance =
-      object.balance !== undefined && object.balance !== null
-        ? MoneyValue.fromPartial(object.balance)
-        : undefined;
-    return message;
   },
 };
 
@@ -502,25 +453,6 @@ export const SandboxServiceDefinition = {
     },
   },
 } as const;
-
-type Builtin =
-  | Date
-  | Function
-  | Uint8Array
-  | string
-  | number
-  | boolean
-  | undefined;
-
-export type DeepPartial<T> = T extends Builtin
-  ? T
-  : T extends Array<infer U>
-  ? Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U>
-  ? ReadonlyArray<DeepPartial<U>>
-  : T extends {}
-  ? { [K in keyof T]?: DeepPartial<T[K]> }
-  : Partial<T>;
 
 if (_m0.util.Long !== Long) {
   _m0.util.Long = Long as any;

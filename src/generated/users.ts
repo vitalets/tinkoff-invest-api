@@ -277,11 +277,6 @@ export const GetAccountsRequest = {
     const obj: any = {};
     return obj;
   },
-
-  fromPartial(_: DeepPartial<GetAccountsRequest>): GetAccountsRequest {
-    const message = createBaseGetAccountsRequest();
-    return message;
-  },
 };
 
 function createBaseGetAccountsResponse(): GetAccountsResponse {
@@ -335,13 +330,6 @@ export const GetAccountsResponse = {
       obj.accounts = [];
     }
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<GetAccountsResponse>): GetAccountsResponse {
-    const message = createBaseGetAccountsResponse();
-    message.accounts =
-      object.accounts?.map((e) => Account.fromPartial(e)) || [];
-    return message;
   },
 };
 
@@ -465,18 +453,6 @@ export const Account = {
       (obj.accessLevel = accessLevelToJSON(message.accessLevel));
     return obj;
   },
-
-  fromPartial(object: DeepPartial<Account>): Account {
-    const message = createBaseAccount();
-    message.id = object.id ?? "";
-    message.type = object.type ?? 0;
-    message.name = object.name ?? "";
-    message.status = object.status ?? 0;
-    message.openedDate = object.openedDate ?? undefined;
-    message.closedDate = object.closedDate ?? undefined;
-    message.accessLevel = object.accessLevel ?? 0;
-    return message;
-  },
 };
 
 function createBaseGetMarginAttributesRequest(): GetMarginAttributesRequest {
@@ -525,14 +501,6 @@ export const GetMarginAttributesRequest = {
     const obj: any = {};
     message.accountId !== undefined && (obj.accountId = message.accountId);
     return obj;
-  },
-
-  fromPartial(
-    object: DeepPartial<GetMarginAttributesRequest>
-  ): GetMarginAttributesRequest {
-    const message = createBaseGetMarginAttributesRequest();
-    message.accountId = object.accountId ?? "";
-    return message;
   },
 };
 
@@ -667,35 +635,6 @@ export const GetMarginAttributesResponse = {
         : undefined);
     return obj;
   },
-
-  fromPartial(
-    object: DeepPartial<GetMarginAttributesResponse>
-  ): GetMarginAttributesResponse {
-    const message = createBaseGetMarginAttributesResponse();
-    message.liquidPortfolio =
-      object.liquidPortfolio !== undefined && object.liquidPortfolio !== null
-        ? MoneyValue.fromPartial(object.liquidPortfolio)
-        : undefined;
-    message.startingMargin =
-      object.startingMargin !== undefined && object.startingMargin !== null
-        ? MoneyValue.fromPartial(object.startingMargin)
-        : undefined;
-    message.minimalMargin =
-      object.minimalMargin !== undefined && object.minimalMargin !== null
-        ? MoneyValue.fromPartial(object.minimalMargin)
-        : undefined;
-    message.fundsSufficiencyLevel =
-      object.fundsSufficiencyLevel !== undefined &&
-      object.fundsSufficiencyLevel !== null
-        ? Quotation.fromPartial(object.fundsSufficiencyLevel)
-        : undefined;
-    message.amountOfMissingFunds =
-      object.amountOfMissingFunds !== undefined &&
-      object.amountOfMissingFunds !== null
-        ? MoneyValue.fromPartial(object.amountOfMissingFunds)
-        : undefined;
-    return message;
-  },
 };
 
 function createBaseGetUserTariffRequest(): GetUserTariffRequest {
@@ -735,11 +674,6 @@ export const GetUserTariffRequest = {
   toJSON(_: GetUserTariffRequest): unknown {
     const obj: any = {};
     return obj;
-  },
-
-  fromPartial(_: DeepPartial<GetUserTariffRequest>): GetUserTariffRequest {
-    const message = createBaseGetUserTariffRequest();
-    return message;
   },
 };
 
@@ -816,17 +750,6 @@ export const GetUserTariffResponse = {
     }
     return obj;
   },
-
-  fromPartial(
-    object: DeepPartial<GetUserTariffResponse>
-  ): GetUserTariffResponse {
-    const message = createBaseGetUserTariffResponse();
-    message.unaryLimits =
-      object.unaryLimits?.map((e) => UnaryLimit.fromPartial(e)) || [];
-    message.streamLimits =
-      object.streamLimits?.map((e) => StreamLimit.fromPartial(e)) || [];
-    return message;
-  },
 };
 
 function createBaseUnaryLimit(): UnaryLimit {
@@ -890,13 +813,6 @@ export const UnaryLimit = {
     }
     return obj;
   },
-
-  fromPartial(object: DeepPartial<UnaryLimit>): UnaryLimit {
-    const message = createBaseUnaryLimit();
-    message.limitPerMinute = object.limitPerMinute ?? 0;
-    message.methods = object.methods?.map((e) => e) || [];
-    return message;
-  },
 };
 
 function createBaseStreamLimit(): StreamLimit {
@@ -957,13 +873,6 @@ export const StreamLimit = {
     }
     return obj;
   },
-
-  fromPartial(object: DeepPartial<StreamLimit>): StreamLimit {
-    const message = createBaseStreamLimit();
-    message.limit = object.limit ?? 0;
-    message.streams = object.streams?.map((e) => e) || [];
-    return message;
-  },
 };
 
 function createBaseGetInfoRequest(): GetInfoRequest {
@@ -1000,11 +909,6 @@ export const GetInfoRequest = {
   toJSON(_: GetInfoRequest): unknown {
     const obj: any = {};
     return obj;
-  },
-
-  fromPartial(_: DeepPartial<GetInfoRequest>): GetInfoRequest {
-    const message = createBaseGetInfoRequest();
-    return message;
   },
 };
 
@@ -1087,16 +991,6 @@ export const GetInfoResponse = {
     message.tariff !== undefined && (obj.tariff = message.tariff);
     return obj;
   },
-
-  fromPartial(object: DeepPartial<GetInfoResponse>): GetInfoResponse {
-    const message = createBaseGetInfoResponse();
-    message.premStatus = object.premStatus ?? false;
-    message.qualStatus = object.qualStatus ?? false;
-    message.qualifiedForWorkWith =
-      object.qualifiedForWorkWith?.map((e) => e) || [];
-    message.tariff = object.tariff ?? "";
-    return message;
-  },
 };
 
 /**
@@ -1145,25 +1039,6 @@ export const UsersServiceDefinition = {
     },
   },
 } as const;
-
-type Builtin =
-  | Date
-  | Function
-  | Uint8Array
-  | string
-  | number
-  | boolean
-  | undefined;
-
-export type DeepPartial<T> = T extends Builtin
-  ? T
-  : T extends Array<infer U>
-  ? Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U>
-  ? ReadonlyArray<DeepPartial<U>>
-  : T extends {}
-  ? { [K in keyof T]?: DeepPartial<T[K]> }
-  : Partial<T>;
 
 function toTimestamp(date: Date): Timestamp {
   const seconds = date.getTime() / 1_000;

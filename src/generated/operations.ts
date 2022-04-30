@@ -815,16 +815,6 @@ export const OperationsRequest = {
     message.figi !== undefined && (obj.figi = message.figi);
     return obj;
   },
-
-  fromPartial(object: DeepPartial<OperationsRequest>): OperationsRequest {
-    const message = createBaseOperationsRequest();
-    message.accountId = object.accountId ?? "";
-    message.from = object.from ?? undefined;
-    message.to = object.to ?? undefined;
-    message.state = object.state ?? 0;
-    message.figi = object.figi ?? "";
-    return message;
-  },
 };
 
 function createBaseOperationsResponse(): OperationsResponse {
@@ -878,13 +868,6 @@ export const OperationsResponse = {
       obj.operations = [];
     }
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<OperationsResponse>): OperationsResponse {
-    const message = createBaseOperationsResponse();
-    message.operations =
-      object.operations?.map((e) => Operation.fromPartial(e)) || [];
-    return message;
   },
 };
 
@@ -1088,32 +1071,6 @@ export const Operation = {
     }
     return obj;
   },
-
-  fromPartial(object: DeepPartial<Operation>): Operation {
-    const message = createBaseOperation();
-    message.id = object.id ?? "";
-    message.parentOperationId = object.parentOperationId ?? "";
-    message.currency = object.currency ?? "";
-    message.payment =
-      object.payment !== undefined && object.payment !== null
-        ? MoneyValue.fromPartial(object.payment)
-        : undefined;
-    message.price =
-      object.price !== undefined && object.price !== null
-        ? MoneyValue.fromPartial(object.price)
-        : undefined;
-    message.state = object.state ?? 0;
-    message.quantity = object.quantity ?? 0;
-    message.quantityRest = object.quantityRest ?? 0;
-    message.figi = object.figi ?? "";
-    message.instrumentType = object.instrumentType ?? "";
-    message.date = object.date ?? undefined;
-    message.type = object.type ?? "";
-    message.operationType = object.operationType ?? 0;
-    message.trades =
-      object.trades?.map((e) => OperationTrade.fromPartial(e)) || [];
-    return message;
-  },
 };
 
 function createBaseOperationTrade(): OperationTrade {
@@ -1198,18 +1155,6 @@ export const OperationTrade = {
         : undefined);
     return obj;
   },
-
-  fromPartial(object: DeepPartial<OperationTrade>): OperationTrade {
-    const message = createBaseOperationTrade();
-    message.tradeId = object.tradeId ?? "";
-    message.dateTime = object.dateTime ?? undefined;
-    message.quantity = object.quantity ?? 0;
-    message.price =
-      object.price !== undefined && object.price !== null
-        ? MoneyValue.fromPartial(object.price)
-        : undefined;
-    return message;
-  },
 };
 
 function createBasePortfolioRequest(): PortfolioRequest {
@@ -1255,12 +1200,6 @@ export const PortfolioRequest = {
     const obj: any = {};
     message.accountId !== undefined && (obj.accountId = message.accountId);
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<PortfolioRequest>): PortfolioRequest {
-    const message = createBasePortfolioRequest();
-    message.accountId = object.accountId ?? "";
-    return message;
   },
 };
 
@@ -1431,40 +1370,6 @@ export const PortfolioResponse = {
     }
     return obj;
   },
-
-  fromPartial(object: DeepPartial<PortfolioResponse>): PortfolioResponse {
-    const message = createBasePortfolioResponse();
-    message.totalAmountShares =
-      object.totalAmountShares !== undefined &&
-      object.totalAmountShares !== null
-        ? MoneyValue.fromPartial(object.totalAmountShares)
-        : undefined;
-    message.totalAmountBonds =
-      object.totalAmountBonds !== undefined && object.totalAmountBonds !== null
-        ? MoneyValue.fromPartial(object.totalAmountBonds)
-        : undefined;
-    message.totalAmountEtf =
-      object.totalAmountEtf !== undefined && object.totalAmountEtf !== null
-        ? MoneyValue.fromPartial(object.totalAmountEtf)
-        : undefined;
-    message.totalAmountCurrencies =
-      object.totalAmountCurrencies !== undefined &&
-      object.totalAmountCurrencies !== null
-        ? MoneyValue.fromPartial(object.totalAmountCurrencies)
-        : undefined;
-    message.totalAmountFutures =
-      object.totalAmountFutures !== undefined &&
-      object.totalAmountFutures !== null
-        ? MoneyValue.fromPartial(object.totalAmountFutures)
-        : undefined;
-    message.expectedYield =
-      object.expectedYield !== undefined && object.expectedYield !== null
-        ? Quotation.fromPartial(object.expectedYield)
-        : undefined;
-    message.positions =
-      object.positions?.map((e) => PortfolioPosition.fromPartial(e)) || [];
-    return message;
-  },
 };
 
 function createBasePositionsRequest(): PositionsRequest {
@@ -1510,12 +1415,6 @@ export const PositionsRequest = {
     const obj: any = {};
     message.accountId !== undefined && (obj.accountId = message.accountId);
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<PositionsRequest>): PositionsRequest {
-    const message = createBasePositionsRequest();
-    message.accountId = object.accountId ?? "";
-    return message;
   },
 };
 
@@ -1640,19 +1539,6 @@ export const PositionsResponse = {
     }
     return obj;
   },
-
-  fromPartial(object: DeepPartial<PositionsResponse>): PositionsResponse {
-    const message = createBasePositionsResponse();
-    message.money = object.money?.map((e) => MoneyValue.fromPartial(e)) || [];
-    message.blocked =
-      object.blocked?.map((e) => MoneyValue.fromPartial(e)) || [];
-    message.securities =
-      object.securities?.map((e) => PositionsSecurities.fromPartial(e)) || [];
-    message.limitsLoadingInProgress = object.limitsLoadingInProgress ?? false;
-    message.futures =
-      object.futures?.map((e) => PositionsFutures.fromPartial(e)) || [];
-    return message;
-  },
 };
 
 function createBaseWithdrawLimitsRequest(): WithdrawLimitsRequest {
@@ -1701,14 +1587,6 @@ export const WithdrawLimitsRequest = {
     const obj: any = {};
     message.accountId !== undefined && (obj.accountId = message.accountId);
     return obj;
-  },
-
-  fromPartial(
-    object: DeepPartial<WithdrawLimitsRequest>
-  ): WithdrawLimitsRequest {
-    const message = createBaseWithdrawLimitsRequest();
-    message.accountId = object.accountId ?? "";
-    return message;
   },
 };
 
@@ -1800,18 +1678,6 @@ export const WithdrawLimitsResponse = {
       obj.blockedGuarantee = [];
     }
     return obj;
-  },
-
-  fromPartial(
-    object: DeepPartial<WithdrawLimitsResponse>
-  ): WithdrawLimitsResponse {
-    const message = createBaseWithdrawLimitsResponse();
-    message.money = object.money?.map((e) => MoneyValue.fromPartial(e)) || [];
-    message.blocked =
-      object.blocked?.map((e) => MoneyValue.fromPartial(e)) || [];
-    message.blockedGuarantee =
-      object.blockedGuarantee?.map((e) => MoneyValue.fromPartial(e)) || [];
-    return message;
   },
 };
 
@@ -2009,48 +1875,6 @@ export const PortfolioPosition = {
         : undefined);
     return obj;
   },
-
-  fromPartial(object: DeepPartial<PortfolioPosition>): PortfolioPosition {
-    const message = createBasePortfolioPosition();
-    message.figi = object.figi ?? "";
-    message.instrumentType = object.instrumentType ?? "";
-    message.quantity =
-      object.quantity !== undefined && object.quantity !== null
-        ? Quotation.fromPartial(object.quantity)
-        : undefined;
-    message.averagePositionPrice =
-      object.averagePositionPrice !== undefined &&
-      object.averagePositionPrice !== null
-        ? MoneyValue.fromPartial(object.averagePositionPrice)
-        : undefined;
-    message.expectedYield =
-      object.expectedYield !== undefined && object.expectedYield !== null
-        ? Quotation.fromPartial(object.expectedYield)
-        : undefined;
-    message.currentNkd =
-      object.currentNkd !== undefined && object.currentNkd !== null
-        ? MoneyValue.fromPartial(object.currentNkd)
-        : undefined;
-    message.averagePositionPricePt =
-      object.averagePositionPricePt !== undefined &&
-      object.averagePositionPricePt !== null
-        ? Quotation.fromPartial(object.averagePositionPricePt)
-        : undefined;
-    message.currentPrice =
-      object.currentPrice !== undefined && object.currentPrice !== null
-        ? MoneyValue.fromPartial(object.currentPrice)
-        : undefined;
-    message.averagePositionPriceFifo =
-      object.averagePositionPriceFifo !== undefined &&
-      object.averagePositionPriceFifo !== null
-        ? MoneyValue.fromPartial(object.averagePositionPriceFifo)
-        : undefined;
-    message.quantityLots =
-      object.quantityLots !== undefined && object.quantityLots !== null
-        ? Quotation.fromPartial(object.quantityLots)
-        : undefined;
-    return message;
-  },
 };
 
 function createBasePositionsSecurities(): PositionsSecurities {
@@ -2115,14 +1939,6 @@ export const PositionsSecurities = {
       (obj.balance = Math.round(message.balance));
     return obj;
   },
-
-  fromPartial(object: DeepPartial<PositionsSecurities>): PositionsSecurities {
-    const message = createBasePositionsSecurities();
-    message.figi = object.figi ?? "";
-    message.blocked = object.blocked ?? 0;
-    message.balance = object.balance ?? 0;
-    return message;
-  },
 };
 
 function createBasePositionsFutures(): PositionsFutures {
@@ -2186,14 +2002,6 @@ export const PositionsFutures = {
     message.balance !== undefined &&
       (obj.balance = Math.round(message.balance));
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<PositionsFutures>): PositionsFutures {
-    const message = createBasePositionsFutures();
-    message.figi = object.figi ?? "";
-    message.blocked = object.blocked ?? 0;
-    message.balance = object.balance ?? 0;
-    return message;
   },
 };
 
@@ -2275,23 +2083,6 @@ export const BrokerReportRequest = {
         ? GetBrokerReportRequest.toJSON(message.getBrokerReportRequest)
         : undefined);
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<BrokerReportRequest>): BrokerReportRequest {
-    const message = createBaseBrokerReportRequest();
-    message.generateBrokerReportRequest =
-      object.generateBrokerReportRequest !== undefined &&
-      object.generateBrokerReportRequest !== null
-        ? GenerateBrokerReportRequest.fromPartial(
-            object.generateBrokerReportRequest
-          )
-        : undefined;
-    message.getBrokerReportRequest =
-      object.getBrokerReportRequest !== undefined &&
-      object.getBrokerReportRequest !== null
-        ? GetBrokerReportRequest.fromPartial(object.getBrokerReportRequest)
-        : undefined;
-    return message;
   },
 };
 
@@ -2377,23 +2168,6 @@ export const BrokerReportResponse = {
         : undefined);
     return obj;
   },
-
-  fromPartial(object: DeepPartial<BrokerReportResponse>): BrokerReportResponse {
-    const message = createBaseBrokerReportResponse();
-    message.generateBrokerReportResponse =
-      object.generateBrokerReportResponse !== undefined &&
-      object.generateBrokerReportResponse !== null
-        ? GenerateBrokerReportResponse.fromPartial(
-            object.generateBrokerReportResponse
-          )
-        : undefined;
-    message.getBrokerReportResponse =
-      object.getBrokerReportResponse !== undefined &&
-      object.getBrokerReportResponse !== null
-        ? GetBrokerReportResponse.fromPartial(object.getBrokerReportResponse)
-        : undefined;
-    return message;
-  },
 };
 
 function createBaseGenerateBrokerReportRequest(): GenerateBrokerReportRequest {
@@ -2467,16 +2241,6 @@ export const GenerateBrokerReportRequest = {
     message.to !== undefined && (obj.to = message.to.toISOString());
     return obj;
   },
-
-  fromPartial(
-    object: DeepPartial<GenerateBrokerReportRequest>
-  ): GenerateBrokerReportRequest {
-    const message = createBaseGenerateBrokerReportRequest();
-    message.accountId = object.accountId ?? "";
-    message.from = object.from ?? undefined;
-    message.to = object.to ?? undefined;
-    return message;
-  },
 };
 
 function createBaseGenerateBrokerReportResponse(): GenerateBrokerReportResponse {
@@ -2525,14 +2289,6 @@ export const GenerateBrokerReportResponse = {
     const obj: any = {};
     message.taskId !== undefined && (obj.taskId = message.taskId);
     return obj;
-  },
-
-  fromPartial(
-    object: DeepPartial<GenerateBrokerReportResponse>
-  ): GenerateBrokerReportResponse {
-    const message = createBaseGenerateBrokerReportResponse();
-    message.taskId = object.taskId ?? "";
-    return message;
   },
 };
 
@@ -2590,15 +2346,6 @@ export const GetBrokerReportRequest = {
     message.taskId !== undefined && (obj.taskId = message.taskId);
     message.page !== undefined && (obj.page = Math.round(message.page));
     return obj;
-  },
-
-  fromPartial(
-    object: DeepPartial<GetBrokerReportRequest>
-  ): GetBrokerReportRequest {
-    const message = createBaseGetBrokerReportRequest();
-    message.taskId = object.taskId ?? "";
-    message.page = object.page ?? 0;
-    return message;
   },
 };
 
@@ -2684,18 +2431,6 @@ export const GetBrokerReportResponse = {
       (obj.pagesCount = Math.round(message.pagesCount));
     message.page !== undefined && (obj.page = Math.round(message.page));
     return obj;
-  },
-
-  fromPartial(
-    object: DeepPartial<GetBrokerReportResponse>
-  ): GetBrokerReportResponse {
-    const message = createBaseGetBrokerReportResponse();
-    message.brokerReport =
-      object.brokerReport?.map((e) => BrokerReport.fromPartial(e)) || [];
-    message.itemsCount = object.itemsCount ?? 0;
-    message.pagesCount = object.pagesCount ?? 0;
-    message.page = object.page ?? 0;
-    return message;
   },
 };
 
@@ -3081,64 +2816,6 @@ export const BrokerReport = {
       (obj.deliveryType = message.deliveryType);
     return obj;
   },
-
-  fromPartial(object: DeepPartial<BrokerReport>): BrokerReport {
-    const message = createBaseBrokerReport();
-    message.tradeId = object.tradeId ?? "";
-    message.orderId = object.orderId ?? "";
-    message.figi = object.figi ?? "";
-    message.executeSign = object.executeSign ?? "";
-    message.tradeDatetime = object.tradeDatetime ?? undefined;
-    message.exchange = object.exchange ?? "";
-    message.classCode = object.classCode ?? "";
-    message.direction = object.direction ?? "";
-    message.name = object.name ?? "";
-    message.ticker = object.ticker ?? "";
-    message.price =
-      object.price !== undefined && object.price !== null
-        ? MoneyValue.fromPartial(object.price)
-        : undefined;
-    message.quantity = object.quantity ?? 0;
-    message.orderAmount =
-      object.orderAmount !== undefined && object.orderAmount !== null
-        ? MoneyValue.fromPartial(object.orderAmount)
-        : undefined;
-    message.aciValue =
-      object.aciValue !== undefined && object.aciValue !== null
-        ? Quotation.fromPartial(object.aciValue)
-        : undefined;
-    message.totalOrderAmount =
-      object.totalOrderAmount !== undefined && object.totalOrderAmount !== null
-        ? MoneyValue.fromPartial(object.totalOrderAmount)
-        : undefined;
-    message.brokerCommission =
-      object.brokerCommission !== undefined && object.brokerCommission !== null
-        ? MoneyValue.fromPartial(object.brokerCommission)
-        : undefined;
-    message.exchangeCommission =
-      object.exchangeCommission !== undefined &&
-      object.exchangeCommission !== null
-        ? MoneyValue.fromPartial(object.exchangeCommission)
-        : undefined;
-    message.exchangeClearingCommission =
-      object.exchangeClearingCommission !== undefined &&
-      object.exchangeClearingCommission !== null
-        ? MoneyValue.fromPartial(object.exchangeClearingCommission)
-        : undefined;
-    message.repoRate =
-      object.repoRate !== undefined && object.repoRate !== null
-        ? Quotation.fromPartial(object.repoRate)
-        : undefined;
-    message.party = object.party ?? "";
-    message.clearValueDate = object.clearValueDate ?? undefined;
-    message.secValueDate = object.secValueDate ?? undefined;
-    message.brokerStatus = object.brokerStatus ?? "";
-    message.separateAgreementType = object.separateAgreementType ?? "";
-    message.separateAgreementNumber = object.separateAgreementNumber ?? "";
-    message.separateAgreementDate = object.separateAgreementDate ?? "";
-    message.deliveryType = object.deliveryType ?? "";
-    return message;
-  },
 };
 
 function createBaseGetDividendsForeignIssuerRequest(): GetDividendsForeignIssuerRequest {
@@ -3233,27 +2910,6 @@ export const GetDividendsForeignIssuerRequest = {
           )
         : undefined);
     return obj;
-  },
-
-  fromPartial(
-    object: DeepPartial<GetDividendsForeignIssuerRequest>
-  ): GetDividendsForeignIssuerRequest {
-    const message = createBaseGetDividendsForeignIssuerRequest();
-    message.generateDivForeignIssuerReport =
-      object.generateDivForeignIssuerReport !== undefined &&
-      object.generateDivForeignIssuerReport !== null
-        ? GenerateDividendsForeignIssuerReportRequest.fromPartial(
-            object.generateDivForeignIssuerReport
-          )
-        : undefined;
-    message.getDivForeignIssuerReport =
-      object.getDivForeignIssuerReport !== undefined &&
-      object.getDivForeignIssuerReport !== null
-        ? GetDividendsForeignIssuerReportRequest.fromPartial(
-            object.getDivForeignIssuerReport
-          )
-        : undefined;
-    return message;
   },
 };
 
@@ -3350,27 +3006,6 @@ export const GetDividendsForeignIssuerResponse = {
         : undefined);
     return obj;
   },
-
-  fromPartial(
-    object: DeepPartial<GetDividendsForeignIssuerResponse>
-  ): GetDividendsForeignIssuerResponse {
-    const message = createBaseGetDividendsForeignIssuerResponse();
-    message.generateDivForeignIssuerReportResponse =
-      object.generateDivForeignIssuerReportResponse !== undefined &&
-      object.generateDivForeignIssuerReportResponse !== null
-        ? GenerateDividendsForeignIssuerReportResponse.fromPartial(
-            object.generateDivForeignIssuerReportResponse
-          )
-        : undefined;
-    message.divForeignIssuerReport =
-      object.divForeignIssuerReport !== undefined &&
-      object.divForeignIssuerReport !== null
-        ? GetDividendsForeignIssuerReportResponse.fromPartial(
-            object.divForeignIssuerReport
-          )
-        : undefined;
-    return message;
-  },
 };
 
 function createBaseGenerateDividendsForeignIssuerReportRequest(): GenerateDividendsForeignIssuerReportRequest {
@@ -3444,16 +3079,6 @@ export const GenerateDividendsForeignIssuerReportRequest = {
     message.to !== undefined && (obj.to = message.to.toISOString());
     return obj;
   },
-
-  fromPartial(
-    object: DeepPartial<GenerateDividendsForeignIssuerReportRequest>
-  ): GenerateDividendsForeignIssuerReportRequest {
-    const message = createBaseGenerateDividendsForeignIssuerReportRequest();
-    message.accountId = object.accountId ?? "";
-    message.from = object.from ?? undefined;
-    message.to = object.to ?? undefined;
-    return message;
-  },
 };
 
 function createBaseGetDividendsForeignIssuerReportRequest(): GetDividendsForeignIssuerReportRequest {
@@ -3511,15 +3136,6 @@ export const GetDividendsForeignIssuerReportRequest = {
     message.page !== undefined && (obj.page = Math.round(message.page));
     return obj;
   },
-
-  fromPartial(
-    object: DeepPartial<GetDividendsForeignIssuerReportRequest>
-  ): GetDividendsForeignIssuerReportRequest {
-    const message = createBaseGetDividendsForeignIssuerReportRequest();
-    message.taskId = object.taskId ?? "";
-    message.page = object.page ?? 0;
-    return message;
-  },
 };
 
 function createBaseGenerateDividendsForeignIssuerReportResponse(): GenerateDividendsForeignIssuerReportResponse {
@@ -3568,14 +3184,6 @@ export const GenerateDividendsForeignIssuerReportResponse = {
     const obj: any = {};
     message.taskId !== undefined && (obj.taskId = message.taskId);
     return obj;
-  },
-
-  fromPartial(
-    object: DeepPartial<GenerateDividendsForeignIssuerReportResponse>
-  ): GenerateDividendsForeignIssuerReportResponse {
-    const message = createBaseGenerateDividendsForeignIssuerReportResponse();
-    message.taskId = object.taskId ?? "";
-    return message;
   },
 };
 
@@ -3674,20 +3282,6 @@ export const GetDividendsForeignIssuerReportResponse = {
       (obj.pagesCount = Math.round(message.pagesCount));
     message.page !== undefined && (obj.page = Math.round(message.page));
     return obj;
-  },
-
-  fromPartial(
-    object: DeepPartial<GetDividendsForeignIssuerReportResponse>
-  ): GetDividendsForeignIssuerReportResponse {
-    const message = createBaseGetDividendsForeignIssuerReportResponse();
-    message.dividendsForeignIssuerReport =
-      object.dividendsForeignIssuerReport?.map((e) =>
-        DividendsForeignIssuerReport.fromPartial(e)
-      ) || [];
-    message.itemsCount = object.itemsCount ?? 0;
-    message.pagesCount = object.pagesCount ?? 0;
-    message.page = object.page ?? 0;
-    return message;
   },
 };
 
@@ -3895,41 +3489,6 @@ export const DividendsForeignIssuerReport = {
     message.currency !== undefined && (obj.currency = message.currency);
     return obj;
   },
-
-  fromPartial(
-    object: DeepPartial<DividendsForeignIssuerReport>
-  ): DividendsForeignIssuerReport {
-    const message = createBaseDividendsForeignIssuerReport();
-    message.recordDate = object.recordDate ?? undefined;
-    message.paymentDate = object.paymentDate ?? undefined;
-    message.securityName = object.securityName ?? "";
-    message.isin = object.isin ?? "";
-    message.issuerCountry = object.issuerCountry ?? "";
-    message.quantity = object.quantity ?? 0;
-    message.dividend =
-      object.dividend !== undefined && object.dividend !== null
-        ? Quotation.fromPartial(object.dividend)
-        : undefined;
-    message.externalCommission =
-      object.externalCommission !== undefined &&
-      object.externalCommission !== null
-        ? Quotation.fromPartial(object.externalCommission)
-        : undefined;
-    message.dividendGross =
-      object.dividendGross !== undefined && object.dividendGross !== null
-        ? Quotation.fromPartial(object.dividendGross)
-        : undefined;
-    message.tax =
-      object.tax !== undefined && object.tax !== null
-        ? Quotation.fromPartial(object.tax)
-        : undefined;
-    message.dividendAmount =
-      object.dividendAmount !== undefined && object.dividendAmount !== null
-        ? Quotation.fromPartial(object.dividendAmount)
-        : undefined;
-    message.currency = object.currency ?? "";
-    return message;
-  },
 };
 
 /**
@@ -4008,25 +3567,6 @@ var globalThis: any = (() => {
   if (typeof global !== "undefined") return global;
   throw "Unable to locate global object";
 })();
-
-type Builtin =
-  | Date
-  | Function
-  | Uint8Array
-  | string
-  | number
-  | boolean
-  | undefined;
-
-export type DeepPartial<T> = T extends Builtin
-  ? T
-  : T extends Array<infer U>
-  ? Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U>
-  ? ReadonlyArray<DeepPartial<U>>
-  : T extends {}
-  ? { [K in keyof T]?: DeepPartial<T[K]> }
-  : Partial<T>;
 
 function toTimestamp(date: Date): Timestamp {
   const seconds = date.getTime() / 1_000;

@@ -384,12 +384,6 @@ export const TradesStreamRequest = {
     }
     return obj;
   },
-
-  fromPartial(object: DeepPartial<TradesStreamRequest>): TradesStreamRequest {
-    const message = createBaseTradesStreamRequest();
-    message.accounts = object.accounts?.map((e) => e) || [];
-    return message;
-  },
 };
 
 function createBaseTradesStreamResponse(): TradesStreamResponse {
@@ -455,19 +449,6 @@ export const TradesStreamResponse = {
     message.ping !== undefined &&
       (obj.ping = message.ping ? Ping.toJSON(message.ping) : undefined);
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<TradesStreamResponse>): TradesStreamResponse {
-    const message = createBaseTradesStreamResponse();
-    message.orderTrades =
-      object.orderTrades !== undefined && object.orderTrades !== null
-        ? OrderTrades.fromPartial(object.orderTrades)
-        : undefined;
-    message.ping =
-      object.ping !== undefined && object.ping !== null
-        ? Ping.fromPartial(object.ping)
-        : undefined;
-    return message;
   },
 };
 
@@ -581,17 +562,6 @@ export const OrderTrades = {
     message.accountId !== undefined && (obj.accountId = message.accountId);
     return obj;
   },
-
-  fromPartial(object: DeepPartial<OrderTrades>): OrderTrades {
-    const message = createBaseOrderTrades();
-    message.orderId = object.orderId ?? "";
-    message.createdAt = object.createdAt ?? undefined;
-    message.direction = object.direction ?? 0;
-    message.figi = object.figi ?? "";
-    message.trades = object.trades?.map((e) => OrderTrade.fromPartial(e)) || [];
-    message.accountId = object.accountId ?? "";
-    return message;
-  },
 };
 
 function createBaseOrderTrade(): OrderTrade {
@@ -663,17 +633,6 @@ export const OrderTrade = {
     message.quantity !== undefined &&
       (obj.quantity = Math.round(message.quantity));
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<OrderTrade>): OrderTrade {
-    const message = createBaseOrderTrade();
-    message.dateTime = object.dateTime ?? undefined;
-    message.price =
-      object.price !== undefined && object.price !== null
-        ? Quotation.fromPartial(object.price)
-        : undefined;
-    message.quantity = object.quantity ?? 0;
-    return message;
   },
 };
 
@@ -784,21 +743,6 @@ export const PostOrderRequest = {
       (obj.orderType = orderTypeToJSON(message.orderType));
     message.orderId !== undefined && (obj.orderId = message.orderId);
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<PostOrderRequest>): PostOrderRequest {
-    const message = createBasePostOrderRequest();
-    message.figi = object.figi ?? "";
-    message.quantity = object.quantity ?? 0;
-    message.price =
-      object.price !== undefined && object.price !== null
-        ? Quotation.fromPartial(object.price)
-        : undefined;
-    message.direction = object.direction ?? 0;
-    message.accountId = object.accountId ?? "";
-    message.orderType = object.orderType ?? 0;
-    message.orderId = object.orderId ?? "";
-    return message;
   },
 };
 
@@ -1079,57 +1023,6 @@ export const PostOrderResponse = {
         : undefined);
     return obj;
   },
-
-  fromPartial(object: DeepPartial<PostOrderResponse>): PostOrderResponse {
-    const message = createBasePostOrderResponse();
-    message.orderId = object.orderId ?? "";
-    message.executionReportStatus = object.executionReportStatus ?? 0;
-    message.lotsRequested = object.lotsRequested ?? 0;
-    message.lotsExecuted = object.lotsExecuted ?? 0;
-    message.initialOrderPrice =
-      object.initialOrderPrice !== undefined &&
-      object.initialOrderPrice !== null
-        ? MoneyValue.fromPartial(object.initialOrderPrice)
-        : undefined;
-    message.executedOrderPrice =
-      object.executedOrderPrice !== undefined &&
-      object.executedOrderPrice !== null
-        ? MoneyValue.fromPartial(object.executedOrderPrice)
-        : undefined;
-    message.totalOrderAmount =
-      object.totalOrderAmount !== undefined && object.totalOrderAmount !== null
-        ? MoneyValue.fromPartial(object.totalOrderAmount)
-        : undefined;
-    message.initialCommission =
-      object.initialCommission !== undefined &&
-      object.initialCommission !== null
-        ? MoneyValue.fromPartial(object.initialCommission)
-        : undefined;
-    message.executedCommission =
-      object.executedCommission !== undefined &&
-      object.executedCommission !== null
-        ? MoneyValue.fromPartial(object.executedCommission)
-        : undefined;
-    message.aciValue =
-      object.aciValue !== undefined && object.aciValue !== null
-        ? MoneyValue.fromPartial(object.aciValue)
-        : undefined;
-    message.figi = object.figi ?? "";
-    message.direction = object.direction ?? 0;
-    message.initialSecurityPrice =
-      object.initialSecurityPrice !== undefined &&
-      object.initialSecurityPrice !== null
-        ? MoneyValue.fromPartial(object.initialSecurityPrice)
-        : undefined;
-    message.orderType = object.orderType ?? 0;
-    message.message = object.message ?? "";
-    message.initialOrderPricePt =
-      object.initialOrderPricePt !== undefined &&
-      object.initialOrderPricePt !== null
-        ? Quotation.fromPartial(object.initialOrderPricePt)
-        : undefined;
-    return message;
-  },
 };
 
 function createBaseCancelOrderRequest(): CancelOrderRequest {
@@ -1184,13 +1077,6 @@ export const CancelOrderRequest = {
     message.orderId !== undefined && (obj.orderId = message.orderId);
     return obj;
   },
-
-  fromPartial(object: DeepPartial<CancelOrderRequest>): CancelOrderRequest {
-    const message = createBaseCancelOrderRequest();
-    message.accountId = object.accountId ?? "";
-    message.orderId = object.orderId ?? "";
-    return message;
-  },
 };
 
 function createBaseCancelOrderResponse(): CancelOrderResponse {
@@ -1241,12 +1127,6 @@ export const CancelOrderResponse = {
     const obj: any = {};
     message.time !== undefined && (obj.time = message.time.toISOString());
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<CancelOrderResponse>): CancelOrderResponse {
-    const message = createBaseCancelOrderResponse();
-    message.time = object.time ?? undefined;
-    return message;
   },
 };
 
@@ -1305,13 +1185,6 @@ export const GetOrderStateRequest = {
     message.orderId !== undefined && (obj.orderId = message.orderId);
     return obj;
   },
-
-  fromPartial(object: DeepPartial<GetOrderStateRequest>): GetOrderStateRequest {
-    const message = createBaseGetOrderStateRequest();
-    message.accountId = object.accountId ?? "";
-    message.orderId = object.orderId ?? "";
-    return message;
-  },
 };
 
 function createBaseGetOrdersRequest(): GetOrdersRequest {
@@ -1357,12 +1230,6 @@ export const GetOrdersRequest = {
     const obj: any = {};
     message.accountId !== undefined && (obj.accountId = message.accountId);
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<GetOrdersRequest>): GetOrdersRequest {
-    const message = createBaseGetOrdersRequest();
-    message.accountId = object.accountId ?? "";
-    return message;
   },
 };
 
@@ -1417,12 +1284,6 @@ export const GetOrdersResponse = {
       obj.orders = [];
     }
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<GetOrdersResponse>): GetOrdersResponse {
-    const message = createBaseGetOrdersResponse();
-    message.orders = object.orders?.map((e) => OrderState.fromPartial(e)) || [];
-    return message;
   },
 };
 
@@ -1743,60 +1604,6 @@ export const OrderState = {
       (obj.orderDate = message.orderDate.toISOString());
     return obj;
   },
-
-  fromPartial(object: DeepPartial<OrderState>): OrderState {
-    const message = createBaseOrderState();
-    message.orderId = object.orderId ?? "";
-    message.executionReportStatus = object.executionReportStatus ?? 0;
-    message.lotsRequested = object.lotsRequested ?? 0;
-    message.lotsExecuted = object.lotsExecuted ?? 0;
-    message.initialOrderPrice =
-      object.initialOrderPrice !== undefined &&
-      object.initialOrderPrice !== null
-        ? MoneyValue.fromPartial(object.initialOrderPrice)
-        : undefined;
-    message.executedOrderPrice =
-      object.executedOrderPrice !== undefined &&
-      object.executedOrderPrice !== null
-        ? MoneyValue.fromPartial(object.executedOrderPrice)
-        : undefined;
-    message.totalOrderAmount =
-      object.totalOrderAmount !== undefined && object.totalOrderAmount !== null
-        ? MoneyValue.fromPartial(object.totalOrderAmount)
-        : undefined;
-    message.averagePositionPrice =
-      object.averagePositionPrice !== undefined &&
-      object.averagePositionPrice !== null
-        ? MoneyValue.fromPartial(object.averagePositionPrice)
-        : undefined;
-    message.initialCommission =
-      object.initialCommission !== undefined &&
-      object.initialCommission !== null
-        ? MoneyValue.fromPartial(object.initialCommission)
-        : undefined;
-    message.executedCommission =
-      object.executedCommission !== undefined &&
-      object.executedCommission !== null
-        ? MoneyValue.fromPartial(object.executedCommission)
-        : undefined;
-    message.figi = object.figi ?? "";
-    message.direction = object.direction ?? 0;
-    message.initialSecurityPrice =
-      object.initialSecurityPrice !== undefined &&
-      object.initialSecurityPrice !== null
-        ? MoneyValue.fromPartial(object.initialSecurityPrice)
-        : undefined;
-    message.stages = object.stages?.map((e) => OrderStage.fromPartial(e)) || [];
-    message.serviceCommission =
-      object.serviceCommission !== undefined &&
-      object.serviceCommission !== null
-        ? MoneyValue.fromPartial(object.serviceCommission)
-        : undefined;
-    message.currency = object.currency ?? "";
-    message.orderType = object.orderType ?? 0;
-    message.orderDate = object.orderDate ?? undefined;
-    return message;
-  },
 };
 
 function createBaseOrderStage(): OrderStage {
@@ -1864,17 +1671,6 @@ export const OrderStage = {
       (obj.quantity = Math.round(message.quantity));
     message.tradeId !== undefined && (obj.tradeId = message.tradeId);
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<OrderStage>): OrderStage {
-    const message = createBaseOrderStage();
-    message.price =
-      object.price !== undefined && object.price !== null
-        ? MoneyValue.fromPartial(object.price)
-        : undefined;
-    message.quantity = object.quantity ?? 0;
-    message.tradeId = object.tradeId ?? "";
-    return message;
   },
 };
 
@@ -1952,25 +1748,6 @@ var globalThis: any = (() => {
   if (typeof global !== "undefined") return global;
   throw "Unable to locate global object";
 })();
-
-type Builtin =
-  | Date
-  | Function
-  | Uint8Array
-  | string
-  | number
-  | boolean
-  | undefined;
-
-export type DeepPartial<T> = T extends Builtin
-  ? T
-  : T extends Array<infer U>
-  ? Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U>
-  ? ReadonlyArray<DeepPartial<U>>
-  : T extends {}
-  ? { [K in keyof T]?: DeepPartial<T[K]> }
-  : Partial<T>;
 
 function toTimestamp(date: Date): Timestamp {
   const seconds = date.getTime() / 1_000;

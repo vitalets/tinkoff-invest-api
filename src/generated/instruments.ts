@@ -1559,16 +1559,6 @@ export const TradingSchedulesRequest = {
     message.to !== undefined && (obj.to = message.to.toISOString());
     return obj;
   },
-
-  fromPartial(
-    object: DeepPartial<TradingSchedulesRequest>
-  ): TradingSchedulesRequest {
-    const message = createBaseTradingSchedulesRequest();
-    message.exchange = object.exchange ?? "";
-    message.from = object.from ?? undefined;
-    message.to = object.to ?? undefined;
-    return message;
-  },
 };
 
 function createBaseTradingSchedulesResponse(): TradingSchedulesResponse {
@@ -1627,15 +1617,6 @@ export const TradingSchedulesResponse = {
       obj.exchanges = [];
     }
     return obj;
-  },
-
-  fromPartial(
-    object: DeepPartial<TradingSchedulesResponse>
-  ): TradingSchedulesResponse {
-    const message = createBaseTradingSchedulesResponse();
-    message.exchanges =
-      object.exchanges?.map((e) => TradingSchedule.fromPartial(e)) || [];
-    return message;
   },
 };
 
@@ -1698,13 +1679,6 @@ export const TradingSchedule = {
       obj.days = [];
     }
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<TradingSchedule>): TradingSchedule {
-    const message = createBaseTradingSchedule();
-    message.exchange = object.exchange ?? "";
-    message.days = object.days?.map((e) => TradingDay.fromPartial(e)) || [];
-    return message;
   },
 };
 
@@ -1962,26 +1936,6 @@ export const TradingDay = {
       (obj.premarketEndTime = message.premarketEndTime.toISOString());
     return obj;
   },
-
-  fromPartial(object: DeepPartial<TradingDay>): TradingDay {
-    const message = createBaseTradingDay();
-    message.date = object.date ?? undefined;
-    message.isTradingDay = object.isTradingDay ?? false;
-    message.startTime = object.startTime ?? undefined;
-    message.endTime = object.endTime ?? undefined;
-    message.openingAuctionStartTime =
-      object.openingAuctionStartTime ?? undefined;
-    message.closingAuctionEndTime = object.closingAuctionEndTime ?? undefined;
-    message.eveningOpeningAuctionStartTime =
-      object.eveningOpeningAuctionStartTime ?? undefined;
-    message.eveningStartTime = object.eveningStartTime ?? undefined;
-    message.eveningEndTime = object.eveningEndTime ?? undefined;
-    message.clearingStartTime = object.clearingStartTime ?? undefined;
-    message.clearingEndTime = object.clearingEndTime ?? undefined;
-    message.premarketStartTime = object.premarketStartTime ?? undefined;
-    message.premarketEndTime = object.premarketEndTime ?? undefined;
-    return message;
-  },
 };
 
 function createBaseInstrumentRequest(): InstrumentRequest {
@@ -2047,14 +2001,6 @@ export const InstrumentRequest = {
     message.id !== undefined && (obj.id = message.id);
     return obj;
   },
-
-  fromPartial(object: DeepPartial<InstrumentRequest>): InstrumentRequest {
-    const message = createBaseInstrumentRequest();
-    message.idType = object.idType ?? 0;
-    message.classCode = object.classCode ?? "";
-    message.id = object.id ?? "";
-    return message;
-  },
 };
 
 function createBaseInstrumentsRequest(): InstrumentsRequest {
@@ -2103,12 +2049,6 @@ export const InstrumentsRequest = {
     message.instrumentStatus !== undefined &&
       (obj.instrumentStatus = instrumentStatusToJSON(message.instrumentStatus));
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<InstrumentsRequest>): InstrumentsRequest {
-    const message = createBaseInstrumentsRequest();
-    message.instrumentStatus = object.instrumentStatus ?? 0;
-    return message;
   },
 };
 
@@ -2160,15 +2100,6 @@ export const BondResponse = {
         ? Bond.toJSON(message.instrument)
         : undefined);
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<BondResponse>): BondResponse {
-    const message = createBaseBondResponse();
-    message.instrument =
-      object.instrument !== undefined && object.instrument !== null
-        ? Bond.fromPartial(object.instrument)
-        : undefined;
-    return message;
   },
 };
 
@@ -2223,13 +2154,6 @@ export const BondsResponse = {
       obj.instruments = [];
     }
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<BondsResponse>): BondsResponse {
-    const message = createBaseBondsResponse();
-    message.instruments =
-      object.instruments?.map((e) => Bond.fromPartial(e)) || [];
-    return message;
   },
 };
 
@@ -2304,16 +2228,6 @@ export const GetBondCouponsRequest = {
     message.to !== undefined && (obj.to = message.to.toISOString());
     return obj;
   },
-
-  fromPartial(
-    object: DeepPartial<GetBondCouponsRequest>
-  ): GetBondCouponsRequest {
-    const message = createBaseGetBondCouponsRequest();
-    message.figi = object.figi ?? "";
-    message.from = object.from ?? undefined;
-    message.to = object.to ?? undefined;
-    return message;
-  },
 };
 
 function createBaseGetBondCouponsResponse(): GetBondCouponsResponse {
@@ -2370,14 +2284,6 @@ export const GetBondCouponsResponse = {
       obj.events = [];
     }
     return obj;
-  },
-
-  fromPartial(
-    object: DeepPartial<GetBondCouponsResponse>
-  ): GetBondCouponsResponse {
-    const message = createBaseGetBondCouponsResponse();
-    message.events = object.events?.map((e) => Coupon.fromPartial(e)) || [];
-    return message;
   },
 };
 
@@ -2545,23 +2451,6 @@ export const Coupon = {
       (obj.couponPeriod = Math.round(message.couponPeriod));
     return obj;
   },
-
-  fromPartial(object: DeepPartial<Coupon>): Coupon {
-    const message = createBaseCoupon();
-    message.figi = object.figi ?? "";
-    message.couponDate = object.couponDate ?? undefined;
-    message.couponNumber = object.couponNumber ?? 0;
-    message.fixDate = object.fixDate ?? undefined;
-    message.payOneBond =
-      object.payOneBond !== undefined && object.payOneBond !== null
-        ? MoneyValue.fromPartial(object.payOneBond)
-        : undefined;
-    message.couponType = object.couponType ?? 0;
-    message.couponStartDate = object.couponStartDate ?? undefined;
-    message.couponEndDate = object.couponEndDate ?? undefined;
-    message.couponPeriod = object.couponPeriod ?? 0;
-    return message;
-  },
 };
 
 function createBaseCurrencyResponse(): CurrencyResponse {
@@ -2612,15 +2501,6 @@ export const CurrencyResponse = {
         ? Currency.toJSON(message.instrument)
         : undefined);
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<CurrencyResponse>): CurrencyResponse {
-    const message = createBaseCurrencyResponse();
-    message.instrument =
-      object.instrument !== undefined && object.instrument !== null
-        ? Currency.fromPartial(object.instrument)
-        : undefined;
-    return message;
   },
 };
 
@@ -2676,13 +2556,6 @@ export const CurrenciesResponse = {
     }
     return obj;
   },
-
-  fromPartial(object: DeepPartial<CurrenciesResponse>): CurrenciesResponse {
-    const message = createBaseCurrenciesResponse();
-    message.instruments =
-      object.instruments?.map((e) => Currency.fromPartial(e)) || [];
-    return message;
-  },
 };
 
 function createBaseEtfResponse(): EtfResponse {
@@ -2733,15 +2606,6 @@ export const EtfResponse = {
         ? Etf.toJSON(message.instrument)
         : undefined);
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<EtfResponse>): EtfResponse {
-    const message = createBaseEtfResponse();
-    message.instrument =
-      object.instrument !== undefined && object.instrument !== null
-        ? Etf.fromPartial(object.instrument)
-        : undefined;
-    return message;
   },
 };
 
@@ -2797,13 +2661,6 @@ export const EtfsResponse = {
     }
     return obj;
   },
-
-  fromPartial(object: DeepPartial<EtfsResponse>): EtfsResponse {
-    const message = createBaseEtfsResponse();
-    message.instruments =
-      object.instruments?.map((e) => Etf.fromPartial(e)) || [];
-    return message;
-  },
 };
 
 function createBaseFutureResponse(): FutureResponse {
@@ -2854,15 +2711,6 @@ export const FutureResponse = {
         ? Future.toJSON(message.instrument)
         : undefined);
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<FutureResponse>): FutureResponse {
-    const message = createBaseFutureResponse();
-    message.instrument =
-      object.instrument !== undefined && object.instrument !== null
-        ? Future.fromPartial(object.instrument)
-        : undefined;
-    return message;
   },
 };
 
@@ -2918,13 +2766,6 @@ export const FuturesResponse = {
     }
     return obj;
   },
-
-  fromPartial(object: DeepPartial<FuturesResponse>): FuturesResponse {
-    const message = createBaseFuturesResponse();
-    message.instruments =
-      object.instruments?.map((e) => Future.fromPartial(e)) || [];
-    return message;
-  },
 };
 
 function createBaseShareResponse(): ShareResponse {
@@ -2975,15 +2816,6 @@ export const ShareResponse = {
         ? Share.toJSON(message.instrument)
         : undefined);
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<ShareResponse>): ShareResponse {
-    const message = createBaseShareResponse();
-    message.instrument =
-      object.instrument !== undefined && object.instrument !== null
-        ? Share.fromPartial(object.instrument)
-        : undefined;
-    return message;
   },
 };
 
@@ -3038,13 +2870,6 @@ export const SharesResponse = {
       obj.instruments = [];
     }
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<SharesResponse>): SharesResponse {
-    const message = createBaseSharesResponse();
-    message.instruments =
-      object.instruments?.map((e) => Share.fromPartial(e)) || [];
-    return message;
   },
 };
 
@@ -3545,81 +3370,6 @@ export const Bond = {
       (obj.realExchange = realExchangeToJSON(message.realExchange));
     return obj;
   },
-
-  fromPartial(object: DeepPartial<Bond>): Bond {
-    const message = createBaseBond();
-    message.figi = object.figi ?? "";
-    message.ticker = object.ticker ?? "";
-    message.classCode = object.classCode ?? "";
-    message.isin = object.isin ?? "";
-    message.lot = object.lot ?? 0;
-    message.currency = object.currency ?? "";
-    message.klong =
-      object.klong !== undefined && object.klong !== null
-        ? Quotation.fromPartial(object.klong)
-        : undefined;
-    message.kshort =
-      object.kshort !== undefined && object.kshort !== null
-        ? Quotation.fromPartial(object.kshort)
-        : undefined;
-    message.dlong =
-      object.dlong !== undefined && object.dlong !== null
-        ? Quotation.fromPartial(object.dlong)
-        : undefined;
-    message.dshort =
-      object.dshort !== undefined && object.dshort !== null
-        ? Quotation.fromPartial(object.dshort)
-        : undefined;
-    message.dlongMin =
-      object.dlongMin !== undefined && object.dlongMin !== null
-        ? Quotation.fromPartial(object.dlongMin)
-        : undefined;
-    message.dshortMin =
-      object.dshortMin !== undefined && object.dshortMin !== null
-        ? Quotation.fromPartial(object.dshortMin)
-        : undefined;
-    message.shortEnabledFlag = object.shortEnabledFlag ?? false;
-    message.name = object.name ?? "";
-    message.exchange = object.exchange ?? "";
-    message.couponQuantityPerYear = object.couponQuantityPerYear ?? 0;
-    message.maturityDate = object.maturityDate ?? undefined;
-    message.nominal =
-      object.nominal !== undefined && object.nominal !== null
-        ? MoneyValue.fromPartial(object.nominal)
-        : undefined;
-    message.stateRegDate = object.stateRegDate ?? undefined;
-    message.placementDate = object.placementDate ?? undefined;
-    message.placementPrice =
-      object.placementPrice !== undefined && object.placementPrice !== null
-        ? MoneyValue.fromPartial(object.placementPrice)
-        : undefined;
-    message.aciValue =
-      object.aciValue !== undefined && object.aciValue !== null
-        ? MoneyValue.fromPartial(object.aciValue)
-        : undefined;
-    message.countryOfRisk = object.countryOfRisk ?? "";
-    message.countryOfRiskName = object.countryOfRiskName ?? "";
-    message.sector = object.sector ?? "";
-    message.issueKind = object.issueKind ?? "";
-    message.issueSize = object.issueSize ?? 0;
-    message.issueSizePlan = object.issueSizePlan ?? 0;
-    message.tradingStatus = object.tradingStatus ?? 0;
-    message.otcFlag = object.otcFlag ?? false;
-    message.buyAvailableFlag = object.buyAvailableFlag ?? false;
-    message.sellAvailableFlag = object.sellAvailableFlag ?? false;
-    message.floatingCouponFlag = object.floatingCouponFlag ?? false;
-    message.perpetualFlag = object.perpetualFlag ?? false;
-    message.amortizationFlag = object.amortizationFlag ?? false;
-    message.minPriceIncrement =
-      object.minPriceIncrement !== undefined &&
-      object.minPriceIncrement !== null
-        ? Quotation.fromPartial(object.minPriceIncrement)
-        : undefined;
-    message.apiTradeAvailableFlag = object.apiTradeAvailableFlag ?? false;
-    message.uid = object.uid ?? "";
-    message.realExchange = object.realExchange ?? 0;
-    return message;
-  },
 };
 
 function createBaseCurrency(): Currency {
@@ -3963,63 +3713,6 @@ export const Currency = {
     message.realExchange !== undefined &&
       (obj.realExchange = realExchangeToJSON(message.realExchange));
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<Currency>): Currency {
-    const message = createBaseCurrency();
-    message.figi = object.figi ?? "";
-    message.ticker = object.ticker ?? "";
-    message.classCode = object.classCode ?? "";
-    message.isin = object.isin ?? "";
-    message.lot = object.lot ?? 0;
-    message.currency = object.currency ?? "";
-    message.klong =
-      object.klong !== undefined && object.klong !== null
-        ? Quotation.fromPartial(object.klong)
-        : undefined;
-    message.kshort =
-      object.kshort !== undefined && object.kshort !== null
-        ? Quotation.fromPartial(object.kshort)
-        : undefined;
-    message.dlong =
-      object.dlong !== undefined && object.dlong !== null
-        ? Quotation.fromPartial(object.dlong)
-        : undefined;
-    message.dshort =
-      object.dshort !== undefined && object.dshort !== null
-        ? Quotation.fromPartial(object.dshort)
-        : undefined;
-    message.dlongMin =
-      object.dlongMin !== undefined && object.dlongMin !== null
-        ? Quotation.fromPartial(object.dlongMin)
-        : undefined;
-    message.dshortMin =
-      object.dshortMin !== undefined && object.dshortMin !== null
-        ? Quotation.fromPartial(object.dshortMin)
-        : undefined;
-    message.shortEnabledFlag = object.shortEnabledFlag ?? false;
-    message.name = object.name ?? "";
-    message.exchange = object.exchange ?? "";
-    message.nominal =
-      object.nominal !== undefined && object.nominal !== null
-        ? MoneyValue.fromPartial(object.nominal)
-        : undefined;
-    message.countryOfRisk = object.countryOfRisk ?? "";
-    message.countryOfRiskName = object.countryOfRiskName ?? "";
-    message.tradingStatus = object.tradingStatus ?? 0;
-    message.otcFlag = object.otcFlag ?? false;
-    message.buyAvailableFlag = object.buyAvailableFlag ?? false;
-    message.sellAvailableFlag = object.sellAvailableFlag ?? false;
-    message.isoCurrencyName = object.isoCurrencyName ?? "";
-    message.minPriceIncrement =
-      object.minPriceIncrement !== undefined &&
-      object.minPriceIncrement !== null
-        ? Quotation.fromPartial(object.minPriceIncrement)
-        : undefined;
-    message.apiTradeAvailableFlag = object.apiTradeAvailableFlag ?? false;
-    message.uid = object.uid ?? "";
-    message.realExchange = object.realExchange ?? 0;
-    return message;
   },
 };
 
@@ -4413,70 +4106,6 @@ export const Etf = {
     message.realExchange !== undefined &&
       (obj.realExchange = realExchangeToJSON(message.realExchange));
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<Etf>): Etf {
-    const message = createBaseEtf();
-    message.figi = object.figi ?? "";
-    message.ticker = object.ticker ?? "";
-    message.classCode = object.classCode ?? "";
-    message.isin = object.isin ?? "";
-    message.lot = object.lot ?? 0;
-    message.currency = object.currency ?? "";
-    message.klong =
-      object.klong !== undefined && object.klong !== null
-        ? Quotation.fromPartial(object.klong)
-        : undefined;
-    message.kshort =
-      object.kshort !== undefined && object.kshort !== null
-        ? Quotation.fromPartial(object.kshort)
-        : undefined;
-    message.dlong =
-      object.dlong !== undefined && object.dlong !== null
-        ? Quotation.fromPartial(object.dlong)
-        : undefined;
-    message.dshort =
-      object.dshort !== undefined && object.dshort !== null
-        ? Quotation.fromPartial(object.dshort)
-        : undefined;
-    message.dlongMin =
-      object.dlongMin !== undefined && object.dlongMin !== null
-        ? Quotation.fromPartial(object.dlongMin)
-        : undefined;
-    message.dshortMin =
-      object.dshortMin !== undefined && object.dshortMin !== null
-        ? Quotation.fromPartial(object.dshortMin)
-        : undefined;
-    message.shortEnabledFlag = object.shortEnabledFlag ?? false;
-    message.name = object.name ?? "";
-    message.exchange = object.exchange ?? "";
-    message.fixedCommission =
-      object.fixedCommission !== undefined && object.fixedCommission !== null
-        ? Quotation.fromPartial(object.fixedCommission)
-        : undefined;
-    message.focusType = object.focusType ?? "";
-    message.releasedDate = object.releasedDate ?? undefined;
-    message.numShares =
-      object.numShares !== undefined && object.numShares !== null
-        ? Quotation.fromPartial(object.numShares)
-        : undefined;
-    message.countryOfRisk = object.countryOfRisk ?? "";
-    message.countryOfRiskName = object.countryOfRiskName ?? "";
-    message.sector = object.sector ?? "";
-    message.rebalancingFreq = object.rebalancingFreq ?? "";
-    message.tradingStatus = object.tradingStatus ?? 0;
-    message.otcFlag = object.otcFlag ?? false;
-    message.buyAvailableFlag = object.buyAvailableFlag ?? false;
-    message.sellAvailableFlag = object.sellAvailableFlag ?? false;
-    message.minPriceIncrement =
-      object.minPriceIncrement !== undefined &&
-      object.minPriceIncrement !== null
-        ? Quotation.fromPartial(object.minPriceIncrement)
-        : undefined;
-    message.apiTradeAvailableFlag = object.apiTradeAvailableFlag ?? false;
-    message.uid = object.uid ?? "";
-    message.realExchange = object.realExchange ?? 0;
-    return message;
   },
 };
 
@@ -4892,68 +4521,6 @@ export const Future = {
       (obj.realExchange = realExchangeToJSON(message.realExchange));
     return obj;
   },
-
-  fromPartial(object: DeepPartial<Future>): Future {
-    const message = createBaseFuture();
-    message.figi = object.figi ?? "";
-    message.ticker = object.ticker ?? "";
-    message.classCode = object.classCode ?? "";
-    message.lot = object.lot ?? 0;
-    message.currency = object.currency ?? "";
-    message.klong =
-      object.klong !== undefined && object.klong !== null
-        ? Quotation.fromPartial(object.klong)
-        : undefined;
-    message.kshort =
-      object.kshort !== undefined && object.kshort !== null
-        ? Quotation.fromPartial(object.kshort)
-        : undefined;
-    message.dlong =
-      object.dlong !== undefined && object.dlong !== null
-        ? Quotation.fromPartial(object.dlong)
-        : undefined;
-    message.dshort =
-      object.dshort !== undefined && object.dshort !== null
-        ? Quotation.fromPartial(object.dshort)
-        : undefined;
-    message.dlongMin =
-      object.dlongMin !== undefined && object.dlongMin !== null
-        ? Quotation.fromPartial(object.dlongMin)
-        : undefined;
-    message.dshortMin =
-      object.dshortMin !== undefined && object.dshortMin !== null
-        ? Quotation.fromPartial(object.dshortMin)
-        : undefined;
-    message.shortEnabledFlag = object.shortEnabledFlag ?? false;
-    message.name = object.name ?? "";
-    message.exchange = object.exchange ?? "";
-    message.firstTradeDate = object.firstTradeDate ?? undefined;
-    message.lastTradeDate = object.lastTradeDate ?? undefined;
-    message.futuresType = object.futuresType ?? "";
-    message.assetType = object.assetType ?? "";
-    message.basicAsset = object.basicAsset ?? "";
-    message.basicAssetSize =
-      object.basicAssetSize !== undefined && object.basicAssetSize !== null
-        ? Quotation.fromPartial(object.basicAssetSize)
-        : undefined;
-    message.countryOfRisk = object.countryOfRisk ?? "";
-    message.countryOfRiskName = object.countryOfRiskName ?? "";
-    message.sector = object.sector ?? "";
-    message.expirationDate = object.expirationDate ?? undefined;
-    message.tradingStatus = object.tradingStatus ?? 0;
-    message.otcFlag = object.otcFlag ?? false;
-    message.buyAvailableFlag = object.buyAvailableFlag ?? false;
-    message.sellAvailableFlag = object.sellAvailableFlag ?? false;
-    message.minPriceIncrement =
-      object.minPriceIncrement !== undefined &&
-      object.minPriceIncrement !== null
-        ? Quotation.fromPartial(object.minPriceIncrement)
-        : undefined;
-    message.apiTradeAvailableFlag = object.apiTradeAvailableFlag ?? false;
-    message.uid = object.uid ?? "";
-    message.realExchange = object.realExchange ?? 0;
-    return message;
-  },
 };
 
 function createBaseShare(): Share {
@@ -5355,68 +4922,6 @@ export const Share = {
       (obj.realExchange = realExchangeToJSON(message.realExchange));
     return obj;
   },
-
-  fromPartial(object: DeepPartial<Share>): Share {
-    const message = createBaseShare();
-    message.figi = object.figi ?? "";
-    message.ticker = object.ticker ?? "";
-    message.classCode = object.classCode ?? "";
-    message.isin = object.isin ?? "";
-    message.lot = object.lot ?? 0;
-    message.currency = object.currency ?? "";
-    message.klong =
-      object.klong !== undefined && object.klong !== null
-        ? Quotation.fromPartial(object.klong)
-        : undefined;
-    message.kshort =
-      object.kshort !== undefined && object.kshort !== null
-        ? Quotation.fromPartial(object.kshort)
-        : undefined;
-    message.dlong =
-      object.dlong !== undefined && object.dlong !== null
-        ? Quotation.fromPartial(object.dlong)
-        : undefined;
-    message.dshort =
-      object.dshort !== undefined && object.dshort !== null
-        ? Quotation.fromPartial(object.dshort)
-        : undefined;
-    message.dlongMin =
-      object.dlongMin !== undefined && object.dlongMin !== null
-        ? Quotation.fromPartial(object.dlongMin)
-        : undefined;
-    message.dshortMin =
-      object.dshortMin !== undefined && object.dshortMin !== null
-        ? Quotation.fromPartial(object.dshortMin)
-        : undefined;
-    message.shortEnabledFlag = object.shortEnabledFlag ?? false;
-    message.name = object.name ?? "";
-    message.exchange = object.exchange ?? "";
-    message.ipoDate = object.ipoDate ?? undefined;
-    message.issueSize = object.issueSize ?? 0;
-    message.countryOfRisk = object.countryOfRisk ?? "";
-    message.countryOfRiskName = object.countryOfRiskName ?? "";
-    message.sector = object.sector ?? "";
-    message.issueSizePlan = object.issueSizePlan ?? 0;
-    message.nominal =
-      object.nominal !== undefined && object.nominal !== null
-        ? MoneyValue.fromPartial(object.nominal)
-        : undefined;
-    message.tradingStatus = object.tradingStatus ?? 0;
-    message.otcFlag = object.otcFlag ?? false;
-    message.buyAvailableFlag = object.buyAvailableFlag ?? false;
-    message.sellAvailableFlag = object.sellAvailableFlag ?? false;
-    message.divYieldFlag = object.divYieldFlag ?? false;
-    message.shareType = object.shareType ?? 0;
-    message.minPriceIncrement =
-      object.minPriceIncrement !== undefined &&
-      object.minPriceIncrement !== null
-        ? Quotation.fromPartial(object.minPriceIncrement)
-        : undefined;
-    message.apiTradeAvailableFlag = object.apiTradeAvailableFlag ?? false;
-    message.uid = object.uid ?? "";
-    message.realExchange = object.realExchange ?? 0;
-    return message;
-  },
 };
 
 function createBaseGetAccruedInterestsRequest(): GetAccruedInterestsRequest {
@@ -5490,16 +4995,6 @@ export const GetAccruedInterestsRequest = {
     message.to !== undefined && (obj.to = message.to.toISOString());
     return obj;
   },
-
-  fromPartial(
-    object: DeepPartial<GetAccruedInterestsRequest>
-  ): GetAccruedInterestsRequest {
-    const message = createBaseGetAccruedInterestsRequest();
-    message.figi = object.figi ?? "";
-    message.from = object.from ?? undefined;
-    message.to = object.to ?? undefined;
-    return message;
-  },
 };
 
 function createBaseGetAccruedInterestsResponse(): GetAccruedInterestsResponse {
@@ -5558,15 +5053,6 @@ export const GetAccruedInterestsResponse = {
       obj.accruedInterests = [];
     }
     return obj;
-  },
-
-  fromPartial(
-    object: DeepPartial<GetAccruedInterestsResponse>
-  ): GetAccruedInterestsResponse {
-    const message = createBaseGetAccruedInterestsResponse();
-    message.accruedInterests =
-      object.accruedInterests?.map((e) => AccruedInterest.fromPartial(e)) || [];
-    return message;
   },
 };
 
@@ -5659,24 +5145,6 @@ export const AccruedInterest = {
         : undefined);
     return obj;
   },
-
-  fromPartial(object: DeepPartial<AccruedInterest>): AccruedInterest {
-    const message = createBaseAccruedInterest();
-    message.date = object.date ?? undefined;
-    message.value =
-      object.value !== undefined && object.value !== null
-        ? Quotation.fromPartial(object.value)
-        : undefined;
-    message.valuePercent =
-      object.valuePercent !== undefined && object.valuePercent !== null
-        ? Quotation.fromPartial(object.valuePercent)
-        : undefined;
-    message.nominal =
-      object.nominal !== undefined && object.nominal !== null
-        ? Quotation.fromPartial(object.nominal)
-        : undefined;
-    return message;
-  },
 };
 
 function createBaseGetFuturesMarginRequest(): GetFuturesMarginRequest {
@@ -5725,14 +5193,6 @@ export const GetFuturesMarginRequest = {
     const obj: any = {};
     message.figi !== undefined && (obj.figi = message.figi);
     return obj;
-  },
-
-  fromPartial(
-    object: DeepPartial<GetFuturesMarginRequest>
-  ): GetFuturesMarginRequest {
-    const message = createBaseGetFuturesMarginRequest();
-    message.figi = object.figi ?? "";
-    return message;
   },
 };
 
@@ -5853,33 +5313,6 @@ export const GetFuturesMarginResponse = {
         : undefined);
     return obj;
   },
-
-  fromPartial(
-    object: DeepPartial<GetFuturesMarginResponse>
-  ): GetFuturesMarginResponse {
-    const message = createBaseGetFuturesMarginResponse();
-    message.initialMarginOnBuy =
-      object.initialMarginOnBuy !== undefined &&
-      object.initialMarginOnBuy !== null
-        ? MoneyValue.fromPartial(object.initialMarginOnBuy)
-        : undefined;
-    message.initialMarginOnSell =
-      object.initialMarginOnSell !== undefined &&
-      object.initialMarginOnSell !== null
-        ? MoneyValue.fromPartial(object.initialMarginOnSell)
-        : undefined;
-    message.minPriceIncrement =
-      object.minPriceIncrement !== undefined &&
-      object.minPriceIncrement !== null
-        ? Quotation.fromPartial(object.minPriceIncrement)
-        : undefined;
-    message.minPriceIncrementAmount =
-      object.minPriceIncrementAmount !== undefined &&
-      object.minPriceIncrementAmount !== null
-        ? Quotation.fromPartial(object.minPriceIncrementAmount)
-        : undefined;
-    return message;
-  },
 };
 
 function createBaseInstrumentResponse(): InstrumentResponse {
@@ -5930,15 +5363,6 @@ export const InstrumentResponse = {
         ? Instrument.toJSON(message.instrument)
         : undefined);
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<InstrumentResponse>): InstrumentResponse {
-    const message = createBaseInstrumentResponse();
-    message.instrument =
-      object.instrument !== undefined && object.instrument !== null
-        ? Instrument.fromPartial(object.instrument)
-        : undefined;
-    return message;
   },
 };
 
@@ -6270,59 +5694,6 @@ export const Instrument = {
       (obj.realExchange = realExchangeToJSON(message.realExchange));
     return obj;
   },
-
-  fromPartial(object: DeepPartial<Instrument>): Instrument {
-    const message = createBaseInstrument();
-    message.figi = object.figi ?? "";
-    message.ticker = object.ticker ?? "";
-    message.classCode = object.classCode ?? "";
-    message.isin = object.isin ?? "";
-    message.lot = object.lot ?? 0;
-    message.currency = object.currency ?? "";
-    message.klong =
-      object.klong !== undefined && object.klong !== null
-        ? Quotation.fromPartial(object.klong)
-        : undefined;
-    message.kshort =
-      object.kshort !== undefined && object.kshort !== null
-        ? Quotation.fromPartial(object.kshort)
-        : undefined;
-    message.dlong =
-      object.dlong !== undefined && object.dlong !== null
-        ? Quotation.fromPartial(object.dlong)
-        : undefined;
-    message.dshort =
-      object.dshort !== undefined && object.dshort !== null
-        ? Quotation.fromPartial(object.dshort)
-        : undefined;
-    message.dlongMin =
-      object.dlongMin !== undefined && object.dlongMin !== null
-        ? Quotation.fromPartial(object.dlongMin)
-        : undefined;
-    message.dshortMin =
-      object.dshortMin !== undefined && object.dshortMin !== null
-        ? Quotation.fromPartial(object.dshortMin)
-        : undefined;
-    message.shortEnabledFlag = object.shortEnabledFlag ?? false;
-    message.name = object.name ?? "";
-    message.exchange = object.exchange ?? "";
-    message.countryOfRisk = object.countryOfRisk ?? "";
-    message.countryOfRiskName = object.countryOfRiskName ?? "";
-    message.instrumentType = object.instrumentType ?? "";
-    message.tradingStatus = object.tradingStatus ?? 0;
-    message.otcFlag = object.otcFlag ?? false;
-    message.buyAvailableFlag = object.buyAvailableFlag ?? false;
-    message.sellAvailableFlag = object.sellAvailableFlag ?? false;
-    message.minPriceIncrement =
-      object.minPriceIncrement !== undefined &&
-      object.minPriceIncrement !== null
-        ? Quotation.fromPartial(object.minPriceIncrement)
-        : undefined;
-    message.apiTradeAvailableFlag = object.apiTradeAvailableFlag ?? false;
-    message.uid = object.uid ?? "";
-    message.realExchange = object.realExchange ?? 0;
-    return message;
-  },
 };
 
 function createBaseGetDividendsRequest(): GetDividendsRequest {
@@ -6393,14 +5764,6 @@ export const GetDividendsRequest = {
     message.to !== undefined && (obj.to = message.to.toISOString());
     return obj;
   },
-
-  fromPartial(object: DeepPartial<GetDividendsRequest>): GetDividendsRequest {
-    const message = createBaseGetDividendsRequest();
-    message.figi = object.figi ?? "";
-    message.from = object.from ?? undefined;
-    message.to = object.to ?? undefined;
-    return message;
-  },
 };
 
 function createBaseGetDividendsResponse(): GetDividendsResponse {
@@ -6457,13 +5820,6 @@ export const GetDividendsResponse = {
       obj.dividends = [];
     }
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<GetDividendsResponse>): GetDividendsResponse {
-    const message = createBaseGetDividendsResponse();
-    message.dividends =
-      object.dividends?.map((e) => Dividend.fromPartial(e)) || [];
-    return message;
   },
 };
 
@@ -6652,30 +6008,6 @@ export const Dividend = {
       (obj.createdAt = message.createdAt.toISOString());
     return obj;
   },
-
-  fromPartial(object: DeepPartial<Dividend>): Dividend {
-    const message = createBaseDividend();
-    message.dividendNet =
-      object.dividendNet !== undefined && object.dividendNet !== null
-        ? MoneyValue.fromPartial(object.dividendNet)
-        : undefined;
-    message.paymentDate = object.paymentDate ?? undefined;
-    message.declaredDate = object.declaredDate ?? undefined;
-    message.lastBuyDate = object.lastBuyDate ?? undefined;
-    message.dividendType = object.dividendType ?? "";
-    message.recordDate = object.recordDate ?? undefined;
-    message.regularity = object.regularity ?? "";
-    message.closePrice =
-      object.closePrice !== undefined && object.closePrice !== null
-        ? MoneyValue.fromPartial(object.closePrice)
-        : undefined;
-    message.yieldValue =
-      object.yieldValue !== undefined && object.yieldValue !== null
-        ? Quotation.fromPartial(object.yieldValue)
-        : undefined;
-    message.createdAt = object.createdAt ?? undefined;
-    return message;
-  },
 };
 
 function createBaseAssetRequest(): AssetRequest {
@@ -6721,12 +6053,6 @@ export const AssetRequest = {
     const obj: any = {};
     message.id !== undefined && (obj.id = message.id);
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<AssetRequest>): AssetRequest {
-    const message = createBaseAssetRequest();
-    message.id = object.id ?? "";
-    return message;
   },
 };
 
@@ -6775,15 +6101,6 @@ export const AssetResponse = {
       (obj.asset = message.asset ? AssetFull.toJSON(message.asset) : undefined);
     return obj;
   },
-
-  fromPartial(object: DeepPartial<AssetResponse>): AssetResponse {
-    const message = createBaseAssetResponse();
-    message.asset =
-      object.asset !== undefined && object.asset !== null
-        ? AssetFull.fromPartial(object.asset)
-        : undefined;
-    return message;
-  },
 };
 
 function createBaseAssetsRequest(): AssetsRequest {
@@ -6820,11 +6137,6 @@ export const AssetsRequest = {
   toJSON(_: AssetsRequest): unknown {
     const obj: any = {};
     return obj;
-  },
-
-  fromPartial(_: DeepPartial<AssetsRequest>): AssetsRequest {
-    const message = createBaseAssetsRequest();
-    return message;
   },
 };
 
@@ -6877,12 +6189,6 @@ export const AssetsResponse = {
       obj.assets = [];
     }
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<AssetsResponse>): AssetsResponse {
-    const message = createBaseAssetsResponse();
-    message.assets = object.assets?.map((e) => Asset.fromPartial(e)) || [];
-    return message;
   },
 };
 
@@ -7129,39 +6435,6 @@ export const AssetFull = {
     }
     return obj;
   },
-
-  fromPartial(object: DeepPartial<AssetFull>): AssetFull {
-    const message = createBaseAssetFull();
-    message.uid = object.uid ?? "";
-    message.type = object.type ?? 0;
-    message.name = object.name ?? "";
-    message.nameBrief = object.nameBrief ?? "";
-    message.description = object.description ?? "";
-    message.deletedAt = object.deletedAt ?? undefined;
-    message.requiredTests = object.requiredTests?.map((e) => e) || [];
-    message.currency =
-      object.currency !== undefined && object.currency !== null
-        ? AssetCurrency.fromPartial(object.currency)
-        : undefined;
-    message.security =
-      object.security !== undefined && object.security !== null
-        ? AssetSecurity.fromPartial(object.security)
-        : undefined;
-    message.gosRegCode = object.gosRegCode ?? "";
-    message.cfi = object.cfi ?? "";
-    message.codeNsd = object.codeNsd ?? "";
-    message.status = object.status ?? "";
-    message.brand =
-      object.brand !== undefined && object.brand !== null
-        ? Brand.fromPartial(object.brand)
-        : undefined;
-    message.updatedAt = object.updatedAt ?? undefined;
-    message.brCode = object.brCode ?? "";
-    message.brCodeName = object.brCodeName ?? "";
-    message.instruments =
-      object.instruments?.map((e) => AssetInstrument.fromPartial(e)) || [];
-    return message;
-  },
 };
 
 function createBaseAsset(): Asset {
@@ -7239,16 +6512,6 @@ export const Asset = {
     }
     return obj;
   },
-
-  fromPartial(object: DeepPartial<Asset>): Asset {
-    const message = createBaseAsset();
-    message.uid = object.uid ?? "";
-    message.type = object.type ?? 0;
-    message.name = object.name ?? "";
-    message.instruments =
-      object.instruments?.map((e) => AssetInstrument.fromPartial(e)) || [];
-    return message;
-  },
 };
 
 function createBaseAssetCurrency(): AssetCurrency {
@@ -7297,12 +6560,6 @@ export const AssetCurrency = {
     message.baseCurrency !== undefined &&
       (obj.baseCurrency = message.baseCurrency);
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<AssetCurrency>): AssetCurrency {
-    const message = createBaseAssetCurrency();
-    message.baseCurrency = object.baseCurrency ?? "";
-    return message;
   },
 };
 
@@ -7431,34 +6688,6 @@ export const AssetSecurity = {
         ? AssetClearingCertificate.toJSON(message.clearingCertificate)
         : undefined);
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<AssetSecurity>): AssetSecurity {
-    const message = createBaseAssetSecurity();
-    message.isin = object.isin ?? "";
-    message.type = object.type ?? "";
-    message.share =
-      object.share !== undefined && object.share !== null
-        ? AssetShare.fromPartial(object.share)
-        : undefined;
-    message.bond =
-      object.bond !== undefined && object.bond !== null
-        ? AssetBond.fromPartial(object.bond)
-        : undefined;
-    message.sp =
-      object.sp !== undefined && object.sp !== null
-        ? AssetStructuredProduct.fromPartial(object.sp)
-        : undefined;
-    message.etf =
-      object.etf !== undefined && object.etf !== null
-        ? AssetEtf.fromPartial(object.etf)
-        : undefined;
-    message.clearingCertificate =
-      object.clearingCertificate !== undefined &&
-      object.clearingCertificate !== null
-        ? AssetClearingCertificate.fromPartial(object.clearingCertificate)
-        : undefined;
-    return message;
   },
 };
 
@@ -7697,41 +6926,6 @@ export const AssetShare = {
         ? Quotation.toJSON(message.totalFloat)
         : undefined);
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<AssetShare>): AssetShare {
-    const message = createBaseAssetShare();
-    message.type = object.type ?? 0;
-    message.issueSize =
-      object.issueSize !== undefined && object.issueSize !== null
-        ? Quotation.fromPartial(object.issueSize)
-        : undefined;
-    message.nominal =
-      object.nominal !== undefined && object.nominal !== null
-        ? Quotation.fromPartial(object.nominal)
-        : undefined;
-    message.nominalCurrency = object.nominalCurrency ?? "";
-    message.primaryIndex = object.primaryIndex ?? "";
-    message.dividendRate =
-      object.dividendRate !== undefined && object.dividendRate !== null
-        ? Quotation.fromPartial(object.dividendRate)
-        : undefined;
-    message.preferredShareType = object.preferredShareType ?? "";
-    message.ipoDate = object.ipoDate ?? undefined;
-    message.registryDate = object.registryDate ?? undefined;
-    message.divYieldFlag = object.divYieldFlag ?? false;
-    message.issueKind = object.issueKind ?? "";
-    message.placementDate = object.placementDate ?? undefined;
-    message.represIsin = object.represIsin ?? "";
-    message.issueSizePlan =
-      object.issueSizePlan !== undefined && object.issueSizePlan !== null
-        ? Quotation.fromPartial(object.issueSizePlan)
-        : undefined;
-    message.totalFloat =
-      object.totalFloat !== undefined && object.totalFloat !== null
-        ? Quotation.fromPartial(object.totalFloat)
-        : undefined;
-    return message;
   },
 };
 
@@ -8052,47 +7246,6 @@ export const AssetBond = {
         : undefined);
     return obj;
   },
-
-  fromPartial(object: DeepPartial<AssetBond>): AssetBond {
-    const message = createBaseAssetBond();
-    message.currentNominal =
-      object.currentNominal !== undefined && object.currentNominal !== null
-        ? Quotation.fromPartial(object.currentNominal)
-        : undefined;
-    message.borrowName = object.borrowName ?? "";
-    message.issueSize =
-      object.issueSize !== undefined && object.issueSize !== null
-        ? Quotation.fromPartial(object.issueSize)
-        : undefined;
-    message.nominal =
-      object.nominal !== undefined && object.nominal !== null
-        ? Quotation.fromPartial(object.nominal)
-        : undefined;
-    message.nominalCurrency = object.nominalCurrency ?? "";
-    message.issueKind = object.issueKind ?? "";
-    message.interestKind = object.interestKind ?? "";
-    message.couponQuantityPerYear = object.couponQuantityPerYear ?? 0;
-    message.indexedNominalFlag = object.indexedNominalFlag ?? false;
-    message.subordinatedFlag = object.subordinatedFlag ?? false;
-    message.collateralFlag = object.collateralFlag ?? false;
-    message.taxFreeFlag = object.taxFreeFlag ?? false;
-    message.amortizationFlag = object.amortizationFlag ?? false;
-    message.floatingCouponFlag = object.floatingCouponFlag ?? false;
-    message.perpetualFlag = object.perpetualFlag ?? false;
-    message.maturityDate = object.maturityDate ?? undefined;
-    message.returnCondition = object.returnCondition ?? "";
-    message.stateRegDate = object.stateRegDate ?? undefined;
-    message.placementDate = object.placementDate ?? undefined;
-    message.placementPrice =
-      object.placementPrice !== undefined && object.placementPrice !== null
-        ? Quotation.fromPartial(object.placementPrice)
-        : undefined;
-    message.issueSizePlan =
-      object.issueSizePlan !== undefined && object.issueSizePlan !== null
-        ? Quotation.fromPartial(object.issueSizePlan)
-        : undefined;
-    return message;
-  },
 };
 
 function createBaseAssetStructuredProduct(): AssetStructuredProduct {
@@ -8303,38 +7456,6 @@ export const AssetStructuredProduct = {
       (obj.placementDate = message.placementDate.toISOString());
     message.issueKind !== undefined && (obj.issueKind = message.issueKind);
     return obj;
-  },
-
-  fromPartial(
-    object: DeepPartial<AssetStructuredProduct>
-  ): AssetStructuredProduct {
-    const message = createBaseAssetStructuredProduct();
-    message.borrowName = object.borrowName ?? "";
-    message.nominal =
-      object.nominal !== undefined && object.nominal !== null
-        ? Quotation.fromPartial(object.nominal)
-        : undefined;
-    message.nominalCurrency = object.nominalCurrency ?? "";
-    message.type = object.type ?? 0;
-    message.logicPortfolio = object.logicPortfolio ?? "";
-    message.assetType = object.assetType ?? 0;
-    message.basicAsset = object.basicAsset ?? "";
-    message.safetyBarrier =
-      object.safetyBarrier !== undefined && object.safetyBarrier !== null
-        ? Quotation.fromPartial(object.safetyBarrier)
-        : undefined;
-    message.maturityDate = object.maturityDate ?? undefined;
-    message.issueSizePlan =
-      object.issueSizePlan !== undefined && object.issueSizePlan !== null
-        ? Quotation.fromPartial(object.issueSizePlan)
-        : undefined;
-    message.issueSize =
-      object.issueSize !== undefined && object.issueSize !== null
-        ? Quotation.fromPartial(object.issueSize)
-        : undefined;
-    message.placementDate = object.placementDate ?? undefined;
-    message.issueKind = object.issueKind ?? "";
-    return message;
   },
 };
 
@@ -8783,78 +7904,6 @@ export const AssetEtf = {
       (obj.nominalCurrency = message.nominalCurrency);
     return obj;
   },
-
-  fromPartial(object: DeepPartial<AssetEtf>): AssetEtf {
-    const message = createBaseAssetEtf();
-    message.totalExpense =
-      object.totalExpense !== undefined && object.totalExpense !== null
-        ? Quotation.fromPartial(object.totalExpense)
-        : undefined;
-    message.hurdleRate =
-      object.hurdleRate !== undefined && object.hurdleRate !== null
-        ? Quotation.fromPartial(object.hurdleRate)
-        : undefined;
-    message.performanceFee =
-      object.performanceFee !== undefined && object.performanceFee !== null
-        ? Quotation.fromPartial(object.performanceFee)
-        : undefined;
-    message.fixedCommission =
-      object.fixedCommission !== undefined && object.fixedCommission !== null
-        ? Quotation.fromPartial(object.fixedCommission)
-        : undefined;
-    message.paymentType = object.paymentType ?? "";
-    message.watermarkFlag = object.watermarkFlag ?? false;
-    message.buyPremium =
-      object.buyPremium !== undefined && object.buyPremium !== null
-        ? Quotation.fromPartial(object.buyPremium)
-        : undefined;
-    message.sellDiscount =
-      object.sellDiscount !== undefined && object.sellDiscount !== null
-        ? Quotation.fromPartial(object.sellDiscount)
-        : undefined;
-    message.rebalancingFlag = object.rebalancingFlag ?? false;
-    message.rebalancingFreq = object.rebalancingFreq ?? "";
-    message.managementType = object.managementType ?? "";
-    message.primaryIndex = object.primaryIndex ?? "";
-    message.focusType = object.focusType ?? "";
-    message.leveragedFlag = object.leveragedFlag ?? false;
-    message.numShare =
-      object.numShare !== undefined && object.numShare !== null
-        ? Quotation.fromPartial(object.numShare)
-        : undefined;
-    message.ucitsFlag = object.ucitsFlag ?? false;
-    message.releasedDate = object.releasedDate ?? undefined;
-    message.description = object.description ?? "";
-    message.primaryIndexDescription = object.primaryIndexDescription ?? "";
-    message.primaryIndexCompany = object.primaryIndexCompany ?? "";
-    message.indexRecoveryPeriod =
-      object.indexRecoveryPeriod !== undefined &&
-      object.indexRecoveryPeriod !== null
-        ? Quotation.fromPartial(object.indexRecoveryPeriod)
-        : undefined;
-    message.inavCode = object.inavCode ?? "";
-    message.divYieldFlag = object.divYieldFlag ?? false;
-    message.expenseCommission =
-      object.expenseCommission !== undefined &&
-      object.expenseCommission !== null
-        ? Quotation.fromPartial(object.expenseCommission)
-        : undefined;
-    message.primaryIndexTrackingError =
-      object.primaryIndexTrackingError !== undefined &&
-      object.primaryIndexTrackingError !== null
-        ? Quotation.fromPartial(object.primaryIndexTrackingError)
-        : undefined;
-    message.rebalancingPlan = object.rebalancingPlan ?? "";
-    message.taxRate = object.taxRate ?? "";
-    message.rebalancingDates = object.rebalancingDates?.map((e) => e) || [];
-    message.issueKind = object.issueKind ?? "";
-    message.nominal =
-      object.nominal !== undefined && object.nominal !== null
-        ? Quotation.fromPartial(object.nominal)
-        : undefined;
-    message.nominalCurrency = object.nominalCurrency ?? "";
-    return message;
-  },
 };
 
 function createBaseAssetClearingCertificate(): AssetClearingCertificate {
@@ -8919,18 +7968,6 @@ export const AssetClearingCertificate = {
     message.nominalCurrency !== undefined &&
       (obj.nominalCurrency = message.nominalCurrency);
     return obj;
-  },
-
-  fromPartial(
-    object: DeepPartial<AssetClearingCertificate>
-  ): AssetClearingCertificate {
-    const message = createBaseAssetClearingCertificate();
-    message.nominal =
-      object.nominal !== undefined && object.nominal !== null
-        ? Quotation.fromPartial(object.nominal)
-        : undefined;
-    message.nominalCurrency = object.nominalCurrency ?? "";
-    return message;
   },
 };
 
@@ -9047,19 +8084,6 @@ export const Brand = {
       (obj.countryOfRiskName = message.countryOfRiskName);
     return obj;
   },
-
-  fromPartial(object: DeepPartial<Brand>): Brand {
-    const message = createBaseBrand();
-    message.uid = object.uid ?? "";
-    message.name = object.name ?? "";
-    message.description = object.description ?? "";
-    message.info = object.info ?? "";
-    message.company = object.company ?? "";
-    message.sector = object.sector ?? "";
-    message.countryOfRisk = object.countryOfRisk ?? "";
-    message.countryOfRiskName = object.countryOfRiskName ?? "";
-    return message;
-  },
 };
 
 function createBaseAssetInstrument(): AssetInstrument {
@@ -9164,18 +8188,6 @@ export const AssetInstrument = {
     }
     return obj;
   },
-
-  fromPartial(object: DeepPartial<AssetInstrument>): AssetInstrument {
-    const message = createBaseAssetInstrument();
-    message.uid = object.uid ?? "";
-    message.figi = object.figi ?? "";
-    message.instrumentType = object.instrumentType ?? "";
-    message.ticker = object.ticker ?? "";
-    message.classCode = object.classCode ?? "";
-    message.links =
-      object.links?.map((e) => InstrumentLink.fromPartial(e)) || [];
-    return message;
-  },
 };
 
 function createBaseInstrumentLink(): InstrumentLink {
@@ -9233,13 +8245,6 @@ export const InstrumentLink = {
       (obj.instrumentUid = message.instrumentUid);
     return obj;
   },
-
-  fromPartial(object: DeepPartial<InstrumentLink>): InstrumentLink {
-    const message = createBaseInstrumentLink();
-    message.type = object.type ?? "";
-    message.instrumentUid = object.instrumentUid ?? "";
-    return message;
-  },
 };
 
 function createBaseGetFavoritesRequest(): GetFavoritesRequest {
@@ -9276,11 +8281,6 @@ export const GetFavoritesRequest = {
   toJSON(_: GetFavoritesRequest): unknown {
     const obj: any = {};
     return obj;
-  },
-
-  fromPartial(_: DeepPartial<GetFavoritesRequest>): GetFavoritesRequest {
-    const message = createBaseGetFavoritesRequest();
-    return message;
   },
 };
 
@@ -9342,15 +8342,6 @@ export const GetFavoritesResponse = {
       obj.favoriteInstruments = [];
     }
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<GetFavoritesResponse>): GetFavoritesResponse {
-    const message = createBaseGetFavoritesResponse();
-    message.favoriteInstruments =
-      object.favoriteInstruments?.map((e) =>
-        FavoriteInstrument.fromPartial(e)
-      ) || [];
-    return message;
   },
 };
 
@@ -9460,18 +8451,6 @@ export const FavoriteInstrument = {
       (obj.apiTradeAvailableFlag = message.apiTradeAvailableFlag);
     return obj;
   },
-
-  fromPartial(object: DeepPartial<FavoriteInstrument>): FavoriteInstrument {
-    const message = createBaseFavoriteInstrument();
-    message.figi = object.figi ?? "";
-    message.ticker = object.ticker ?? "";
-    message.classCode = object.classCode ?? "";
-    message.isin = object.isin ?? "";
-    message.instrumentType = object.instrumentType ?? "";
-    message.otcFlag = object.otcFlag ?? false;
-    message.apiTradeAvailableFlag = object.apiTradeAvailableFlag ?? false;
-    return message;
-  },
 };
 
 function createBaseEditFavoritesRequest(): EditFavoritesRequest {
@@ -9547,16 +8526,6 @@ export const EditFavoritesRequest = {
       (obj.actionType = editFavoritesActionTypeToJSON(message.actionType));
     return obj;
   },
-
-  fromPartial(object: DeepPartial<EditFavoritesRequest>): EditFavoritesRequest {
-    const message = createBaseEditFavoritesRequest();
-    message.instruments =
-      object.instruments?.map((e) =>
-        EditFavoritesRequestInstrument.fromPartial(e)
-      ) || [];
-    message.actionType = object.actionType ?? 0;
-    return message;
-  },
 };
 
 function createBaseEditFavoritesRequestInstrument(): EditFavoritesRequestInstrument {
@@ -9605,14 +8574,6 @@ export const EditFavoritesRequestInstrument = {
     const obj: any = {};
     message.figi !== undefined && (obj.figi = message.figi);
     return obj;
-  },
-
-  fromPartial(
-    object: DeepPartial<EditFavoritesRequestInstrument>
-  ): EditFavoritesRequestInstrument {
-    const message = createBaseEditFavoritesRequestInstrument();
-    message.figi = object.figi ?? "";
-    return message;
   },
 };
 
@@ -9674,17 +8635,6 @@ export const EditFavoritesResponse = {
       obj.favoriteInstruments = [];
     }
     return obj;
-  },
-
-  fromPartial(
-    object: DeepPartial<EditFavoritesResponse>
-  ): EditFavoritesResponse {
-    const message = createBaseEditFavoritesResponse();
-    message.favoriteInstruments =
-      object.favoriteInstruments?.map((e) =>
-        FavoriteInstrument.fromPartial(e)
-      ) || [];
-    return message;
   },
 };
 
@@ -9890,25 +8840,6 @@ var globalThis: any = (() => {
   if (typeof global !== "undefined") return global;
   throw "Unable to locate global object";
 })();
-
-type Builtin =
-  | Date
-  | Function
-  | Uint8Array
-  | string
-  | number
-  | boolean
-  | undefined;
-
-export type DeepPartial<T> = T extends Builtin
-  ? T
-  : T extends Array<infer U>
-  ? Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U>
-  ? ReadonlyArray<DeepPartial<U>>
-  : T extends {}
-  ? { [K in keyof T]?: DeepPartial<T[K]> }
-  : Partial<T>;
 
 function toTimestamp(date: Date): Timestamp {
   const seconds = date.getTime() / 1_000;

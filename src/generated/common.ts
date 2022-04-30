@@ -233,14 +233,6 @@ export const MoneyValue = {
     message.nano !== undefined && (obj.nano = Math.round(message.nano));
     return obj;
   },
-
-  fromPartial(object: DeepPartial<MoneyValue>): MoneyValue {
-    const message = createBaseMoneyValue();
-    message.currency = object.currency ?? "";
-    message.units = object.units ?? 0;
-    message.nano = object.nano ?? 0;
-    return message;
-  },
 };
 
 function createBaseQuotation(): Quotation {
@@ -295,13 +287,6 @@ export const Quotation = {
     message.nano !== undefined && (obj.nano = Math.round(message.nano));
     return obj;
   },
-
-  fromPartial(object: DeepPartial<Quotation>): Quotation {
-    const message = createBaseQuotation();
-    message.units = object.units ?? 0;
-    message.nano = object.nano ?? 0;
-    return message;
-  },
 };
 
 function createBasePing(): Ping {
@@ -350,12 +335,6 @@ export const Ping = {
     message.time !== undefined && (obj.time = message.time.toISOString());
     return obj;
   },
-
-  fromPartial(object: DeepPartial<Ping>): Ping {
-    const message = createBasePing();
-    message.time = object.time ?? undefined;
-    return message;
-  },
 };
 
 declare var self: any | undefined;
@@ -368,25 +347,6 @@ var globalThis: any = (() => {
   if (typeof global !== "undefined") return global;
   throw "Unable to locate global object";
 })();
-
-type Builtin =
-  | Date
-  | Function
-  | Uint8Array
-  | string
-  | number
-  | boolean
-  | undefined;
-
-export type DeepPartial<T> = T extends Builtin
-  ? T
-  : T extends Array<infer U>
-  ? Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U>
-  ? ReadonlyArray<DeepPartial<U>>
-  : T extends {}
-  ? { [K in keyof T]?: DeepPartial<T[K]> }
-  : Partial<T>;
 
 function toTimestamp(date: Date): Timestamp {
   const seconds = date.getTime() / 1_000;

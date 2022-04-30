@@ -11,7 +11,7 @@ rm -rf $OUT_DIR/**
 protoc \
 --plugin="./node_modules/.bin/protoc-gen-ts_proto" \
 --ts_proto_out="$OUT_DIR" \
---ts_proto_opt="outputServices=generic-definitions,useExactTypes=false,env=node,esModuleInterop=true" \
+--ts_proto_opt="outputServices=generic-definitions,useExactTypes=false,env=node,esModuleInterop=true,outputPartialMethods=false" \
 --proto_path=./investAPI-main/src/docs/contracts \
   ./investAPI-main/src/docs/contracts/*.proto
 

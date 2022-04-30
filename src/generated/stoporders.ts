@@ -370,26 +370,6 @@ export const PostStopOrderRequest = {
       (obj.expireDate = message.expireDate.toISOString());
     return obj;
   },
-
-  fromPartial(object: DeepPartial<PostStopOrderRequest>): PostStopOrderRequest {
-    const message = createBasePostStopOrderRequest();
-    message.figi = object.figi ?? "";
-    message.quantity = object.quantity ?? 0;
-    message.price =
-      object.price !== undefined && object.price !== null
-        ? Quotation.fromPartial(object.price)
-        : undefined;
-    message.stopPrice =
-      object.stopPrice !== undefined && object.stopPrice !== null
-        ? Quotation.fromPartial(object.stopPrice)
-        : undefined;
-    message.direction = object.direction ?? 0;
-    message.accountId = object.accountId ?? "";
-    message.expirationType = object.expirationType ?? 0;
-    message.stopOrderType = object.stopOrderType ?? 0;
-    message.expireDate = object.expireDate ?? undefined;
-    return message;
-  },
 };
 
 function createBasePostStopOrderResponse(): PostStopOrderResponse {
@@ -440,14 +420,6 @@ export const PostStopOrderResponse = {
       (obj.stopOrderId = message.stopOrderId);
     return obj;
   },
-
-  fromPartial(
-    object: DeepPartial<PostStopOrderResponse>
-  ): PostStopOrderResponse {
-    const message = createBasePostStopOrderResponse();
-    message.stopOrderId = object.stopOrderId ?? "";
-    return message;
-  },
 };
 
 function createBaseGetStopOrdersRequest(): GetStopOrdersRequest {
@@ -496,12 +468,6 @@ export const GetStopOrdersRequest = {
     const obj: any = {};
     message.accountId !== undefined && (obj.accountId = message.accountId);
     return obj;
-  },
-
-  fromPartial(object: DeepPartial<GetStopOrdersRequest>): GetStopOrdersRequest {
-    const message = createBaseGetStopOrdersRequest();
-    message.accountId = object.accountId ?? "";
-    return message;
   },
 };
 
@@ -559,15 +525,6 @@ export const GetStopOrdersResponse = {
       obj.stopOrders = [];
     }
     return obj;
-  },
-
-  fromPartial(
-    object: DeepPartial<GetStopOrdersResponse>
-  ): GetStopOrdersResponse {
-    const message = createBaseGetStopOrdersResponse();
-    message.stopOrders =
-      object.stopOrders?.map((e) => StopOrder.fromPartial(e)) || [];
-    return message;
   },
 };
 
@@ -627,15 +584,6 @@ export const CancelStopOrderRequest = {
       (obj.stopOrderId = message.stopOrderId);
     return obj;
   },
-
-  fromPartial(
-    object: DeepPartial<CancelStopOrderRequest>
-  ): CancelStopOrderRequest {
-    const message = createBaseCancelStopOrderRequest();
-    message.accountId = object.accountId ?? "";
-    message.stopOrderId = object.stopOrderId ?? "";
-    return message;
-  },
 };
 
 function createBaseCancelStopOrderResponse(): CancelStopOrderResponse {
@@ -689,14 +637,6 @@ export const CancelStopOrderResponse = {
     const obj: any = {};
     message.time !== undefined && (obj.time = message.time.toISOString());
     return obj;
-  },
-
-  fromPartial(
-    object: DeepPartial<CancelStopOrderResponse>
-  ): CancelStopOrderResponse {
-    const message = createBaseCancelStopOrderResponse();
-    message.time = object.time ?? undefined;
-    return message;
   },
 };
 
@@ -880,28 +820,6 @@ export const StopOrder = {
         : undefined);
     return obj;
   },
-
-  fromPartial(object: DeepPartial<StopOrder>): StopOrder {
-    const message = createBaseStopOrder();
-    message.stopOrderId = object.stopOrderId ?? "";
-    message.lotsRequested = object.lotsRequested ?? 0;
-    message.figi = object.figi ?? "";
-    message.direction = object.direction ?? 0;
-    message.currency = object.currency ?? "";
-    message.orderType = object.orderType ?? 0;
-    message.createDate = object.createDate ?? undefined;
-    message.activationDateTime = object.activationDateTime ?? undefined;
-    message.expirationTime = object.expirationTime ?? undefined;
-    message.price =
-      object.price !== undefined && object.price !== null
-        ? MoneyValue.fromPartial(object.price)
-        : undefined;
-    message.stopPrice =
-      object.stopPrice !== undefined && object.stopPrice !== null
-        ? MoneyValue.fromPartial(object.stopPrice)
-        : undefined;
-    return message;
-  },
 };
 
 /**
@@ -952,25 +870,6 @@ var globalThis: any = (() => {
   if (typeof global !== "undefined") return global;
   throw "Unable to locate global object";
 })();
-
-type Builtin =
-  | Date
-  | Function
-  | Uint8Array
-  | string
-  | number
-  | boolean
-  | undefined;
-
-export type DeepPartial<T> = T extends Builtin
-  ? T
-  : T extends Array<infer U>
-  ? Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U>
-  ? ReadonlyArray<DeepPartial<U>>
-  : T extends {}
-  ? { [K in keyof T]?: DeepPartial<T[K]> }
-  : Partial<T>;
 
 function toTimestamp(date: Date): Timestamp {
   const seconds = date.getTime() / 1_000;
