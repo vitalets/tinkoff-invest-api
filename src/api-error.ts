@@ -8,6 +8,7 @@ import {
   CallOptions,
   ClientError,
   Metadata,
+  Status,
 } from 'nice-grpc';
 
 export class TinkoffApiError extends ClientError {
@@ -16,13 +17,22 @@ export class TinkoffApiError extends ClientError {
   ratelimit = '';
   ratelimitRemaining = '';
   ratelimitReset = '';
+
+  constructor(
+    path: string,
+    code: Status,
+    details: string,
+  ) {
+    super(path, code, details);
+    this.name = 'TinkoffApiError';
+  }
 }
 
 export async function* errorMiddleware<Request, Response>(
   call: ClientMiddlewareCall<Request, Response>,
   options: CallOptions,
 ) {
-  let trailer: unknown;
+  let trailer: Metadata | undefined;
   options.onTrailer = _trailer => trailer = _trailer;
   try {
     return yield* call.next(call.request, options);

@@ -21,11 +21,11 @@ const { accounts } = await api.users.getAccounts({});
 const portfolio = await api.operations.getPortfolio({ accountId: accounts[0].id });
 
 // получить 1-минутные свечи за последние 5 мин для акций Сбера
-const to = new Date();
-const from = new Date(to);
-from.setMinutes(from.getMinutes() - 5);
-const interval = CandleInterval.CANDLE_INTERVAL_1_MIN;
-const { candles } = await api.marketdata.getCandles({ figi: 'BBG004730N88', from, to, interval });
+const { candles } = await api.marketdata.getCandles({
+  figi: 'BBG004730N88',
+  interval: CandleInterval.CANDLE_INTERVAL_1_MIN,
+  ...api.helpers.fromTo('-5m'),
+});
 ```
 
 ## Лицензия
