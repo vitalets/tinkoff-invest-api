@@ -26,8 +26,8 @@ export class Helpers {
    * Возвращает интервал времени в формате { from, to }.
    * Для смещения используется формат из https://github.com/vercel/ms
    */
-  static fromTo(offset: StringValue, base = new Date()) {
-    const offsetMs = ms(offset);
+  static fromTo(offset: string, base = new Date()) {
+    const offsetMs = ms(offset as StringValue);
     const date = new Date(base.valueOf() + offsetMs);
     const [ from, to ] = offsetMs > 0 ? [ base, date ] : [ date, base ];
     return { from, to };
