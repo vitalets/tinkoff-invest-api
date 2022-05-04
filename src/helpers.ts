@@ -1,5 +1,5 @@
 /**
- * Helpers.
+ * Хелперы.
  * See: https://tinkoff.github.io/investAPI/faq_custom_types/
  */
 
