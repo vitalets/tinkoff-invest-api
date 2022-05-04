@@ -21,7 +21,7 @@ type AccountCommonMethods = Pick<RealAccount,
  >;
 
 export class RealAccount {
-  constructor(protected api: TinkoffInvestApi, public accountId: string) {}
+  constructor(public api: TinkoffInvestApi, public accountId: string) {}
 
   isSandbox() { return false; }
 
