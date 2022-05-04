@@ -6,11 +6,13 @@ import { OperationsRequest } from './generated/operations.js';
 import { PostOrderRequest } from './generated/orders.js';
 import { SandboxPayInRequest } from './generated/sandbox.js';
 
-export type Account = RealAccount | SandboxAccount;
+/** Note: просто Account лучше не называть, т.к. он есть в сгенерированных файлах */
+export type TinkoffAccount = RealAccount | SandboxAccount;
 
 type AccountCommonMethods = Pick<RealAccount,
   'accountId'
   | 'isSandbox'
+  | 'getInfo'
   | 'getPortfolio'
   | 'getOperations'
   | 'getPositions'
@@ -24,6 +26,11 @@ export class RealAccount {
   constructor(public api: TinkoffInvestApi, public accountId: string) {}
 
   isSandbox() { return false; }
+
+  async getInfo() {
+    const { accounts } = await this.api.users.getAccounts({});
+    return accounts.find(a => a.id === this.accountId);
+  }
 
   async getPortfolio() {
     return this.api.operations.getPortfolio({ accountId: this.accountId });
@@ -59,6 +66,11 @@ export class SandboxAccount implements AccountCommonMethods {
 
   isSandbox(): this is SandboxAccount { return true; }
 
+  async getInfo() {
+    const { accounts } = await this.api.sandbox.getSandboxAccounts({});
+    return accounts.find(a => a.id === this.accountId);
+  }
+
   async getPortfolio() {
     return this.api.sandbox.getSandboxPortfolio({ accountId: this.accountId });
   }
@@ -89,8 +101,7 @@ export class SandboxAccount implements AccountCommonMethods {
 
   // own methods
 
-  async init() {
-    if (this.accountId) throw new Error(`Sandbox account already has id`);
+  async open() {
     const res = await this.api.sandbox.openSandboxAccount({});
     this.accountId = res.accountId;
   }
