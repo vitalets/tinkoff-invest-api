@@ -6,6 +6,8 @@ import { OperationsRequest } from './generated/operations.js';
 import { PostOrderRequest } from './generated/orders.js';
 import { SandboxPayInRequest } from './generated/sandbox.js';
 
+export type Account = RealAccount | SandboxAccount;
+
 type AccountCommonMethods = Pick<RealAccount,
   'accountId'
   | 'isSandbox'
