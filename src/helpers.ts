@@ -18,8 +18,10 @@ export class Helpers {
     return { units, nano, currency };
   }
 
-  static toNumber(value: Quotation | MoneyValue) {
-    return value.units + value.nano / 1000000000;
+  static toNumber(value: Quotation | MoneyValue | undefined) {
+    return value
+      ? value.units + value.nano / 1000000000
+      : value;
   }
 
   /**
