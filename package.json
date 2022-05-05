@@ -48,5 +48,10 @@
     "type": "git",
     "url": "git://github.com/vitalets/tinkoff-invest-api.git"
   },
+  "keywords": [
+    "tinkoff",
+    "invest",
+    "api"
+  ],
   "license": "MIT"
 }
