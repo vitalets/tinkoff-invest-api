@@ -28,5 +28,10 @@ const { candles } = await api.marketdata.getCandles({
 });
 ```
 
+#### Универсальный счет
+Для удобной работы со счетами в песочнице и в бою есть универсальный класс TinkoffAccount.
+
+// tbd
+
 ## Лицензия
 MIT @ [Vitaliy Potapov](https://github.com/vitalets)
