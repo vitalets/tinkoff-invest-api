@@ -12,6 +12,7 @@ export type TinkoffAccount = RealAccount | SandboxAccount;
 
 type AccountCommonMethods = Pick<RealAccount,
   'accountId'
+  | 'api'
   | 'isSandbox'
   | 'getInfo'
   | 'getPortfolio'
@@ -63,7 +64,7 @@ export class RealAccount {
 }
 
 export class SandboxAccount implements AccountCommonMethods {
-  constructor(protected api: TinkoffInvestApi, public accountId: string) {}
+  constructor(public api: TinkoffInvestApi, public accountId: string) {}
 
   isSandbox(): this is SandboxAccount { return true; }
 
