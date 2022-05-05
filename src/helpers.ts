@@ -18,10 +18,11 @@ export class Helpers {
     return { units, nano, currency };
   }
 
-  static toNumber(value: Quotation | MoneyValue | undefined) {
-    return value
-      ? value.units + value.nano / 1000000000
-      : value;
+  /**
+   * Возвращает число из объекта { units, nano }
+   */
+  static toNumber<T extends Quotation | MoneyValue | undefined>(value: T) {
+    return (value ? value.units + value.nano / 1000000000 : value) as T extends undefined ? undefined : number;
   }
 
   /**
