@@ -6,7 +6,8 @@ import { OperationsRequest } from './generated/operations.js';
 import { PostOrderRequest } from './generated/orders.js';
 import { SandboxPayInRequest } from './generated/sandbox.js';
 
-/** Note: просто Account лучше не называть, т.к. он есть в сгенерированных файлах */
+/** Универсальный класс счета для посочницы и реального */
+// Note: просто Account лучше не называть, т.к. он есть в сгенерированных файлах
 export type TinkoffAccount = RealAccount | SandboxAccount;
 
 type AccountCommonMethods = Pick<RealAccount,
