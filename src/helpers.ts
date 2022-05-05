@@ -29,6 +29,7 @@ export class Helpers {
    * Для смещения используется формат из https://github.com/vercel/ms
    */
   static fromTo(offset: string, base = new Date()) {
+    // Не использую StringValue, т.к. с ним больше мороки: нужно импортить при использовании итд.
     const offsetMs = ms(offset as StringValue);
     const date = new Date(base.valueOf() + offsetMs);
     const [ from, to ] = offsetMs > 0 ? [ base, date ] : [ date, base ];
