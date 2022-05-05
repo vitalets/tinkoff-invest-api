@@ -10,8 +10,8 @@ export type OmitAccount<T> = Omit<T, 'accountId'>;
 
 type PostOrderRequestSimple = Omit<OmitAccount<PostOrderRequest>, 'direction' | 'orderType' | 'orderId'>
   & Partial<Pick<PostOrderRequest, 'orderId'>>;
-type PostOrderRequestMarket = Omit<PostOrderRequestSimple, 'price'>;
-type PostOrderRequestLimit = RequiredBy<PostOrderRequestSimple, 'price'>;
+export type PostOrderRequestMarket = Omit<PostOrderRequestSimple, 'price'>;
+export type PostOrderRequestLimit = RequiredBy<PostOrderRequestSimple, 'price'>;
 
 export abstract class BaseAccount {
   constructor(public api: TinkoffInvestApi, public accountId: string) {}
