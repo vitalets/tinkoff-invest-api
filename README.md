@@ -28,12 +28,7 @@ const { candles } = await api.marketdata.getCandles({
 });
 ```
 
-#### Универсальный счет
-Для удобной работы со счетами в песочнице и в бою есть универсальный класс TinkoffAccount.
-
-// tbd
-
-#### Стрим
+### Стрим
 Стрим реализуется с помощью `AsyncIterable`:
 ```ts
 // подписка на свечи
@@ -59,6 +54,11 @@ async function* createRequest(req: MarketDataRequest) {
 }
 ```
 Стрим еще хочется доработать.
+
+### Универсальный счет
+Для удобной работы со счетами в песочнице и в бою есть универсальный класс TinkoffAccount.
+
+// tbd
 
 ## Лицензия
 MIT @ [Vitaliy Potapov](https://github.com/vitalets)
