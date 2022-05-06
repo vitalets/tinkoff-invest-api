@@ -8,13 +8,17 @@ npm i tinkoff-invest-api
 > Примечание: библиотека поставляется в формате [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c)
 
 ## Использование
+### Подключение
 ```ts
 import { TinkoffInvestApi } from 'tinkoff-invest-api';
 
 // создать клиента с заданным токеном
 const api = new TinkoffInvestApi({ token: '<your-token>' });
+```
 
-// Получить список счетов
+### Unary-запросы
+```ts
+// получить список счетов
 const { accounts } = await api.users.getAccounts({});
 
 // получить портфель по id счета
@@ -27,6 +31,8 @@ const { candles } = await api.marketdata.getCandles({
   ...api.helpers.fromTo('-5m'),
 });
 ```
+
+
 
 ### Стрим
 Стрим реализуется с помощью `AsyncIterable`:
@@ -56,7 +62,7 @@ async function* createRequest(req: MarketDataRequest) {
 Стрим еще хочется доработать.
 
 ### Универсальный счет
-Для удобной работы со счетами в песочнице и в бою есть универсальный класс TinkoffAccount.
+Для бесшовной работы со счетами в песочнице и в бою есть универсальный класс `TinkoffAccount`.
 
 // tbd
 
