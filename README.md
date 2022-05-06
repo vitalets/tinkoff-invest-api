@@ -7,14 +7,14 @@ npm i tinkoff-invest-api
 ```
 > Примечание: библиотека поставляется в формате [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c)
 
-## Пример использования
+## Использование
 ```ts
 import { TinkoffInvestApi } from 'tinkoff-invest-api';
 
 // создать клиента с заданным токеном
 const api = new TinkoffInvestApi({ token: '<your-token>' });
 
-// получить список счетов
+// Получить список счетов
 const { accounts } = await api.users.getAccounts({});
 
 // получить портфель по id счета
@@ -32,6 +32,33 @@ const { candles } = await api.marketdata.getCandles({
 Для удобной работы со счетами в песочнице и в бою есть универсальный класс TinkoffAccount.
 
 // tbd
+
+#### Стрим
+Стрим реализуется с помощью `AsyncIterable`:
+```ts
+// подписка на свечи
+const call = api.marketdataStream.marketDataStream(createRequest({
+  subscribeCandlesRequest: {
+    subscriptionAction: SubscriptionAction.SUBSCRIPTION_ACTION_SUBSCRIBE,
+    instruments: [
+      { figi: 'BBG004730N88', interval: SubscriptionInterval.SUBSCRIPTION_INTERVAL_ONE_MINUTE }
+    ]
+  },
+}));
+
+// обработка событий
+for await (const event of call) {
+  console.log('Stream event:', event);
+}
+
+// вспомогательная функция для создания запроса подписки
+async function* createRequest(req: MarketDataRequest) {
+  yield req;
+  // бесконечный промис, чтобы запрос не завершался
+  await new Promise(() => {});
+}
+```
+Стрим еще хочется доработать.
 
 ## Лицензия
 MIT @ [Vitaliy Potapov](https://github.com/vitalets)

@@ -6,7 +6,7 @@ import { createGrpcCredentials } from './utils/grpc.js';
 import { errorMiddleware } from './api-error.js';
 import { Helpers } from './helpers.js';
 import { InstrumentsServiceDefinition } from './generated/instruments.js';
-import { MarketDataServiceDefinition } from './generated/marketdata.js';
+import { MarketDataServiceDefinition, MarketDataStreamServiceDefinition } from './generated/marketdata.js';
 import { OperationsServiceDefinition } from './generated/operations.js';
 import { OrdersServiceDefinition } from './generated/orders.js';
 import { SandboxServiceDefinition } from './generated/sandbox.js';
@@ -17,6 +17,7 @@ const TINKOFF_API_URL = 'invest-public-api.tinkoff.ru:443';
 
 type ServiceDefinition = typeof InstrumentsServiceDefinition
   | typeof MarketDataServiceDefinition
+  | typeof MarketDataStreamServiceDefinition
   | typeof OperationsServiceDefinition
   | typeof OrdersServiceDefinition
   | typeof SandboxServiceDefinition
@@ -39,6 +40,7 @@ export class TinkoffInvestApi {
   helpers = Helpers;
   get instruments() { return this.getOrCreateClient(InstrumentsServiceDefinition); }
   get marketdata() { return this.getOrCreateClient(MarketDataServiceDefinition); }
+  get marketdataStream() { return this.getOrCreateClient(MarketDataStreamServiceDefinition); }
   get operations() { return this.getOrCreateClient(OperationsServiceDefinition); }
   get orders() { return this.getOrCreateClient(OrdersServiceDefinition); }
   get sandbox() { return this.getOrCreateClient(SandboxServiceDefinition); }
