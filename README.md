@@ -32,34 +32,21 @@ const { candles } = await api.marketdata.getCandles({
 });
 ```
 
-
-
 ### Стрим
-Стрим реализуется с помощью `AsyncIterable`:
+Для работы со стримом есть обертка `api.stream`:
 ```ts
 // подписка на свечи
-const call = api.marketdataStream.marketDataStream(createRequest({
-  subscribeCandlesRequest: {
-    subscriptionAction: SubscriptionAction.SUBSCRIPTION_ACTION_SUBSCRIBE,
-    instruments: [
-      { figi: 'BBG004730N88', interval: SubscriptionInterval.SUBSCRIPTION_INTERVAL_ONE_MINUTE }
-    ]
-  },
-}));
+api.stream.watch({ candles: [
+  { figi: 'BBG004730N88', interval: SubscriptionInterval.SUBSCRIPTION_INTERVAL_ONE_MINUTE }
+]});
 
 // обработка событий
-for await (const event of call) {
-  console.log('Stream event:', event);
-}
+api.stream.on('data', data => console.log(data));
 
-// вспомогательная функция для создания запроса подписки
-async function* createRequest(req: MarketDataRequest) {
-  yield req;
-  // бесконечный промис, чтобы запрос не завершался
-  await new Promise(() => {});
-}
+// закрыть соединение через 3 сек
+setTimeout(() => api.stream.cancel(), 3000);
 ```
-Стрим еще хочется доработать.
+> Примечание: со стримом можно работать и напрямую через `api.marketdataStream`. Но там `AsyncIterable`, которые менее удобны кмк.
 
 ### Универсальный счет
 Для бесшовной работы со счетами в песочнице и в бою есть универсальный класс `TinkoffAccount`.

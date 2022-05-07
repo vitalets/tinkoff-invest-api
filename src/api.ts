@@ -5,6 +5,7 @@ import { createChannel, createClientFactory, Client, Channel } from 'nice-grpc';
 import { createGrpcCredentials } from './utils/grpc.js';
 import { errorMiddleware } from './api-error.js';
 import { Helpers } from './helpers.js';
+import { MarketDataStream } from './stream.js';
 import { InstrumentsServiceDefinition } from './generated/instruments.js';
 import { MarketDataServiceDefinition, MarketDataStreamServiceDefinition } from './generated/marketdata.js';
 import { OperationsServiceDefinition } from './generated/operations.js';
@@ -38,6 +39,8 @@ export class TinkoffInvestApi {
   }
 
   helpers = Helpers;
+  stream = new MarketDataStream(this);
+  
   get instruments() { return this.getOrCreateClient(InstrumentsServiceDefinition); }
   get marketdata() { return this.getOrCreateClient(MarketDataServiceDefinition); }
   get marketdataStream() { return this.getOrCreateClient(MarketDataStreamServiceDefinition); }
