@@ -61,6 +61,7 @@ export class MarketDataStream {
   cancel() {
     this.emitter.emit('request', null);
     // todo: remove all listeners?
+    // todo: make async and return promise
   }
 
   private ensureConnected() {
