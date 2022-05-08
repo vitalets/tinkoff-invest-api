@@ -13,9 +13,13 @@ export class Helpers {
     return { units, nano };
   }
 
-  static toMoney(value: number, currency: string): MoneyValue {
+  static toMoneyValue(value: number, currency: string): MoneyValue {
     const { units, nano } = Helpers.toQuotation(value);
     return { units, nano, currency };
+  }
+
+  static toMoneyString(value: MoneyValue | undefined) {
+    return `${Helpers.toNumber(value)} ${value?.currency}`;
   }
 
   /**
