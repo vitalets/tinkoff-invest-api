@@ -6,7 +6,7 @@ describe('stream', () => {
     api.stream.cancel();
   });
 
-  it('watch, on, cancel', async () => {
+  it('подписка на свечи', async () => {
     api.stream.watch({ candles: [
       { figi: 'BBG004730N88', interval: SubscriptionInterval.SUBSCRIPTION_INTERVAL_ONE_MINUTE }
     ]});

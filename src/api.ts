@@ -40,7 +40,7 @@ export class TinkoffInvestApi {
 
   helpers = Helpers;
   stream = new MarketDataStream(this);
-  
+
   get instruments() { return this.getOrCreateClient(InstrumentsServiceDefinition); }
   get marketdata() { return this.getOrCreateClient(MarketDataServiceDefinition); }
   get marketdataStream() { return this.getOrCreateClient(MarketDataStreamServiceDefinition); }

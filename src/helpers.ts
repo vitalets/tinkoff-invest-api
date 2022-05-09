@@ -8,9 +8,15 @@ import { MoneyValue, Quotation } from './generated/common.js';
 
 export class Helpers {
   static toQuotation(value: number): Quotation {
-    const units = Math.floor(value);
-    const nano = (value - units) * 1000000000;
-    return { units, nano };
+    const sign = value < 0 ? -1 : 1;
+    const absValue = Math.abs(value);
+    const units = Math.floor(absValue);
+    // Math.round нужен, чтобы не было чисел вида 10000000.00000227
+    const nano = Math.round((absValue - units) * 1000000000);
+    return {
+      units: sign * units,
+      nano: sign * nano,
+    };
   }
 
   static toMoneyValue(value: number, currency: string): MoneyValue {
