@@ -1,3 +1,4 @@
+import { InstrumentIdType } from '../../src/generated/instruments.js';
 import { CandleInterval } from '../../src/generated/marketdata.js';
 import { OperationState } from '../../src/generated/operations.js';
 import { OrderDirection, OrderExecutionReportStatus, OrderType } from '../../src/generated/orders.js';
@@ -6,7 +7,10 @@ import { Backtest, Helpers } from '../../src/index.js';
 describe('backtest', () => {
 
   function createBacktest() {
-    return new Backtest({ candlesFile: 'test/data/candles.json' });
+    return new Backtest({
+      candles: 'test/data/candles.json',
+      instruments: { shares: 'test/data/shares.json' }
+    });
   }
 
   async function getOrdersCount(backtest: Backtest) {
@@ -38,6 +42,17 @@ describe('backtest', () => {
       nano: 0,
       currency: 'rub',
     });
+  });
+
+  it('getInstrumentBy', async () => {
+    const backtest = createBacktest();
+    const { instrument } = await backtest.api.instruments.getInstrumentBy({
+      idType: InstrumentIdType.INSTRUMENT_ID_TYPE_FIGI,
+      classCode: '',
+      id: 'BBG004730N88'
+    });
+    assert.equal(instrument?.ticker, 'SBER');
+    assert.equal(instrument?.tradingStatus, 5);
   });
 
   it('итерация по свечам', async () => {

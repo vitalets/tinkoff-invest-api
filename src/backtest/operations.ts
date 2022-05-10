@@ -28,6 +28,7 @@ export class OperationsStub implements Client<typeof OperationsServiceDefinition
 
   async getPortfolio(_: PortfolioRequest) {
     return {
+      // todo: добавить расчет этих показателей
       totalAmountCurrencies: Helpers.toMoneyValue(this.balance, 'rub'),
       totalAmountShares: Helpers.toMoneyValue(0, 'rub'),
       totalAmountBonds: Helpers.toMoneyValue(0, 'rub'),

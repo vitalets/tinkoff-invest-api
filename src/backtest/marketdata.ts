@@ -89,8 +89,7 @@ export class MarketDataStub implements Client<typeof MarketDataServiceDefinition
   }
 
   private loadCandles() {
-    const { candles } = JSON.parse(fs.readFileSync(this.options.candlesFile, 'utf8'));
-    this.candles = candles;
+    this.candles = JSON.parse(fs.readFileSync(this.options.candles, 'utf8'));
   }
 }
 
