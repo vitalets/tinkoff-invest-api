@@ -15,35 +15,35 @@ import { Backtest } from './index.js';
 export class SandboxStub implements Client<typeof SandboxServiceDefinition> {
   constructor(private backtest: Backtest) { }
 
-  async getSandboxAccounts(_: Parameters<typeof this.backtest.users.getAccounts>[0]) {
+  async getSandboxAccounts(_: Parameters<Backtest['api']['users']['getAccounts']>[0]) {
     return this.backtest.users.getAccounts(_);
   }
 
-  async getSandboxPortfolio(_: Parameters<typeof this.backtest.operations.getPortfolio>[0]) {
+  async getSandboxPortfolio(_: Parameters<Backtest['api']['operations']['getPortfolio']>[0]) {
     return this.backtest.operations.getPortfolio(_);
   }
 
-  async getSandboxOperations(_: Parameters<typeof this.backtest.operations.getOperations>[0]) {
+  async getSandboxOperations(_: Parameters<Backtest['api']['operations']['getOperations']>[0]) {
     return this.backtest.operations.getOperations(_);
   }
 
-  async getSandboxPositions(_: Parameters<typeof this.backtest.operations.getPositions>[0]) {
+  async getSandboxPositions(_: Parameters<Backtest['api']['operations']['getPositions']>[0]) {
     return this.backtest.operations.getPositions(_);
   }
 
-  async postSandboxOrder(_: Parameters<typeof this.backtest.orders.postOrder>[0]) {
+  async postSandboxOrder(_: Parameters<Backtest['api']['orders']['postOrder']>[0]) {
     return this.backtest.orders.postOrder(_);
   }
 
-  async cancelSandboxOrder(_: Parameters<typeof this.backtest.orders.cancelOrder>[0]) {
+  async cancelSandboxOrder(_: Parameters<Backtest['api']['orders']['cancelOrder']>[0]) {
     return this.backtest.orders.cancelOrder(_);
   }
 
-  async getSandboxOrders(_: Parameters<typeof this.backtest.orders.getOrders>[0]) {
+  async getSandboxOrders(_: Parameters<Backtest['api']['orders']['getOrders']>[0]) {
     return this.backtest.orders.getOrders(_);
   }
 
-  async getSandboxOrderState(_: Parameters<typeof this.backtest.orders.getOrderState>[0]) {
+  async getSandboxOrderState(_: Parameters<Backtest['api']['orders']['getOrderState']>[0]) {
     return this.backtest.orders.getOrderState(_);
   }
 
