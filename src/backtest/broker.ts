@@ -142,7 +142,7 @@ export class Broker {
   }
 
   private async createOperation(order: OrderState): Promise<Operation> {
-    const operationType: OperationType = order.direction === OrderDirection.ORDER_DIRECTION_BUY
+    const operationType = order.direction === OrderDirection.ORDER_DIRECTION_BUY
       ? OperationType.OPERATION_TYPE_BUY
       : OperationType.OPERATION_TYPE_SELL;
     let payment = Helpers.toNumber(order.executedOrderPrice!);
@@ -159,7 +159,7 @@ export class Broker {
       currency: order.currency,
       quantity: order.lotsExecuted,
       quantityRest: 0,
-      type: '',
+      type: getOperationText(operationType),
       instrumentType,
       trades: [],
       date: new Date(),
@@ -168,19 +168,20 @@ export class Broker {
 
   private createComissionOperation(order: OrderState, operation: Operation): Operation {
     const payment = -Helpers.toNumber(order.executedCommission!);
+    const operationType = OperationType.OPERATION_TYPE_BROKER_FEE;
     return {
       id: `${operation.id}_fee`,
       parentOperationId: operation.id,
       instrumentType: operation.instrumentType,
       figi: order.figi,
-      operationType: OperationType.OPERATION_TYPE_BROKER_FEE,
+      operationType,
       state: OperationState.OPERATION_STATE_EXECUTED,
       payment: Helpers.toMoneyValue(payment, order.currency),
       price: Helpers.toMoneyValue(0, order.currency),
       currency: order.currency,
       quantity: 0,
       quantityRest: 0,
-      type: '',
+      type: getOperationText(operationType),
       trades: [],
       date: new Date(),
     };
@@ -195,5 +196,13 @@ export class Broker {
     if (!instrument) throw new Error(`Нет данных по инструменту: ${figi}`);
     return instrument;
   }
+}
 
+function getOperationText(operationType: OperationType) {
+  switch (operationType) {
+    case OperationType.OPERATION_TYPE_BUY: return 'Покупка ЦБ';
+    case OperationType.OPERATION_TYPE_SELL: return 'Продажа ЦБ';
+    case OperationType.OPERATION_TYPE_BROKER_FEE: return 'Удержание комиссии за операцию';
+    default: return '';
+  }
 }
