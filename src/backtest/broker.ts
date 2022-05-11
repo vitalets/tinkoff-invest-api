@@ -2,10 +2,17 @@
  * Логика работы брокера.
  */
 
-/* eslint-disable max-len */
+/* eslint-disable max-lines */
 
+import { InstrumentIdType } from '../generated/instruments.js';
 import { Operation, OperationState, OperationType, PortfolioPosition } from '../generated/operations.js';
-import { OrderDirection, OrderExecutionReportStatus, OrderState, OrderType, PostOrderRequest } from '../generated/orders.js';
+import {
+  OrderDirection,
+  OrderExecutionReportStatus,
+  OrderState,
+  OrderType,
+  PostOrderRequest
+} from '../generated/orders.js';
 import { Helpers } from '../helpers.js';
 import { Backtest } from './index.js';
 
@@ -16,16 +23,18 @@ export class Broker {
     return this.backtest.options;
   }
 
-  createOrder(req: PostOrderRequest): OrderState {
+  async createOrder(req: PostOrderRequest): Promise<OrderState> {
     const lotsRequested = req.quantity;
     const price = Helpers.toNumber(req.price || this.backtest.marketdata.curCandle.close) || 0;
+    const lot = await this.getLotSize(req.figi);
+    const initialOrderPrice = price * lotsRequested * lot;
     return {
       orderId: req.orderId,
       executionReportStatus: OrderExecutionReportStatus.EXECUTION_REPORT_STATUS_NEW,
       lotsRequested,
       lotsExecuted: 0,
-      initialOrderPrice: Helpers.toMoneyValue(price * lotsRequested, this.options.currency),
       initialSecurityPrice: Helpers.toMoneyValue(price, this.options.currency),
+      initialOrderPrice: Helpers.toMoneyValue(initialOrderPrice, this.options.currency),
       figi: req.figi,
       direction: req.direction,
       orderType: req.orderType,
@@ -35,15 +44,16 @@ export class Broker {
     };
   }
 
-  tryExecuteOrders() {
-    this.backtest.orders.getActiveOrders().forEach(order => {
-      const price = this.canExecuteOrder(order);
-      if (!price) return;
-      this.setOrderExecuted(order, price);
+  async tryExecuteOrders() {
+    const { orders } = await this.backtest.orders.getOrders({ accountId: '' });
+    for (const order of orders) {
+      const price = this.isPriceReached(order);
+      if (!price) continue;
+      await this.setOrderExecuted(order, price);
       const operation = this.createOperation(order);
       const comissionOperation = this.createComissionOperation(order, operation);
       this.backtest.operations.addOperations([ operation, comissionOperation ]);
-    });
+    }
   }
 
   calcPosition(operations: Operation[]): PortfolioPosition {
@@ -104,7 +114,7 @@ export class Broker {
   /**
    * See also: https://www.tradingview.com/pine-script-docs/en/v5/concepts/Strategies.html?highlight=backtesting#broker-emulator
    */
-  private canExecuteOrder(order: OrderState) {
+  private isPriceReached(order: OrderState) {
     // данные по предыдущей свече
     const { low, high, close } = this.backtest.marketdata.candles[ this.backtest.marketdata.curIndex - 1 ];
     switch (order.orderType) {
@@ -118,15 +128,16 @@ export class Broker {
     }
   }
 
-  private setOrderExecuted(order: OrderState, price: number) {
+  private async setOrderExecuted(order: OrderState, price: number) {
     order.executionReportStatus = OrderExecutionReportStatus.EXECUTION_REPORT_STATUS_FILL;
     order.lotsExecuted = order.lotsRequested;
-    const netPrice = price * order.lotsExecuted; // todo: qty
-    const comission = this.options.brokerFee * netPrice / 100;
-    const grossPrice = netPrice + comission;
-    order.executedOrderPrice = Helpers.toMoneyValue(netPrice, this.options.currency);
-    order.executedCommission = Helpers.toMoneyValue(comission, this.options.currency);
-    order.totalOrderAmount = Helpers.toMoneyValue(grossPrice, this.options.currency);
+    const lot = await this.getLotSize(order.figi);
+    const executedOrderPrice = price * order.lotsExecuted * lot;
+    const executedCommission = this.options.brokerFee * executedOrderPrice / 100;
+    const totalOrderAmount = executedOrderPrice + executedCommission;
+    order.executedOrderPrice = Helpers.toMoneyValue(executedOrderPrice, this.options.currency);
+    order.executedCommission = Helpers.toMoneyValue(executedCommission, this.options.currency);
+    order.totalOrderAmount = Helpers.toMoneyValue(totalOrderAmount, this.options.currency);
     order.averagePositionPrice = Helpers.toMoneyValue(price, this.options.currency);
   }
 
@@ -134,15 +145,15 @@ export class Broker {
     const operationType: OperationType = order.direction === OrderDirection.ORDER_DIRECTION_BUY
       ? OperationType.OPERATION_TYPE_BUY
       : OperationType.OPERATION_TYPE_SELL;
-    let orderPrice = Helpers.toNumber(order.executedOrderPrice!);
-    if (order.direction === OrderDirection.ORDER_DIRECTION_BUY) orderPrice = -orderPrice;
+    let payment = Helpers.toNumber(order.executedOrderPrice!);
+    if (order.direction === OrderDirection.ORDER_DIRECTION_BUY) payment = -payment;
     return {
       id: order.orderId,
       parentOperationId: '',
       figi: order.figi,
       operationType,
       state: OperationState.OPERATION_STATE_EXECUTED,
-      payment: Helpers.toMoneyValue(orderPrice, order.currency),
+      payment: Helpers.toMoneyValue(payment, order.currency),
       price: order.averagePositionPrice,
       currency: order.currency,
       quantity: order.lotsExecuted,
@@ -173,4 +184,15 @@ export class Broker {
       date: new Date(),
     };
   }
+
+  private async getLotSize(figi: string) {
+    const { instrument } = await this.backtest.instruments.getInstrumentBy({
+      idType: InstrumentIdType.INSTRUMENT_ID_TYPE_FIGI,
+      classCode: '',
+      id: figi,
+    });
+    if (!instrument) throw new Error(`Нет данных по инструменту: ${figi}`);
+    return instrument.lot;
+  }
+
 }

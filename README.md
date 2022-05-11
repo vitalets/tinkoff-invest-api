@@ -110,7 +110,7 @@ main();
 
 async function main() {
   // Запускаем цикл по всем свечам, начиная с 50
-  while (backtest.tick()) {
+  while (await backtest.tick()) {
     await robot.runStrategy();
   }
   // Смотрим остаток на счете, что там робот наторговал :)

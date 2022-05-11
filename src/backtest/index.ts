@@ -67,9 +67,9 @@ export class Backtest {
     this.api = this.createApi();
   }
 
-  tick() {
+  async tick() {
     const success = this.marketdata.addCandle();
-    if (success) this.broker.tryExecuteOrders();
+    if (success) await this.broker.tryExecuteOrders();
     return success;
   }
 

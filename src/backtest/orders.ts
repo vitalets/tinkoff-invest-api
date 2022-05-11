@@ -20,12 +20,16 @@ export class OrdersStub implements Client<typeof OrdersServiceDefinition> {
   constructor(private backtest: Backtest) { }
 
   async getOrders(_: GetOrdersRequest) {
-    const orders = this.getActiveOrders();
+    const statuses = [
+      OrderExecutionReportStatus.EXECUTION_REPORT_STATUS_NEW,
+      OrderExecutionReportStatus.EXECUTION_REPORT_STATUS_PARTIALLYFILL,
+    ];
+    const orders = this.orders.filter(order => statuses.includes(order.executionReportStatus));
     return { orders };
   }
 
   async postOrder(req: PostOrderRequest) {
-    const order = this.getExistingOrder(req.orderId) || this.createOrder(req);
+    const order = this.getExistingOrder(req.orderId) || (await this.createOrder(req));
     return {
       orderId: order.orderId,
       executionReportStatus: order.executionReportStatus,
@@ -56,20 +60,12 @@ export class OrdersStub implements Client<typeof OrdersServiceDefinition> {
     return order;
   }
 
-  getActiveOrders() {
-    const statuses = [
-      OrderExecutionReportStatus.EXECUTION_REPORT_STATUS_NEW,
-      OrderExecutionReportStatus.EXECUTION_REPORT_STATUS_PARTIALLYFILL,
-    ];
-    return this.orders.filter(order => statuses.includes(order.executionReportStatus));
-  }
-
   private getExistingOrder(orderId: string) {
     return this.orders.find(o => o.orderId === orderId);
   }
 
-  private createOrder(req: PostOrderRequest) {
-    const order = this.backtest.broker.createOrder(req);
+  private async createOrder(req: PostOrderRequest) {
+    const order = await this.backtest.broker.createOrder(req);
     this.backtest.broker.blockPositionForOrder(order);
     this.orders.push(order);
     return order;
