@@ -27,14 +27,14 @@ export class OperationsStub implements Client<typeof OperationsServiceDefinition
   constructor(private backtest: Backtest) { }
 
   async getPortfolio(_: PortfolioRequest) {
+    const totalAmountCurrencies = this.balance + this.calcTotalAmount('currency');
     return {
-      // todo: добавить расчет этих показателей
-      totalAmountCurrencies: Helpers.toMoneyValue(this.balance, 'rub'),
-      totalAmountShares: Helpers.toMoneyValue(0, 'rub'),
-      totalAmountBonds: Helpers.toMoneyValue(0, 'rub'),
-      totalAmountEtf: Helpers.toMoneyValue(0, 'rub'),
-      totalAmountFutures: Helpers.toMoneyValue(0, 'rub'),
-      expectedYield: Helpers.toQuotation(0),
+      totalAmountCurrencies: Helpers.toMoneyValue(totalAmountCurrencies, 'rub'),
+      totalAmountShares: Helpers.toMoneyValue(this.calcTotalAmount('share'), 'rub'),
+      totalAmountBonds: Helpers.toMoneyValue(this.calcTotalAmount('bond'), 'rub'),
+      totalAmountEtf: Helpers.toMoneyValue(this.calcTotalAmount('etf'), 'rub'),
+      totalAmountFutures: Helpers.toMoneyValue(this.calcTotalAmount('future'), 'rub'),
+      expectedYield: Helpers.toQuotation(0), // todo
       positions: this.positions,
     };
   }
@@ -101,5 +101,15 @@ export class OperationsStub implements Client<typeof OperationsServiceDefinition
     } else {
       this.positions.push(position);
     }
+  }
+
+  private calcTotalAmount(instrumentType: string) {
+    return this.positions
+      .filter(position => position.instrumentType === instrumentType)
+      .reduce((acc, position) => {
+        const price = Helpers.toNumber(position.averagePositionPrice) || 0;
+        const quantity = Helpers.toNumber(position.quantity) || 0;
+        return acc + price * quantity;
+      }, 0);
   }
 }

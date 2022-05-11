@@ -26,7 +26,7 @@ export class Broker {
   async createOrder(req: PostOrderRequest): Promise<OrderState> {
     const lotsRequested = req.quantity;
     const price = Helpers.toNumber(req.price || this.backtest.marketdata.curCandle.close) || 0;
-    const lot = await this.getLotSize(req.figi);
+    const { lot } = await this.getInstrumentByFigi(req.figi);
     const initialOrderPrice = price * lotsRequested * lot;
     return {
       orderId: req.orderId,
@@ -50,7 +50,7 @@ export class Broker {
       const price = this.isPriceReached(order);
       if (!price) continue;
       await this.setOrderExecuted(order, price);
-      const operation = this.createOperation(order);
+      const operation = await this.createOperation(order);
       const comissionOperation = this.createComissionOperation(order, operation);
       this.backtest.operations.addOperations([ operation, comissionOperation ]);
     }
@@ -131,9 +131,9 @@ export class Broker {
   private async setOrderExecuted(order: OrderState, price: number) {
     order.executionReportStatus = OrderExecutionReportStatus.EXECUTION_REPORT_STATUS_FILL;
     order.lotsExecuted = order.lotsRequested;
-    const lot = await this.getLotSize(order.figi);
+    const { lot } = await this.getInstrumentByFigi(order.figi);
     const executedOrderPrice = price * order.lotsExecuted * lot;
-    const executedCommission = this.options.brokerFee * executedOrderPrice / 100;
+    const executedCommission = executedOrderPrice * this.options.brokerFee / 100;
     const totalOrderAmount = executedOrderPrice + executedCommission;
     order.executedOrderPrice = Helpers.toMoneyValue(executedOrderPrice, this.options.currency);
     order.executedCommission = Helpers.toMoneyValue(executedCommission, this.options.currency);
@@ -141,12 +141,13 @@ export class Broker {
     order.averagePositionPrice = Helpers.toMoneyValue(price, this.options.currency);
   }
 
-  private createOperation(order: OrderState): Operation {
+  private async createOperation(order: OrderState): Promise<Operation> {
     const operationType: OperationType = order.direction === OrderDirection.ORDER_DIRECTION_BUY
       ? OperationType.OPERATION_TYPE_BUY
       : OperationType.OPERATION_TYPE_SELL;
     let payment = Helpers.toNumber(order.executedOrderPrice!);
     if (order.direction === OrderDirection.ORDER_DIRECTION_BUY) payment = -payment;
+    const { instrumentType } = await this.getInstrumentByFigi(order.figi);
     return {
       id: order.orderId,
       parentOperationId: '',
@@ -159,7 +160,7 @@ export class Broker {
       quantity: order.lotsExecuted,
       quantityRest: 0,
       type: '',
-      instrumentType: '', // todo
+      instrumentType,
       trades: [],
       date: new Date(),
     };
@@ -185,14 +186,14 @@ export class Broker {
     };
   }
 
-  private async getLotSize(figi: string) {
+  private async getInstrumentByFigi(figi: string) {
     const { instrument } = await this.backtest.instruments.getInstrumentBy({
       idType: InstrumentIdType.INSTRUMENT_ID_TYPE_FIGI,
       classCode: '',
       id: figi,
     });
     if (!instrument) throw new Error(`Нет данных по инструменту: ${figi}`);
-    return instrument.lot;
+    return instrument;
   }
 
 }

@@ -72,10 +72,28 @@ export class Backtest {
     this.api = this.createApi();
   }
 
+  /**
+   * Переход к следующей исторической свече.
+   */
   async tick() {
-    const success = this.marketdata.addCandle(); // or marketDataStream.emit(nextCandle)
+    const success = this.marketdata.addCandle(); // marketDataStream.emit(nextCandle)
     if (success) await this.broker.tryExecuteOrders();
     return success;
+  }
+
+  /**
+   * Расчет сумарного капитала в рублях.
+   */
+  async getCapital() {
+    const portfolio = await this.operations.getPortfolio({ accountId: '' });
+    const amounts = [
+      portfolio.totalAmountCurrencies,
+      portfolio.totalAmountBonds,
+      portfolio.totalAmountEtf,
+      portfolio.totalAmountFutures,
+      portfolio.totalAmountShares,
+    ].map(amount => this.api.helpers.toNumber(amount));
+    return amounts.reduce((acc, amount) => acc + amount, 0);
   }
 
   private createApi() {

@@ -113,8 +113,10 @@ async function main() {
   while (await backtest.tick()) {
     await robot.runStrategy();
   }
-  // Смотрим остаток на счете, что там робот наторговал :)
-  console.log(await backtest.api.operations.getPortfolio({ accountId: '' }))
+  // Рассчитываем прибыль в %
+  const capital = await backtest.getCapital();
+  const precent = 100 * (capital - backtest.options.initialCapital) / backtest.options.initialCapital
+  console.log(`Капитал: ${capital} (${precent.toFixed(2)}%)`);
 }
 ```
 
