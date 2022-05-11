@@ -49,15 +49,15 @@ const { candles } = await api.marketdata.getCandles({
 Для работы со стримом сделана обертка `api.stream`:
 ```ts
 // подписка на свечи
-api.stream.watch({ candles: [
+api.stream.market.watch({ candles: [
   { figi: 'BBG004730N88', interval: SubscriptionInterval.SUBSCRIPTION_INTERVAL_ONE_MINUTE }
 ]});
 
 // обработка событий
-api.stream.on('data', data => console.log(data));
+api.stream.market.on('data', data => console.log(data));
 
 // закрыть соединение через 3 сек
-setTimeout(() => api.stream.cancel(), 3000);
+setTimeout(() => api.stream.market.cancel(), 3000);
 ```
 > Примечание: со стримом можно работать и напрямую через `api.marketdataStream`. Но там `AsyncIterable`, которые менее удобны кмк.
 
