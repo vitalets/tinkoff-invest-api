@@ -1,24 +1,15 @@
+/**
+ * Счет в песочнице
+ */
+import { TinkoffInvestApi } from '../api.js';
 import { OperationsRequest } from '../generated/operations.js';
 import { PostOrderRequest } from '../generated/orders.js';
 import { SandboxPayInRequest } from '../generated/sandbox.js';
-import { BaseAccount, OmitAccount } from './base.js';
-import { RealAccount } from './real.js';
+import { OmitAccount, CommonAccountMethods } from './types.js';
 
-export type AccountCommonMethods = Pick<RealAccount,
-'accountId'
-| 'api'
-| 'isSandbox'
-| 'getInfo'
-| 'getPortfolio'
-| 'getOperations'
-| 'getPositions'
-| 'getOrders'
-| 'getOrderState'
-| 'postOrder'
-| 'cancelOrder'
->;
+export class SandboxAccount implements CommonAccountMethods {
+  constructor(public api: TinkoffInvestApi, public accountId: string) {}
 
-export class SandboxAccount extends BaseAccount implements AccountCommonMethods {
   isSandbox(): this is SandboxAccount { return true; }
 
   async getInfo() {

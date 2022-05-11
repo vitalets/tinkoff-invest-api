@@ -1,8 +1,14 @@
+/**
+ * Реальный счет
+ */
+import { TinkoffInvestApi } from '../api.js';
 import { OperationsRequest } from '../generated/operations.js';
 import { PostOrderRequest } from '../generated/orders.js';
-import { BaseAccount, OmitAccount } from './base.js';
+import { OmitAccount } from './types.js';
 
-export class RealAccount extends BaseAccount {
+export class RealAccount {
+  constructor(public api: TinkoffInvestApi, public accountId: string) {}
+
   isSandbox() { return false; }
 
   async getInfo() {
