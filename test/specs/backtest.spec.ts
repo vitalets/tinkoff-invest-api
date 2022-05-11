@@ -102,7 +102,7 @@ describe('backtest', () => {
     });
     assert.equal(res.figi, figi);
     assert.equal(res.executionReportStatus, OrderExecutionReportStatus.EXECUTION_REPORT_STATUS_NEW);
-    assert.equal(Helpers.toNumber(res.initialOrderPrice), 1228.6);
+    assert.deepEqual(res.initialOrderPrice, { units: 1228, nano: 600000000, currency: 'rub' });
     assert.equal(await getOrdersCount(backtest), 1);
 
     await backtest.tick();
@@ -112,6 +112,7 @@ describe('backtest', () => {
     const operations = await getOperations(backtest);
     assert.equal(operations.length, 2);
     assert.deepEqual(operations[ 0 ].payment, { units: -1228, nano: -600000000, currency: 'rub' });
+    assert.equal(operations[ 0 ].date, '2022-04-29T07:01:00.000Z');
     // 1228.6 * 0.003 = 3.6858
     assert.deepEqual(operations[ 1 ].payment, { units: -3, nano: -685800000, currency: 'rub' });
 

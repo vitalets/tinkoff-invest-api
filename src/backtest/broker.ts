@@ -25,7 +25,7 @@ export class Broker {
 
   async createOrder(req: PostOrderRequest): Promise<OrderState> {
     const lotsRequested = req.quantity;
-    const price = Helpers.toNumber(req.price || this.backtest.marketdata.curCandle.close) || 0;
+    const price = Helpers.toNumber(req.price || this.backtest.marketdata.currentCandle.close) || 0;
     const { lot } = await this.getInstrumentByFigi(req.figi);
     const initialOrderPrice = price * lotsRequested * lot;
     return {
@@ -40,7 +40,7 @@ export class Broker {
       orderType: req.orderType,
       stages: [],
       currency: this.options.currency,
-      orderDate: new Date(),
+      orderDate: this.backtest.marketdata.getTime(),
     };
   }
 
@@ -162,7 +162,7 @@ export class Broker {
       type: getOperationText(operationType),
       instrumentType,
       trades: [],
-      date: new Date(),
+      date: this.backtest.marketdata.getTime(),
     };
   }
 
@@ -183,7 +183,7 @@ export class Broker {
       quantityRest: 0,
       type: getOperationText(operationType),
       trades: [],
-      date: new Date(),
+      date: operation.date,
     };
   }
 

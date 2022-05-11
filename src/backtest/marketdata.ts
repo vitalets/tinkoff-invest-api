@@ -36,8 +36,12 @@ export class MarketDataStub implements Client<typeof MarketDataServiceDefinition
     return this.backtest.options;
   }
 
-  get curCandle() {
+  get currentCandle() {
     return this.candles[this.curIndex];
+  }
+
+  getTime() {
+    return new Date(this.currentCandle.time!);
   }
 
   addCandle() {

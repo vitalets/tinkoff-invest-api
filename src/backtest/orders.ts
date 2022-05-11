@@ -51,9 +51,7 @@ export class OrdersStub implements Client<typeof OrdersServiceDefinition> {
       order.executionReportStatus = OrderExecutionReportStatus.EXECUTION_REPORT_STATUS_CANCELLED;
       this.backtest.broker.unblockPositionForOrder(order);
     }
-    return {
-      time: new Date()
-    };
+    return { time: this.backtest.marketdata.getTime() };
   }
 
   async getOrderState({ orderId }: GetOrderStateRequest) {
