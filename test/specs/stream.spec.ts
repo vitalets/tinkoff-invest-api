@@ -3,14 +3,14 @@ import { MarketDataResponse, SubscriptionInterval } from '../../src/generated/ma
 describe('stream', () => {
 
   after(() => {
-    api.stream.cancel();
+    api.stream.market.cancel();
   });
 
   it('подписка на свечи', async () => {
-    api.stream.watch({ candles: [
+    api.stream.market.watch({ candles: [
       { figi: 'BBG004730N88', interval: SubscriptionInterval.SUBSCRIPTION_INTERVAL_ONE_MINUTE }
     ]});
-    const data = await new Promise<MarketDataResponse>(resolve => api.stream.on('data', resolve));
+    const data = await new Promise<MarketDataResponse>(resolve => api.stream.market.on('data', resolve));
     assert.deepEqual(data.subscribeCandlesResponse?.candlesSubscriptions, [
       { figi: 'BBG004730N88', interval: 1, subscriptionStatus: 1 }
     ]);

@@ -19,7 +19,7 @@ import {
 } from '../generated/instruments.js';
 import { Backtest } from './index.js';
 
-type NameMap = {
+type InstrumentsMap = {
   shares: Share;
   bonds: Bond;
   currencies: Currency;
@@ -28,10 +28,10 @@ type NameMap = {
 }
 
 export type InstrumentsConfig = {
-  [K in keyof NameMap]+?: string;
+  [K in keyof InstrumentsMap]+?: string;
 }
 
-// пока исключаем некоторые методы
+// пока не все методы реализованы
 type InstrumentsStubType = Omit<Client<typeof InstrumentsServiceDefinition>,
   'tradingSchedules'
   | 'getBondCoupons'
@@ -45,7 +45,7 @@ type InstrumentsStubType = Omit<Client<typeof InstrumentsServiceDefinition>,
   >
 
 export class InstrumentsStub implements InstrumentsStubType {
-  private cache: {[K in keyof NameMap]+?: NameMap[K][]} = {};
+  private cache: {[K in keyof InstrumentsMap]+?: InstrumentsMap[K][]} = {};
 
   constructor(private backtest: Backtest) { }
 
@@ -77,7 +77,7 @@ export class InstrumentsStub implements InstrumentsStubType {
   async currencies(_: InstrumentsRequest) { return this.getAll('currencies'); }
   async currencyBy(req: InstrumentRequest) { return this.getBy('currencies', req); }
 
-  private getAll<T extends keyof NameMap>(key: T) {
+  private getAll<T extends keyof InstrumentsMap>(key: T) {
     let cache = this.cache[key];
     if (!cache) {
       const fileName = this.options.instruments[key];
@@ -89,7 +89,7 @@ export class InstrumentsStub implements InstrumentsStubType {
     return { instruments: cache as NonNullable<typeof cache> };
   }
 
-  private getBy<T extends keyof NameMap>(key: T, req: InstrumentRequest) {
+  private getBy<T extends keyof InstrumentsMap>(key: T, req: InstrumentRequest) {
     const { instruments } = this.getAll(key);
     const instrument = instruments.find(instrument => {
       switch (req.idType) {
@@ -104,12 +104,12 @@ export class InstrumentsStub implements InstrumentsStubType {
     return { instrument };
   }
 
-  private setTradingStatusNormal(items: NameMap[keyof NameMap][]) {
+  private setTradingStatusNormal(items: InstrumentsMap[keyof InstrumentsMap][]) {
     items.forEach(item => item.tradingStatus = SecurityTradingStatus.SECURITY_TRADING_STATUS_NORMAL_TRADING);
   }
 }
 
-function getInstrumentType(key: keyof NameMap) {
+function getInstrumentType(key: keyof InstrumentsMap) {
   switch (key) {
     case 'shares': return 'share';
     case 'bonds': return 'bond';

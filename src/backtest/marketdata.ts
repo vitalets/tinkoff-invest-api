@@ -3,6 +3,7 @@
  * See: https://tinkoff.github.io/investAPI/head-marketdata/
  */
 import fs from 'fs';
+import { on, EventEmitter } from 'node:events';
 import { Client } from 'nice-grpc';
 import { SecurityTradingStatus } from '../generated/common.js';
 import {
@@ -17,7 +18,8 @@ import {
   Order,
   GetLastTradesRequest,
   Trade,
-  MarketDataRequest
+  MarketDataRequest,
+  MarketDataResponse
 } from '../generated/marketdata.js';
 import { Helpers } from '../helpers.js';
 import { Backtest } from './index.js';
@@ -41,7 +43,7 @@ export class MarketDataStub implements Client<typeof MarketDataServiceDefinition
   addCandle() {
     if (this.curIndex >= this.candles.length - 1) return false;
     if (this.curIndex === -1) {
-      this.curIndex = this.options.offset;
+      this.curIndex = this.options.initialCandleIndex;
     } else {
       this.curIndex++;
     }
@@ -49,7 +51,7 @@ export class MarketDataStub implements Client<typeof MarketDataServiceDefinition
   }
 
   async getCandles(_: GetCandlesRequest) {
-    const candles = this.candles.slice(this.options.offset, this.curIndex + 1);
+    const candles = this.candles.slice(this.options.initialCandleIndex, this.curIndex + 1);
     return { candles };
   }
 
@@ -94,14 +96,18 @@ export class MarketDataStub implements Client<typeof MarketDataServiceDefinition
 }
 
 export class MarketDataStreamStub implements Client<typeof MarketDataStreamServiceDefinition> {
+  protected emitter = new EventEmitter();
   constructor(private backtest: Backtest) { }
 
   async *marketDataStream(_: AsyncIterable<MarketDataRequest>) {
-    yield {
-      subscribeCandlesResponse: undefined,
-      subscribeOrderBookResponse: undefined,
-      subscribeTradesResponse: undefined,
-      subscribeInfoResponse: undefined,
-    };
+    // todo: emit first event right after request?
+    const innerReq = on(this.emitter, 'data');
+    for await (const data of innerReq) {
+      yield data[0] as MarketDataResponse;
+    }
+  }
+
+  emit(data: MarketDataResponse) {
+    this.emitter.emit('data', data);
   }
 }

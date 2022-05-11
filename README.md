@@ -99,7 +99,7 @@ import { YourRobot } from './robot.js';
 const backtest = new Backtest({
   candles: 'test/data/candles.json',
   instruments: { shares: 'test/data/shares.json' },
-  offset: 50,
+  initialCandleIndex: 50,
   brokerFee: 0.3,
 });
 
@@ -109,7 +109,7 @@ const robot = new YourRobot({ api: backtest.api });
 main();
 
 async function main() {
-  // Запускаем цикл по всем свечам, начиная с 50
+  // Запускаем цикл по всем свечам
   while (await backtest.tick()) {
     await robot.runStrategy();
   }

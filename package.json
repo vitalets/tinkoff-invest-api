@@ -13,7 +13,7 @@
     "lint": "eslint src test --ext .ts",
     "tsc": "tsc --noEmit",
     "check": "ts-node-esm scripts/check.ts",
-    "test": "mocha -n loader=ts-node/esm test/setup.ts test/specs/*.ts",
+    "test": "mocha -n loader=ts-node/esm test/setup.ts test/specs/*.ts -t 7000",
     "pull-proto": "./scripts/pull-proto.sh",
     "compile-proto": "./scripts/compile-proto.sh",
     "toc": "markdown-toc README.md -i",

@@ -9,8 +9,10 @@ import {
   GetOrderStateRequest,
   OrderExecutionReportStatus,
   OrdersServiceDefinition,
+  OrdersStreamServiceDefinition,
   OrderState,
-  PostOrderRequest
+  PostOrderRequest,
+  TradesStreamRequest
 } from '../generated/orders.js';
 import { Backtest } from './index.js';
 
@@ -69,5 +71,15 @@ export class OrdersStub implements Client<typeof OrdersServiceDefinition> {
     this.backtest.broker.blockPositionForOrder(order);
     this.orders.push(order);
     return order;
+  }
+}
+
+export class OrdersStreamStub implements Client<typeof OrdersStreamServiceDefinition> {
+  constructor(private backtest: Backtest) { }
+
+  async *tradesStream(_: TradesStreamRequest) {
+    yield {
+      orderTrades: undefined,
+    };
   }
 }
