@@ -102,6 +102,8 @@ export class MarketDataStub implements Client<typeof MarketDataServiceDefinition
       const fileCandles = JSON.parse(fs.readFileSync(file, 'utf8')) as HistoricCandle[];
       this.candles.push(...fileCandles);
     });
+    this.candles.forEach(candle => candle.time = new Date(candle.time!));
+    this.candles.sort((a, b) => a.time!.valueOf() - b.time!.valueOf());
   }
 }
 
