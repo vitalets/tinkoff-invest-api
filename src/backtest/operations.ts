@@ -9,7 +9,6 @@ import {
   Operation,
   OperationsRequest,
   OperationsServiceDefinition,
-  OperationState,
   PortfolioPosition,
   PortfolioRequest,
   PositionsRequest,
@@ -27,6 +26,7 @@ export class OperationsStub implements Client<typeof OperationsServiceDefinition
   constructor(private backtest: Backtest) { }
 
   async getPortfolio(_: PortfolioRequest) {
+    this.updatePositionsCurrentPrice();
     const totalAmountCurrencies = this.balance + this.calcTotalAmount('currency');
     return {
       totalAmountCurrencies: Helpers.toMoneyValue(totalAmountCurrencies, 'rub'),
@@ -75,39 +75,39 @@ export class OperationsStub implements Client<typeof OperationsServiceDefinition
     return {};
   }
 
-  addOperations(operations: Operation[]) {
+  pushOperations(operations: Operation[]) {
     operations.forEach(operation => {
       this.operations.push(operation);
-      this.balance += Helpers.toNumber(operation.payment!);
-      if (operation.quantity) this.updatePosition(operation.figi);
+      this.balance += Helpers.toNumber(operation.payment) || 0;
     });
+    return this.operations;
   }
 
-  getPosition(figi: string) {
-    return this.positions.find(p => p.figi === figi);
+  pushPosition(position: PortfolioPosition) {
+    const curIndex = this.positions.findIndex(p => p.figi === position.figi);
+    curIndex >= 0
+      ? this.positions[curIndex] = position
+      : this.positions.push(position);
   }
 
   getBalance() {
     return this.balance;
   }
 
-  private updatePosition(figi: string) {
-    const operations = this.operations
-      .filter(o => o.figi === figi && o.state === OperationState.OPERATION_STATE_EXECUTED && o.quantity > 0);
-    const position = this.backtest.broker.calcPosition(operations);
-    const curIndex = this.positions.findIndex(p => p.figi === figi);
-    if (curIndex >= 0) {
-      this.positions[curIndex] = position;
-    } else {
-      this.positions.push(position);
-    }
+  private updatePositionsCurrentPrice() {
+    // пока для простоты всем позициям выставляем единую цену от текущей свечи,
+    // т.к. запуск бэктеста предполагается на одном инструменте
+    const currentPrice = Helpers.toNumber(this.backtest.marketdata.currentCandle.close) || 0;
+    this.positions.forEach(position => {
+      position.currentPrice = Helpers.toMoneyValue(currentPrice, 'rub');
+    });
   }
 
   private calcTotalAmount(instrumentType: string) {
     return this.positions
       .filter(position => position.instrumentType === instrumentType)
       .reduce((acc, position) => {
-        const price = Helpers.toNumber(position.averagePositionPrice) || 0;
+        const price = Helpers.toNumber(position.currentPrice) || 0;
         const quantity = Helpers.toNumber(position.quantity) || 0;
         return acc + price * quantity;
       }, 0);

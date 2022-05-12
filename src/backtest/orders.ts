@@ -66,7 +66,7 @@ export class OrdersStub implements Client<typeof OrdersServiceDefinition> {
 
   private async createOrder(req: PostOrderRequest) {
     const order = await this.backtest.broker.createOrder(req);
-    this.backtest.broker.blockPositionForOrder(order);
+    await this.backtest.broker.blockPositionForOrder(order);
     this.orders.push(order);
     return order;
   }

@@ -8,11 +8,13 @@ describe('backtest', () => {
 
   const figi = 'BBG004730N88';
 
-  function createBacktest() {
-    return new Backtest({
+  async function createBacktest() {
+    const backtest = new Backtest({
       candles: 'test/data/candles.json',
       instruments: { shares: 'test/data/shares.json' }
     });
+    await backtest.tick();
+    return backtest;
   }
 
   async function getOrdersCount(backtest: Backtest) {
@@ -30,13 +32,13 @@ describe('backtest', () => {
   }
 
   it('getAccounts', async () => {
-    const backtest = createBacktest();
+    const backtest = await createBacktest();
     const res = await backtest.api.users.getAccounts({});
     assert.equal(res.accounts[ 0 ].id, '0000000000');
   });
 
   it('getPortfolio', async () => {
-    const backtest = createBacktest();
+    const backtest = await createBacktest();
     const res = await backtest.api.operations.getPortfolio({ accountId: 'x' });
     assert.deepEqual(res.positions, []);
     assert.deepEqual(res.totalAmountCurrencies, {
@@ -47,7 +49,7 @@ describe('backtest', () => {
   });
 
   it('getInstrumentBy', async () => {
-    const backtest = createBacktest();
+    const backtest = await createBacktest();
     const { instrument } = await backtest.api.instruments.getInstrumentBy({
       idType: InstrumentIdType.INSTRUMENT_ID_TYPE_FIGI,
       classCode: '',
@@ -58,16 +60,15 @@ describe('backtest', () => {
   });
 
   it('getCapital', async () => {
-    const backtest = createBacktest();
+    const backtest = await createBacktest();
     const capital = await backtest.getCapital();
     assert.equal(capital, 100_000);
   });
 
   it('итерация по свечам', async () => {
-    const backtest = createBacktest();
+    const backtest = await createBacktest();
     const interval = CandleInterval.CANDLE_INTERVAL_1_MIN;
 
-    await backtest.tick();
     const res = await backtest.api.marketdata.getCandles({ figi, interval });
     assert.equal(res.candles.length, 1);
     assert.deepEqual(res.candles[ 0 ].close, { units: 122, nano: 860000000 });
@@ -86,9 +87,8 @@ describe('backtest', () => {
   });
 
   it('покупка по рыночной цене', async () => {
-    const backtest = createBacktest();
+    const backtest = await createBacktest();
 
-    await backtest.tick();
     assert.equal(await getOrdersCount(backtest), 0);
 
     // создать заявку
@@ -112,27 +112,32 @@ describe('backtest', () => {
     const operations = await getOperations(backtest);
     assert.equal(operations.length, 2);
     assert.deepEqual(operations[ 0 ].payment, { units: -1228, nano: -600000000, currency: 'rub' });
-    assert.equal(operations[ 0 ].date, '2022-04-29T07:01:00.000Z');
+    assert.equal(operations[ 0 ].date?.toISOString(), '2022-04-29T07:01:00.000Z');
     // 1228.6 * 0.003 = 3.6858
     assert.deepEqual(operations[ 1 ].payment, { units: -3, nano: -685800000, currency: 'rub' });
 
     // check balance and capital: 100_000 - (1228.6 + 3.6858) = 98767.7142
     const portfolio = await backtest.api.operations.getPortfolio({ accountId: '' });
-    assert.deepEqual(portfolio.totalAmountCurrencies, { units: 98767, nano: 714200000, currency: 'rub' });
-    assert.deepEqual(portfolio.totalAmountShares, { units: 1228, nano: 600000000, currency: 'rub' });
-    assert.equal((await backtest.getCapital()).toFixed(4), '99996.3142'); // 100_000 - 3.6858 = 99996.3142
 
     // check positions
     assert.equal(portfolio.positions.length, 1);
-    assert.deepEqual(portfolio.positions[0].averagePositionPrice, { units: 1228, nano: 600000000, currency: 'rub' });
+    assert.deepEqual(portfolio.positions[0].currentPrice, { units: 123, nano: 650000000, currency: 'rub' });
+    assert.deepEqual(portfolio.positions[0].averagePositionPrice, { units: 122, nano: 860000000, currency: 'rub' });
+    assert.deepEqual(portfolio.positions[0].averagePositionPriceFifo, { units: 122, nano: 860000000, currency: 'rub' });
     assert.deepEqual(portfolio.positions[0].quantityLots, { units: 1, nano: 0 });
-    assert.deepEqual(portfolio.positions[0].quantity, { units: 1, nano: 0 });
+    assert.deepEqual(portfolio.positions[0].quantity, { units: 10, nano: 0 });
     assert.equal(portfolio.positions[0].instrumentType, 'share');
+
+    // totals
+    assert.deepEqual(portfolio.totalAmountCurrencies, { units: 98767, nano: 714200000, currency: 'rub' });
+    assert.deepEqual(portfolio.totalAmountShares, { units: 1236, nano: 500000000, currency: 'rub' });
+    // capital: 100_000 - (1228.6 + 3.6858) + 1236.5 = 100004.2142
+    assert.equal((await backtest.getCapital()).toFixed(4), '100004.2142');
   });
 
   it('продажа по рыночной цене', async () => {
-    const backtest = createBacktest();
-    await backtest.tick();
+    const backtest = await createBacktest();
+
     assert.equal(await getOrdersCount(backtest), 0);
 
     // сначала покупаем 1 лот: цена 122.86 (+комиссия)
@@ -176,8 +181,8 @@ describe('backtest', () => {
   });
 
   it('покупка по лимит-цене', async () => {
-    const backtest = createBacktest();
-    await backtest.tick();
+    const backtest = await createBacktest();
+
     const res = await backtest.api.orders.postOrder({
       accountId: '',
       figi,
@@ -205,8 +210,8 @@ describe('backtest', () => {
   });
 
   it('недостаточно лотов для продажи', async () => {
-    const backtest = createBacktest();
-    await backtest.tick();
+    const backtest = await createBacktest();
+
     const promise = backtest.api.orders.postOrder({
       accountId: '',
       figi,
@@ -215,7 +220,7 @@ describe('backtest', () => {
       orderType: OrderType.ORDER_TYPE_MARKET,
       orderId: '1',
     });
-    await assert.rejects(promise, /Недостаточно лотов для заявки: 5 > 0/);
+    await assert.rejects(promise, /Недостаточно лотов для продажи: 0 < 5/);
   });
 
 });

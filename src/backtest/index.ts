@@ -20,7 +20,7 @@ import { MarketStream } from '../stream/market.js';
 import { TradesStream } from '../stream/trades.js';
 
 export interface BacktestOptions {
-  /** Свечи: путь к файлу */
+  /** Путь к файлу с историческими свечами */
   candles: string;
   /** Массив путей к файлам с инструментами (акции, облигации, итд) */
   instruments: InstrumentsConfig;
