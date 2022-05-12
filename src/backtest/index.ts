@@ -20,8 +20,11 @@ import { MarketStream } from '../stream/market.js';
 import { TradesStream } from '../stream/trades.js';
 
 export interface BacktestOptions {
-  /** Путь к файлу с историческими свечами */
-  candles: string;
+  /**
+   * Путь к файлу с историческими свечами по конкретному инструменту.
+   * В случае массива свечи будут склеены в том же порядке.
+   */
+  candles: string | string[];
   /** Массив путей к файлам с инструментами (акции, облигации, итд) */
   instruments: InstrumentsConfig;
   /** Стартовый индекс для свечей */
