@@ -5,6 +5,7 @@
 import fs from 'fs';
 import { on, EventEmitter } from 'node:events';
 import { Client } from 'nice-grpc';
+import fg from 'fast-glob';
 import { SecurityTradingStatus } from '../generated/common.js';
 import {
   MarketDataServiceDefinition,
@@ -95,8 +96,7 @@ export class MarketDataStub implements Client<typeof MarketDataServiceDefinition
   }
 
   private loadCandles() {
-    const { candles } = this.options;
-    const files = Array.isArray(candles) ? candles : [ candles ];
+    const files = fg.sync(this.options.candles);
     this.candles = [];
     files.forEach(file => {
       const fileCandles = JSON.parse(fs.readFileSync(file, 'utf8')) as HistoricCandle[];
