@@ -1,0 +1,52 @@
+{
+  "orderId": "31295729277",
+  "executionReportStatus": 4,
+  "lotsRequested": 1,
+  "lotsExecuted": 0,
+  "initialOrderPrice": {
+    "currency": "rub",
+    "units": 1000,
+    "nano": 0
+  },
+  "executedOrderPrice": {
+    "currency": "rub",
+    "units": 0,
+    "nano": 0
+  },
+  "totalOrderAmount": {
+    "currency": "rub",
+    "units": 1000,
+    "nano": 0
+  },
+  "averagePositionPrice": {
+    "currency": "rub",
+    "units": 0,
+    "nano": 0
+  },
+  "initialCommission": {
+    "currency": "rub",
+    "units": 3,
+    "nano": 0
+  },
+  "executedCommission": {
+    "currency": "rub",
+    "units": 0,
+    "nano": 0
+  },
+  "figi": "BBG004730N88",
+  "direction": 1,
+  "initialSecurityPrice": {
+    "currency": "rub",
+    "units": 100,
+    "nano": 0
+  },
+  "stages": [],
+  "serviceCommission": {
+    "currency": "rub",
+    "units": 0,
+    "nano": 0
+  },
+  "currency": "RUB",
+  "orderType": 1,
+  "orderDate": "2022-05-13T15:58:55.511Z"
+}

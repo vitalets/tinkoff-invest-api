@@ -1,0 +1,264 @@
+{
+  "trades": [
+    {
+      "figi": "BBG004730N88",
+      "direction": 1,
+      "price": {
+        "units": 120,
+        "nano": 340000000
+      },
+      "quantity": 1,
+      "time": "2022-05-13T13:13:01.751Z"
+    },
+    {
+      "figi": "BBG004730N88",
+      "direction": 2,
+      "price": {
+        "units": 120,
+        "nano": 320000000
+      },
+      "quantity": 3,
+      "time": "2022-05-13T13:13:03.397Z"
+    },
+    {
+      "figi": "BBG004730N88",
+      "direction": 2,
+      "price": {
+        "units": 120,
+        "nano": 320000000
+      },
+      "quantity": 3,
+      "time": "2022-05-13T13:13:03.397Z"
+    },
+    {
+      "figi": "BBG004730N88",
+      "direction": 2,
+      "price": {
+        "units": 120,
+        "nano": 320000000
+      },
+      "quantity": 1,
+      "time": "2022-05-13T13:13:03.408Z"
+    },
+    {
+      "figi": "BBG004730N88",
+      "direction": 2,
+      "price": {
+        "units": 120,
+        "nano": 320000000
+      },
+      "quantity": 6,
+      "time": "2022-05-13T13:13:03.849Z"
+    },
+    {
+      "figi": "BBG004730N88",
+      "direction": 2,
+      "price": {
+        "units": 120,
+        "nano": 320000000
+      },
+      "quantity": 2,
+      "time": "2022-05-13T13:13:03.850Z"
+    },
+    {
+      "figi": "BBG004730N88",
+      "direction": 2,
+      "price": {
+        "units": 120,
+        "nano": 320000000
+      },
+      "quantity": 5,
+      "time": "2022-05-13T13:13:03.951Z"
+    },
+    {
+      "figi": "BBG004730N88",
+      "direction": 1,
+      "price": {
+        "units": 120,
+        "nano": 350000000
+      },
+      "quantity": 1,
+      "time": "2022-05-13T13:13:04.391Z"
+    },
+    {
+      "figi": "BBG004730N88",
+      "direction": 1,
+      "price": {
+        "units": 120,
+        "nano": 350000000
+      },
+      "quantity": 1,
+      "time": "2022-05-13T13:13:05.754Z"
+    },
+    {
+      "figi": "BBG004730N88",
+      "direction": 2,
+      "price": {
+        "units": 120,
+        "nano": 340000000
+      },
+      "quantity": 74,
+      "time": "2022-05-13T13:13:06.007Z"
+    },
+    {
+      "figi": "BBG004730N88",
+      "direction": 1,
+      "price": {
+        "units": 120,
+        "nano": 350000000
+      },
+      "quantity": 3,
+      "time": "2022-05-13T13:13:08.273Z"
+    },
+    {
+      "figi": "BBG004730N88",
+      "direction": 2,
+      "price": {
+        "units": 120,
+        "nano": 340000000
+      },
+      "quantity": 1,
+      "time": "2022-05-13T13:13:08.639Z"
+    },
+    {
+      "figi": "BBG004730N88",
+      "direction": 2,
+      "price": {
+        "units": 120,
+        "nano": 340000000
+      },
+      "quantity": 2,
+      "time": "2022-05-13T13:13:17.489Z"
+    },
+    {
+      "figi": "BBG004730N88",
+      "direction": 2,
+      "price": {
+        "units": 120,
+        "nano": 340000000
+      },
+      "quantity": 11,
+      "time": "2022-05-13T13:13:21.313Z"
+    },
+    {
+      "figi": "BBG004730N88",
+      "direction": 2,
+      "price": {
+        "units": 120,
+        "nano": 340000000
+      },
+      "quantity": 6,
+      "time": "2022-05-13T13:13:21.314Z"
+    },
+    {
+      "figi": "BBG004730N88",
+      "direction": 2,
+      "price": {
+        "units": 120,
+        "nano": 340000000
+      },
+      "quantity": 10,
+      "time": "2022-05-13T13:13:21.314Z"
+    },
+    {
+      "figi": "BBG004730N88",
+      "direction": 2,
+      "price": {
+        "units": 120,
+        "nano": 340000000
+      },
+      "quantity": 1,
+      "time": "2022-05-13T13:13:21.315Z"
+    },
+    {
+      "figi": "BBG004730N88",
+      "direction": 2,
+      "price": {
+        "units": 120,
+        "nano": 340000000
+      },
+      "quantity": 1,
+      "time": "2022-05-13T13:13:21.315Z"
+    },
+    {
+      "figi": "BBG004730N88",
+      "direction": 2,
+      "price": {
+        "units": 120,
+        "nano": 340000000
+      },
+      "quantity": 1,
+      "time": "2022-05-13T13:13:21.316Z"
+    },
+    {
+      "figi": "BBG004730N88",
+      "direction": 2,
+      "price": {
+        "units": 120,
+        "nano": 340000000
+      },
+      "quantity": 10,
+      "time": "2022-05-13T13:13:21.325Z"
+    },
+    {
+      "figi": "BBG004730N88",
+      "direction": 2,
+      "price": {
+        "units": 120,
+        "nano": 340000000
+      },
+      "quantity": 2,
+      "time": "2022-05-13T13:13:21.326Z"
+    },
+    {
+      "figi": "BBG004730N88",
+      "direction": 1,
+      "price": {
+        "units": 120,
+        "nano": 350000000
+      },
+      "quantity": 1,
+      "time": "2022-05-13T13:13:22.109Z"
+    },
+    {
+      "figi": "BBG004730N88",
+      "direction": 2,
+      "price": {
+        "units": 120,
+        "nano": 340000000
+      },
+      "quantity": 47,
+      "time": "2022-05-13T13:13:24.345Z"
+    },
+    {
+      "figi": "BBG004730N88",
+      "direction": 1,
+      "price": {
+        "units": 120,
+        "nano": 350000000
+      },
+      "quantity": 7,
+      "time": "2022-05-13T13:13:25.193Z"
+    },
+    {
+      "figi": "BBG004730N88",
+      "direction": 1,
+      "price": {
+        "units": 120,
+        "nano": 350000000
+      },
+      "quantity": 10,
+      "time": "2022-05-13T13:13:26.528Z"
+    },
+    {
+      "figi": "BBG004730N88",
+      "direction": 2,
+      "price": {
+        "units": 120,
+        "nano": 340000000
+      },
+      "quantity": 10,
+      "time": "2022-05-13T13:13:26.779Z"
+    }
+  ]
+}

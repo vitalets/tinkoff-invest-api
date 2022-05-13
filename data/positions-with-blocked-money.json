@@ -1,0 +1,35 @@
+{
+  "money": [
+    {
+      "currency": "rub",
+      "units": 2006,
+      "nano": 230000000
+    },
+    {
+      "currency": "usd",
+      "units": 0,
+      "nano": 570000000
+    }
+  ],
+  "blocked": [
+    {
+      "currency": "rub",
+      "units": 1003,
+      "nano": 0
+    }
+  ],
+  "securities": [
+    {
+      "figi": "BBG000BR2B91",
+      "blocked": 0,
+      "balance": 4
+    },
+    {
+      "figi": "BBG004730N88",
+      "blocked": 0,
+      "balance": 10
+    }
+  ],
+  "limitsLoadingInProgress": false,
+  "futures": []
+}

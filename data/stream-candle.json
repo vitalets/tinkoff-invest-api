@@ -1,0 +1,25 @@
+{
+  "candle": {
+    "figi": "BBG004730N88",
+    "interval": 1,
+    "open": {
+      "units": 120,
+      "nano": 220000000
+    },
+    "high": {
+      "units": 120,
+      "nano": 250000000
+    },
+    "low": {
+      "units": 120,
+      "nano": 160000000
+    },
+    "close": {
+      "units": 120,
+      "nano": 250000000
+    },
+    "volume": 537,
+    "time": "2022-05-13T13:33:00.000Z",
+    "lastTradeTs": "2022-05-13T13:33:18.502Z"
+  }
+}

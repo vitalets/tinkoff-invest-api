@@ -1,0 +1,12 @@
+{
+  "subscribeCandlesResponse": {
+    "trackingId": "627e5dd48cabea5aa7fab6686c937dd8",
+    "candlesSubscriptions": [
+      {
+        "figi": "BBG004730N88",
+        "interval": 1,
+        "subscriptionStatus": 1
+      }
+    ]
+  }
+}

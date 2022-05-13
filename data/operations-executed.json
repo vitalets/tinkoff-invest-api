@@ -1,0 +1,120 @@
+[
+  {
+    "id": "2672020042",
+    "parentOperationId": "31297432578",
+    "currency": "rub",
+    "payment": {
+      "currency": "rub",
+      "units": -3,
+      "nano": -620000000
+    },
+    "price": {
+      "currency": "rub",
+      "units": 0,
+      "nano": 0
+    },
+    "state": 1,
+    "quantity": 0,
+    "quantityRest": 0,
+    "figi": "BBG004730N88",
+    "instrumentType": "share",
+    "date": "2022-05-13T14:21:08.316Z",
+    "type": "Удержание комиссии за операцию",
+    "operationType": 19,
+    "trades": []
+  },
+  {
+    "id": "31297432578",
+    "parentOperationId": "",
+    "currency": "rub",
+    "payment": {
+      "currency": "rub",
+      "units": 1205,
+      "nano": 500000000
+    },
+    "price": {
+      "currency": "rub",
+      "units": 120,
+      "nano": 550000000
+    },
+    "state": 1,
+    "quantity": 10,
+    "quantityRest": 0,
+    "figi": "BBG004730N88",
+    "instrumentType": "share",
+    "date": "2022-05-13T14:21:07.316Z",
+    "type": "Продажа ЦБ",
+    "operationType": 22,
+    "trades": [
+      {
+        "tradeId": "5394240310",
+        "dateTime": "2022-05-13T14:21:07.316Z",
+        "quantity": 10,
+        "price": {
+          "currency": "rub",
+          "units": 120,
+          "nano": 550000000
+        }
+      }
+    ]
+  },
+  {
+    "id": "2671791878",
+    "parentOperationId": "31296501240",
+    "currency": "rub",
+    "payment": {
+      "currency": "rub",
+      "units": -3,
+      "nano": -610000000
+    },
+    "price": {
+      "currency": "rub",
+      "units": 0,
+      "nano": 0
+    },
+    "state": 1,
+    "quantity": 0,
+    "quantityRest": 0,
+    "figi": "BBG004730N88",
+    "instrumentType": "share",
+    "date": "2022-05-13T13:52:13.711Z",
+    "type": "Удержание комиссии за операцию",
+    "operationType": 19,
+    "trades": []
+  },
+  {
+    "id": "31296501240",
+    "parentOperationId": "",
+    "currency": "rub",
+    "payment": {
+      "currency": "rub",
+      "units": -1203,
+      "nano": 0
+    },
+    "price": {
+      "currency": "rub",
+      "units": 120,
+      "nano": 300000000
+    },
+    "state": 1,
+    "quantity": 10,
+    "quantityRest": 0,
+    "figi": "BBG004730N88",
+    "instrumentType": "share",
+    "date": "2022-05-13T13:52:12.711Z",
+    "type": "Покупка ЦБ",
+    "operationType": 15,
+    "trades": [
+      {
+        "tradeId": "5394147632",
+        "dateTime": "2022-05-13T13:52:12.711Z",
+        "quantity": 10,
+        "price": {
+          "currency": "rub",
+          "units": 120,
+          "nano": 300000000
+        }
+      }
+    ]
+  }
+]

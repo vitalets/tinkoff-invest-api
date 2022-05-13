@@ -1,0 +1,52 @@
+{
+  "figi": "BBG004730N88",
+  "depth": 2,
+  "bids": [
+    {
+      "price": {
+        "units": 120,
+        "nano": 170000000
+      },
+      "quantity": 67
+    },
+    {
+      "price": {
+        "units": 120,
+        "nano": 160000000
+      },
+      "quantity": 80
+    }
+  ],
+  "asks": [
+    {
+      "price": {
+        "units": 120,
+        "nano": 190000000
+      },
+      "quantity": 92
+    },
+    {
+      "price": {
+        "units": 120,
+        "nano": 200000000
+      },
+      "quantity": 2241
+    }
+  ],
+  "lastPrice": {
+    "units": 120,
+    "nano": 170000000
+  },
+  "closePrice": {
+    "units": 119,
+    "nano": 150000000
+  },
+  "limitUp": {
+    "units": 143,
+    "nano": 190000000
+  },
+  "limitDown": {
+    "units": 94,
+    "nano": 990000000
+  }
+}

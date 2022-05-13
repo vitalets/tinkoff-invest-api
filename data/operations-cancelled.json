@@ -1,0 +1,50 @@
+[
+  {
+    "id": "31296786346",
+    "parentOperationId": "",
+    "currency": "rub",
+    "payment": {
+      "currency": "rub",
+      "units": 0,
+      "nano": 0
+    },
+    "price": {
+      "currency": "rub",
+      "units": 121,
+      "nano": 0
+    },
+    "state": 2,
+    "quantity": 10,
+    "quantityRest": 10,
+    "figi": "BBG004730N88",
+    "instrumentType": "share",
+    "date": "2022-05-13T14:06:34.926Z",
+    "type": "Продажа ЦБ",
+    "operationType": 22,
+    "trades": []
+  },
+  {
+    "id": "31295729277",
+    "parentOperationId": "",
+    "currency": "rub",
+    "payment": {
+      "currency": "rub",
+      "units": 0,
+      "nano": 0
+    },
+    "price": {
+      "currency": "rub",
+      "units": 100,
+      "nano": 0
+    },
+    "state": 2,
+    "quantity": 10,
+    "quantityRest": 10,
+    "figi": "BBG004730N88",
+    "instrumentType": "share",
+    "date": "2022-05-13T12:58:55.493Z",
+    "type": "Покупка ЦБ",
+    "operationType": 15,
+    "trades": []
+  }
+]

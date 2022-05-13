@@ -1,0 +1,141 @@
+{
+  "totalAmountShares": {
+    "currency": "rub",
+    "units": 14076,
+    "nano": 470000000
+  },
+  "totalAmountBonds": {
+    "currency": "rub",
+    "units": 0,
+    "nano": 0
+  },
+  "totalAmountEtf": {
+    "currency": "rub",
+    "units": 0,
+    "nano": 0
+  },
+  "totalAmountCurrencies": {
+    "currency": "rub",
+    "units": 3041,
+    "nano": 60000000
+  },
+  "totalAmountFutures": {
+    "currency": "rub",
+    "units": 0,
+    "nano": 0
+  },
+  "expectedYield": {
+    "units": -15,
+    "nano": -670000000
+  },
+  "positions": [
+    {
+      "figi": "BBG000BR2B91",
+      "instrumentType": "share",
+      "quantity": {
+        "units": 4,
+        "nano": 0
+      },
+      "averagePositionPrice": {
+        "currency": "usd",
+        "units": 54,
+        "nano": 260000000
+      },
+      "expectedYield": {
+        "units": -16,
+        "nano": -520000000
+      },
+      "currentNkd": {
+        "currency": "usd",
+        "units": 0,
+        "nano": 0
+      },
+      "currentPrice": {
+        "currency": "usd",
+        "units": 50,
+        "nano": 130000000
+      },
+      "averagePositionPriceFifo": {
+        "currency": "usd",
+        "units": 54,
+        "nano": 260000000
+      },
+      "quantityLots": {
+        "units": 4,
+        "nano": 0
+      }
+    },
+    {
+      "figi": "BBG004730N88",
+      "instrumentType": "share",
+      "quantity": {
+        "units": 10,
+        "nano": 0
+      },
+      "averagePositionPrice": {
+        "currency": "rub",
+        "units": 216,
+        "nano": 760000000
+      },
+      "expectedYield": {
+        "units": 4,
+        "nano": 100000000
+      },
+      "currentNkd": {
+        "currency": "rub",
+        "units": 0,
+        "nano": 0
+      },
+      "currentPrice": {
+        "currency": "rub",
+        "units": 120,
+        "nano": 710000000
+      },
+      "averagePositionPriceFifo": {
+        "currency": "rub",
+        "units": 120,
+        "nano": 300000000
+      },
+      "quantityLots": {
+        "units": 1,
+        "nano": 0
+      }
+    },
+    {
+      "figi": "BBG0013HGFT4",
+      "instrumentType": "currency",
+      "quantity": {
+        "units": 0,
+        "nano": 570000000
+      },
+      "averagePositionPrice": {
+        "currency": "rub",
+        "units": 73,
+        "nano": 910000000
+      },
+      "expectedYield": {
+        "units": -5,
+        "nano": -560000000
+      },
+      "currentNkd": {
+        "currency": "rub",
+        "units": 0,
+        "nano": 0
+      },
+      "currentPrice": {
+        "currency": "rub",
+        "units": 64,
+        "nano": 155000000
+      },
+      "averagePositionPriceFifo": {
+        "currency": "rub",
+        "units": 73,
+        "nano": 912500000
+      },
+      "quantityLots": {
+        "units": 0,
+        "nano": 570000000
+      }
+    }
+  ]
+}
