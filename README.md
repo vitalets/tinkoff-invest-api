@@ -64,7 +64,31 @@ setTimeout(() => api.stream.market.cancel(), 3000);
 ### Универсальный счет
 Для бесшовной работы со счетами в бою и песочнице сделан универсальный интерфейс `TinkoffAccount`.
 
-// work in progress
+```ts
+import { TinkoffAccount, RealAccount, SandboxAccount } from 'tinkoff-invest-api';
+import { OrderDirection, OrderType } from 'tinkoff-invest-api/dist/generated/orders.js';
+
+// создать экземпляр счета: боевого или в песочнице
+const account: TinkoffAccount = process.env.USE_REAL_ACCOUNT
+    ? new RealAccount(api, '<real-account-id>')
+    : new SandboxAccount(api, '<sandbox-account-id>');
+
+// получить портфель
+const protfolio = await account.getPortfolio();
+
+// получить список заявок
+const { orders } = await account.getOrders();
+
+// создать лимит-заявку на покупку 1 лота по цене 100
+const order = await account.postOrder({
+  figi: 'BBG00QPYJ5H0',
+  quantity: 1,
+  price: api.helpers.toQuotation(100),
+  direction: OrderDirection.ORDER_DIRECTION_BUY,
+  orderType: OrderType.ORDER_TYPE_LIMIT,
+  orderId: '<random-id>',
+});
+```
 
 ### Бэктест
 Для тестирования стратегий на исторических данных сделан отдельный класс `Backtest`.
