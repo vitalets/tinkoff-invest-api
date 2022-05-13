@@ -37,9 +37,9 @@ const { accounts } = await api.users.getAccounts({});
 // получить портфель по id счета
 const portfolio = await api.operations.getPortfolio({ accountId: accounts[0].id });
 
-// получить 1-минутные свечи за последние 5 мин для акций Сбера
+// получить 1-минутные свечи за последние 5 мин для акций Тинкофф Групп
 const { candles } = await api.marketdata.getCandles({
-  figi: 'BBG004730N88',
+  figi: 'BBG00QPYJ5H0',
   interval: CandleInterval.CANDLE_INTERVAL_1_MIN,
   ...api.helpers.fromTo('-5m'),
 });
@@ -50,7 +50,7 @@ const { candles } = await api.marketdata.getCandles({
 ```ts
 // подписка на свечи
 api.stream.market.watch({ candles: [
-  { figi: 'BBG004730N88', interval: SubscriptionInterval.SUBSCRIPTION_INTERVAL_ONE_MINUTE }
+  { figi: 'BBG00QPYJ5H0', interval: SubscriptionInterval.SUBSCRIPTION_INTERVAL_ONE_MINUTE }
 ]});
 
 // обработка событий
@@ -83,7 +83,7 @@ fs.writeFileSync('data/shares.json', JSON.stringify(shares, null, 2));
 
 // загружаем в файл минутные свечи по заданной акции
 const { candles } = await api.marketdata.getCandles({
-  figi: 'BBG004730N88',
+  figi: 'BBG00QPYJ5H0',
   interval: CandleInterval.CANDLE_INTERVAL_1_MIN,
   ...api.helpers.fromTo('1d', new Date('2022-05-06T10:00:00+03:00'))
 });
