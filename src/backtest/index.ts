@@ -103,6 +103,7 @@ export class Backtest {
     let stream: TinkoffInvestApi['stream'];
     // Забираем публичную часть TinkoffInvestApi (https://github.com/microsoft/TypeScript/issues/471)
     const api: PublicOf<TinkoffInvestApi> = {
+      options: { token: '' },
       helpers: Helpers,
       marketdata: this.marketdata,
       marketdataStream: this.marketdataStream,

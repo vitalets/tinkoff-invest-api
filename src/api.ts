@@ -28,7 +28,9 @@ type ServiceDefinition = typeof InstrumentsServiceDefinition
   | typeof UsersServiceDefinition;
 
 export interface TinkoffInvestApiOptions {
+  /** Токен доступа */
   token: string;
+  /** Имя приложения */
   appName?: string;
 }
 
@@ -37,7 +39,7 @@ export class TinkoffInvestApi {
   protected clients: Map<ServiceDefinition, Client<ServiceDefinition>> = new Map();
   protected streamClients?: { market: MarketStream, trades: TradesStream };
 
-  constructor(protected options: TinkoffInvestApiOptions) {
+  constructor(public options: TinkoffInvestApiOptions) {
     this.channel = this.createChannel();
   }
 
