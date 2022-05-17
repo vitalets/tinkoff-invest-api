@@ -92,7 +92,7 @@ const order = await account.postOrder({
 ```
 
 ### Кеширование свечей
-Кеширование свечей позволяет сократить кол-во запросов к API, а также более удобно получать необходимые свечи за любой период времени. Для этого нужно использовать класс `CandlesLoader`:
+Кеширование свечей позволяет сократить кол-во запросов к API, а также более удобно получать необходимые свечи за любой период времени. Для загрузки свечей с учетом кеша используется класс `CandlesLoader`:
 ```ts
 import { TinkoffInvestApi, CandlesLoader } from 'tinkoff-invest-api';
 
@@ -101,7 +101,7 @@ const api = new TinkoffInvestApi({ token: '<your-token>' });
 // создать инстанс загрузчика свечей
 const candlesLoader = new CandlesLoader(api, { cacheDir: '.candles' });
 
-// загрузить минимум 100 последних свечей (в понедельник будут использованы данные пятницы)
+// загрузить минимум 100 последних свечей (в понедельник будут использованы данные пятницы, итп)
 const { candles } = await candlesLoader.getCandles({
   figi: 'BBG004730N88',
   interval: CandleInterval.CANDLE_INTERVAL_15_MIN,
