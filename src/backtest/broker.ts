@@ -27,21 +27,28 @@ export class Broker {
     const lotsRequested = req.quantity;
     const price = Helpers.toNumber(req.price || this.backtest.marketdata.currentCandle.close) || 0;
     const { lot } = await this.getInstrumentByFigi(req.figi);
+    const { currency, brokerFee } = this.options;
     const initialOrderPrice = price * lotsRequested * lot;
-    return {
+    const initialComission = initialOrderPrice * brokerFee / 100;
+    const totalOrderAmount = initialOrderPrice + initialComission;
+    const order: OrderState = {
       orderId: req.orderId,
       executionReportStatus: OrderExecutionReportStatus.EXECUTION_REPORT_STATUS_NEW,
       lotsRequested,
       lotsExecuted: 0,
-      initialSecurityPrice: Helpers.toMoneyValue(price, this.options.currency),
-      initialOrderPrice: Helpers.toMoneyValue(initialOrderPrice, this.options.currency),
+      initialSecurityPrice: Helpers.toMoneyValue(price, currency),
+      initialOrderPrice: Helpers.toMoneyValue(initialOrderPrice, currency),
+      initialCommission: Helpers.toMoneyValue(initialComission, currency),
+      totalOrderAmount: Helpers.toMoneyValue(totalOrderAmount, currency),
       figi: req.figi,
       direction: req.direction,
       orderType: req.orderType,
       stages: [],
-      currency: this.options.currency,
+      currency,
       orderDate: this.backtest.marketdata.getTime(),
     };
+    this.blockBalance(order, lot);
+    return order;
   }
 
   async tryExecuteOrders() {
@@ -54,40 +61,56 @@ export class Broker {
 
   private async executeOrder(order: OrderState, price: number) {
     const instrument = await this.getInstrumentByFigi(order.figi);
-    this.setOrderExecuted(order, instrument, price,);
-    const operation = this.createOperation(order, instrument);
-    const comissionOperation = this.createComissionOperation(order, operation);
-    this.backtest.operations.pushOperations([ operation, comissionOperation ]);
-    const figiOperations = await this.getOperationsByFigi(operation.figi);
+    this.setOrderExecuted(order, instrument, price);
+    this.updateBalance(order, instrument.lot);
+    const mainOperation = this.createOrderOperation(order, instrument);
+    const comissionOperation = this.createComissionOperation(order, mainOperation);
+    this.backtest.operations.pushOperations([ mainOperation, comissionOperation ]);
+    const figiOperations = await this.getOperationsByFigi(mainOperation.figi);
     const position = this.createPosition(figiOperations, instrument, price);
-    this.backtest.operations.pushPosition(position);
+    this.backtest.operations.replacePortfolioPosition(position);
   }
 
   /**
-   * Блокировать средства для заявки.
-   * (Пока не блокируем, а просто проверяем)
+   * Заблокировать средства при создании заявки.
    */
-  async blockPositionForOrder(order: OrderState) {
+  protected blockBalance(order: OrderState, lot: number) {
     if (order.direction === OrderDirection.ORDER_DIRECTION_BUY) {
-      const balance = this.backtest.operations.getBalance();
-      const orderAmount = Helpers.toNumber(order.initialOrderPrice!);
-      if (balance < orderAmount) {
-        throw new Error(`Недостаточно средств для покупки: ${balance} < ${orderAmount}`);
-      }
+      const totalOrderAmount = Helpers.toNumber(order.totalOrderAmount) || 0;
+      this.backtest.operations.blockMoney(totalOrderAmount);
     } else {
-      const position = await this.getPositionByFigi(order.figi);
-      const lots = Helpers.toNumber(position?.quantityLots) || 0;
-      if (lots < order.lotsRequested) {
-        throw new Error(`Недостаточно лотов для продажи: ${lots} < ${order.lotsRequested}`);
-      }
+      this.backtest.operations.blockFigi(order.figi, order.lotsRequested * lot);
     }
   }
 
   /**
-   * Разблокировать средства для заявки.
+   * Разблокировать средства при отмене заявки.
    */
-  unblockPositionForOrder(_: OrderState) {
-    // т.к. пока ничего не блокируем, то здесь noop
+  async unblockBalance(order: OrderState) {
+    if (order.direction === OrderDirection.ORDER_DIRECTION_BUY) {
+      const totalOrderAmount = Helpers.toNumber(order.totalOrderAmount) || 0;
+      this.backtest.operations.blockMoney(-totalOrderAmount);
+    } else {
+      const { lot } = await this.getInstrumentByFigi(order.figi);
+      this.backtest.operations.blockFigi(order.figi, -order.lotsRequested * lot);
+    }
+  }
+
+  /**
+   * Обновляем заблокированные ресурсы после успешного выполнения заявки.
+   */
+  protected updateBalance(order: OrderState, lot: number) {
+    const qty = order.lotsExecuted * lot;
+    if (order.direction === OrderDirection.ORDER_DIRECTION_BUY) {
+      const totalOrderAmount = Helpers.toNumber(order.totalOrderAmount) || 0;
+      this.backtest.operations.addToBalance(-totalOrderAmount, 'blocked');
+      this.backtest.operations.addToFigi(order.figi, qty, 'balance');
+    } else {
+      const executedOrderPrice = Helpers.toNumber(order.executedOrderPrice) || 0;
+      const executedCommission = Helpers.toNumber(order.executedCommission) || 0;
+      this.backtest.operations.addToBalance(executedOrderPrice - executedCommission, 'money');
+      this.backtest.operations.addToFigi(order.figi, -qty, 'blocked');
+    }
   }
 
   /**
@@ -121,7 +144,7 @@ export class Broker {
     order.averagePositionPrice = Helpers.toMoneyValue(price, this.options.currency);
   }
 
-  private createOperation(order: OrderState, instrument: Instrument): Operation {
+  private createOrderOperation(order: OrderState, instrument: Instrument): Operation {
     const isBuy = order.direction === OrderDirection.ORDER_DIRECTION_BUY;
     const operationType = isBuy ? OperationType.OPERATION_TYPE_BUY : OperationType.OPERATION_TYPE_SELL;
     const executedOrderPrice = Helpers.toNumber(order.executedOrderPrice!);
@@ -201,11 +224,6 @@ export class Broker {
       state: OperationState.OPERATION_STATE_EXECUTED,
     });
     return operations;
-  }
-
-  private async getPositionByFigi(figi: string) {
-    const { positions } = await this.backtest.operations.getPortfolio({ accountId: '' });
-    return positions.find(p => p.figi === figi);
   }
 }
 

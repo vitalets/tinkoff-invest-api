@@ -65,6 +65,18 @@ describe('backtest', () => {
     assert.equal(capital, 100_000);
   });
 
+  it('getPositions', async () => {
+    const backtest = await createBacktest();
+    const positions = await backtest.api.operations.getPositions({ accountId: '' });
+    assert.deepEqual(positions, {
+      money: [ { units: 100000, nano: 0, currency: 'rub' } ],
+      securities: [],
+      blocked: [],
+      futures: [],
+      limitsLoadingInProgress: false,
+    });
+  });
+
   it('итерация по свечам', async () => {
     const backtest = await createBacktest();
     const interval = CandleInterval.CANDLE_INTERVAL_1_MIN;
@@ -103,7 +115,16 @@ describe('backtest', () => {
     assert.equal(res.figi, figi);
     assert.equal(res.executionReportStatus, OrderExecutionReportStatus.EXECUTION_REPORT_STATUS_NEW);
     assert.deepEqual(res.initialOrderPrice, { units: 1228, nano: 600000000, currency: 'rub' });
+    // 1228.6 * 0.003 = 3.6858
+    assert.deepEqual(res.initialCommission, { units: 3, nano: 685800000, currency: 'rub' });
+    assert.deepEqual(res.totalOrderAmount, { units: 1232, nano: 285800000, currency: 'rub' });
     assert.equal(await getOrdersCount(backtest), 1);
+
+    // check blocked money/figi
+    const positions = await backtest.api.operations.getPositions({ accountId: '' });
+    assert.deepEqual(positions.blocked, [{ units: 1232, nano: 285800000, currency: 'rub' }]);
+    assert.deepEqual(positions.money, [{ units: 98767, nano: 714200000, currency: 'rub' }]);
+    assert.deepEqual(positions.securities, []);
 
     await backtest.tick();
     assert.equal(await getOrdersCount(backtest), 0);
@@ -128,6 +149,12 @@ describe('backtest', () => {
     assert.deepEqual(portfolio.positions[0].quantity, { units: 10, nano: 0 });
     assert.equal(portfolio.positions[0].instrumentType, 'share');
 
+    // check blocked money/figi
+    const positionsUnblocked = await backtest.api.operations.getPositions({ accountId: '' });
+    assert.deepEqual(positionsUnblocked.blocked, []);
+    assert.deepEqual(positionsUnblocked.money, [{ units: 98767, nano: 714200000, currency: 'rub' }]);
+    assert.deepEqual(positionsUnblocked.securities, [{ figi: 'BBG004730N88', balance: 10, blocked: 0 }]);
+
     // totals
     assert.deepEqual(portfolio.totalAmountCurrencies, { units: 98767, nano: 714200000, currency: 'rub' });
     assert.deepEqual(portfolio.totalAmountShares, { units: 1236, nano: 500000000, currency: 'rub' });
@@ -151,7 +178,7 @@ describe('backtest', () => {
     });
     await backtest.tick();
 
-    // теперь продаем этот 1 лот: цена 123.65 (-комиссия)
+    // теперь продаем этот 1 лот: цена 123.65 (+комиссия)
     await backtest.api.orders.postOrder({
       accountId: '',
       figi,
@@ -160,11 +187,17 @@ describe('backtest', () => {
       orderType: OrderType.ORDER_TYPE_MARKET,
       orderId: '2',
     });
+    // check blocked figi
+    const positionsUnblocked = await backtest.api.operations.getPositions({ accountId: '' });
+    assert.deepEqual(positionsUnblocked.securities, [{ figi: 'BBG004730N88', balance: 0, blocked: 10 }]);
+
     await backtest.tick();
 
     // check operations
     const operations = await getOperations(backtest);
     assert.equal(operations.length, 4);
+    assert.deepEqual(operations[ 0 ].payment, { units: -1228, nano: -600000000, currency: 'rub' });
+    assert.deepEqual(operations[ 1 ].payment, { units: -3, nano: -685800000, currency: 'rub' });
     assert.deepEqual(operations[ 2 ].payment, { units: 1236, nano: 500000000, currency: 'rub' });
     // 1236.5 * 0.003 = 3.7095
     assert.deepEqual(operations[ 3 ].payment, { units: -3, nano: -709500000, currency: 'rub' });
@@ -173,7 +206,7 @@ describe('backtest', () => {
     const portfolio = await backtest.api.operations.getPortfolio({ accountId: '' });
     assert.deepEqual(portfolio.totalAmountCurrencies, { units: 100000, nano: 504700000, currency: 'rub' });
 
-    // check positions
+    // check portfolio positions
     assert.equal(portfolio.positions.length, 1);
     assert.deepEqual(portfolio.positions[0].quantityLots, { units: 0, nano: 0 });
     assert.deepEqual(portfolio.positions[0].quantity, { units: 0, nano: 0 });
@@ -209,6 +242,31 @@ describe('backtest', () => {
     assert.deepEqual(operations[ 1 ].payment, { units: -36, nano: -900000000, currency: 'rub' });
   });
 
+  it('отмена заявки: заблокированные средства возвращаются на баланс', async () => {
+    const backtest = await createBacktest();
+
+    const { orderId } = await backtest.api.orders.postOrder({
+      accountId: '',
+      figi,
+      quantity: 1,
+      price: Helpers.toQuotation(100),
+      direction: OrderDirection.ORDER_DIRECTION_BUY,
+      orderType: OrderType.ORDER_TYPE_LIMIT,
+      orderId: '1',
+    });
+
+    await backtest.tick();
+
+    await backtest.api.orders.cancelOrder({ orderId, accountId: '' });
+    assert.equal(await getOrdersCount(backtest), 0);
+
+    const positions = await backtest.api.operations.getPositions({ accountId: '' });
+    assert.deepEqual(positions.money, [{ units: 100000, nano: 0, currency: 'rub' }]);
+
+    const portfolio = await backtest.api.operations.getPortfolio({ accountId: '' });
+    assert.deepEqual(portfolio.totalAmountCurrencies, { units: 100000, nano: 0, currency: 'rub' });
+  });
+
   it('недостаточно лотов для продажи', async () => {
     const backtest = await createBacktest();
 
@@ -220,7 +278,7 @@ describe('backtest', () => {
       orderType: OrderType.ORDER_TYPE_MARKET,
       orderId: '1',
     });
-    await assert.rejects(promise, /Недостаточно лотов для продажи: 0 < 5/);
+    await assert.rejects(promise, /Отрицательный баланс инструмента BBG004730N88: -50/);
   });
 
 });

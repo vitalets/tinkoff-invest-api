@@ -12,6 +12,7 @@ import {
   OrdersStreamServiceDefinition,
   OrderState,
   PostOrderRequest,
+  PostOrderResponse,
   TradesStreamRequest
 } from '../generated/orders.js';
 import { Backtest } from './index.js';
@@ -30,7 +31,7 @@ export class OrdersStub implements Client<typeof OrdersServiceDefinition> {
     return { orders };
   }
 
-  async postOrder(req: PostOrderRequest) {
+  async postOrder(req: PostOrderRequest): Promise<PostOrderResponse> {
     const order = this.getExistingOrder(req.orderId) || (await this.createOrder(req));
     return {
       orderId: order.orderId,
@@ -38,6 +39,9 @@ export class OrdersStub implements Client<typeof OrdersServiceDefinition> {
       lotsRequested: order.lotsRequested,
       lotsExecuted: order.lotsExecuted,
       initialOrderPrice: order.initialOrderPrice,
+      initialSecurityPrice: order.initialSecurityPrice,
+      initialCommission: order.initialCommission,
+      totalOrderAmount: order.totalOrderAmount,
       figi: order.figi,
       direction: order.direction,
       orderType: order.orderType,
@@ -49,7 +53,9 @@ export class OrdersStub implements Client<typeof OrdersServiceDefinition> {
     const order = this.getExistingOrder(orderId);
     if (order) {
       order.executionReportStatus = OrderExecutionReportStatus.EXECUTION_REPORT_STATUS_CANCELLED;
-      this.backtest.broker.unblockPositionForOrder(order);
+      await this.backtest.broker.unblockBalance(order);
+    } else {
+      throw new Error(`Order not found: ${orderId}`);
     }
     return { time: this.backtest.marketdata.getTime() };
   }
@@ -66,7 +72,6 @@ export class OrdersStub implements Client<typeof OrdersServiceDefinition> {
 
   private async createOrder(req: PostOrderRequest) {
     const order = await this.backtest.broker.createOrder(req);
-    await this.backtest.broker.blockPositionForOrder(order);
     this.orders.push(order);
     return order;
   }
