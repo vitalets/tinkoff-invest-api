@@ -42,7 +42,7 @@ const portfolio = await api.operations.getPortfolio({ accountId: accounts[0].id 
 const { candles } = await api.marketdata.getCandles({
   figi: 'BBG00QPYJ5H0',
   interval: CandleInterval.CANDLE_INTERVAL_1_MIN,
-  ...api.helpers.fromTo('-5m'),
+  ...api.helpers.fromTo('-5m'), // <- удобный хелпер для получения { from, to }
 });
 ```
 
@@ -60,7 +60,7 @@ api.stream.market.on('data', data => console.log(data));
 // закрыть соединение через 3 сек
 setTimeout(() => api.stream.market.cancel(), 3000);
 ```
-> Примечание: со стримом можно работать и напрямую через `api.marketdataStream`. Но там `AsyncIterable`, которые менее удобны кмк.
+> Примечание: со стримом можно работать и напрямую через `api.marketdataStream`. Но там `AsyncIterable`, которые менее удобны (имхо)
 
 ### Универсальный счет
 Для бесшовной работы со счетами в бою и песочнице сделан универсальный интерфейс `TinkoffAccount`.
@@ -91,6 +91,8 @@ const order = await account.postOrder({
 });
 ```
 
+Все методы универсального счета можно посмотреть [тут](https://github.com/vitalets/tinkoff-invest-api/blob/main/src/account/real.ts).
+
 ### Кеширование свечей
 Кеширование свечей позволяет сократить кол-во запросов к API, а также более удобно получать необходимые свечи за любой период времени. Для загрузки свечей с учетом кеша используется класс `CandlesLoader`:
 ```ts
@@ -99,31 +101,58 @@ import { TinkoffInvestApi, CandlesLoader } from 'tinkoff-invest-api';
 const api = new TinkoffInvestApi({ token: '<your-token>' });
 
 // создать инстанс загрузчика свечей
-const candlesLoader = new CandlesLoader(api, { cacheDir: '.candles' });
+const candlesLoader = new CandlesLoader(api, { cacheDir: '.cache' });
 
 // загрузить минимум 100 последних свечей (в понедельник будут использованы данные пятницы, итп)
 const { candles } = await candlesLoader.getCandles({
   figi: 'BBG004730N88',
   interval: CandleInterval.CANDLE_INTERVAL_15_MIN,
-  minCount: 100,
+  minCount: 100, // <- этот параметр позволяет задать кол-во свечей в результате
 });
 ```
 
+<details>
+<summary>Для кеширования `CandlesLoader` создает следующую структуру файлов со свечами:</summary>
+
+```
+.cache
+  candles
+    <figi>
+      1_min
+        2022-05-01.json
+        2022-05-02.json
+      5_min
+        2022-05-01.json
+        2022-05-02.json
+      15_min
+        2022-05-01.json
+        2022-05-02.json
+      hour
+        2022-05-01.json
+        2022-05-02.json
+      day
+        2020.json
+        2021.json
+        2022.json
+```
+</details>
+
 ### Бэктест
-Модуль для бэктеста позволяет быстро протестировать  робота на исторических данных.
+Модуль для бэктеста позволяет протестировать  робота на исторических данных.
 
 Работает все так:
 
 1. вы указываете в конфиге диапазон дат и интервал свечей для бэктеста
 2. на базе конфига класс `Backtest` создает замоканное Tinkoff API, которое вы прокидываете роботу
 3. при старте происходит автоматическая загрузка данных, если их нет в кеше
-4. в цикле вызывается `backtest.tick()`, который последовательно подменяет текущую дату и подставляет в API нужные свечи. Между тиками нужно вызвать код робота
+4. вызываете в цикле `backtest.tick()`, который последовательно подменяет текущую дату и подставляет в API нужные свечи. Между тиками нужно вызвать код робота
 5. на каждом тике происходит полная имитация работы API с биржей:
    * прием и исполнение заявок (лимитных и рыночных)
    * блокировка средств
    * списание комиссий
    * обновление позиций в портфеле
    * ведение списка операций
+   * расчет прибыли
 
 Пример:
 ```ts
@@ -140,15 +169,18 @@ const backtest = new Backtest({
 main();
 
 async function main() {
-  // Цикл по всем свечам с 2022-04-29 10:00
+  // Цикл по всем 5-мин свечам с 2022-04-29 10:00 до 2022-04-30T19:00
   while (await backtest.tick()) {
-    // запуск вашего робота на замоканном API: runRobot({ api: backtest.api });
+    // Запуск вашего робота на замоканном API.
+    // Например: runRobot({ api: backtest.api });
   }
-  // Рассчитываем прибыль
+  // Рассчет финальной прибыли
   const { expectedYield } = await backtest.api.operations.getPortfolio({ accountId: '' });
   console.log(`Прибыль: ${Helpers.toNumber(expectedYield)}%`);
 }
 ```
+
+TODO: поддержка стрима в бэктесте
 
 ## Лицензия
 MIT @ [Vitaliy Potapov](https://github.com/vitalets)
