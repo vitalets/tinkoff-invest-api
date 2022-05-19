@@ -11,6 +11,7 @@ import {
   OperationsServiceDefinition,
   PortfolioPosition,
   PortfolioRequest,
+  PortfolioResponse,
   PositionsRequest,
   PositionsResponse,
   WithdrawLimitsRequest
@@ -37,15 +38,17 @@ export class OperationsStub implements Client<typeof OperationsServiceDefinition
     await this.updatePositionsCurrentPrice();
     // иностранная валюта пока не поддержана, считаем только рубли
     const totalAmountCurrencies = this.positionsResponse.money.find(item => item.currency === 'rub');
-    return {
+    const portfolio: PortfolioResponse = {
       totalAmountCurrencies: totalAmountCurrencies || Helpers.toMoneyValue(0, 'rub'),
       totalAmountShares: Helpers.toMoneyValue(this.calcTotalAmount('share'), 'rub'),
       totalAmountBonds: Helpers.toMoneyValue(this.calcTotalAmount('bond'), 'rub'),
       totalAmountEtf: Helpers.toMoneyValue(this.calcTotalAmount('etf'), 'rub'),
       totalAmountFutures: Helpers.toMoneyValue(this.calcTotalAmount('future'), 'rub'),
-      expectedYield: Helpers.toQuotation(0), // todo
+      expectedYield: Helpers.toQuotation(0),
       positions: this.portfolioPositions,
     };
+    portfolio.expectedYield = Helpers.toQuotation(this.calcExpectedYield(portfolio));
+    return portfolio;
   }
 
   async getPositions(_: PositionsRequest) {
@@ -117,6 +120,19 @@ export class OperationsStub implements Client<typeof OperationsServiceDefinition
         const quantity = Helpers.toNumber(position.quantity) || 0;
         return acc + price * quantity;
       }, 0);
+  }
+
+  private calcExpectedYield(portfolio: PortfolioResponse) {
+    const amounts = [
+      portfolio.totalAmountCurrencies,
+      portfolio.totalAmountBonds,
+      portfolio.totalAmountEtf,
+      portfolio.totalAmountFutures,
+      portfolio.totalAmountShares,
+    ].map(amount => Helpers.toNumber(amount) || 0);
+    const currentCapital = amounts.reduce((acc, amount) => acc + amount, 0);
+    const { initialCapital } = this.backtest.options;
+    return 100 * (currentCapital - initialCapital) / initialCapital;
   }
 
   /**

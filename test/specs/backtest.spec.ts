@@ -44,11 +44,8 @@ describe('backtest', () => {
     const backtest = await createBacktest();
     const res = await backtest.api.operations.getPortfolio({ accountId: 'x' });
     assert.deepEqual(res.positions, []);
-    assert.deepEqual(res.totalAmountCurrencies, {
-      units: 100_000,
-      nano: 0,
-      currency: 'rub',
-    });
+    assert.deepEqual(res.totalAmountCurrencies, { units: 100_000, nano: 0, currency: 'rub' });
+    assert.deepEqual(res.expectedYield, { units: 0, nano: 0 });
   });
 
   it('getInstrumentBy', async () => {
@@ -60,12 +57,6 @@ describe('backtest', () => {
     });
     assert.equal(instrument?.ticker, 'SBER');
     assert.equal(instrument?.tradingStatus, 5);
-  });
-
-  it('getCapital', async () => {
-    const backtest = await createBacktest();
-    const capital = await backtest.getCapital();
-    assert.equal(capital, 100_000);
   });
 
   it('getPositions', async () => {
@@ -165,8 +156,9 @@ describe('backtest', () => {
     // totals
     assert.deepEqual(portfolio.totalAmountCurrencies, { units: 98767, nano: 714200000, currency: 'rub' });
     assert.deepEqual(portfolio.totalAmountShares, { units: 1236, nano: 500000000, currency: 'rub' });
-    // capital: 100_000 - (1228.6 + 3.6858) + 1236.5 = 100004.2142
-    assert.equal((await backtest.getCapital()).toFixed(4), '100004.2142');
+    // capital: 100_000 - (1228.6 + 3.6858) + 1236.5 = 100_004.2142
+    // expectedYield: 100 * (100_004.2142 - 100_000 ) / 100_000 = 0.42142%
+    assert.deepEqual(portfolio.expectedYield, { units: 0, nano: 4214200 });
   });
 
   it('продажа по рыночной цене', async () => {

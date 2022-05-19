@@ -93,21 +93,6 @@ export class Backtest {
     // this.marketdata.reset();
   }
 
-  /**
-   * Расчет сумарного капитала в рублях.
-   */
-  async getCapital() {
-    const portfolio = await this.operations.getPortfolio({ accountId: '' });
-    const amounts = [
-      portfolio.totalAmountCurrencies,
-      portfolio.totalAmountBonds,
-      portfolio.totalAmountEtf,
-      portfolio.totalAmountFutures,
-      portfolio.totalAmountShares,
-    ].map(amount => Helpers.toNumber(amount));
-    return amounts.reduce((acc, amount) => acc + amount, 0);
-  }
-
   private createApiStub() {
     let stream: TinkoffInvestApi['stream'];
     // Забираем публичную часть TinkoffInvestApi (https://github.com/microsoft/TypeScript/issues/471)
