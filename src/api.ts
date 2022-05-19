@@ -55,6 +55,8 @@ export class TinkoffInvestApi {
   get users() { return this.getOrCreateClient(UsersServiceDefinition); }
   get stream() { return this.getOrCreateStream(); }
 
+  isBacktest = false;
+
   private createChannel() {
     const credentials = createGrpcCredentials({
       'Authorization': `Bearer ${this.options.token}`,

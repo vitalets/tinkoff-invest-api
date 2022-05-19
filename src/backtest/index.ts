@@ -113,6 +113,7 @@ export class Backtest {
     // Забираем публичную часть TinkoffInvestApi (https://github.com/microsoft/TypeScript/issues/471)
     const api: PublicOf<TinkoffInvestApi> = {
       options: { token: '' },
+      isBacktest: true,
       helpers: Helpers,
       marketdata: this.marketdata,
       marketdataStream: this.marketdataStream,

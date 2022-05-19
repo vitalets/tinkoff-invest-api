@@ -54,6 +54,8 @@ export abstract class CandlesReq {
   }
 
   protected async loadChunk({ useCache = true }) {
+    // в режиме бэктеста не кешируем в файлы, т.к. данные из апи и так приходят из кеша
+    if (this.api.isBacktest) useCache = false;
     if (useCache) {
       const candles = await this.loadChunkFromCache();
       if (candles) return candles;
