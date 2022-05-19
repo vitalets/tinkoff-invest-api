@@ -24,12 +24,14 @@ export class Broker {
   }
 
   async createOrder(req: PostOrderRequest): Promise<OrderState> {
+    const currency = 'rub';
     const lotsRequested = req.quantity;
-    const price = Helpers.toNumber(req.price || this.backtest.marketdata.currentCandle.close) || 0;
+    const price = req.price
+      ? Helpers.toNumber(req.price)
+      : await this.backtest.marketdata.getCurrentPrice(req.figi);
     const { lot } = await this.getInstrumentByFigi(req.figi);
-    const { currency, brokerFee } = this.options;
     const initialOrderPrice = price * lotsRequested * lot;
-    const initialComission = initialOrderPrice * brokerFee / 100;
+    const initialComission = initialOrderPrice * this.options.brokerFee / 100;
     const totalOrderAmount = initialOrderPrice + initialComission;
     const order: OrderState = {
       orderId: req.orderId,
@@ -45,7 +47,7 @@ export class Broker {
       orderType: req.orderType,
       stages: [],
       currency,
-      orderDate: this.backtest.marketdata.getTime(),
+      orderDate: new Date(),
     };
     this.blockBalance(order, lot);
     return order;
@@ -54,7 +56,7 @@ export class Broker {
   async tryExecuteOrders() {
     const { orders } = await this.backtest.orders.getOrders({ accountId: '' });
     for (const order of orders) {
-      const price = this.isPriceReached(order);
+      const price = await this.isPriceReached(order);
       if (price) await this.executeOrder(order, price);
     }
   }
@@ -115,10 +117,11 @@ export class Broker {
 
   /**
    * Достигнута ли цена, указанная в заявке.
-   * (для рыночных всегда достуигнута)
+   * (для рыночных всегда достигнута)
    */
-  private isPriceReached(order: OrderState) {
-    const prevCandle = this.backtest.marketdata.candles[ this.backtest.marketdata.curIndex - 1 ];
+  private async isPriceReached(order: OrderState) {
+    const prevCandle = await this.backtest.marketdata.getCandle({ figi: order.figi, offset: 1});
+    if (!prevCandle) return false;
     const { low, high, close } = prevCandle;
     switch (order.orderType) {
       case OrderType.ORDER_TYPE_MARKET: return Helpers.toNumber(close);
@@ -138,10 +141,10 @@ export class Broker {
     const executedOrderPrice = price * order.lotsExecuted * instrument.lot;
     const executedCommission = executedOrderPrice * this.options.brokerFee / 100;
     const totalOrderAmount = executedOrderPrice + executedCommission;
-    order.executedOrderPrice = Helpers.toMoneyValue(executedOrderPrice, this.options.currency);
-    order.executedCommission = Helpers.toMoneyValue(executedCommission, this.options.currency);
-    order.totalOrderAmount = Helpers.toMoneyValue(totalOrderAmount, this.options.currency);
-    order.averagePositionPrice = Helpers.toMoneyValue(price, this.options.currency);
+    order.executedOrderPrice = Helpers.toMoneyValue(executedOrderPrice, order.currency);
+    order.executedCommission = Helpers.toMoneyValue(executedCommission, order.currency);
+    order.totalOrderAmount = Helpers.toMoneyValue(totalOrderAmount, order.currency);
+    order.averagePositionPrice = Helpers.toMoneyValue(price, order.currency);
   }
 
   private createOrderOperation(order: OrderState, instrument: Instrument): Operation {
@@ -163,7 +166,8 @@ export class Broker {
       type: getOperationText(operationType),
       instrumentType: instrument.instrumentType,
       trades: [],
-      date: this.backtest.marketdata.getTime(),
+      date: new Date(),
+      // date: this.backtest.marketdata.getTime(),
     };
   }
 

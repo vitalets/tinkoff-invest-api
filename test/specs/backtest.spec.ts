@@ -10,8 +10,11 @@ describe('backtest', () => {
 
   async function createBacktest() {
     const backtest = new Backtest({
-      candles: 'test/data/candles.json',
-      instruments: { shares: 'test/data/shares.json' }
+      token: process.env.TINKOFF_API_TOKEN_READONLY!,
+      from: new Date('2022-04-29T10:00:00+03:00'),
+      to: new Date('2022-04-30T19:00:00+03:00'),
+      candleInterval: CandleInterval.CANDLE_INTERVAL_1_MIN,
+      cacheDir: 'test/.cache',
     });
     await backtest.tick();
     return backtest;
@@ -81,21 +84,25 @@ describe('backtest', () => {
     const backtest = await createBacktest();
     const interval = CandleInterval.CANDLE_INTERVAL_1_MIN;
 
-    const res = await backtest.api.marketdata.getCandles({ figi, interval });
-    assert.equal(res.candles.length, 1);
-    assert.deepEqual(res.candles[ 0 ].close, { units: 122, nano: 860000000 });
+    // запрашиваем свечи за 3 мин
+    let res = await backtest.api.marketdata.getCandles({ figi, interval, ...Helpers.fromTo('3m') });
+    assert.equal(res.candles.length, 3);
+    assert.equal(res.candles[0].time?.toISOString(), '2022-04-29T07:00:00.000Z');
+    assert.equal(res.candles[1].time?.toISOString(), '2022-04-29T07:01:00.000Z');
+    assert.equal(res.candles[2].time?.toISOString(), '2022-04-29T07:02:00.000Z');
 
     await backtest.tick();
-    const res1 = await backtest.api.marketdata.getCandles({ figi, interval });
-    assert.equal(res1.candles.length, 2);
-    assert.deepEqual(res1.candles[ 0 ].close, { units: 122, nano: 860000000 });
-    assert.deepEqual(res1.candles[ 1 ].close, { units: 123, nano: 650000000 });
 
-    while (await backtest.tick()) {
-      // noop
-    }
-    const res2 = await backtest.api.marketdata.getCandles({ figi, interval });
-    assert.equal(res2.candles.length, 525);
+    res = await backtest.api.marketdata.getCandles({ figi, interval, ...Helpers.fromTo('3m') });
+    assert.equal(res.candles.length, 3);
+    assert.equal(res.candles[0].time?.toISOString(), '2022-04-29T07:01:00.000Z');
+    assert.equal(res.candles[1].time?.toISOString(), '2022-04-29T07:02:00.000Z');
+    assert.equal(res.candles[2].time?.toISOString(), '2022-04-29T07:03:00.000Z');
+
+    while (await backtest.tick()) { /* noop */ }
+
+    res = await backtest.api.marketdata.getCandles({ figi, interval, ...Helpers.fromTo('3m') });
+    assert.equal(res.candles.length, 0);
   });
 
   it('покупка по рыночной цене', async () => {
@@ -279,6 +286,31 @@ describe('backtest', () => {
       orderId: '1',
     });
     await assert.rejects(promise, /Отрицательный баланс инструмента BBG004730N88: -50/);
+  });
+
+  it('getLastPrices', async () => {
+    const backtest = await createBacktest();
+    const { lastPrices } = await backtest.api.marketdata.getLastPrices({ figi: [ figi ] });
+    assert.deepEqual(lastPrices[0], {
+      figi,
+      price: { units: 122, nano: 860000000 },
+      time: new Date('2022-04-29T07:00:00.000Z')
+    });
+  });
+
+  it('getOrderBook', async () => {
+    const backtest = await createBacktest();
+    const res = await backtest.api.marketdata.getOrderBook({ figi, depth: 1 });
+    assert.deepEqual(res, {
+      figi,
+      depth: 1,
+      bids: [],
+      asks: [],
+      lastPrice: { units: 122, nano: 860000000 },
+      closePrice: { units: 122, nano: 860000000 },
+      limitUp: { units: 123, nano: 870000000 },
+      limitDown: { units: 122, nano: 800000000 },
+    });
   });
 
 });

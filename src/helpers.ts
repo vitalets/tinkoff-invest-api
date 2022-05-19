@@ -36,12 +36,12 @@ export class Helpers {
   }
 
   /**
-   * Возвращает интервал времени в формате { from, to }.
-   * Для смещения используется формат из https://github.com/vercel/ms
+   * Возвращает интервал времени в формате { from, to } по заданному смещению и базовой дате.
+   * Для смещения можно использовать кол-во миллисекунд или строку в формате из https://github.com/vercel/ms
    */
-  static fromTo(offset: string, base = new Date()) {
+  static fromTo(offset: string | number, base = new Date()) {
     // Не использую StringValue, т.к. с ним больше мороки: нужно импортить при использовании итд.
-    const offsetMs = ms(offset as StringValue);
+    const offsetMs = typeof offset === 'string' ? ms(offset as StringValue) : offset;
     const date = new Date(base.valueOf() + offsetMs);
     const [ from, to ] = offsetMs > 0 ? [ base, date ] : [ date, base ];
     return { from, to };

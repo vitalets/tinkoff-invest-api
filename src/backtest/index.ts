@@ -13,40 +13,40 @@ import { SandboxStub } from './sandbox.js';
 import { StopOrdersStub } from './stoporders.js';
 import { Broker } from './broker.js';
 import { TinkoffInvestApi } from '../api.js';
-import { OptionalKeys, PublicOf } from '../utils/types.js';
+import { PublicOf } from '../utils/types.js';
 import { Helpers } from '../helpers.js';
-import { InstrumentsStub, InstrumentsConfig } from './instruments.js';
+import { InstrumentsStub } from './instruments.js';
 import { MarketStream } from '../stream/market.js';
 import { TradesStream } from '../stream/trades.js';
+import { CandleInterval } from '../generated/marketdata.js';
 
 export interface BacktestOptions {
-  /**
-   * Путь к файлу с историческими свечами по конкретному инструменту.
-   * Возможно несколько файлов и glob-паттерны.
-   */
-  candles: string | string[];
-  /** Массив путей к файлам с инструментами (акции, облигации, итд) */
-  instruments: InstrumentsConfig;
-  /** Стартовый индекс для свечей */
-  initialCandleIndex?: number;
+  /** Токен Тинькофф API. Используется для разовой загрузки данных. Можно readonly. */
+  token: string;
+  /** Стартовая дата бэктестинга */
+  from: Date;
+  /** Конечная дата бэктестинга */
+  to: Date;
+  /** Интервал свечей */
+  candleInterval: CandleInterval,
   /** Начальный капитал */
   initialCapital?: number;
-   /** Валюта */
-  currency?: string;
   /** Комиссия брокера, % от суммы сделки */
   brokerFee?: number;
+  /** Директория для кеширования данных */
+  cacheDir?: string,
 }
 
-const defaults: Required<Pick<BacktestOptions, OptionalKeys<BacktestOptions>>> = {
-  initialCandleIndex: 0,
+const defaults: Required<Pick<BacktestOptions, 'initialCapital' | 'brokerFee' | 'cacheDir'>> = {
   initialCapital: 100_000,
-  currency: 'rub',
   brokerFee: 0.3,
+  cacheDir: '.cache',
 };
 
 export class Backtest {
   options: Required<BacktestOptions>;
   api: TinkoffInvestApi;
+  apiReal: TinkoffInvestApi;
 
   marketdata: MarketDataStub;
   marketdataStream: MarketDataStreamStub;
@@ -62,6 +62,8 @@ export class Backtest {
   // eslint-disable-next-line max-statements
   constructor(options: BacktestOptions) {
     this.options = Object.assign({}, defaults, options);
+    this.assertOptionsFromTo();
+    this.apiReal = this.createApiReal();
     this.marketdata = new MarketDataStub(this);
     this.marketdataStream = new MarketDataStreamStub(this);
     this.instruments = new InstrumentsStub(this);
@@ -72,16 +74,23 @@ export class Backtest {
     this.operations = new OperationsStub(this);
     this.sandbox = new SandboxStub(this);
     this.broker = new Broker(this);
-    this.api = this.createApi();
+    this.api = this.createApiStub();
   }
 
   /**
    * Переход к следующей исторической свече.
    */
   async tick() {
-    const success = this.marketdata.addCandle(); // marketDataStream.emit(nextCandle)
+    const success = this.marketdata.tick();
     if (success) await this.broker.tryExecuteOrders();
     return success;
+  }
+
+  /**
+   * Сброс в исходное состояние.
+   */
+  reset() {
+    // this.marketdata.reset();
   }
 
   /**
@@ -95,11 +104,11 @@ export class Backtest {
       portfolio.totalAmountEtf,
       portfolio.totalAmountFutures,
       portfolio.totalAmountShares,
-    ].map(amount => this.api.helpers.toNumber(amount));
+    ].map(amount => Helpers.toNumber(amount));
     return amounts.reduce((acc, amount) => acc + amount, 0);
   }
 
-  private createApi() {
+  private createApiStub() {
     let stream: TinkoffInvestApi['stream'];
     // Забираем публичную часть TinkoffInvestApi (https://github.com/microsoft/TypeScript/issues/471)
     const api: PublicOf<TinkoffInvestApi> = {
@@ -123,5 +132,15 @@ export class Backtest {
       }
     };
     return api as TinkoffInvestApi;
+  }
+
+  private createApiReal() {
+    return new TinkoffInvestApi({ token: this.options.token });
+  }
+
+  private assertOptionsFromTo() {
+    if (this.options.from > this.options.to) {
+      throw new Error(`from должно быть меньше чем to`);
+    }
   }
 }

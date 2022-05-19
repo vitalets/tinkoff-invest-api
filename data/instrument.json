@@ -1,0 +1,49 @@
+{
+  "figi": "BBG004730N88",
+  "ticker": "SBER",
+  "classCode": "TQBR",
+  "isin": "RU0009029540",
+  "lot": 10,
+  "currency": "rub",
+  "klong": {
+    "units": 2,
+    "nano": 0
+  },
+  "kshort": {
+    "units": 2,
+    "nano": 0
+  },
+  "dlong": {
+    "units": 0,
+    "nano": 250000000
+  },
+  "dshort": {
+    "units": 0,
+    "nano": 316800000
+  },
+  "dlongMin": {
+    "units": 0,
+    "nano": 134000000
+  },
+  "dshortMin": {
+    "units": 0,
+    "nano": 147500000
+  },
+  "shortEnabledFlag": false,
+  "name": "Сбер Банк",
+  "exchange": "MOEX_MORNING",
+  "countryOfRisk": "RU",
+  "countryOfRiskName": "Российская Федерация",
+  "instrumentType": "share",
+  "tradingStatus": 5,
+  "otcFlag": false,
+  "buyAvailableFlag": true,
+  "sellAvailableFlag": true,
+  "minPriceIncrement": {
+    "units": 0,
+    "nano": 10000000
+  },
+  "apiTradeAvailableFlag": true,
+  "uid": "",
+  "realExchange": 1
+}

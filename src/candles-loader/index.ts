@@ -35,7 +35,7 @@ export interface CandlesLoaderOptions {
 }
 
 const defaults: Required<CandlesLoaderOptions> = {
-  cacheDir: '.candles',
+  cacheDir: '.cache',
 };
 
 export class CandlesLoader {

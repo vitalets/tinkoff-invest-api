@@ -2,10 +2,9 @@
  * Эмуляция marketdata.
  * See: https://tinkoff.github.io/investAPI/head-marketdata/
  */
-import fs from 'fs';
 import { on, EventEmitter } from 'node:events';
 import { Client } from 'nice-grpc';
-import fg from 'fast-glob';
+import MockDate from 'mockdate';
 import { SecurityTradingStatus } from '../generated/common.js';
 import {
   MarketDataServiceDefinition,
@@ -15,57 +14,83 @@ import {
   GetLastPricesRequest,
   GetOrderBookRequest,
   GetTradingStatusRequest,
-  LastPrice,
   Order,
   GetLastTradesRequest,
   Trade,
   MarketDataRequest,
-  MarketDataResponse
+  MarketDataResponse,
+  CandleInterval
 } from '../generated/marketdata.js';
 import { Helpers } from '../helpers.js';
 import { Backtest } from './index.js';
+import { CandlesLoader } from '../candles-loader/index.js';
+
+// сохраняем оригинальный конструктор Date(), т.к. при бэктесте он подменяется.
+const OriginalDate = Date;
 
 export class MarketDataStub implements Client<typeof MarketDataServiceDefinition> {
-  candles: HistoricCandle[] = [];
-  curIndex = -1;
+  private candles: Map<string, HistoricCandle[]> = new Map();
+  private candlesLoader: CandlesLoader;
+  private ticks = 0;
 
   constructor(private backtest: Backtest) {
-    this.loadCandles();
+    this.assertFinalDateInThePast();
+    const { cacheDir } = this.options;
+    this.candlesLoader = new CandlesLoader(this.backtest.apiReal, { cacheDir });
   }
 
   private get options() {
     return this.backtest.options;
   }
 
-  get currentCandle() {
-    return this.candles[this.curIndex];
-  }
+  /**
+   * Смещаем дату на интервал свечи.
+   */
+  tick() {
+    const nextDate = this.ticks === 0
+      ? this.options.from
+      : new Date(Date.now() + intervalToMs(this.options.candleInterval));
 
-  getTime() {
-    return new Date(this.currentCandle.time!);
-  }
-
-  addCandle() {
-    if (this.curIndex >= this.candles.length - 1) return false;
-    if (this.curIndex === -1) {
-      this.curIndex = this.options.initialCandleIndex;
+    if (nextDate > this.options.to) {
+      // возможно тут стоит сделать MockDate.reset()
+      return false;
     } else {
-      this.curIndex++;
+      MockDate.set(nextDate);
+      this.ticks++;
+      // todo: emit current candle to stream
+      return true;
     }
-    return true;
   }
 
-  async getCandles(_: GetCandlesRequest) {
-    const candles = this.candles.slice(this.options.initialCandleIndex, this.curIndex + 1);
+  async getCandles({ figi, interval, from, to }: GetCandlesRequest) {
+    if (this.ticks === 0) throw new Error(`Для получения свечей нужно сначала вызвать tick()`);
+    this.ensureSameInterval(interval);
+    if (!from || !to) throw new Error(`Нужно указать from и to`);
+    if (this.isInsideLoadedCandles(figi, from, to)) {
+      const candles = this.getFilteredCandles(figi, from, to);
+      return { candles };
+    }
+    await this.loadCandles(figi, from, to);
+    const candles = this.isInsideLoadedCandles(figi, from, to)
+      ? this.getFilteredCandles(figi, from, to)
+      : [];
     return { candles };
   }
 
-  async getLastPrices(_: GetLastPricesRequest) {
-    const lastPrices: LastPrice[] = [];
+  async getLastPrices(req: GetLastPricesRequest) {
+    const currentPrices = await Promise.all(req.figi.map(figi => this.getCurrentPrice(figi)));
+    const lastPrices = currentPrices.map((price, index) => {
+      return {
+        figi: req.figi[index],
+        price: Helpers.toQuotation(price),
+        time: new Date(),
+      };
+    });
     return { lastPrices };
   }
 
   async getOrderBook({ figi, depth }: GetOrderBookRequest) {
+    const currentCandle = await this.getCurrentCandle(figi);
     const bids: Order[] = [];
     const asks: Order[] = [];
     return {
@@ -73,10 +98,10 @@ export class MarketDataStub implements Client<typeof MarketDataServiceDefinition
       depth,
       bids,
       asks,
-      lastPrice: Helpers.toQuotation(0),
-      closePrice: Helpers.toQuotation(0),
-      limitUp: Helpers.toQuotation(0),
-      limitDown: Helpers.toQuotation(0),
+      lastPrice: currentCandle.close,
+      closePrice: currentCandle.close,
+      limitUp: currentCandle.high,
+      limitDown: currentCandle.low,
     };
   }
 
@@ -91,19 +116,68 @@ export class MarketDataStub implements Client<typeof MarketDataServiceDefinition
   }
 
   async getLastTrades(_: GetLastTradesRequest) {
+    // todo: not implemented yet
     const trades: Trade[] = [];
     return { trades };
   }
 
-  private loadCandles() {
-    const files = fg.sync(this.options.candles);
-    this.candles = [];
-    files.forEach(file => {
-      const fileCandles = JSON.parse(fs.readFileSync(file, 'utf8')) as HistoricCandle[];
-      this.candles.push(...fileCandles);
-    });
-    this.candles.forEach(candle => candle.time = new Date(candle.time!));
-    this.candles.sort((a, b) => a.time!.valueOf() - b.time!.valueOf());
+  // --- Для внутреннего использования ---
+
+  async getCurrentPrice(figi: string) {
+    const currentCandle = await this.getCurrentCandle(figi);
+    return Helpers.toNumber(currentCandle.close!);
+  }
+
+  async getCurrentCandle(figi: string) {
+    return this.getCandle({ figi, offset: 0 });
+  }
+
+  async getCandle({ figi, offset }: { figi: string, offset: number }) {
+    const { candleInterval: interval } = this.options;
+    const intervalMs = intervalToMs(interval);
+    // отступаем от текущей даты, чтобы получить ровно одну свечу
+    const now = Date.now();
+    const from = new Date(now - offset * intervalMs);
+    const to = new Date(from.valueOf() + intervalMs);
+    const { candles } = await this.getCandles({ figi, interval, from, to });
+    if (candles.length !== 1) throw new Error(`Что-то пошло не так при получении текущей свечи.`);
+    return candles[0];
+  }
+
+  private async loadCandles(figi: string, from: Date, to: Date) {
+    const { candleInterval: interval } = this.options;
+    const { candles } = await this.candlesLoader.getCandles({ figi, from, to, interval });
+    this.candles.set(figi, candles);
+  }
+
+  private getFilteredCandles(figi: string, from: Date, to: Date) {
+    const candles = this.candles.get(figi) || [];
+    return candles.filter(c => c.time! >= from && c.time! < to);
+  }
+
+  private isInsideLoadedCandles(figi: string, from: Date, to: Date) {
+    const candles = this.candles.get(figi);
+    if (!candles) return false;
+    const firstCandle = candles[0];
+    const [ lastCandle ] = candles.slice(-1);
+    if (!firstCandle || !lastCandle) return false;
+    const maxTo = lastCandle.time!.valueOf() + intervalToMs(this.options.candleInterval);
+    return from >= firstCandle.time! && to.valueOf() <= maxTo;
+  }
+
+  private assertFinalDateInThePast() {
+    const todayMidnight = new OriginalDate();
+    todayMidnight.setUTCHours(0, 0, 0, 0);
+    if (this.options.to >= todayMidnight) {
+      // т.к. candlesLoader не кеширует за сегодня
+      throw new Error(`Бэктест на сегодняшних данных запустить нельзя (пока)`);
+    }
+  }
+
+  private ensureSameInterval(interval: CandleInterval) {
+    if (interval !== this.options.candleInterval) {
+      throw new Error(`interval в запросе не совпадает с установленным для бэктеста`);
+    }
   }
 }
 
@@ -121,5 +195,16 @@ export class MarketDataStreamStub implements Client<typeof MarketDataStreamServi
 
   emit(data: MarketDataResponse) {
     this.emitter.emit('data', data);
+  }
+}
+
+function intervalToMs(interval: CandleInterval) {
+  switch (interval) {
+    case CandleInterval.CANDLE_INTERVAL_1_MIN: return 60 * 1000;
+    case CandleInterval.CANDLE_INTERVAL_5_MIN: return 5 * 60 * 1000;
+    case CandleInterval.CANDLE_INTERVAL_15_MIN: return 15 * 60 * 1000;
+    case CandleInterval.CANDLE_INTERVAL_HOUR: return 60 * 60 * 1000;
+    case CandleInterval.CANDLE_INTERVAL_DAY: return 24 * 60 * 60 * 1000;
+    default: throw new Error(`Invalid interval`);
   }
 }

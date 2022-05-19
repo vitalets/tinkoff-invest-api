@@ -110,54 +110,45 @@ const { candles } = await candlesLoader.getCandles({
 ```
 
 ### Бэктест
-Встроенный модуль для бэктеста позволяет протестировать стратегию на исторических данных, не внося изменений в код стратегии. Класс `Backtest` подменяет API и имитирует торги:
+Модуль для бэктеста позволяет быстро протестировать вашего робота на исторических данных.
 
-* появление новых свечей
-* прием и исполнение заявок
-* списание комиссий
-* рассчет стоимости портфеля
+Работает все так:
 
-Перед началом бэктеста необходимо загрузить данные в локальные файлы:
-```ts
-// загружаем в файл список всех акций
-const { instruments: shares } = await api.instruments.shares({ instrumentStatus: InstrumentStatus.INSTRUMENT_STATUS_BASE });
-fs.writeFileSync('data/shares.json', JSON.stringify(shares, null, 2));
+1. вы указываете в конфиге диапазон дат и интервал свечей для бэктеста
+2. на базе конфига класс `Backtest` создает замоканное Tinkoff API, которое вы прокидываете роботу
+3. происходит автоматическая загрузка данных, если их нет в кеше
+4. в цикле вызывается `backtest.tick()`, который последовательно подменяет текущую дату и подставляет в API нужные свечи. Между тиками вызывается код робота.
+5. также на каждом тике происходит полная имитация работы API с биржей:
+  * прием и исполнение заявок (лимитных и рыночных)
+  * блокировка средств
+  * списание комиссий
+  * обновление позиций в портфеле
+  * ведение списка операций
 
-// загружаем в файл минутные свечи по заданной акции
-const { candles } = await api.marketdata.getCandles({
-  figi: 'BBG00QPYJ5H0',
-  interval: CandleInterval.CANDLE_INTERVAL_1_MIN,
-  ...api.helpers.fromTo('1d', new Date('2022-05-06T10:00:00+03:00'))
-});
-fs.writeFileSync(`data/candles.json`, JSON.stringify(candles, null, 2));
-```
-
-Теперь можно запускать бэктест:
+Пример:
 ```ts
 import { Backtest } from 'tinkoff-invest-api';
-import { YourRobot } from './robot.js';
 
-// Создаем инстанс бэктеста, передавая исторические свечи и инструменты
+// Создать инстанс бэктеста на заданном диапазоне дат и интервале свечей.
 const backtest = new Backtest({
-  candles: 'test/data/candles.json',
-  instruments: { shares: 'test/data/shares.json' },
-  initialCandleIndex: 50,
+  token: '<your-token>',
+  from: new Date('2022-04-29T10:00:00+03:00'),
+  to: new Date('2022-04-30T19:00:00+03:00'),
+  candleInterval: CandleInterval.CANDLE_INTERVAL_5_MIN,
   brokerFee: 0.3,
 });
-
-// Создаем инстанс робота (стратегии), передавая замоканное API Тинькофф инвестиций
-const robot = new YourRobot({ api: backtest.api });
 
 main();
 
 async function main() {
-  // Запускаем цикл по всем свечам
+  // При каждом вызове backtest.tick() текущая дата будет переходить на следующую свечу
   while (await backtest.tick()) {
-    await robot.runStrategy();
+    // запуск вашего робота на замоканном API
+    // robot.run({ api: backtest.api })
   }
-  // Рассчитываем прибыль в %
+  // Рассчитываем прибыль
   const capital = await backtest.getCapital();
-  const precent = 100 * (capital - backtest.options.initialCapital) / backtest.options.initialCapital
+  const precent = 100 * (capital - backtest.options.initialCapital) / backtest.options.initialCapital;
   console.log(`Капитал: ${capital} (${precent.toFixed(2)}%)`);
 }
 ```

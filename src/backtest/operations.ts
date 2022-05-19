@@ -34,7 +34,7 @@ export class OperationsStub implements Client<typeof OperationsServiceDefinition
   }
 
   async getPortfolio(_: PortfolioRequest) {
-    this.updatePositionsCurrentPrice();
+    await this.updatePositionsCurrentPrice();
     // иностранная валюта пока не поддержана, считаем только рубли
     const totalAmountCurrencies = this.positionsResponse.money.find(item => item.currency === 'rub');
     return {
@@ -100,11 +100,13 @@ export class OperationsStub implements Client<typeof OperationsServiceDefinition
     this.addToFigi(figi, qty, 'blocked');
   }
 
-  private updatePositionsCurrentPrice() {
-    // пока для простоты всем позициям выставляем единую цену от текущей свечи,
-    // т.к. запуск бэктеста предполагается на одном инструменте
-    const currentPrice = Helpers.toNumber(this.backtest.marketdata.currentCandle.close) || 0;
-    this.portfolioPositions.forEach(p => p.currentPrice = Helpers.toMoneyValue(currentPrice, 'rub'));
+  private async updatePositionsCurrentPrice() {
+    const figi = this.portfolioPositions.map(p => p.figi);
+    const { lastPrices } = await this.backtest.marketdata.getLastPrices({ figi });
+    this.portfolioPositions.forEach(p => {
+      const { price } = lastPrices.find(lp => lp.figi === p.figi) || {};
+      p.currentPrice = Helpers.toMoneyValue(Helpers.toNumber(price) || 0, 'rub');
+    });
   }
 
   private calcTotalAmount(instrumentType: string) {

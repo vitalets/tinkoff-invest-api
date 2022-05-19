@@ -57,7 +57,7 @@ export class OrdersStub implements Client<typeof OrdersServiceDefinition> {
     } else {
       throw new Error(`Order not found: ${orderId}`);
     }
-    return { time: this.backtest.marketdata.getTime() };
+    return { time: new Date() };
   }
 
   async getOrderState({ orderId }: GetOrderStateRequest) {

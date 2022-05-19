@@ -22,7 +22,7 @@ export class CandlesReqDay extends CandlesReq {
 
   protected getCacheFile() {
     const year = this.chunkDate.getUTCFullYear().toString();
-    return path.join(this.options.cacheDir, this.req.figi, 'day', `${year}.json`);
+    return path.join(this.getFigiDir(), 'day', `${year}.json`);
   }
 }
 

@@ -23,6 +23,6 @@ import { CandlesReq } from './req.js';
   protected getCacheFile() {
     const intervalStr = CandleInterval[this.req.interval].replace('CANDLE_INTERVAL_', '').toLowerCase();
     const dateStr = formatDateUTC(this.chunkDate, 'YYYY-MM-DD');
-    return path.join(this.options.cacheDir, this.req.figi, intervalStr, `${dateStr}.json`);
+    return path.join(this.getFigiDir(), intervalStr, `${dateStr}.json`);
   }
 }

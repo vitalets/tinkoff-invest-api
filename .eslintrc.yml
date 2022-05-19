@@ -19,7 +19,7 @@ rules:
   max-params: [error, { max: 4 }]
   max-statements: [error, { max: 10 }, { ignoreTopLevelFunctions: false }]
   max-len: [error, { code: 120, ignoreUrls: true }]
-  max-lines: [error, { max: 150, skipComments: true, skipBlankLines: true }]
+  max-lines: [error, { max: 200, skipComments: true, skipBlankLines: true }]
   semi: [error, always]
   no-multiple-empty-lines: [error, { max: 1 }]
   space-before-function-paren: [error, { anonymous: always, named: never, asyncArrow: always }]

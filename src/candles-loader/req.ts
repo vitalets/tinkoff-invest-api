@@ -2,6 +2,7 @@
  * Базовый класс запроса свечей с учетом кеша.
  */
 import fs from 'fs';
+import path from 'path';
 import { TinkoffInvestApi } from '../api.js';
 import { GetCandlesRequest, HistoricCandle } from '../generated/marketdata.js';
 import { loadJson, saveJson } from '../utils/json.js';
@@ -11,6 +12,9 @@ export type CandlesReqParams = GetCandlesRequest & {
   /** Минимальное кол-во свечей в ответе */
   minCount?: number;
 }
+
+// сохраняем оригинальный конструктор Date(), т.к. при бэктесте он подменяется.
+const OriginalDate = Date;
 
 /**
  * Базовый класс запроса свечей с учетом кеша.
@@ -28,7 +32,7 @@ export abstract class CandlesReq {
     protected options: Required<CandlesLoaderOptions>,
     protected req: CandlesReqParams
   ) {
-    this.to = this.calcDateTo();
+    this.to = req.to || new Date();
     this.chunkDate = this.calcInitialChunkDate();
   }
 
@@ -38,14 +42,13 @@ export abstract class CandlesReq {
 
   async getCandles() {
     this.candles = await this.loadChunk({ useCache: !this.needTodayCandles() });
-    this.removeCandles(time => time >= this.to);
-
+    this.filterCandles(time => time < this.to);
     while (this.shouldLoadMore()) {
       this.moveChunkDate();
       const candles = await this.loadChunk({ useCache: true });
       this.candles.unshift(...candles);
     }
-    if (this.req.from) this.removeCandles(time => time < this.req.from!);
+    if (this.req.from) this.filterCandles(time => time >= this.req.from!);
 
     return this.candles;
   }
@@ -95,29 +98,26 @@ export abstract class CandlesReq {
     // todo: check max iterations
     if (this.req.minCount) return this.candles.length < this.req.minCount;
     if (this.req.from) return this.chunkDate > this.req.from;
-    throw new Error(`You should provide "from" or "minCount"`);
+    throw new Error(`Нужно указать "from" или "minCount"`);
   }
 
-  protected removeCandles(fn: (time: Date) => boolean) {
-    this.candles = this.candles.filter(c => c.time && !fn(c.time));
+  protected filterCandles(fn: (time: Date) => boolean) {
+    this.candles = this.candles.filter(c => c.time && fn(c.time));
   }
 
   protected needTodayCandles() {
-    const todayMidnight = new Date();
+    const todayMidnight = new OriginalDate();
     todayMidnight.setUTCHours(0, 0, 0, 0);
     return this.to > todayMidnight;
-  }
-
-  protected calcDateTo() {
-    const now = new Date();
-    return this.req.to
-      ? (this.req.to > now ? now : this.req.to)
-      : now;
   }
 
   protected calcInitialChunkDate() {
     const date = new Date(this.to);
     date.setUTCHours(0, 0, 0, 0);
     return date;
+  }
+
+  protected getFigiDir() {
+    return path.join(this.options.cacheDir, 'candles', this.req.figi);
   }
 }
