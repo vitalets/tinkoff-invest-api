@@ -3,6 +3,7 @@
  */
 import fs from 'fs';
 import path from 'path';
+import Debug from 'debug';
 import { TinkoffInvestApi } from '../api.js';
 import { GetCandlesRequest, HistoricCandle } from '../generated/marketdata.js';
 import { loadJson, saveJson } from '../utils/json.js';
@@ -12,6 +13,8 @@ export type CandlesReqParams = GetCandlesRequest & {
   /** Минимальное кол-во свечей в ответе */
   minCount?: number;
 }
+
+const debug = Debug('tinkoff-invest-api:candles-loader');
 
 // сохраняем оригинальный конструктор Date(), т.к. при бэктесте он подменяется.
 const OriginalDate = Date;
@@ -70,6 +73,7 @@ export abstract class CandlesReq {
   protected async loadChunkFromCache(): Promise<HistoricCandle[] | void> {
     const cacheFile = this.getCacheFile();
     if (fs.existsSync(cacheFile)) {
+      debug(`Загружаю свечи из файла: ${cacheFile}`);
       const candles: HistoricCandle[] = await loadJson(cacheFile);
       // '2022-05-06T07:00:00.000Z' -> Date
       candles.forEach(candle => candle.time = new Date(candle.time as unknown as string));
@@ -82,6 +86,7 @@ export abstract class CandlesReq {
   protected async loadChunkFromApi() {
     const { figi, interval } = this.req;
     const { from, to } = this.getChunkFromTo();
+    debug(`Загружаю свечи из API: ${from.toISOString()} - ${to.toISOString()}`);
     const { candles } = await this.api.marketdata.getCandles({ figi, interval, from, to });
     return candles;
   }
@@ -98,8 +103,21 @@ export abstract class CandlesReq {
 
   protected shouldLoadMore() {
     // todo: check max iterations
-    if (this.req.minCount) return this.candles.length < this.req.minCount;
-    if (this.req.from) return this.chunkDate > this.req.from;
+    if (this.req.minCount) {
+      const res = this.candles.length < this.req.minCount;
+      res && debug(
+        `Загружено свечей: ${this.candles.length}, а нужно: ${this.req.minCount}. Продолжаем загрузку...`
+      );
+      return res;
+    }
+    if (this.req.from) {
+      const res = this.chunkDate > this.req.from;
+      res && debug([
+        `Загружены свечи с ${this.chunkDate.toISOString()},`,
+        `а нужно с ${this.req.from.toISOString()}. Продолжаем загрузку...`,
+      ].join(' '));
+      return res;
+    }
     throw new Error(`Нужно указать "from" или "minCount"`);
   }
 

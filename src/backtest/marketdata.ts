@@ -4,6 +4,7 @@
  */
 import { Client } from 'nice-grpc';
 import MockDate from 'mockdate';
+import Debug from 'debug';
 import { SecurityTradingStatus } from '../generated/common.js';
 import {
   MarketDataServiceDefinition,
@@ -20,6 +21,8 @@ import {
 import { Helpers } from '../helpers.js';
 import { Backtest } from './index.js';
 import { CandlesLoader } from '../candles-loader/index.js';
+
+const debug = Debug('tinkoff-invest-api:backtest:marketdata');
 
 // сохраняем оригинальный конструктор Date(), т.к. при бэктесте он подменяется.
 const OriginalDate = Date;
@@ -51,6 +54,7 @@ export class MarketDataStub implements Client<typeof MarketDataServiceDefinition
       return false;
     } else {
       MockDate.set(nextDate);
+      debug(`Установлена дата: ${nextDate.toLocaleString()}`);
       this.ticks++;
       return true;
     }
@@ -162,7 +166,7 @@ export class MarketDataStub implements Client<typeof MarketDataServiceDefinition
   private assertFinalDateInThePast() {
     const todayMidnight = new OriginalDate();
     todayMidnight.setUTCHours(0, 0, 0, 0);
-    if (this.options.to >= todayMidnight) {
+    if (this.options.to > todayMidnight) {
       // т.к. candlesLoader не кеширует за сегодня
       throw new Error(`Бэктест на сегодняшних данных запустить нельзя (пока)`);
     }
