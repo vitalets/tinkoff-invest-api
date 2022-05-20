@@ -81,8 +81,8 @@ export abstract class CandlesReq {
   protected async loadChunkFromCache(): Promise<HistoricCandle[] | void> {
     const cacheFile = this.getCacheFile();
     if (fs.existsSync(cacheFile)) {
-      debug(`Загружаю свечи из файла: ${cacheFile}`);
       const candles: HistoricCandle[] = await loadJson(cacheFile);
+      debug(`Загружено свечей: ${candles.length}, из файла: ${cacheFile}`);
       // '2022-05-06T07:00:00.000Z' -> Date
       candles.forEach(candle => candle.time = new Date(candle.time as unknown as string));
       return candles;
@@ -94,15 +94,18 @@ export abstract class CandlesReq {
   protected async loadChunkFromApi() {
     const { figi, interval } = this.req;
     const { from, to } = this.getChunkFromTo();
-    debug(`Загружаю свечи из API: ${from.toISOString()} - ${to.toISOString()}`);
     const { candles } = await this.api.marketdata.getCandles({ figi, interval, from, to });
+    debug([
+      `Загружено свечей: ${candles.length}, из ${this.api.isBacktest ? 'Backtest ' : ''}API:`,
+      `${from.toISOString()} - ${to.toISOString()}`
+    ].join(' '));
     return candles;
   }
 
   protected async saveChunkToCache(candles: HistoricCandle[]) {
     const cacheFile = this.getCacheFile();
     const saveFile = candles.length > 0 ? cacheFile : this.getEmptyCacheFile(cacheFile);
-    debug(`Сохраняю свечи в файл (${candles.length}): ${saveFile}`);
+    debug(`Сохраняю свечи: ${candles.length}, в файл: ${saveFile}`);
     await saveJson(saveFile, candles);
   }
 
@@ -122,7 +125,7 @@ export abstract class CandlesReq {
     if (this.req.from) {
       const res = this.chunkDate > this.req.from;
       res && debug([
-        `Сейчас свечей: ${this.candles.length} начиная с ${this.chunkDate.toISOString()},`,
+        `Сейчас свечей: ${this.candles.length}, начиная с ${this.chunkDate.toISOString()},`,
         `а нужно с ${this.req.from.toISOString()}. Продолжаем загрузку...`,
       ].join(' '));
       return res;
@@ -131,8 +134,9 @@ export abstract class CandlesReq {
   }
 
   protected filterCandles(fn: (time: Date) => boolean) {
+    const oldLength = this.candles.length;
     this.candles = this.candles.filter(c => c.time && fn(c.time));
-    debug(`Фильтрация свечей по from/to, осталось: ${this.candles.length}`);
+    debug(`Фильтрация свечей по from/to: ${oldLength} -> ${this.candles.length}`);
   }
 
   protected needTodayCandles() {
@@ -142,7 +146,8 @@ export abstract class CandlesReq {
   }
 
   protected calcInitialChunkDate() {
-    const date = new Date(this.to);
+    // вычитаем 1мс, т.к. само значение to не включается в фильтр
+    const date = new Date(this.to.valueOf() - 1);
     date.setUTCHours(0, 0, 0, 0);
     return date;
   }
