@@ -2,13 +2,11 @@
  * Эмуляция marketdata.
  * See: https://tinkoff.github.io/investAPI/head-marketdata/
  */
-import { on, EventEmitter } from 'node:events';
 import { Client } from 'nice-grpc';
 import MockDate from 'mockdate';
 import { SecurityTradingStatus } from '../generated/common.js';
 import {
   MarketDataServiceDefinition,
-  MarketDataStreamServiceDefinition,
   GetCandlesRequest,
   HistoricCandle,
   GetLastPricesRequest,
@@ -17,8 +15,6 @@ import {
   Order,
   GetLastTradesRequest,
   Trade,
-  MarketDataRequest,
-  MarketDataResponse,
   CandleInterval
 } from '../generated/marketdata.js';
 import { Helpers } from '../helpers.js';
@@ -50,14 +46,12 @@ export class MarketDataStub implements Client<typeof MarketDataServiceDefinition
     const nextDate = this.ticks === 0
       ? this.options.from
       : new Date(Date.now() + intervalToMs(this.options.candleInterval));
-
     if (nextDate > this.options.to) {
       // возможно тут стоит сделать MockDate.reset()
       return false;
     } else {
       MockDate.set(nextDate);
       this.ticks++;
-      // todo: emit current candle to stream
       return true;
     }
   }
@@ -178,23 +172,6 @@ export class MarketDataStub implements Client<typeof MarketDataServiceDefinition
     if (interval !== this.options.candleInterval) {
       throw new Error(`interval в запросе не совпадает с установленным для бэктеста`);
     }
-  }
-}
-
-export class MarketDataStreamStub implements Client<typeof MarketDataStreamServiceDefinition> {
-  protected emitter = new EventEmitter();
-  constructor(private backtest: Backtest) { }
-
-  async *marketDataStream(_: AsyncIterable<MarketDataRequest>) {
-    // todo: emit first event right after request?
-    const innerReq = on(this.emitter, 'data');
-    for await (const data of innerReq) {
-      yield data[0] as MarketDataResponse;
-    }
-  }
-
-  emit(data: MarketDataResponse) {
-    this.emitter.emit('data', data);
   }
 }
 

@@ -5,7 +5,8 @@
  * - лимитные заявки исполняются, если цена закрытия пересекает лимит
  */
 
-import { MarketDataStub, MarketDataStreamStub } from './marketdata.js';
+import { MarketDataStub } from './marketdata.js';
+import { MarketDataStreamStub } from './marketdata-stream.js';
 import { UsersStub } from './users.js';
 import { OrdersStub, OrdersStreamStub } from './orders.js';
 import { OperationsStub } from './operations.js';
@@ -82,7 +83,10 @@ export class Backtest {
    */
   async tick() {
     const success = this.marketdata.tick();
-    if (success) await this.broker.tryExecuteOrders();
+    if (success) {
+      await this.broker.tryExecuteOrders();
+      await this.marketdataStream.emitData();
+    }
     return success;
   }
 

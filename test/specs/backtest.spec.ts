@@ -1,8 +1,9 @@
 import { InstrumentIdType } from '../../src/generated/instruments.js';
-import { CandleInterval } from '../../src/generated/marketdata.js';
+import { CandleInterval, SubscriptionInterval } from '../../src/generated/marketdata.js';
 import { OperationState } from '../../src/generated/operations.js';
 import { OrderDirection, OrderExecutionReportStatus, OrderType } from '../../src/generated/orders.js';
 import { Backtest, Helpers } from '../../src/index.js';
+import { waitMarketStreamEvent } from './stream.spec.js';
 
 describe('backtest', () => {
 
@@ -303,6 +304,31 @@ describe('backtest', () => {
       limitUp: { units: 123, nano: 870000000 },
       limitDown: { units: 122, nano: 800000000 },
     });
+  });
+
+  it('stream: подписка и получение свечей', async () => {
+    const backtest = await createBacktest();
+    const interval = SubscriptionInterval.SUBSCRIPTION_INTERVAL_ONE_MINUTE;
+
+    // подписываемся
+    const promise = waitMarketStreamEvent(backtest.api);
+    backtest.api.stream.market.watch({ candles: [ { figi, interval } ]});
+    const data = await promise;
+    assert.deepEqual(data, {
+      subscribeCandlesResponse: {
+        trackingId: 'xxx',
+        candlesSubscriptions: [
+          { figi: 'BBG004730N88', interval: 1, subscriptionStatus: 1 }
+        ]
+      }
+    });
+
+    // ждем свечу
+    const promiseCandle = waitMarketStreamEvent(backtest.api);
+    await backtest.tick();
+    const dataCandle = await promiseCandle;
+    assert.deepEqual(dataCandle.candle?.figi, 'BBG004730N88');
+    assert.deepEqual(dataCandle.candle?.close, { units: 123, nano: 650000000 });
   });
 
 });
