@@ -9,15 +9,15 @@ import { CandlesReq } from './req.js';
 export class CandlesReqDay extends CandlesReq {
   protected getChunkFromTo() {
     const from = new Date(this.chunkDate);
-    from.setMonth(0, 1);
-    from.setHours(0, 0, 0, 0);
+    from.setUTCMonth(0, 1);
+    from.setUTCHours(0, 0, 0, 0);
     const to = new Date(from);
-    to.setFullYear(to.getFullYear() + 1);
+    to.setUTCFullYear(to.getUTCFullYear() + 1);
     return { from, to };
   }
 
   protected moveChunkDate() {
-    this.chunkDate.setFullYear(this.chunkDate.getFullYear() - 1);
+    this.chunkDate.setUTCFullYear(this.chunkDate.getUTCFullYear() - 1);
   }
 
   protected getCacheFile() {

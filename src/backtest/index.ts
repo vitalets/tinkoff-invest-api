@@ -5,6 +5,7 @@
  * - лимитные заявки исполняются, если цена закрытия пересекает лимит
  */
 
+import Debug from 'debug';
 import { MarketDataStub } from './marketdata.js';
 import { MarketDataStreamStub } from './marketdata-stream.js';
 import { UsersStub } from './users.js';
@@ -20,6 +21,8 @@ import { InstrumentsStub } from './instruments.js';
 import { MarketStream } from '../stream/market.js';
 import { TradesStream } from '../stream/trades.js';
 import { CandleInterval } from '../generated/marketdata.js';
+
+const debug = Debug('tinkoff-invest-api:backtest');
 
 export interface BacktestOptions {
   /** Токен Тинькофф API. Используется для разовой загрузки данных. Можно readonly. */
@@ -63,6 +66,8 @@ export class Backtest {
   // eslint-disable-next-line max-statements
   constructor(options: BacktestOptions) {
     this.options = Object.assign({}, defaults, options);
+    const { from, to } = this.options;
+    debug(`Создан инстанс бэктеста на свечах: ${from.toLocaleString()} - ${to.toLocaleString()}`);
     this.assertOptionsFromTo();
     this.apiReal = this.createApiReal();
     this.marketdata = new MarketDataStub(this);

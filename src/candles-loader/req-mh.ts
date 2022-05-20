@@ -10,14 +10,14 @@ import { CandlesReq } from './req.js';
  export class CandlesReqMh extends CandlesReq {
   protected getChunkFromTo() {
     const from = new Date(this.chunkDate);
-    from.setHours(0, 0, 0, 0);
+    from.setUTCHours(0, 0, 0, 0);
     const to = new Date(from);
-    to.setDate(to.getDate() + 1);
+    to.setUTCDate(to.getUTCDate() + 1);
     return { from, to };
   }
 
   protected moveChunkDate() {
-    this.chunkDate.setDate(this.chunkDate.getDate() - 1);
+    this.chunkDate.setUTCDate(this.chunkDate.getUTCDate() - 1);
   }
 
   protected getCacheFile() {

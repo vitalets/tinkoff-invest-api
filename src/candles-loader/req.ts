@@ -43,16 +43,24 @@ export abstract class CandlesReq {
   protected abstract moveChunkDate(): void;
   protected abstract getCacheFile(): string;
 
+  // eslint-disable-next-line max-statements
   async getCandles() {
+    debug(`Запрос на загрузку свечей: ${JSON.stringify(this.req)}`);
     this.candles = await this.loadChunk({ useCache: !this.needTodayCandles() });
+
     this.filterCandles(time => time < this.to);
+
     while (this.shouldLoadMore()) {
       this.moveChunkDate();
       const candles = await this.loadChunk({ useCache: true });
       this.candles.unshift(...candles);
     }
-    if (this.req.from) this.filterCandles(time => time >= this.req.from!);
 
+    if (this.req.from) {
+      this.filterCandles(time => time >= this.req.from!);
+    }
+
+    debug(`Загрузка свечей завершена: ${this.candles.length}`);
     return this.candles;
   }
 
@@ -94,6 +102,7 @@ export abstract class CandlesReq {
   protected async saveChunkToCache(candles: HistoricCandle[]) {
     const cacheFile = this.getCacheFile();
     const saveFile = candles.length > 0 ? cacheFile : this.getEmptyCacheFile(cacheFile);
+    debug(`Сохраняю свечи в файл (${candles.length}): ${saveFile}`);
     await saveJson(saveFile, candles);
   }
 
@@ -106,14 +115,14 @@ export abstract class CandlesReq {
     if (this.req.minCount) {
       const res = this.candles.length < this.req.minCount;
       res && debug(
-        `Загружено свечей: ${this.candles.length}, а нужно: ${this.req.minCount}. Продолжаем загрузку...`
+        `Сейчас свечей: ${this.candles.length}, а нужно: ${this.req.minCount}. Продолжаем загрузку...`
       );
       return res;
     }
     if (this.req.from) {
       const res = this.chunkDate > this.req.from;
       res && debug([
-        `Загружены свечи с ${this.chunkDate.toISOString()},`,
+        `Сейчас свечей: ${this.candles.length} начиная с ${this.chunkDate.toISOString()},`,
         `а нужно с ${this.req.from.toISOString()}. Продолжаем загрузку...`,
       ].join(' '));
       return res;
@@ -123,6 +132,7 @@ export abstract class CandlesReq {
 
   protected filterCandles(fn: (time: Date) => boolean) {
     this.candles = this.candles.filter(c => c.time && fn(c.time));
+    debug(`Фильтрация свечей по from/to, осталось: ${this.candles.length}`);
   }
 
   protected needTodayCandles() {
