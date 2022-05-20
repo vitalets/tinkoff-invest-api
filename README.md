@@ -158,6 +158,7 @@ const { candles } = await candlesLoader.getCandles({
 Пример:
 ```ts
 import { Backtest, Helpers } from 'tinkoff-invest-api';
+import { CandleInterval } from 'tinkoff-invest-api/dist/generated/marketdata.js';
 
 // Создать инстанс бэктеста на заданном диапазоне дат и интервале свечей.
 const backtest = new Backtest({
