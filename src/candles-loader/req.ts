@@ -65,7 +65,7 @@ export abstract class CandlesReq {
     // в режиме бэктеста не кешируем в файлы, т.к. данные из апи и так приходят из кеша
     if (this.api.isBacktest) useCache = false;
     if (useCache) {
-      const candles = await this.loadChunkFromCache();
+      const candles = await this.loadChunkFromFile();
       if (candles) return candles;
     }
     const candles = await this.loadChunkFromApi();
@@ -75,18 +75,22 @@ export abstract class CandlesReq {
     return candles;
   }
 
-  protected async loadChunkFromCache(): Promise<HistoricCandle[] | void> {
+  // eslint-disable-next-line max-statements
+  protected async loadChunkFromFile(): Promise<HistoricCandle[] | void> {
     const cacheFile = this.getCacheFile();
     if (fs.existsSync(cacheFile)) {
       this.debug(`Загружаю свечи из файла: ${cacheFile}`);
       const candles: HistoricCandle[] = await loadJson(cacheFile);
       this.debug(`Загружено свечей: ${candles.length}`);
-      // '2022-05-06T07:00:00.000Z' -> Date
-      candles.forEach(candle => candle.time = new Date(candle.time as unknown as string));
+      // Из файла даты приходят строками: '2022-05-06T07:00:00.000Z', переводим в Date
+      candles.forEach(candle => candle.time = new Date(candle.time!));
       return candles;
     }
     const cacheFileEmpty = this.getEmptyCacheFile(cacheFile);
-    if (fs.existsSync(cacheFileEmpty)) return [];
+    if (fs.existsSync(cacheFileEmpty)) {
+      this.debug(`Загружаю свечи из файла: ${cacheFileEmpty}`);
+      return [];
+    }
   }
 
   protected async loadChunkFromApi() {
@@ -114,16 +118,14 @@ export abstract class CandlesReq {
     // todo: check max iterations
     if (this.req.minCount) {
       const res = this.candles.length < this.req.minCount;
-      res && this.debug(
-        `Сейчас свечей: ${this.candles.length}, а нужно: ${this.req.minCount}. Продолжаем загрузку...`
-      );
+      res && this.debug(`Сейчас свечей: ${this.candles.length}, а нужно: ${this.req.minCount}`);
       return res;
     }
     if (this.req.from) {
       const res = this.chunkDate > this.req.from;
       res && this.debug([
         `Сейчас свечей: ${this.candles.length}, начиная с ${this.chunkDate.toISOString()},`,
-        `а нужно с ${this.req.from.toISOString()}. Продолжаем загрузку...`,
+        `а нужно с ${this.req.from.toISOString()}`,
       ].join(' '));
       return res;
     }
@@ -135,10 +137,13 @@ export abstract class CandlesReq {
     const { from } = this.req;
     if (date === 'to') {
       this.candles = this.candles.filter(candle => candle.time! < this.to);
-      this.debug(`Фильтрация свечей по ${date} (${this.to.toISOString()}): ${oldLength} -> ${this.candles.length}`);
     } else if (from) {
       this.candles = this.candles.filter(candle => candle.time! >= from);
-      this.debug(`Фильтрация свечей по ${date} (${from.toISOString()}): ${oldLength} -> ${this.candles.length}`);
+    }
+    const newLength = this.candles.length;
+    if (newLength !== oldLength) {
+      const dateStr = date === 'from' ? from!.toISOString() : this.to.toISOString();
+      this.debug(`Фильтрация свечей по ${date} (${dateStr}): ${oldLength} -> ${newLength}`);
     }
   }
 
@@ -149,7 +154,8 @@ export abstract class CandlesReq {
   }
 
   protected calcInitialChunkDate() {
-    // вычитаем 1мс, т.к. само значение to не включается в фильтр
+    // вычитаем 1мс, т.к. само значение to не включается в фильтр.
+    // если to = 2022-04-29T00:00:00+03:00, то в результате нужны свечи только за 2022-04-28
     const date = new Date(this.to.valueOf() - 1);
     date.setUTCHours(0, 0, 0, 0);
     return date;

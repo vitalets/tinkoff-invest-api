@@ -9,11 +9,11 @@ describe('backtest', () => {
 
   const figi = 'BBG004730N88';
 
-  async function createBacktest() {
+  async function createBacktest(to?: Date) {
     const backtest = new Backtest({
       token: process.env.TINKOFF_API_TOKEN_READONLY!,
       from: new Date('2022-04-29T10:00:00+03:00'),
-      to: new Date('2022-04-30T19:00:00+03:00'),
+      to: to || new Date('2022-04-29T18:50:00+03:00'),
       candleInterval: CandleInterval.CANDLE_INTERVAL_1_MIN,
       cacheDir: 'test/.cache',
     });
@@ -77,24 +77,27 @@ describe('backtest', () => {
     const interval = CandleInterval.CANDLE_INTERVAL_1_MIN;
 
     // запрашиваем свечи за 3 мин
-    let res = await backtest.api.marketdata.getCandles({ figi, interval, ...Helpers.fromTo('3m') });
-    assert.equal(res.candles.length, 3);
+    let res = await backtest.api.marketdata.getCandles({ figi, interval, ...Helpers.fromTo('-3m') });
+    assert.equal(new Date().toISOString(), '2022-04-29T07:00:00.001Z');
+    assert.equal(res.candles.length, 1);
     assert.equal(res.candles[0].time?.toISOString(), '2022-04-29T07:00:00.000Z');
-    assert.equal(res.candles[1].time?.toISOString(), '2022-04-29T07:01:00.000Z');
-    assert.equal(res.candles[2].time?.toISOString(), '2022-04-29T07:02:00.000Z');
 
     await backtest.tick();
 
-    res = await backtest.api.marketdata.getCandles({ figi, interval, ...Helpers.fromTo('3m') });
-    assert.equal(res.candles.length, 3);
-    assert.equal(res.candles[0].time?.toISOString(), '2022-04-29T07:01:00.000Z');
-    assert.equal(res.candles[1].time?.toISOString(), '2022-04-29T07:02:00.000Z');
-    assert.equal(res.candles[2].time?.toISOString(), '2022-04-29T07:03:00.000Z');
+    res = await backtest.api.marketdata.getCandles({ figi, interval, ...Helpers.fromTo('-3m') });
+    assert.equal(new Date().toISOString(), '2022-04-29T07:01:00.001Z');
+    assert.equal(res.candles.length, 2);
+    assert.equal(res.candles[0].time?.toISOString(), '2022-04-29T07:00:00.000Z');
+    assert.equal(res.candles[1].time?.toISOString(), '2022-04-29T07:01:00.000Z');
 
     while (await backtest.tick()) { /* noop */ }
 
-    res = await backtest.api.marketdata.getCandles({ figi, interval, ...Helpers.fromTo('3m') });
-    assert.equal(res.candles.length, 0);
+    res = await backtest.api.marketdata.getCandles({ figi, interval, ...Helpers.fromTo('-3m') });
+    assert.equal(new Date().toISOString(), '2022-04-29T15:49:00.001Z');
+    assert.equal(res.candles.length, 3);
+    assert.equal(res.candles[0].time?.toISOString(), '2022-04-29T15:47:00.000Z');
+    assert.equal(res.candles[1].time?.toISOString(), '2022-04-29T15:48:00.000Z');
+    assert.equal(res.candles[2].time?.toISOString(), '2022-04-29T15:49:00.000Z');
   });
 
   it('покупка по рыночной цене', async () => {
@@ -111,6 +114,7 @@ describe('backtest', () => {
       orderType: OrderType.ORDER_TYPE_MARKET,
       orderId: '1',
     });
+    assert.equal(new Date().toISOString(), '2022-04-29T07:00:00.001Z');
     assert.equal(res.figi, figi);
     assert.equal(res.executionReportStatus, OrderExecutionReportStatus.EXECUTION_REPORT_STATUS_NEW);
     assert.deepEqual(res.initialOrderPrice, { units: 1228, nano: 600000000, currency: 'rub' });
@@ -132,7 +136,7 @@ describe('backtest', () => {
     const operations = await getOperations(backtest);
     assert.equal(operations.length, 2);
     assert.deepEqual(operations[ 0 ].payment, { units: -1228, nano: -600000000, currency: 'rub' });
-    assert.equal(operations[ 0 ].date?.toISOString(), '2022-04-29T07:01:00.000Z');
+    assert.equal(operations[ 0 ].date?.toISOString(), '2022-04-29T07:01:00.001Z');
     // 1228.6 * 0.003 = 3.6858
     assert.deepEqual(operations[ 1 ].payment, { units: -3, nano: -685800000, currency: 'rub' });
 
@@ -287,7 +291,7 @@ describe('backtest', () => {
     assert.deepEqual(lastPrices[0], {
       figi,
       price: { units: 122, nano: 860000000 },
-      time: new Date('2022-04-29T07:00:00.000Z')
+      time: new Date('2022-04-29T07:00:00.001Z')
     });
   });
 
@@ -332,21 +336,31 @@ describe('backtest', () => {
   });
 
   it('загрузка свечей через candlesLoader', async () => {
-    const backtest = await createBacktest();
+    const backtest = await createBacktest(new Date('2022-04-30T18:50:00+03:00'));
     const candlesLoader = new CandlesLoader(backtest.api, { cacheDir: backtest.options.cacheDir });
     const { candleInterval: interval } = backtest.options;
 
     const res1 = await candlesLoader.getCandles({ figi, interval, minCount: 31 });
-    assert.equal(res1.candles.length, 525);
+    assert.equal(new Date().toISOString(), '2022-04-29T07:00:00.001Z');
+    assert.equal(res1.candles.length, 526);
     assert.equal(res1.candles[0].time?.toISOString(), '2022-04-28T07:00:00.000Z');
-    assert.equal(res1.candles.slice(-1)[0].time?.toISOString(), '2022-04-28T15:49:00.000Z');
+    assert.equal(res1.candles.slice(-1)[0].time?.toISOString(), '2022-04-29T07:00:00.000Z');
 
     await backtest.tick();
 
     const res2 = await candlesLoader.getCandles({ figi, interval, minCount: 31 });
-    assert.equal(res2.candles.length, 526);
+    assert.equal(new Date().toISOString(), '2022-04-29T07:01:00.001Z');
+    assert.equal(res2.candles.length, 527);
     assert.equal(res2.candles[0].time?.toISOString(), '2022-04-28T07:00:00.000Z');
-    assert.equal(res2.candles.slice(-1)[0].time?.toISOString(), '2022-04-29T07:00:00.000Z');
+    assert.equal(res2.candles.slice(-1)[0].time?.toISOString(), '2022-04-29T07:01:00.000Z');
+
+    while (await backtest.tick()) { /* noop */ }
+
+    const res3 = await candlesLoader.getCandles({ figi, interval, minCount: 31 });
+    assert.equal(new Date().toISOString(), '2022-04-30T15:49:00.001Z');
+    assert.equal(res3.candles.length, 525);
+    assert.equal(res3.candles[0].time?.toISOString(), '2022-04-29T07:00:00.000Z');
+    assert.equal(res3.candles.slice(-1)[0].time?.toISOString(), '2022-04-29T15:49:00.000Z');
   });
 
 });

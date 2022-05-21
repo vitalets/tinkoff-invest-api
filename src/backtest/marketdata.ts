@@ -1,6 +1,11 @@
 /**
  * Эмуляция marketdata.
  * See: https://tinkoff.github.io/investAPI/head-marketdata/
+ *
+ * Важный момент: при получении свечей в Тинькофф АПИ поле "from" включается в результат, а "to" не включается.
+ * Т.е. запрос 5-мин свечей с 12:00 по 12:05 вернет 1 свечу.
+ * В режиме бэктеста часто цикл бежит именно по границам свечей, это может приводить к неожиданным результатам.
+ * Поэтому сделана небольшая хитрость: к начальной дате бэктеста автоматически прибавляется 1мс.
  */
 import { Client } from 'nice-grpc';
 import MockDate from 'mockdate';
@@ -27,8 +32,11 @@ const debug = Debug('tinkoff-invest-api:backtest:marketdata');
 // сохраняем оригинальный конструктор Date(), т.к. при бэктесте он подменяется.
 const OriginalDate = Date;
 
+type DateRange = { from: Date, to: Date };
+
 export class MarketDataStub implements Client<typeof MarketDataServiceDefinition> {
   private candles: Map<string, HistoricCandle[]> = new Map();
+  private candlesFromTo: Map<string, DateRange> = new Map();
   private candlesLoader: CandlesLoader;
   private ticks = 0;
 
@@ -47,29 +55,37 @@ export class MarketDataStub implements Client<typeof MarketDataServiceDefinition
    */
   tick() {
     const nextDate = this.ticks === 0
-      ? this.options.from
+      // добавляем 1 мс к стартовой дате. Это дает более ожидаемый результат:
+      // текущей свечей будет именно свеча за сегодняшнюю дату
+      ? new Date(this.options.from.valueOf() + 1)
       : new Date(Date.now() + intervalToMs(this.options.candleInterval));
-    if (nextDate > this.options.to) {
-      // возможно тут стоит сделать MockDate.reset()
-      return false;
-    } else {
+    if (nextDate < this.options.to) {
       MockDate.set(nextDate);
       debug(`Установлена дата: ${nextDate.toLocaleString()}`);
       this.ticks++;
       return true;
+    } else {
+      debug(`Достигнута конечная дата: ${nextDate.toLocaleString()}`);
+      // возможно тут стоит сделать MockDate.reset()
+      return false;
     }
   }
 
-  // eslint-disable-next-line complexity
+  /**
+   * Получение свечей.
+   */
   async getCandles({ figi, interval, from, to }: GetCandlesRequest) {
     this.assertTickCalled();
     this.assertSameInterval(interval);
     if (!from || !to) throw new Error(`Нужно указать from и to`);
-    const loadedRange = this.getLoadedCandlesRange(figi);
-    const minFrom = (!loadedRange.from || from < loadedRange.from) ? from : loadedRange.from;
-    const maxTo = (!loadedRange.to || to > loadedRange.to) ? to : loadedRange.to;
-    // если загруженного диапазона свечей недостаточно, загружаем еще раз с увеличенным диапазоном
-    if (minFrom === from || maxTo === to) await this.loadCandles(figi, minFrom, maxTo);
+    const loadedRange = this.candlesFromTo.get(figi);
+    if (!loadedRange || from < loadedRange.from || to > loadedRange.to) {
+      const maxRange = buildMaxRange({ from, to }, loadedRange);
+      await this.loadCandles(figi, maxRange.from, maxRange.to);
+      // todo: тут можно было бы не перезагружать уже загруженные свечи каждый раз, но пока так
+    } else {
+      debug('Все запрошенные свечи есть в memory-кеше');
+    }
     const candles = this.getFilteredCandles(figi, from, to);
     return { candles };
   }
@@ -132,12 +148,14 @@ export class MarketDataStub implements Client<typeof MarketDataServiceDefinition
   async getCandle({ figi, offset }: { figi: string, offset: number }) {
     const { candleInterval: interval } = this.options;
     const intervalMs = intervalToMs(interval);
-    // отступаем от текущей даты, чтобы получить ровно одну свечу
     const now = Date.now();
-    const from = new Date(now - offset * intervalMs);
-    const to = new Date(from.valueOf() + intervalMs);
+    const to = new Date(now - offset * intervalMs);
+    // отступаем от текущей даты, чтобы получить ровно одну свечу
+    const from = new Date(to.valueOf() - intervalMs);
     const { candles } = await this.getCandles({ figi, interval, from, to });
-    if (candles.length !== 1) throw new Error(`Что-то пошло не так при получении текущей свечи.`);
+    if (candles.length !== 1) {
+      throw new Error(`Что-то пошло не так при получении текущей свечи: ${candles.length}`);
+    }
     return candles[0];
   }
 
@@ -145,21 +163,14 @@ export class MarketDataStub implements Client<typeof MarketDataServiceDefinition
     const { candleInterval: interval } = this.options;
     const { candles } = await this.candlesLoader.getCandles({ figi, from, to, interval });
     this.candles.set(figi, candles);
+    // todo: тут по хорошему нужно записать в загруженный диапазон не переданные from/to,
+    // а даты вытащенные из candlesLoader, т.к. он загрузил гораздо больше
+    this.candlesFromTo.set(figi, { from, to });
   }
 
   private getFilteredCandles(figi: string, from: Date, to: Date) {
     const candles = this.candles.get(figi) || [];
     return candles.filter(c => c.time! >= from && c.time! < to);
-  }
-
-  private getLoadedCandlesRange(figi: string) {
-    const candles = this.candles.get(figi) || [];
-    const from = candles[0]?.time;
-    const [ lastCandle ] = candles.slice(-1);
-    const to = lastCandle?.time
-      ? new Date(lastCandle.time.valueOf() + intervalToMs(this.options.candleInterval))
-      : undefined;
-    return { from, to };
   }
 
   private assertFinalDateInThePast() {
@@ -190,6 +201,12 @@ export class MarketDataStub implements Client<typeof MarketDataServiceDefinition
  */
 class BacktestCandlesLoader extends CandlesLoader {
   protected debug = Debug('tinkoff-invest-api:backtest:candles-loader');
+}
+
+function buildMaxRange(range1: DateRange, range2?: DateRange): DateRange {
+  const minFrom = !range2 || range1.from < range2.from ? range1.from : range2.from;
+  const maxTo = !range2 || range1.to > range2.to ? range1.to : range2.to;
+  return { from: minFrom, to: maxTo };
 }
 
 function intervalToMs(interval: CandleInterval) {
