@@ -2,7 +2,7 @@ import { InstrumentIdType } from '../../src/generated/instruments.js';
 import { CandleInterval, SubscriptionInterval } from '../../src/generated/marketdata.js';
 import { OperationState } from '../../src/generated/operations.js';
 import { OrderDirection, OrderExecutionReportStatus, OrderType } from '../../src/generated/orders.js';
-import { Backtest, Helpers } from '../../src/index.js';
+import { Backtest, CandlesLoader, Helpers } from '../../src/index.js';
 import { waitMarketStreamEvent } from './stream.spec.js';
 
 describe('backtest', () => {
@@ -329,6 +329,24 @@ describe('backtest', () => {
     const dataCandle = await promiseCandle;
     assert.deepEqual(dataCandle.candle?.figi, 'BBG004730N88');
     assert.deepEqual(dataCandle.candle?.close, { units: 123, nano: 650000000 });
+  });
+
+  it('загрузка свечей через candlesLoader', async () => {
+    const backtest = await createBacktest();
+    const candlesLoader = new CandlesLoader(backtest.api, { cacheDir: backtest.options.cacheDir });
+    const { candleInterval: interval } = backtest.options;
+
+    const res1 = await candlesLoader.getCandles({ figi, interval, minCount: 31 });
+    assert.equal(res1.candles.length, 525);
+    assert.equal(res1.candles[0].time?.toISOString(), '2022-04-28T07:00:00.000Z');
+    assert.equal(res1.candles.slice(-1)[0].time?.toISOString(), '2022-04-28T15:49:00.000Z');
+
+    await backtest.tick();
+
+    const res2 = await candlesLoader.getCandles({ figi, interval, minCount: 31 });
+    assert.equal(res2.candles.length, 526);
+    assert.equal(res2.candles[0].time?.toISOString(), '2022-04-28T07:00:00.000Z');
+    assert.equal(res2.candles.slice(-1)[0].time?.toISOString(), '2022-04-29T07:00:00.000Z');
   });
 
 });

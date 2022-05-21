@@ -35,7 +35,7 @@ export class MarketDataStub implements Client<typeof MarketDataServiceDefinition
   constructor(private backtest: Backtest) {
     this.assertFinalDateInThePast();
     const { cacheDir } = this.options;
-    this.candlesLoader = new CandlesLoader(this.backtest.apiReal, { cacheDir });
+    this.candlesLoader = new BacktestCandlesLoader(this.backtest.apiReal, { cacheDir });
   }
 
   private get options() {
@@ -60,18 +60,17 @@ export class MarketDataStub implements Client<typeof MarketDataServiceDefinition
     }
   }
 
+  // eslint-disable-next-line complexity
   async getCandles({ figi, interval, from, to }: GetCandlesRequest) {
-    if (this.ticks === 0) throw new Error(`Для получения свечей нужно сначала вызвать tick()`);
-    this.ensureSameInterval(interval);
+    this.assertTickCalled();
+    this.assertSameInterval(interval);
     if (!from || !to) throw new Error(`Нужно указать from и to`);
-    if (this.isInsideLoadedCandles(figi, from, to)) {
-      const candles = this.getFilteredCandles(figi, from, to);
-      return { candles };
-    }
-    await this.loadCandles(figi, from, to);
-    const candles = this.isInsideLoadedCandles(figi, from, to)
-      ? this.getFilteredCandles(figi, from, to)
-      : [];
+    const loadedRange = this.getLoadedCandlesRange(figi);
+    const minFrom = (!loadedRange.from || from < loadedRange.from) ? from : loadedRange.from;
+    const maxTo = (!loadedRange.to || to > loadedRange.to) ? to : loadedRange.to;
+    // если загруженного диапазона свечей недостаточно, загружаем еще раз с увеличенным диапазоном
+    if (minFrom === from || maxTo === to) await this.loadCandles(figi, minFrom, maxTo);
+    const candles = this.getFilteredCandles(figi, from, to);
     return { candles };
   }
 
@@ -153,14 +152,14 @@ export class MarketDataStub implements Client<typeof MarketDataServiceDefinition
     return candles.filter(c => c.time! >= from && c.time! < to);
   }
 
-  private isInsideLoadedCandles(figi: string, from: Date, to: Date) {
-    const candles = this.candles.get(figi);
-    if (!candles) return false;
-    const firstCandle = candles[0];
+  private getLoadedCandlesRange(figi: string) {
+    const candles = this.candles.get(figi) || [];
+    const from = candles[0]?.time;
     const [ lastCandle ] = candles.slice(-1);
-    if (!firstCandle || !lastCandle) return false;
-    const maxTo = lastCandle.time!.valueOf() + intervalToMs(this.options.candleInterval);
-    return from >= firstCandle.time! && to.valueOf() <= maxTo;
+    const to = lastCandle?.time
+      ? new Date(lastCandle.time.valueOf() + intervalToMs(this.options.candleInterval))
+      : undefined;
+    return { from, to };
   }
 
   private assertFinalDateInThePast() {
@@ -172,11 +171,25 @@ export class MarketDataStub implements Client<typeof MarketDataServiceDefinition
     }
   }
 
-  private ensureSameInterval(interval: CandleInterval) {
+  private assertTickCalled() {
+    if (this.ticks === 0) {
+      throw new Error(`Для получения свечей нужно сначала вызвать tick()`);
+    }
+  }
+
+  private assertSameInterval(interval: CandleInterval) {
     if (interval !== this.options.candleInterval) {
       throw new Error(`interval в запросе не совпадает с установленным для бэктеста`);
     }
   }
+}
+
+/**
+ * Для бэктеста в CandlesLoader переопределяем debug,
+ * чтобы можно было отличить сообщения от CandlesLoader в коед робота.
+ */
+class BacktestCandlesLoader extends CandlesLoader {
+  protected debug = Debug('tinkoff-invest-api:backtest:candles-loader');
 }
 
 function intervalToMs(interval: CandleInterval) {

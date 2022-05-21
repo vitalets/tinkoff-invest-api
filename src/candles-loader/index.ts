@@ -22,7 +22,7 @@
  *      2021.json
  *      2022.json
  */
-
+import Debug from 'debug';
 import { TinkoffInvestApi } from '../api.js';
 import { CandleInterval } from '../generated/marketdata.js';
 import { CandlesReqDay } from './req-day.js';
@@ -40,6 +40,7 @@ const defaults: Required<CandlesLoaderOptions> = {
 
 export class CandlesLoader {
   protected options: Required<CandlesLoaderOptions>;
+  protected debug = Debug('tinkoff-invest-api:candles-loader');
 
   constructor(protected api: TinkoffInvestApi, options: CandlesLoaderOptions = {}) {
     this.options = Object.assign({}, defaults, options);
@@ -47,8 +48,8 @@ export class CandlesLoader {
 
   async getCandles(req: CandlesReqParams) {
     const candlesReq = req.interval === CandleInterval.CANDLE_INTERVAL_DAY
-      ? new CandlesReqDay(this.api, this.options, req)
-      : new CandlesReqMh(this.api, this.options, req);
+      ? new CandlesReqDay(this.api, this.options, req, this.debug)
+      : new CandlesReqMh(this.api, this.options, req, this.debug);
     const candles = await candlesReq.getCandles();
     return { candles };
   }
