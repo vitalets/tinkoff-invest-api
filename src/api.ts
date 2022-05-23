@@ -1,8 +1,7 @@
 /**
  * Tinkoff Invest API.
  */
-import { createChannel, createClientFactory, Client, Channel } from 'nice-grpc';
-import { createGrpcCredentials } from './utils/grpc.js';
+import { createChannel, createClientFactory, Client, Channel, Metadata, ChannelCredentials } from 'nice-grpc';
 import { errorMiddleware } from './api-error.js';
 import { Helpers } from './helpers.js';
 import { MarketStream } from './stream/market.js';
@@ -42,12 +41,14 @@ type ServiceDefinition = typeof InstrumentsServiceDefinition
 export class TinkoffInvestApi {
   options: Required<TinkoffInvestApiOptions>;
   protected channel: Channel;
+  protected metadata: Metadata;
   protected clients: Map<ServiceDefinition, Client<ServiceDefinition>> = new Map();
   protected streamClients?: { market: MarketStream, trades: TradesStream };
 
   constructor(options: TinkoffInvestApiOptions) {
     this.options = Object.assign({}, defaults, options);
     this.channel = this.createChannel();
+    this.metadata = this.createDefaultMetadata();
   }
 
   helpers = Helpers;
@@ -65,17 +66,18 @@ export class TinkoffInvestApi {
   isBacktest = false;
 
   private createChannel() {
-    const credentials = createGrpcCredentials(this.options.endpoint, {
-      'Authorization': `Bearer ${this.options.token}`,
-      'x-app-name': this.options.appName,
-    });
-    return createChannel(this.options.endpoint, credentials);
+    const { endpoint } = this.options;
+    const credentials = /^localhost/i.test(endpoint)
+      ? ChannelCredentials.createInsecure()
+      : ChannelCredentials.createSsl();
+    return createChannel(endpoint, credentials);
   }
 
   private getOrCreateClient<T extends ServiceDefinition>(service: T) {
     let client = this.clients.get(service)!;
     if (!client) {
-      client = createClientFactory().use(errorMiddleware).create(service, this.channel);
+      const defaultCallOptions = { '*': { metadata: this.metadata } };
+      client = createClientFactory().use(errorMiddleware).create(service, this.channel, defaultCallOptions);
       this.clients.set(service, client);
     }
     return client as Client<T>;
@@ -89,5 +91,12 @@ export class TinkoffInvestApi {
       };
     }
     return this.streamClients;
+  }
+
+  private createDefaultMetadata() {
+    return new Metadata({
+      'Authorization': `Bearer ${this.options.token}`,
+      'x-app-name': this.options.appName,
+    });
   }
 }
