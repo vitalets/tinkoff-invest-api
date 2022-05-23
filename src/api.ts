@@ -15,7 +15,19 @@ import { StopOrdersServiceDefinition } from './generated/stoporders.js';
 import { UsersServiceDefinition } from './generated/users.js';
 import { TradesStream } from './stream/trades.js';
 
-const TINKOFF_API_URL = 'invest-public-api.tinkoff.ru:443';
+export interface TinkoffInvestApiOptions {
+  /** Токен доступа */
+  token: string;
+  /** Имя приложения */
+  appName?: string;
+  /** API endpoint */
+  endpoint?: string;
+}
+
+const defaults: Required<Pick<TinkoffInvestApiOptions, 'appName' | 'endpoint' >> = {
+  endpoint: 'invest-public-api.tinkoff.ru:443',
+  appName: '',
+};
 
 type ServiceDefinition = typeof InstrumentsServiceDefinition
   | typeof MarketDataServiceDefinition
@@ -27,19 +39,14 @@ type ServiceDefinition = typeof InstrumentsServiceDefinition
   | typeof StopOrdersServiceDefinition
   | typeof UsersServiceDefinition;
 
-export interface TinkoffInvestApiOptions {
-  /** Токен доступа */
-  token: string;
-  /** Имя приложения */
-  appName?: string;
-}
-
 export class TinkoffInvestApi {
+  options: Required<TinkoffInvestApiOptions>;
   protected channel: Channel;
   protected clients: Map<ServiceDefinition, Client<ServiceDefinition>> = new Map();
   protected streamClients?: { market: MarketStream, trades: TradesStream };
 
-  constructor(public options: TinkoffInvestApiOptions) {
+  constructor(options: TinkoffInvestApiOptions) {
+    this.options = Object.assign({}, defaults, options);
     this.channel = this.createChannel();
   }
 
@@ -58,11 +65,11 @@ export class TinkoffInvestApi {
   isBacktest = false;
 
   private createChannel() {
-    const credentials = createGrpcCredentials({
+    const credentials = createGrpcCredentials(this.options.endpoint, {
       'Authorization': `Bearer ${this.options.token}`,
       'x-app-name': this.options.appName,
     });
-    return createChannel(TINKOFF_API_URL, credentials);
+    return createChannel(this.options.endpoint, credentials);
   }
 
   private getOrCreateClient<T extends ServiceDefinition>(service: T) {

@@ -2,10 +2,10 @@ import * as grpc from '@grpc/grpc-js';
 
 type Headers = Record<string, string | undefined>;
 
-export function createGrpcCredentials(headers: Headers = {}) {
-  const sslCredentials = grpc.credentials.createSsl();
+export function createGrpcCredentials(endpoint: string, headers: Headers = {}) {
+  const protocolCredentials = createProtocolCredentials(endpoint);
   const metadataCredentials = createMetadataCredentials(headers);
-  return grpc.credentials.combineChannelCredentials(sslCredentials, metadataCredentials);
+  return grpc.credentials.combineChannelCredentials(protocolCredentials, metadataCredentials);
 }
 
 function createMetadataCredentials(headers: Headers) {
@@ -17,3 +17,8 @@ function createMetadataCredentials(headers: Headers) {
   return grpc.credentials.createFromMetadataGenerator((_, cb) => cb(null, metadata));
 }
 
+function createProtocolCredentials(endpoint: string) {
+  return /^localhost/i.test(endpoint)
+    ? grpc.credentials.createInsecure()
+    : grpc.credentials.createSsl();
+}
