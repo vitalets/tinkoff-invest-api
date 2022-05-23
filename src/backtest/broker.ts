@@ -4,6 +4,7 @@
 
 /* eslint-disable max-lines */
 
+import Debug from 'debug';
 import { Instrument, InstrumentIdType } from '../generated/instruments.js';
 import { Operation, OperationState, OperationType, PortfolioPosition } from '../generated/operations.js';
 import {
@@ -15,6 +16,9 @@ import {
 } from '../generated/orders.js';
 import { Helpers } from '../helpers.js';
 import { Backtest } from './index.js';
+import { orderDirectionToString } from './orders.js';
+
+const debug = Debug('tinkoff-invest-api:backtest:broker');
 
 export class Broker {
   constructor(private backtest: Backtest) { }
@@ -55,6 +59,7 @@ export class Broker {
 
   async tryExecuteOrders() {
     const { orders } = await this.backtest.orders.getOrders({ accountId: '' });
+    debug(`Пробуем исполнить заявки: ${orders.length}`);
     for (const order of orders) {
       const price = await this.isPriceReached(order);
       if (price) await this.executeOrder(order, price);
@@ -120,7 +125,7 @@ export class Broker {
    * (для рыночных всегда достигнута)
    */
   private async isPriceReached(order: OrderState) {
-    const prevCandle = await this.backtest.marketdata.getCandle({ figi: order.figi, offset: 1});
+    const prevCandle = await this.backtest.marketdata.getCandle(order.figi, -1);
     if (!prevCandle) return false;
     const { low, high, close } = prevCandle;
     switch (order.orderType) {
@@ -145,6 +150,7 @@ export class Broker {
     order.executedCommission = Helpers.toMoneyValue(executedCommission, order.currency);
     order.totalOrderAmount = Helpers.toMoneyValue(totalOrderAmount, order.currency);
     order.averagePositionPrice = Helpers.toMoneyValue(price, order.currency);
+    logOrderExecuted(order);
   }
 
   private createOrderOperation(order: OrderState, instrument: Instrument): Operation {
@@ -267,4 +273,14 @@ function getOperationText(operationType: OperationType) {
     case OperationType.OPERATION_TYPE_BROKER_FEE: return 'Удержание комиссии за операцию';
     default: return '';
   }
+}
+
+function logOrderExecuted({ figi, direction, lotsExecuted, executedOrderPrice }: OrderState) {
+  debug([
+    `Заявка исполнена:`,
+    orderDirectionToString(direction),
+    figi,
+    `${lotsExecuted} lot(s)`,
+    Helpers.toMoneyString(executedOrderPrice),
+  ].join(' '));
 }

@@ -24,10 +24,7 @@
  */
 import Debug from 'debug';
 import { TinkoffInvestApi } from '../api.js';
-import { CandleInterval } from '../generated/marketdata.js';
-import { CandlesReqDay } from './req-day.js';
-import { CandlesReqMh } from './req-mh.js';
-import { CandlesReqParams } from './req.js';
+import { CandlesReq, CandlesReqParams } from './req.js';
 
 export interface CandlesLoaderOptions {
   /** Директория для кеширования свечей */
@@ -47,9 +44,7 @@ export class CandlesLoader {
   }
 
   async getCandles(req: CandlesReqParams) {
-    const candlesReq = req.interval === CandleInterval.CANDLE_INTERVAL_DAY
-      ? new CandlesReqDay(this.api, this.options, req, this.debug)
-      : new CandlesReqMh(this.api, this.options, req, this.debug);
+    const candlesReq = new CandlesReq(this.api, this.options, req, this.debug);
     const candles = await candlesReq.getCandles();
     return { candles };
   }

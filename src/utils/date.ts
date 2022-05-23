@@ -14,3 +14,13 @@ function addLeadingZero(value: number, length = 2) {
   const zeros = strValue.length < length ? '0'.repeat(length - strValue.length) : '';
   return `${zeros}${strValue}`;
 }
+
+export function addYears(date: Date, years: number) {
+  date.setFullYear(date.getFullYear() + years);
+  return date;
+}
+
+export function addDays(date: Date, days: number) {
+  date.setDate(date.getDate() + days);
+  return date;
+}

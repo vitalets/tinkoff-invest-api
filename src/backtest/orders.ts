@@ -2,11 +2,13 @@
  * Эмуляция orders.
  * See: https://tinkoff.github.io/investAPI/head-orders/
  */
+import Debug from 'debug';
 import { Client } from 'nice-grpc';
 import {
   CancelOrderRequest,
   GetOrdersRequest,
   GetOrderStateRequest,
+  OrderDirection,
   OrderExecutionReportStatus,
   OrdersServiceDefinition,
   OrdersStreamServiceDefinition,
@@ -15,7 +17,10 @@ import {
   PostOrderResponse,
   TradesStreamRequest
 } from '../generated/orders.js';
+import { Helpers } from '../helpers.js';
 import { Backtest } from './index.js';
+
+const debug = Debug('tinkoff-invest-api:backtest:orders');
 
 export class OrdersStub implements Client<typeof OrdersServiceDefinition> {
   private orders: OrderState[] = [];
@@ -73,6 +78,7 @@ export class OrdersStub implements Client<typeof OrdersServiceDefinition> {
   private async createOrder(req: PostOrderRequest) {
     const order = await this.backtest.broker.createOrder(req);
     this.orders.push(order);
+    logOrderCreated(order);
     return order;
   }
 }
@@ -85,4 +91,18 @@ export class OrdersStreamStub implements Client<typeof OrdersStreamServiceDefini
       orderTrades: undefined,
     };
   }
+}
+
+export function orderDirectionToString(direction: OrderDirection) {
+  return OrderDirection[direction].replace('ORDER_DIRECTION_', '').toLowerCase();
+}
+
+function logOrderCreated({ figi, direction, lotsRequested, initialOrderPrice }: OrderState) {
+  debug([
+    `Заявка создана:`,
+    orderDirectionToString(direction),
+    figi,
+    `${lotsRequested} lot(s)`,
+    Helpers.toMoneyString(initialOrderPrice),
+  ].join(' '));
 }
