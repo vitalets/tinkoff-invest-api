@@ -2,6 +2,7 @@
 import Long from "long";
 import _m0 from "protobufjs/minimal.js";
 import { MoneyValue, Quotation } from "./common.js";
+import { CallContext, CallOptions } from "nice-grpc-common";
 import { Timestamp } from "./google/protobuf/timestamp.js";
 
 export const protobufPackage = "tinkoff.public.invest.api.contract.v1";
@@ -50,8 +51,9 @@ export function accountTypeToJSON(object: AccountType): string {
       return "ACCOUNT_TYPE_TINKOFF_IIS";
     case AccountType.ACCOUNT_TYPE_INVEST_BOX:
       return "ACCOUNT_TYPE_INVEST_BOX";
+    case AccountType.UNRECOGNIZED:
     default:
-      return "UNKNOWN";
+      return "UNRECOGNIZED";
   }
 }
 
@@ -99,8 +101,9 @@ export function accountStatusToJSON(object: AccountStatus): string {
       return "ACCOUNT_STATUS_OPEN";
     case AccountStatus.ACCOUNT_STATUS_CLOSED:
       return "ACCOUNT_STATUS_CLOSED";
+    case AccountStatus.UNRECOGNIZED:
     default:
-      return "UNKNOWN";
+      return "UNRECOGNIZED";
   }
 }
 
@@ -148,8 +151,9 @@ export function accessLevelToJSON(object: AccessLevel): string {
       return "ACCOUNT_ACCESS_LEVEL_READ_ONLY";
     case AccessLevel.ACCOUNT_ACCESS_LEVEL_NO_ACCESS:
       return "ACCOUNT_ACCESS_LEVEL_NO_ACCESS";
+    case AccessLevel.UNRECOGNIZED:
     default:
-      return "UNKNOWN";
+      return "UNRECOGNIZED";
   }
 }
 
@@ -997,6 +1001,7 @@ export const GetInfoResponse = {
  * Сервис предназначен для получения: </br> **1**.
  * списка счетов пользователя; </br> **2**. маржинальных показателе по счёту.
  */
+export type UsersServiceDefinition = typeof UsersServiceDefinition;
 export const UsersServiceDefinition = {
   name: "UsersService",
   fullName: "tinkoff.public.invest.api.contract.v1.UsersService",
@@ -1039,6 +1044,52 @@ export const UsersServiceDefinition = {
     },
   },
 } as const;
+
+export interface UsersServiceServiceImplementation<CallContextExt = {}> {
+  /** Метод получения счетов пользователя. */
+  getAccounts(
+    request: GetAccountsRequest,
+    context: CallContext & CallContextExt
+  ): Promise<GetAccountsResponse>;
+  /** Расчёт маржинальных показателей по счёту. */
+  getMarginAttributes(
+    request: GetMarginAttributesRequest,
+    context: CallContext & CallContextExt
+  ): Promise<GetMarginAttributesResponse>;
+  /** Запрос тарифа пользователя. */
+  getUserTariff(
+    request: GetUserTariffRequest,
+    context: CallContext & CallContextExt
+  ): Promise<GetUserTariffResponse>;
+  /** Метод получения информации о пользователе. */
+  getInfo(
+    request: GetInfoRequest,
+    context: CallContext & CallContextExt
+  ): Promise<GetInfoResponse>;
+}
+
+export interface UsersServiceClient<CallOptionsExt = {}> {
+  /** Метод получения счетов пользователя. */
+  getAccounts(
+    request: GetAccountsRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<GetAccountsResponse>;
+  /** Расчёт маржинальных показателей по счёту. */
+  getMarginAttributes(
+    request: GetMarginAttributesRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<GetMarginAttributesResponse>;
+  /** Запрос тарифа пользователя. */
+  getUserTariff(
+    request: GetUserTariffRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<GetUserTariffResponse>;
+  /** Метод получения информации о пользователе. */
+  getInfo(
+    request: GetInfoRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<GetInfoResponse>;
+}
 
 function toTimestamp(date: Date): Timestamp {
   const seconds = date.getTime() / 1_000;

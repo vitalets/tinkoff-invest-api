@@ -144,8 +144,9 @@ export function securityTradingStatusToJSON(
       return "SECURITY_TRADING_STATUS_DEALER_BREAK_IN_TRADING";
     case SecurityTradingStatus.SECURITY_TRADING_STATUS_DEALER_NOT_AVAILABLE_FOR_TRADING:
       return "SECURITY_TRADING_STATUS_DEALER_NOT_AVAILABLE_FOR_TRADING";
+    case SecurityTradingStatus.UNRECOGNIZED:
     default:
-      return "UNKNOWN";
+      return "UNRECOGNIZED";
   }
 }
 

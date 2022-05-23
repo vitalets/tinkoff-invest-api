@@ -8,6 +8,7 @@ import {
   securityTradingStatusFromJSON,
   securityTradingStatusToJSON,
 } from "./common.js";
+import { CallContext, CallOptions } from "nice-grpc-common";
 import { Timestamp } from "./google/protobuf/timestamp.js";
 
 export const protobufPackage = "tinkoff.public.invest.api.contract.v1";
@@ -84,8 +85,9 @@ export function couponTypeToJSON(object: CouponType): string {
       return "COUPON_TYPE_VARIABLE";
     case CouponType.COUPON_TYPE_OTHER:
       return "COUPON_TYPE_OTHER";
+    case CouponType.UNRECOGNIZED:
     default:
-      return "UNKNOWN";
+      return "UNRECOGNIZED";
   }
 }
 
@@ -133,8 +135,9 @@ export function instrumentIdTypeToJSON(object: InstrumentIdType): string {
       return "INSTRUMENT_ID_TYPE_TICKER";
     case InstrumentIdType.INSTRUMENT_ID_TYPE_UID:
       return "INSTRUMENT_ID_TYPE_UID";
+    case InstrumentIdType.UNRECOGNIZED:
     default:
-      return "UNKNOWN";
+      return "UNRECOGNIZED";
   }
 }
 
@@ -175,8 +178,9 @@ export function instrumentStatusToJSON(object: InstrumentStatus): string {
       return "INSTRUMENT_STATUS_BASE";
     case InstrumentStatus.INSTRUMENT_STATUS_ALL:
       return "INSTRUMENT_STATUS_ALL";
+    case InstrumentStatus.UNRECOGNIZED:
     default:
-      return "UNKNOWN";
+      return "UNRECOGNIZED";
   }
 }
 
@@ -259,8 +263,9 @@ export function shareTypeToJSON(object: ShareType): string {
       return "SHARE_TYPE_CLOSED_END_FUND";
     case ShareType.SHARE_TYPE_REIT:
       return "SHARE_TYPE_REIT";
+    case ShareType.UNRECOGNIZED:
     default:
-      return "UNKNOWN";
+      return "UNRECOGNIZED";
   }
 }
 
@@ -315,8 +320,9 @@ export function assetTypeToJSON(object: AssetType): string {
       return "ASSET_TYPE_INDEX";
     case AssetType.ASSET_TYPE_SECURITY:
       return "ASSET_TYPE_SECURITY";
+    case AssetType.UNRECOGNIZED:
     default:
-      return "UNKNOWN";
+      return "UNRECOGNIZED";
   }
 }
 
@@ -361,8 +367,9 @@ export function structuredProductTypeToJSON(
       return "SP_TYPE_DELIVERABLE";
     case StructuredProductType.SP_TYPE_NON_DELIVERABLE:
       return "SP_TYPE_NON_DELIVERABLE";
+    case StructuredProductType.UNRECOGNIZED:
     default:
-      return "UNKNOWN";
+      return "UNRECOGNIZED";
   }
 }
 
@@ -407,8 +414,9 @@ export function editFavoritesActionTypeToJSON(
       return "EDIT_FAVORITES_ACTION_TYPE_ADD";
     case EditFavoritesActionType.EDIT_FAVORITES_ACTION_TYPE_DEL:
       return "EDIT_FAVORITES_ACTION_TYPE_DEL";
+    case EditFavoritesActionType.UNRECOGNIZED:
     default:
-      return "UNKNOWN";
+      return "UNRECOGNIZED";
   }
 }
 
@@ -456,8 +464,9 @@ export function realExchangeToJSON(object: RealExchange): string {
       return "REAL_EXCHANGE_RTS";
     case RealExchange.REAL_EXCHANGE_OTC:
       return "REAL_EXCHANGE_OTC";
+    case RealExchange.UNRECOGNIZED:
     default:
-      return "UNKNOWN";
+      return "UNRECOGNIZED";
   }
 }
 
@@ -8643,6 +8652,7 @@ export const EditFavoritesResponse = {
  * расписания торговых сессий;</br>**3**. календаря выплат купонов по облигациям;</br>**4**.
  * размера гарантийного обеспечения по фьючерсам;</br>**5**. дивидендов по ценной бумаге.
  */
+export type InstrumentsServiceDefinition = typeof InstrumentsServiceDefinition;
 export const InstrumentsServiceDefinition = {
   name: "InstrumentsService",
   fullName: "tinkoff.public.invest.api.contract.v1.InstrumentsService",
@@ -8829,6 +8839,212 @@ export const InstrumentsServiceDefinition = {
     },
   },
 } as const;
+
+export interface InstrumentsServiceServiceImplementation<CallContextExt = {}> {
+  /** Метод получения расписания торгов торговых площадок. */
+  tradingSchedules(
+    request: TradingSchedulesRequest,
+    context: CallContext & CallContextExt
+  ): Promise<TradingSchedulesResponse>;
+  /** Метод получения облигации по её идентификатору. */
+  bondBy(
+    request: InstrumentRequest,
+    context: CallContext & CallContextExt
+  ): Promise<BondResponse>;
+  /** Метод получения списка облигаций. */
+  bonds(
+    request: InstrumentsRequest,
+    context: CallContext & CallContextExt
+  ): Promise<BondsResponse>;
+  /** Метод получения графика выплат купонов по облигации */
+  getBondCoupons(
+    request: GetBondCouponsRequest,
+    context: CallContext & CallContextExt
+  ): Promise<GetBondCouponsResponse>;
+  /** Метод получения валюты по её идентификатору. */
+  currencyBy(
+    request: InstrumentRequest,
+    context: CallContext & CallContextExt
+  ): Promise<CurrencyResponse>;
+  /** Метод получения списка валют. */
+  currencies(
+    request: InstrumentsRequest,
+    context: CallContext & CallContextExt
+  ): Promise<CurrenciesResponse>;
+  /** Метод получения инвестиционного фонда по его идентификатору. */
+  etfBy(
+    request: InstrumentRequest,
+    context: CallContext & CallContextExt
+  ): Promise<EtfResponse>;
+  /** Метод получения списка инвестиционных фондов. */
+  etfs(
+    request: InstrumentsRequest,
+    context: CallContext & CallContextExt
+  ): Promise<EtfsResponse>;
+  /** Метод получения фьючерса по его идентификатору. */
+  futureBy(
+    request: InstrumentRequest,
+    context: CallContext & CallContextExt
+  ): Promise<FutureResponse>;
+  /** Метод получения списка фьючерсов. */
+  futures(
+    request: InstrumentsRequest,
+    context: CallContext & CallContextExt
+  ): Promise<FuturesResponse>;
+  /** Метод получения акции по её идентификатору. */
+  shareBy(
+    request: InstrumentRequest,
+    context: CallContext & CallContextExt
+  ): Promise<ShareResponse>;
+  /** Метод получения списка акций. */
+  shares(
+    request: InstrumentsRequest,
+    context: CallContext & CallContextExt
+  ): Promise<SharesResponse>;
+  /** Метод получения накопленного купонного дохода по облигации. */
+  getAccruedInterests(
+    request: GetAccruedInterestsRequest,
+    context: CallContext & CallContextExt
+  ): Promise<GetAccruedInterestsResponse>;
+  /** Метод получения размера гарантийного обеспечения по фьючерсам. */
+  getFuturesMargin(
+    request: GetFuturesMarginRequest,
+    context: CallContext & CallContextExt
+  ): Promise<GetFuturesMarginResponse>;
+  /** Метод получения основной информации об инструменте. */
+  getInstrumentBy(
+    request: InstrumentRequest,
+    context: CallContext & CallContextExt
+  ): Promise<InstrumentResponse>;
+  /** Метод для получения событий выплаты дивидендов по инструменту. */
+  getDividends(
+    request: GetDividendsRequest,
+    context: CallContext & CallContextExt
+  ): Promise<GetDividendsResponse>;
+  /** Метод получения актива по его идентификатору. */
+  getAssetBy(
+    request: AssetRequest,
+    context: CallContext & CallContextExt
+  ): Promise<AssetResponse>;
+  /** Метод получения списка активов. */
+  getAssets(
+    request: AssetsRequest,
+    context: CallContext & CallContextExt
+  ): Promise<AssetsResponse>;
+  /** Метод получения избранных инструментов. */
+  getFavorites(
+    request: GetFavoritesRequest,
+    context: CallContext & CallContextExt
+  ): Promise<GetFavoritesResponse>;
+  /** Метод редактирования избранных инструментов. */
+  editFavorites(
+    request: EditFavoritesRequest,
+    context: CallContext & CallContextExt
+  ): Promise<EditFavoritesResponse>;
+}
+
+export interface InstrumentsServiceClient<CallOptionsExt = {}> {
+  /** Метод получения расписания торгов торговых площадок. */
+  tradingSchedules(
+    request: TradingSchedulesRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<TradingSchedulesResponse>;
+  /** Метод получения облигации по её идентификатору. */
+  bondBy(
+    request: InstrumentRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<BondResponse>;
+  /** Метод получения списка облигаций. */
+  bonds(
+    request: InstrumentsRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<BondsResponse>;
+  /** Метод получения графика выплат купонов по облигации */
+  getBondCoupons(
+    request: GetBondCouponsRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<GetBondCouponsResponse>;
+  /** Метод получения валюты по её идентификатору. */
+  currencyBy(
+    request: InstrumentRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<CurrencyResponse>;
+  /** Метод получения списка валют. */
+  currencies(
+    request: InstrumentsRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<CurrenciesResponse>;
+  /** Метод получения инвестиционного фонда по его идентификатору. */
+  etfBy(
+    request: InstrumentRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<EtfResponse>;
+  /** Метод получения списка инвестиционных фондов. */
+  etfs(
+    request: InstrumentsRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<EtfsResponse>;
+  /** Метод получения фьючерса по его идентификатору. */
+  futureBy(
+    request: InstrumentRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<FutureResponse>;
+  /** Метод получения списка фьючерсов. */
+  futures(
+    request: InstrumentsRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<FuturesResponse>;
+  /** Метод получения акции по её идентификатору. */
+  shareBy(
+    request: InstrumentRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<ShareResponse>;
+  /** Метод получения списка акций. */
+  shares(
+    request: InstrumentsRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<SharesResponse>;
+  /** Метод получения накопленного купонного дохода по облигации. */
+  getAccruedInterests(
+    request: GetAccruedInterestsRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<GetAccruedInterestsResponse>;
+  /** Метод получения размера гарантийного обеспечения по фьючерсам. */
+  getFuturesMargin(
+    request: GetFuturesMarginRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<GetFuturesMarginResponse>;
+  /** Метод получения основной информации об инструменте. */
+  getInstrumentBy(
+    request: InstrumentRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<InstrumentResponse>;
+  /** Метод для получения событий выплаты дивидендов по инструменту. */
+  getDividends(
+    request: GetDividendsRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<GetDividendsResponse>;
+  /** Метод получения актива по его идентификатору. */
+  getAssetBy(
+    request: AssetRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<AssetResponse>;
+  /** Метод получения списка активов. */
+  getAssets(
+    request: AssetsRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<AssetsResponse>;
+  /** Метод получения избранных инструментов. */
+  getFavorites(
+    request: GetFavoritesRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<GetFavoritesResponse>;
+  /** Метод редактирования избранных инструментов. */
+  editFavorites(
+    request: EditFavoritesRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<EditFavoritesResponse>;
+}
 
 declare var self: any | undefined;
 declare var window: any | undefined;

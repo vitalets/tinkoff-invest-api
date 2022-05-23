@@ -11,6 +11,7 @@ rm -rf $OUT_DIR/**
 protoc \
 --plugin="./node_modules/.bin/protoc-gen-ts_proto" \
 --ts_proto_out="$OUT_DIR" \
+--ts_proto_opt="outputServices=nice-grpc" \
 --ts_proto_opt="outputServices=generic-definitions" \
 --ts_proto_opt="useExactTypes=false" \
 --ts_proto_opt="env=node" \

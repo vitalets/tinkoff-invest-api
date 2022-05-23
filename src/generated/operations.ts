@@ -2,6 +2,7 @@
 import Long from "long";
 import _m0 from "protobufjs/minimal.js";
 import { MoneyValue, Quotation } from "./common.js";
+import { CallContext, CallOptions } from "nice-grpc-common";
 import { Timestamp } from "./google/protobuf/timestamp.js";
 
 export const protobufPackage = "tinkoff.public.invest.api.contract.v1";
@@ -43,8 +44,9 @@ export function operationStateToJSON(object: OperationState): string {
       return "OPERATION_STATE_EXECUTED";
     case OperationState.OPERATION_STATE_CANCELED:
       return "OPERATION_STATE_CANCELED";
+    case OperationState.UNRECOGNIZED:
     default:
-      return "UNKNOWN";
+      return "UNRECOGNIZED";
   }
 }
 
@@ -379,8 +381,9 @@ export function operationTypeToJSON(object: OperationType): string {
       return "OPERATION_TYPE_DIV_EXT";
     case OperationType.OPERATION_TYPE_TAX_CORRECTION_COUPON:
       return "OPERATION_TYPE_TAX_CORRECTION_COUPON";
+    case OperationType.UNRECOGNIZED:
     default:
-      return "UNKNOWN";
+      return "UNRECOGNIZED";
   }
 }
 
@@ -3498,6 +3501,7 @@ export const DividendsForeignIssuerReport = {
  * портфеля по счёту;</br> **3**. позиций ценных бумаг на счёте;</br> **4**.
  * доступного остатка для вывода средств;</br> **4**. получения различных отчётов.
  */
+export type OperationsServiceDefinition = typeof OperationsServiceDefinition;
 export const OperationsServiceDefinition = {
   name: "OperationsService",
   fullName: "tinkoff.public.invest.api.contract.v1.OperationsService",
@@ -3558,6 +3562,72 @@ export const OperationsServiceDefinition = {
     },
   },
 } as const;
+
+export interface OperationsServiceServiceImplementation<CallContextExt = {}> {
+  /** Метод получения списка операций по счёту. */
+  getOperations(
+    request: OperationsRequest,
+    context: CallContext & CallContextExt
+  ): Promise<OperationsResponse>;
+  /** Метод получения портфеля по счёту. */
+  getPortfolio(
+    request: PortfolioRequest,
+    context: CallContext & CallContextExt
+  ): Promise<PortfolioResponse>;
+  /** Метод получения списка позиций по счёту. */
+  getPositions(
+    request: PositionsRequest,
+    context: CallContext & CallContextExt
+  ): Promise<PositionsResponse>;
+  /** Метод получения доступного остатка для вывода средств. */
+  getWithdrawLimits(
+    request: WithdrawLimitsRequest,
+    context: CallContext & CallContextExt
+  ): Promise<WithdrawLimitsResponse>;
+  /** Метод получения брокерского отчёта. */
+  getBrokerReport(
+    request: BrokerReportRequest,
+    context: CallContext & CallContextExt
+  ): Promise<BrokerReportResponse>;
+  /** Метод получения отчёта "Справка о доходах за пределами РФ". */
+  getDividendsForeignIssuer(
+    request: GetDividendsForeignIssuerRequest,
+    context: CallContext & CallContextExt
+  ): Promise<GetDividendsForeignIssuerResponse>;
+}
+
+export interface OperationsServiceClient<CallOptionsExt = {}> {
+  /** Метод получения списка операций по счёту. */
+  getOperations(
+    request: OperationsRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<OperationsResponse>;
+  /** Метод получения портфеля по счёту. */
+  getPortfolio(
+    request: PortfolioRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<PortfolioResponse>;
+  /** Метод получения списка позиций по счёту. */
+  getPositions(
+    request: PositionsRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<PositionsResponse>;
+  /** Метод получения доступного остатка для вывода средств. */
+  getWithdrawLimits(
+    request: WithdrawLimitsRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<WithdrawLimitsResponse>;
+  /** Метод получения брокерского отчёта. */
+  getBrokerReport(
+    request: BrokerReportRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<BrokerReportResponse>;
+  /** Метод получения отчёта "Справка о доходах за пределами РФ". */
+  getDividendsForeignIssuer(
+    request: GetDividendsForeignIssuerRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<GetDividendsForeignIssuerResponse>;
+}
 
 declare var self: any | undefined;
 declare var window: any | undefined;

@@ -8,6 +8,7 @@ import {
   securityTradingStatusFromJSON,
   securityTradingStatusToJSON,
 } from "./common.js";
+import { CallContext, CallOptions } from "nice-grpc-common";
 import { Timestamp } from "./google/protobuf/timestamp.js";
 
 export const protobufPackage = "tinkoff.public.invest.api.contract.v1";
@@ -49,8 +50,9 @@ export function subscriptionActionToJSON(object: SubscriptionAction): string {
       return "SUBSCRIPTION_ACTION_SUBSCRIBE";
     case SubscriptionAction.SUBSCRIPTION_ACTION_UNSUBSCRIBE:
       return "SUBSCRIPTION_ACTION_UNSUBSCRIBE";
+    case SubscriptionAction.UNRECOGNIZED:
     default:
-      return "UNKNOWN";
+      return "UNRECOGNIZED";
   }
 }
 
@@ -95,8 +97,9 @@ export function subscriptionIntervalToJSON(
       return "SUBSCRIPTION_INTERVAL_ONE_MINUTE";
     case SubscriptionInterval.SUBSCRIPTION_INTERVAL_FIVE_MINUTES:
       return "SUBSCRIPTION_INTERVAL_FIVE_MINUTES";
+    case SubscriptionInterval.UNRECOGNIZED:
     default:
-      return "UNKNOWN";
+      return "UNRECOGNIZED";
   }
 }
 
@@ -172,8 +175,9 @@ export function subscriptionStatusToJSON(object: SubscriptionStatus): string {
       return "SUBSCRIPTION_STATUS_LIMIT_IS_EXCEEDED";
     case SubscriptionStatus.SUBSCRIPTION_STATUS_INTERNAL_ERROR:
       return "SUBSCRIPTION_STATUS_INTERNAL_ERROR";
+    case SubscriptionStatus.UNRECOGNIZED:
     default:
-      return "UNKNOWN";
+      return "UNRECOGNIZED";
   }
 }
 
@@ -214,8 +218,9 @@ export function tradeDirectionToJSON(object: TradeDirection): string {
       return "TRADE_DIRECTION_BUY";
     case TradeDirection.TRADE_DIRECTION_SELL:
       return "TRADE_DIRECTION_SELL";
+    case TradeDirection.UNRECOGNIZED:
     default:
-      return "UNKNOWN";
+      return "UNRECOGNIZED";
   }
 }
 
@@ -277,8 +282,9 @@ export function candleIntervalToJSON(object: CandleInterval): string {
       return "CANDLE_INTERVAL_HOUR";
     case CandleInterval.CANDLE_INTERVAL_DAY:
       return "CANDLE_INTERVAL_DAY";
+    case CandleInterval.UNRECOGNIZED:
     default:
-      return "UNKNOWN";
+      return "UNRECOGNIZED";
   }
 }
 
@@ -3727,6 +3733,7 @@ export const GetLastTradesResponse = {
 };
 
 /** Сервис получения биржевой информации:</br> **1**. свечи;</br> **2**. стаканы;</br> **3**. торговые статусы;</br> **4**. лента сделок. */
+export type MarketDataServiceDefinition = typeof MarketDataServiceDefinition;
 export const MarketDataServiceDefinition = {
   name: "MarketDataService",
   fullName: "tinkoff.public.invest.api.contract.v1.MarketDataService",
@@ -3779,6 +3786,64 @@ export const MarketDataServiceDefinition = {
   },
 } as const;
 
+export interface MarketDataServiceServiceImplementation<CallContextExt = {}> {
+  /** Метод запроса исторических свечей по инструменту. */
+  getCandles(
+    request: GetCandlesRequest,
+    context: CallContext & CallContextExt
+  ): Promise<GetCandlesResponse>;
+  /** Метод запроса последних цен по инструментам. */
+  getLastPrices(
+    request: GetLastPricesRequest,
+    context: CallContext & CallContextExt
+  ): Promise<GetLastPricesResponse>;
+  /** Метод получения стакана по инструменту. */
+  getOrderBook(
+    request: GetOrderBookRequest,
+    context: CallContext & CallContextExt
+  ): Promise<GetOrderBookResponse>;
+  /** Метод запроса статуса торгов по инструментам. */
+  getTradingStatus(
+    request: GetTradingStatusRequest,
+    context: CallContext & CallContextExt
+  ): Promise<GetTradingStatusResponse>;
+  /** Метод запроса последних обезличенных сделок по инструменту. */
+  getLastTrades(
+    request: GetLastTradesRequest,
+    context: CallContext & CallContextExt
+  ): Promise<GetLastTradesResponse>;
+}
+
+export interface MarketDataServiceClient<CallOptionsExt = {}> {
+  /** Метод запроса исторических свечей по инструменту. */
+  getCandles(
+    request: GetCandlesRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<GetCandlesResponse>;
+  /** Метод запроса последних цен по инструментам. */
+  getLastPrices(
+    request: GetLastPricesRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<GetLastPricesResponse>;
+  /** Метод получения стакана по инструменту. */
+  getOrderBook(
+    request: GetOrderBookRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<GetOrderBookResponse>;
+  /** Метод запроса статуса торгов по инструментам. */
+  getTradingStatus(
+    request: GetTradingStatusRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<GetTradingStatusResponse>;
+  /** Метод запроса последних обезличенных сделок по инструменту. */
+  getLastTrades(
+    request: GetLastTradesRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<GetLastTradesResponse>;
+}
+
+export type MarketDataStreamServiceDefinition =
+  typeof MarketDataStreamServiceDefinition;
 export const MarketDataStreamServiceDefinition = {
   name: "MarketDataStreamService",
   fullName: "tinkoff.public.invest.api.contract.v1.MarketDataStreamService",
@@ -3794,6 +3859,24 @@ export const MarketDataStreamServiceDefinition = {
     },
   },
 } as const;
+
+export interface MarketDataStreamServiceServiceImplementation<
+  CallContextExt = {}
+> {
+  /** Bi-directional стрим предоставления биржевой информации. */
+  marketDataStream(
+    request: AsyncIterable<MarketDataRequest>,
+    context: CallContext & CallContextExt
+  ): ServerStreamingMethodResult<MarketDataResponse>;
+}
+
+export interface MarketDataStreamServiceClient<CallOptionsExt = {}> {
+  /** Bi-directional стрим предоставления биржевой информации. */
+  marketDataStream(
+    request: AsyncIterable<MarketDataRequest>,
+    options?: CallOptions & CallOptionsExt
+  ): AsyncIterable<MarketDataResponse>;
+}
 
 declare var self: any | undefined;
 declare var window: any | undefined;
@@ -3843,3 +3926,7 @@ if (_m0.util.Long !== Long) {
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;
 }
+
+export type ServerStreamingMethodResult<Response> = {
+  [Symbol.asyncIterator](): AsyncIterator<Response, void>;
+};

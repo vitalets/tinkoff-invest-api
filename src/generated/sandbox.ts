@@ -2,6 +2,7 @@
 import Long from "long";
 import _m0 from "protobufjs/minimal.js";
 import { MoneyValue } from "./common.js";
+import { CallContext, CallOptions } from "nice-grpc-common";
 import { GetAccountsRequest, GetAccountsResponse } from "./users.js";
 import {
   PostOrderRequest,
@@ -348,6 +349,7 @@ export const SandboxPayInResponse = {
 };
 
 /** Сервис для работы с песочницей TINKOFF INVEST API */
+export type SandboxServiceDefinition = typeof SandboxServiceDefinition;
 export const SandboxServiceDefinition = {
   name: "SandboxService",
   fullName: "tinkoff.public.invest.api.contract.v1.SandboxService",
@@ -453,6 +455,122 @@ export const SandboxServiceDefinition = {
     },
   },
 } as const;
+
+export interface SandboxServiceServiceImplementation<CallContextExt = {}> {
+  /** Метод регистрации счёта в песочнице. */
+  openSandboxAccount(
+    request: OpenSandboxAccountRequest,
+    context: CallContext & CallContextExt
+  ): Promise<OpenSandboxAccountResponse>;
+  /** Метод получения счетов в песочнице. */
+  getSandboxAccounts(
+    request: GetAccountsRequest,
+    context: CallContext & CallContextExt
+  ): Promise<GetAccountsResponse>;
+  /** Метод закрытия счёта в песочнице. */
+  closeSandboxAccount(
+    request: CloseSandboxAccountRequest,
+    context: CallContext & CallContextExt
+  ): Promise<CloseSandboxAccountResponse>;
+  /** Метод выставления торгового поручения в песочнице. */
+  postSandboxOrder(
+    request: PostOrderRequest,
+    context: CallContext & CallContextExt
+  ): Promise<PostOrderResponse>;
+  /** Метод получения списка активных заявок по счёту в песочнице. */
+  getSandboxOrders(
+    request: GetOrdersRequest,
+    context: CallContext & CallContextExt
+  ): Promise<GetOrdersResponse>;
+  /** Метод отмены торгового поручения в песочнице. */
+  cancelSandboxOrder(
+    request: CancelOrderRequest,
+    context: CallContext & CallContextExt
+  ): Promise<CancelOrderResponse>;
+  /** Метод получения статуса заявки в песочнице. */
+  getSandboxOrderState(
+    request: GetOrderStateRequest,
+    context: CallContext & CallContextExt
+  ): Promise<OrderState>;
+  /** Метод получения позиций по виртуальному счёту песочницы. */
+  getSandboxPositions(
+    request: PositionsRequest,
+    context: CallContext & CallContextExt
+  ): Promise<PositionsResponse>;
+  /** Метод получения операций в песочнице по номеру счёта. */
+  getSandboxOperations(
+    request: OperationsRequest,
+    context: CallContext & CallContextExt
+  ): Promise<OperationsResponse>;
+  /** Метод получения портфолио в песочнице. */
+  getSandboxPortfolio(
+    request: PortfolioRequest,
+    context: CallContext & CallContextExt
+  ): Promise<PortfolioResponse>;
+  /** Метод пополнения счёта в песочнице. */
+  sandboxPayIn(
+    request: SandboxPayInRequest,
+    context: CallContext & CallContextExt
+  ): Promise<SandboxPayInResponse>;
+}
+
+export interface SandboxServiceClient<CallOptionsExt = {}> {
+  /** Метод регистрации счёта в песочнице. */
+  openSandboxAccount(
+    request: OpenSandboxAccountRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<OpenSandboxAccountResponse>;
+  /** Метод получения счетов в песочнице. */
+  getSandboxAccounts(
+    request: GetAccountsRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<GetAccountsResponse>;
+  /** Метод закрытия счёта в песочнице. */
+  closeSandboxAccount(
+    request: CloseSandboxAccountRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<CloseSandboxAccountResponse>;
+  /** Метод выставления торгового поручения в песочнице. */
+  postSandboxOrder(
+    request: PostOrderRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<PostOrderResponse>;
+  /** Метод получения списка активных заявок по счёту в песочнице. */
+  getSandboxOrders(
+    request: GetOrdersRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<GetOrdersResponse>;
+  /** Метод отмены торгового поручения в песочнице. */
+  cancelSandboxOrder(
+    request: CancelOrderRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<CancelOrderResponse>;
+  /** Метод получения статуса заявки в песочнице. */
+  getSandboxOrderState(
+    request: GetOrderStateRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<OrderState>;
+  /** Метод получения позиций по виртуальному счёту песочницы. */
+  getSandboxPositions(
+    request: PositionsRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<PositionsResponse>;
+  /** Метод получения операций в песочнице по номеру счёта. */
+  getSandboxOperations(
+    request: OperationsRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<OperationsResponse>;
+  /** Метод получения портфолио в песочнице. */
+  getSandboxPortfolio(
+    request: PortfolioRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<PortfolioResponse>;
+  /** Метод пополнения счёта в песочнице. */
+  sandboxPayIn(
+    request: SandboxPayInRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<SandboxPayInResponse>;
+}
 
 if (_m0.util.Long !== Long) {
   _m0.util.Long = Long as any;

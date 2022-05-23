@@ -2,6 +2,7 @@
 import Long from "long";
 import _m0 from "protobufjs/minimal.js";
 import { Quotation, MoneyValue } from "./common.js";
+import { CallContext, CallOptions } from "nice-grpc-common";
 import { Timestamp } from "./google/protobuf/timestamp.js";
 
 export const protobufPackage = "tinkoff.public.invest.api.contract.v1";
@@ -43,8 +44,9 @@ export function stopOrderDirectionToJSON(object: StopOrderDirection): string {
       return "STOP_ORDER_DIRECTION_BUY";
     case StopOrderDirection.STOP_ORDER_DIRECTION_SELL:
       return "STOP_ORDER_DIRECTION_SELL";
+    case StopOrderDirection.UNRECOGNIZED:
     default:
-      return "UNKNOWN";
+      return "UNRECOGNIZED";
   }
 }
 
@@ -89,8 +91,9 @@ export function stopOrderExpirationTypeToJSON(
       return "STOP_ORDER_EXPIRATION_TYPE_GOOD_TILL_CANCEL";
     case StopOrderExpirationType.STOP_ORDER_EXPIRATION_TYPE_GOOD_TILL_DATE:
       return "STOP_ORDER_EXPIRATION_TYPE_GOOD_TILL_DATE";
+    case StopOrderExpirationType.UNRECOGNIZED:
     default:
-      return "UNKNOWN";
+      return "UNRECOGNIZED";
   }
 }
 
@@ -138,8 +141,9 @@ export function stopOrderTypeToJSON(object: StopOrderType): string {
       return "STOP_ORDER_TYPE_STOP_LOSS";
     case StopOrderType.STOP_ORDER_TYPE_STOP_LIMIT:
       return "STOP_ORDER_TYPE_STOP_LIMIT";
+    case StopOrderType.UNRECOGNIZED:
     default:
-      return "UNKNOWN";
+      return "UNRECOGNIZED";
   }
 }
 
@@ -826,6 +830,7 @@ export const StopOrder = {
  * Сервис предназначен для работы со стоп-заявками:</br> **1**.
  * выставление;</br> **2**. отмена;</br> **3**. получение списка стоп-заявок.
  */
+export type StopOrdersServiceDefinition = typeof StopOrdersServiceDefinition;
 export const StopOrdersServiceDefinition = {
   name: "StopOrdersService",
   fullName: "tinkoff.public.invest.api.contract.v1.StopOrdersService",
@@ -859,6 +864,42 @@ export const StopOrdersServiceDefinition = {
     },
   },
 } as const;
+
+export interface StopOrdersServiceServiceImplementation<CallContextExt = {}> {
+  /** Метод выставления стоп-заявки. */
+  postStopOrder(
+    request: PostStopOrderRequest,
+    context: CallContext & CallContextExt
+  ): Promise<PostStopOrderResponse>;
+  /** Метод получения списка активных стоп заявок по счёту. */
+  getStopOrders(
+    request: GetStopOrdersRequest,
+    context: CallContext & CallContextExt
+  ): Promise<GetStopOrdersResponse>;
+  /** Метод отмены стоп-заявки. */
+  cancelStopOrder(
+    request: CancelStopOrderRequest,
+    context: CallContext & CallContextExt
+  ): Promise<CancelStopOrderResponse>;
+}
+
+export interface StopOrdersServiceClient<CallOptionsExt = {}> {
+  /** Метод выставления стоп-заявки. */
+  postStopOrder(
+    request: PostStopOrderRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<PostStopOrderResponse>;
+  /** Метод получения списка активных стоп заявок по счёту. */
+  getStopOrders(
+    request: GetStopOrdersRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<GetStopOrdersResponse>;
+  /** Метод отмены стоп-заявки. */
+  cancelStopOrder(
+    request: CancelStopOrderRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<CancelStopOrderResponse>;
+}
 
 declare var self: any | undefined;
 declare var window: any | undefined;

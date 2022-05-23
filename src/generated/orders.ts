@@ -2,6 +2,7 @@
 import Long from "long";
 import _m0 from "protobufjs/minimal.js";
 import { Quotation, MoneyValue, Ping } from "./common.js";
+import { CallContext, CallOptions } from "nice-grpc-common";
 import { Timestamp } from "./google/protobuf/timestamp.js";
 
 export const protobufPackage = "tinkoff.public.invest.api.contract.v1";
@@ -43,8 +44,9 @@ export function orderDirectionToJSON(object: OrderDirection): string {
       return "ORDER_DIRECTION_BUY";
     case OrderDirection.ORDER_DIRECTION_SELL:
       return "ORDER_DIRECTION_SELL";
+    case OrderDirection.UNRECOGNIZED:
     default:
-      return "UNKNOWN";
+      return "UNRECOGNIZED";
   }
 }
 
@@ -85,8 +87,9 @@ export function orderTypeToJSON(object: OrderType): string {
       return "ORDER_TYPE_LIMIT";
     case OrderType.ORDER_TYPE_MARKET:
       return "ORDER_TYPE_MARKET";
+    case OrderType.UNRECOGNIZED:
     default:
-      return "UNKNOWN";
+      return "UNRECOGNIZED";
   }
 }
 
@@ -151,8 +154,9 @@ export function orderExecutionReportStatusToJSON(
       return "EXECUTION_REPORT_STATUS_NEW";
     case OrderExecutionReportStatus.EXECUTION_REPORT_STATUS_PARTIALLYFILL:
       return "EXECUTION_REPORT_STATUS_PARTIALLYFILL";
+    case OrderExecutionReportStatus.UNRECOGNIZED:
     default:
-      return "UNKNOWN";
+      return "UNRECOGNIZED";
   }
 }
 
@@ -1674,6 +1678,8 @@ export const OrderStage = {
   },
 };
 
+export type OrdersStreamServiceDefinition =
+  typeof OrdersStreamServiceDefinition;
 export const OrdersStreamServiceDefinition = {
   name: "OrdersStreamService",
   fullName: "tinkoff.public.invest.api.contract.v1.OrdersStreamService",
@@ -1690,11 +1696,28 @@ export const OrdersStreamServiceDefinition = {
   },
 } as const;
 
+export interface OrdersStreamServiceServiceImplementation<CallContextExt = {}> {
+  /** Stream сделок пользователя */
+  tradesStream(
+    request: TradesStreamRequest,
+    context: CallContext & CallContextExt
+  ): ServerStreamingMethodResult<TradesStreamResponse>;
+}
+
+export interface OrdersStreamServiceClient<CallOptionsExt = {}> {
+  /** Stream сделок пользователя */
+  tradesStream(
+    request: TradesStreamRequest,
+    options?: CallOptions & CallOptionsExt
+  ): AsyncIterable<TradesStreamResponse>;
+}
+
 /**
  * Сервис предназначен для работы с торговыми поручениями:</br> **1**.
  * выставление;</br> **2**. отмена;</br> **3**. получение статуса;</br> **4**.
  * расчёт полной стоимости;</br> **5**. получение списка заявок.
  */
+export type OrdersServiceDefinition = typeof OrdersServiceDefinition;
 export const OrdersServiceDefinition = {
   name: "OrdersService",
   fullName: "tinkoff.public.invest.api.contract.v1.OrdersService",
@@ -1737,6 +1760,52 @@ export const OrdersServiceDefinition = {
     },
   },
 } as const;
+
+export interface OrdersServiceServiceImplementation<CallContextExt = {}> {
+  /** Метод выставления заявки. */
+  postOrder(
+    request: PostOrderRequest,
+    context: CallContext & CallContextExt
+  ): Promise<PostOrderResponse>;
+  /** Метод отмены биржевой заявки. */
+  cancelOrder(
+    request: CancelOrderRequest,
+    context: CallContext & CallContextExt
+  ): Promise<CancelOrderResponse>;
+  /** Метод получения статуса торгового поручения. */
+  getOrderState(
+    request: GetOrderStateRequest,
+    context: CallContext & CallContextExt
+  ): Promise<OrderState>;
+  /** Метод получения списка активных заявок по счёту. */
+  getOrders(
+    request: GetOrdersRequest,
+    context: CallContext & CallContextExt
+  ): Promise<GetOrdersResponse>;
+}
+
+export interface OrdersServiceClient<CallOptionsExt = {}> {
+  /** Метод выставления заявки. */
+  postOrder(
+    request: PostOrderRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<PostOrderResponse>;
+  /** Метод отмены биржевой заявки. */
+  cancelOrder(
+    request: CancelOrderRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<CancelOrderResponse>;
+  /** Метод получения статуса торгового поручения. */
+  getOrderState(
+    request: GetOrderStateRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<OrderState>;
+  /** Метод получения списка активных заявок по счёту. */
+  getOrders(
+    request: GetOrdersRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<GetOrdersResponse>;
+}
 
 declare var self: any | undefined;
 declare var window: any | undefined;
@@ -1786,3 +1855,7 @@ if (_m0.util.Long !== Long) {
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;
 }
+
+export type ServerStreamingMethodResult<Response> = {
+  [Symbol.asyncIterator](): AsyncIterator<Response, void>;
+};
