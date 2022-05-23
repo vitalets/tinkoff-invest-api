@@ -15,4 +15,3 @@ rules:
   max-nested-callbacks: 0
   max-len: 0
   mocha/no-exclusive-tests: error
-  '@typescript-eslint/no-explicit-any': 0
