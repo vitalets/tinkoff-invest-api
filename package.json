@@ -30,26 +30,26 @@
     "long": "^4.0.0",
     "mockdate": "^3.0.5",
     "ms": "^3.0.0-beta.2",
-    "nice-grpc": "^1.1.1",
-    "protobufjs": "^6.11.2"
+    "nice-grpc": "^1.2.0",
+    "protobufjs": "^6.11.3"
   },
   "devDependencies": {
     "@types/debug": "^4.1.7",
     "@types/mocha": "^9.1.0",
-    "@types/node": "^17.0.29",
-    "@typescript-eslint/eslint-plugin": "^5.11.0",
-    "@typescript-eslint/parser": "^5.11.0",
-    "dotenv": "^16.0.0",
-    "eslint": "^8.8.0",
+    "@types/node": "^17.0.35",
+    "@typescript-eslint/eslint-plugin": "^5.25.0",
+    "@typescript-eslint/parser": "^5.25.0",
+    "dotenv": "^16.0.1",
+    "eslint": "^8.16.0",
     "eslint-plugin-mocha": "^10.0.3",
     "fast-glob": "^3.2.11",
     "lint-staged": "^12.3.3",
     "markdown-toc": "^1.2.0",
-    "mocha": "^9.2.0",
+    "mocha": "^10.0.0",
     "np": "^7.6.0",
-    "ts-node": "^10.7.0",
-    "ts-proto": "^1.110.4",
-    "typescript": "^4.6.3"
+    "ts-node": "^10.8.0",
+    "ts-proto": "^1.112.2",
+    "typescript": "^4.6.4"
   },
   "author": "Vitaliy Potapov",
   "repository": {
