@@ -27,9 +27,10 @@ npm i tinkoff-invest-api
 ```ts
 import { TinkoffInvestApi } from 'tinkoff-invest-api';
 
-// создать клиента с заданным токеном
+// создать клиента с заданным токеном доступа
 const api = new TinkoffInvestApi({ token: '<your-token>' });
 ```
+Как получить токен доступа описано [тут](https://tinkoff.github.io/investAPI/token/).
 
 ### Unary-запросы
 ```ts
