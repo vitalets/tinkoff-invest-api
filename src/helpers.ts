@@ -4,7 +4,10 @@
  */
 
 import ms, { StringValue } from 'ms';
-import { MoneyValue, Quotation } from './generated/common.js';
+import { MoneyValue, Quotation, SecurityTradingStatus } from './generated/common.js';
+import { CandleInterval } from './generated/marketdata.js';
+import { OrderDirection } from './generated/orders.js';
+import { getCommonPart } from './utils/string.js';
 
 export class Helpers {
   /**
@@ -55,4 +58,23 @@ export class Helpers {
     const [ from, to ] = offsetMs > 0 ? [ base, date ] : [ date, base ];
     return { from, to };
   }
+
+  /**
+   * Переводит значения констант в человеко-читаемые строки.
+   * Например: CandleInterval.CANDLE_INTERVAL_1_MIN -> '1_MIN'
+   */
+  static toHuman<T extends Enums>(value: T, values: getEnumType<T>) {
+    const str = values[value] || '';
+    const commonPart = getCommonPart(values[0], values[1]);
+    return str.replace(commonPart, '');
+  }
 }
+
+// todo: добавлять по мере необходимости
+type Enums = CandleInterval
+  | OrderDirection
+  | SecurityTradingStatus;
+
+// todo: можно ли сделать более лаконично?
+type getEnumType<T extends Enums> = T extends CandleInterval ? typeof CandleInterval
+  : T extends OrderDirection ? typeof OrderDirection : never;

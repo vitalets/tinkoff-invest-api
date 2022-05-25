@@ -1,3 +1,5 @@
+import { CandleInterval } from '../../src/generated/marketdata.js';
+import { OrderDirection } from '../../src/generated/orders.js';
 import { Helpers } from '../../src/index.js';
 
 describe('helpers', () => {
@@ -24,6 +26,11 @@ describe('helpers', () => {
   it('toNumber', async () => {
     assert.deepEqual(Helpers.toNumber({ units: 123, nano: 400000000 }), 123.4);
     assert.deepEqual(Helpers.toNumber({ units: -567, nano: -800000000, currency: 'rub' }), -567.8);
+  });
+
+  it('toHuman', async () => {
+    assert.equal(Helpers.toHuman(CandleInterval.CANDLE_INTERVAL_1_MIN, CandleInterval), '1_MIN');
+    assert.equal(Helpers.toHuman(OrderDirection.ORDER_DIRECTION_BUY, OrderDirection), 'BUY');
   });
 
   it('fromTo', async () => {

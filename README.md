@@ -143,31 +143,30 @@ const { candles } = await candlesLoader.getCandles({
 Для более удобной работы в библиотеке сделано несколько хелперов:
 ```ts
 import { Helpers } from 'tinkoff-invest-api';
-/**
-  * Переводит число в Quotation { units, nano }
-  */
+
+/** Переводит число в Quotation { units, nano } */
 Helpers.toQuotation(value: number): Quotation;
 
-/**
-  * Переводит число в MoneyValue { units, nano, currency }
-  */
+/** Переводит число в MoneyValue { units, nano, currency } */
 Helpers.toMoneyValue(value: number, currency: string): MoneyValue;
 
-/**
-  * Переводит MoneyValue в строку
-  */
+/** Переводит MoneyValue в строку */
 Helpers.toMoneyString(value: MoneyValue | undefined): string;
 
-/**
-  * Переводит Quotation или MoneyValue в число
-  */
+/** Переводит Quotation или MoneyValue в число */
 Helpers.toNumber(value: Quotation | MoneyValue): number;
 
 /**
-  * Возвращает интервал времени в формате { from, to } по заданному смещению и базовой дате.
-  * Для смещения можно использовать кол-во миллисекунд или строку в формате из https://github.com/vercel/ms
-  */
+ * Возвращает интервал времени в формате { from, to } по заданному смещению и базовой дате.
+ * Для смещения можно использовать кол-во миллисекунд или строку в формате из https://github.com/vercel/ms
+ */
 Helpers.fromTo(offset: string | number, base?: Date): { from: Date; to: Date; };
+
+/**
+ * Переводит значения констант в человеко-читаемые строки.
+ * Например: CandleInterval.CANDLE_INTERVAL_1_MIN -> '1_MIN'
+ */
+Helpers.toHuman<T extends Enums>(value: T, values: getEnumType<T>): string;
 ```
 
 ## Отладка
