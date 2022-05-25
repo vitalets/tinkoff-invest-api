@@ -7,6 +7,9 @@ import ms, { StringValue } from 'ms';
 import { MoneyValue, Quotation } from './generated/common.js';
 
 export class Helpers {
+  /**
+   * Переводит число в Quotation { units, nano }
+   */
   static toQuotation(value: number): Quotation {
     const sign = value < 0 ? -1 : 1;
     const absValue = Math.abs(value);
@@ -19,17 +22,23 @@ export class Helpers {
     };
   }
 
+  /**
+   * Переводит число в MoneyValue { units, nano, currency }
+   */
   static toMoneyValue(value: number, currency: string): MoneyValue {
     const { units, nano } = Helpers.toQuotation(value);
     return { units, nano, currency };
   }
 
+  /**
+   * Переводит MoneyValue в строку
+   */
   static toMoneyString(value: MoneyValue | undefined) {
     return `${Helpers.toNumber(value)} ${value?.currency}`;
   }
 
   /**
-   * Возвращает число из объекта { units, nano }
+   * Переводит Quotation или MoneyValue в число
    */
   static toNumber<T extends Quotation | MoneyValue | undefined>(value: T) {
     return (value ? value.units + value.nano / 1000000000 : value) as T extends undefined ? undefined : number;
