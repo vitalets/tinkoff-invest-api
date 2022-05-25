@@ -140,7 +140,7 @@ const { candles } = await candlesLoader.getCandles({
 </details>
 
 ### Хелперы
-Для более удобной работы в библиотеке сделано несколько хелперов:
+Для более удобной работы есть несколько хелперов:
 ```ts
 import { Helpers } from 'tinkoff-invest-api';
 
