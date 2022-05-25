@@ -10,7 +10,6 @@ Node.js SDK для работы с [Tinkoff Invest API](https://tinkoff.github.i
   * [Стрим](#%D1%81%D1%82%D1%80%D0%B8%D0%BC)
   * [Универсальный счет](#%D1%83%D0%BD%D0%B8%D0%B2%D0%B5%D1%80%D1%81%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9-%D1%81%D1%87%D0%B5%D1%82)
   * [Кеширование свечей](#%D0%BA%D0%B5%D1%88%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D1%81%D0%B2%D0%B5%D1%87%D0%B5%D0%B9)
-  * [Бэктест](#%D0%B1%D1%8D%D0%BA%D1%82%D0%B5%D1%81%D1%82)
 - [Отладка](#%D0%BE%D1%82%D0%BB%D0%B0%D0%B4%D0%BA%D0%B0)
 - [Лицензия](#%D0%BB%D0%B8%D1%86%D0%B5%D0%BD%D0%B7%D0%B8%D1%8F)
 
@@ -138,51 +137,6 @@ const { candles } = await candlesLoader.getCandles({
         2022.json
 ```
 </details>
-
-### Бэктест
-Модуль для бэктеста позволяет протестировать  робота на исторических данных.
-
-Работает все так:
-
-1. вы указываете в конфиге диапазон дат и интервал свечей для бэктеста
-2. на базе конфига класс `Backtest` создает замоканное Tinkoff API, которое вы прокидываете роботу
-3. при старте происходит автоматическая загрузка данных, если их нет в кеше
-4. вызываете в цикле `backtest.tick()`, который последовательно подменяет текущую дату и подставляет в API нужные свечи. Между тиками нужно вызвать код робота
-5. на каждом тике происходит полная имитация работы API с биржей:
-   * прием и исполнение заявок (лимитных и рыночных)
-   * блокировка средств
-   * списание комиссий
-   * обновление позиций в портфеле
-   * ведение списка операций
-   * появление новых свечей в стриме
-   * расчет прибыли
-
-Пример:
-```ts
-import { Backtest, Helpers } from 'tinkoff-invest-api';
-import { CandleInterval } from 'tinkoff-invest-api/dist/generated/marketdata.js';
-
-// Создать инстанс бэктеста на заданном диапазоне дат и интервале свечей.
-const backtest = new Backtest({
-  token: '<your-token>',
-  from: new Date('2022-04-29T10:00:00+03:00'),
-  to: new Date('2022-04-30T19:00:00+03:00'),
-  candleInterval: CandleInterval.CANDLE_INTERVAL_5_MIN,
-});
-
-main();
-
-async function main() {
-  // Цикл по всем 5-мин свечам с 2022-04-29 10:00 до 2022-04-30T19:00
-  while (await backtest.tick()) {
-    // Запуск вашего робота на замоканном API.
-    // Например: runRobot({ api: backtest.api });
-  }
-  // Рассчет финальной прибыли
-  const { expectedYield } = await backtest.api.operations.getPortfolio({ accountId: '' });
-  console.log(`Прибыль: ${Helpers.toNumber(expectedYield)}%`);
-}
-```
 
 ## Отладка
 Для отладки используется модуль [debug](https://github.com/debug-js/debug).
