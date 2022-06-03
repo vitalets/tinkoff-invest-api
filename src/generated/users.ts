@@ -240,7 +240,7 @@ export interface GetInfoResponse {
   premStatus: boolean;
   /** Признак квалифицированного инвестора. */
   qualStatus: boolean;
-  /** Набор требующих тестирования инструментов и возможностей, с которыми может работать пользователь. */
+  /** Набор требующих тестирования инструментов и возможностей, с которыми может работать пользователь. [Подробнее](https://tinkoff.github.io/investAPI/faq_users/). */
   qualifiedForWorkWith: string[];
   /** Наименование тарифа пользователя. */
   tariff: string;
@@ -999,7 +999,7 @@ export const GetInfoResponse = {
 
 /**
  * Сервис предназначен для получения: </br> **1**.
- * списка счетов пользователя; </br> **2**. маржинальных показателе по счёту.
+ * списка счетов пользователя; </br> **2**. маржинальных показателей по счёту.
  */
 export type UsersServiceDefinition = typeof UsersServiceDefinition;
 export const UsersServiceDefinition = {

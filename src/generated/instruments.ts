@@ -1497,6 +1497,72 @@ export interface EditFavoritesResponse {
   favoriteInstruments: FavoriteInstrument[];
 }
 
+/** Запрос справочника стран. */
+export interface GetCountriesRequest {}
+
+/** Справочник стран. */
+export interface GetCountriesResponse {
+  /** Массив стран. */
+  countries: CountryResponse[];
+}
+
+/** Данные о стране. */
+export interface CountryResponse {
+  /** Двухбуквенный код страны. */
+  alfaTwo: string;
+  /** Трёхбуквенный код страны. */
+  alfaThree: string;
+  /** Наименование страны. */
+  name: string;
+  /** Краткое наименование страны. */
+  nameBrief: string;
+}
+
+/** Запрос на поиск инструментов. */
+export interface FindInstrumentRequest {
+  /** Строка поиска. */
+  query: string;
+}
+
+/** Результат поиска инструментов. */
+export interface FindInstrumentResponse {
+  /** Массив инструментов, удовлетворяющих условиям поиска. */
+  instruments: InstrumentShort[];
+}
+
+/** Краткая информация об инструменте. */
+export interface InstrumentShort {
+  /** Isin инструмента. */
+  isin: string;
+  /** Figi инструмента. */
+  figi: string;
+  /** Ticker инструмента. */
+  ticker: string;
+  /** ClassCode инструмента. */
+  classCode: string;
+  /** Тип инструмента. */
+  instrumentType: string;
+  /** Название инструмента. */
+  name: string;
+  /** Уникальный идентификатор инструмента. */
+  uid: string;
+}
+
+/** Запрос списка брендов. */
+export interface GetBrandsRequest {}
+
+/** Запрос бренда. */
+export interface GetBrandRequest {
+  /** Uid-идентификатор бренда. */
+  id: string;
+}
+
+/** Список брендов. */
+export interface GetBrandsResponse {
+  /** Массив брендов. */
+  brands: Brand[];
+}
+
 function createBaseTradingSchedulesRequest(): TradingSchedulesRequest {
   return { exchange: "", from: undefined, to: undefined };
 }
@@ -8647,6 +8713,520 @@ export const EditFavoritesResponse = {
   },
 };
 
+function createBaseGetCountriesRequest(): GetCountriesRequest {
+  return {};
+}
+
+export const GetCountriesRequest = {
+  encode(
+    _: GetCountriesRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetCountriesRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetCountriesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): GetCountriesRequest {
+    return {};
+  },
+
+  toJSON(_: GetCountriesRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+};
+
+function createBaseGetCountriesResponse(): GetCountriesResponse {
+  return { countries: [] };
+}
+
+export const GetCountriesResponse = {
+  encode(
+    message: GetCountriesResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    for (const v of message.countries) {
+      CountryResponse.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): GetCountriesResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetCountriesResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.countries.push(
+            CountryResponse.decode(reader, reader.uint32())
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetCountriesResponse {
+    return {
+      countries: Array.isArray(object?.countries)
+        ? object.countries.map((e: any) => CountryResponse.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetCountriesResponse): unknown {
+    const obj: any = {};
+    if (message.countries) {
+      obj.countries = message.countries.map((e) =>
+        e ? CountryResponse.toJSON(e) : undefined
+      );
+    } else {
+      obj.countries = [];
+    }
+    return obj;
+  },
+};
+
+function createBaseCountryResponse(): CountryResponse {
+  return { alfaTwo: "", alfaThree: "", name: "", nameBrief: "" };
+}
+
+export const CountryResponse = {
+  encode(
+    message: CountryResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.alfaTwo !== "") {
+      writer.uint32(10).string(message.alfaTwo);
+    }
+    if (message.alfaThree !== "") {
+      writer.uint32(18).string(message.alfaThree);
+    }
+    if (message.name !== "") {
+      writer.uint32(26).string(message.name);
+    }
+    if (message.nameBrief !== "") {
+      writer.uint32(34).string(message.nameBrief);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CountryResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCountryResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.alfaTwo = reader.string();
+          break;
+        case 2:
+          message.alfaThree = reader.string();
+          break;
+        case 3:
+          message.name = reader.string();
+          break;
+        case 4:
+          message.nameBrief = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CountryResponse {
+    return {
+      alfaTwo: isSet(object.alfaTwo) ? String(object.alfaTwo) : "",
+      alfaThree: isSet(object.alfaThree) ? String(object.alfaThree) : "",
+      name: isSet(object.name) ? String(object.name) : "",
+      nameBrief: isSet(object.nameBrief) ? String(object.nameBrief) : "",
+    };
+  },
+
+  toJSON(message: CountryResponse): unknown {
+    const obj: any = {};
+    message.alfaTwo !== undefined && (obj.alfaTwo = message.alfaTwo);
+    message.alfaThree !== undefined && (obj.alfaThree = message.alfaThree);
+    message.name !== undefined && (obj.name = message.name);
+    message.nameBrief !== undefined && (obj.nameBrief = message.nameBrief);
+    return obj;
+  },
+};
+
+function createBaseFindInstrumentRequest(): FindInstrumentRequest {
+  return { query: "" };
+}
+
+export const FindInstrumentRequest = {
+  encode(
+    message: FindInstrumentRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.query !== "") {
+      writer.uint32(10).string(message.query);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): FindInstrumentRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseFindInstrumentRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.query = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): FindInstrumentRequest {
+    return {
+      query: isSet(object.query) ? String(object.query) : "",
+    };
+  },
+
+  toJSON(message: FindInstrumentRequest): unknown {
+    const obj: any = {};
+    message.query !== undefined && (obj.query = message.query);
+    return obj;
+  },
+};
+
+function createBaseFindInstrumentResponse(): FindInstrumentResponse {
+  return { instruments: [] };
+}
+
+export const FindInstrumentResponse = {
+  encode(
+    message: FindInstrumentResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    for (const v of message.instruments) {
+      InstrumentShort.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): FindInstrumentResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseFindInstrumentResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.instruments.push(
+            InstrumentShort.decode(reader, reader.uint32())
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): FindInstrumentResponse {
+    return {
+      instruments: Array.isArray(object?.instruments)
+        ? object.instruments.map((e: any) => InstrumentShort.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: FindInstrumentResponse): unknown {
+    const obj: any = {};
+    if (message.instruments) {
+      obj.instruments = message.instruments.map((e) =>
+        e ? InstrumentShort.toJSON(e) : undefined
+      );
+    } else {
+      obj.instruments = [];
+    }
+    return obj;
+  },
+};
+
+function createBaseInstrumentShort(): InstrumentShort {
+  return {
+    isin: "",
+    figi: "",
+    ticker: "",
+    classCode: "",
+    instrumentType: "",
+    name: "",
+    uid: "",
+  };
+}
+
+export const InstrumentShort = {
+  encode(
+    message: InstrumentShort,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.isin !== "") {
+      writer.uint32(10).string(message.isin);
+    }
+    if (message.figi !== "") {
+      writer.uint32(18).string(message.figi);
+    }
+    if (message.ticker !== "") {
+      writer.uint32(26).string(message.ticker);
+    }
+    if (message.classCode !== "") {
+      writer.uint32(34).string(message.classCode);
+    }
+    if (message.instrumentType !== "") {
+      writer.uint32(42).string(message.instrumentType);
+    }
+    if (message.name !== "") {
+      writer.uint32(50).string(message.name);
+    }
+    if (message.uid !== "") {
+      writer.uint32(58).string(message.uid);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): InstrumentShort {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseInstrumentShort();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.isin = reader.string();
+          break;
+        case 2:
+          message.figi = reader.string();
+          break;
+        case 3:
+          message.ticker = reader.string();
+          break;
+        case 4:
+          message.classCode = reader.string();
+          break;
+        case 5:
+          message.instrumentType = reader.string();
+          break;
+        case 6:
+          message.name = reader.string();
+          break;
+        case 7:
+          message.uid = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): InstrumentShort {
+    return {
+      isin: isSet(object.isin) ? String(object.isin) : "",
+      figi: isSet(object.figi) ? String(object.figi) : "",
+      ticker: isSet(object.ticker) ? String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? String(object.classCode) : "",
+      instrumentType: isSet(object.instrumentType)
+        ? String(object.instrumentType)
+        : "",
+      name: isSet(object.name) ? String(object.name) : "",
+      uid: isSet(object.uid) ? String(object.uid) : "",
+    };
+  },
+
+  toJSON(message: InstrumentShort): unknown {
+    const obj: any = {};
+    message.isin !== undefined && (obj.isin = message.isin);
+    message.figi !== undefined && (obj.figi = message.figi);
+    message.ticker !== undefined && (obj.ticker = message.ticker);
+    message.classCode !== undefined && (obj.classCode = message.classCode);
+    message.instrumentType !== undefined &&
+      (obj.instrumentType = message.instrumentType);
+    message.name !== undefined && (obj.name = message.name);
+    message.uid !== undefined && (obj.uid = message.uid);
+    return obj;
+  },
+};
+
+function createBaseGetBrandsRequest(): GetBrandsRequest {
+  return {};
+}
+
+export const GetBrandsRequest = {
+  encode(
+    _: GetBrandsRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetBrandsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetBrandsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): GetBrandsRequest {
+    return {};
+  },
+
+  toJSON(_: GetBrandsRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+};
+
+function createBaseGetBrandRequest(): GetBrandRequest {
+  return { id: "" };
+}
+
+export const GetBrandRequest = {
+  encode(
+    message: GetBrandRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetBrandRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetBrandRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetBrandRequest {
+    return {
+      id: isSet(object.id) ? String(object.id) : "",
+    };
+  },
+
+  toJSON(message: GetBrandRequest): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    return obj;
+  },
+};
+
+function createBaseGetBrandsResponse(): GetBrandsResponse {
+  return { brands: [] };
+}
+
+export const GetBrandsResponse = {
+  encode(
+    message: GetBrandsResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    for (const v of message.brands) {
+      Brand.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetBrandsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetBrandsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.brands.push(Brand.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetBrandsResponse {
+    return {
+      brands: Array.isArray(object?.brands)
+        ? object.brands.map((e: any) => Brand.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetBrandsResponse): unknown {
+    const obj: any = {};
+    if (message.brands) {
+      obj.brands = message.brands.map((e) => (e ? Brand.toJSON(e) : undefined));
+    } else {
+      obj.brands = [];
+    }
+    return obj;
+  },
+};
+
 /**
  * Сервис предназначен для получения:</br>**1**. информации об инструментах;</br>**2**.
  * расписания торговых сессий;</br>**3**. календаря выплат купонов по облигациям;</br>**4**.
@@ -8837,6 +9417,42 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
+    /** Метод получения списка стран. */
+    getCountries: {
+      name: "GetCountries",
+      requestType: GetCountriesRequest,
+      requestStream: false,
+      responseType: GetCountriesResponse,
+      responseStream: false,
+      options: {},
+    },
+    /** Метод поиска инструмента. */
+    findInstrument: {
+      name: "FindInstrument",
+      requestType: FindInstrumentRequest,
+      requestStream: false,
+      responseType: FindInstrumentResponse,
+      responseStream: false,
+      options: {},
+    },
+    /** Метод получения списка брендов. */
+    getBrands: {
+      name: "GetBrands",
+      requestType: GetBrandsRequest,
+      requestStream: false,
+      responseType: GetBrandsResponse,
+      responseStream: false,
+      options: {},
+    },
+    /** Метод получения бренда по его идентификатору. */
+    getBrandBy: {
+      name: "GetBrandBy",
+      requestType: GetBrandRequest,
+      requestStream: false,
+      responseType: Brand,
+      responseStream: false,
+      options: {},
+    },
   },
 } as const;
 
@@ -8941,6 +9557,26 @@ export interface InstrumentsServiceServiceImplementation<CallContextExt = {}> {
     request: EditFavoritesRequest,
     context: CallContext & CallContextExt
   ): Promise<EditFavoritesResponse>;
+  /** Метод получения списка стран. */
+  getCountries(
+    request: GetCountriesRequest,
+    context: CallContext & CallContextExt
+  ): Promise<GetCountriesResponse>;
+  /** Метод поиска инструмента. */
+  findInstrument(
+    request: FindInstrumentRequest,
+    context: CallContext & CallContextExt
+  ): Promise<FindInstrumentResponse>;
+  /** Метод получения списка брендов. */
+  getBrands(
+    request: GetBrandsRequest,
+    context: CallContext & CallContextExt
+  ): Promise<GetBrandsResponse>;
+  /** Метод получения бренда по его идентификатору. */
+  getBrandBy(
+    request: GetBrandRequest,
+    context: CallContext & CallContextExt
+  ): Promise<Brand>;
 }
 
 export interface InstrumentsServiceClient<CallOptionsExt = {}> {
@@ -9044,6 +9680,26 @@ export interface InstrumentsServiceClient<CallOptionsExt = {}> {
     request: EditFavoritesRequest,
     options?: CallOptions & CallOptionsExt
   ): Promise<EditFavoritesResponse>;
+  /** Метод получения списка стран. */
+  getCountries(
+    request: GetCountriesRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<GetCountriesResponse>;
+  /** Метод поиска инструмента. */
+  findInstrument(
+    request: FindInstrumentRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<FindInstrumentResponse>;
+  /** Метод получения списка брендов. */
+  getBrands(
+    request: GetBrandsRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<GetBrandsResponse>;
+  /** Метод получения бренда по его идентификатору. */
+  getBrandBy(
+    request: GetBrandRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<Brand>;
 }
 
 declare var self: any | undefined;

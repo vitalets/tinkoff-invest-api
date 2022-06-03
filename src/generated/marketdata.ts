@@ -117,10 +117,12 @@ export enum SubscriptionStatus {
   SUBSCRIPTION_STATUS_DEPTH_IS_INVALID = 4,
   /** SUBSCRIPTION_STATUS_INTERVAL_IS_INVALID - Некорректный интервал свечей, список возможных значений: [SubscriptionInterval](https://tinkoff.github.io/investAPI/marketdata#subscriptioninterval). */
   SUBSCRIPTION_STATUS_INTERVAL_IS_INVALID = 5,
-  /** SUBSCRIPTION_STATUS_LIMIT_IS_EXCEEDED - Превышен лимит подписок в рамках стрима, подробнее: [Лимитная политика](https://tinkoff.github.io/investAPI/limits/). */
+  /** SUBSCRIPTION_STATUS_LIMIT_IS_EXCEEDED - Превышен лимит на общее количество подписок в рамках стрима, подробнее: [Лимитная политика](https://tinkoff.github.io/investAPI/limits/). */
   SUBSCRIPTION_STATUS_LIMIT_IS_EXCEEDED = 6,
   /** SUBSCRIPTION_STATUS_INTERNAL_ERROR - Внутренняя ошибка сервиса. */
   SUBSCRIPTION_STATUS_INTERNAL_ERROR = 7,
+  /** SUBSCRIPTION_STATUS_TOO_MANY_REQUESTS - Превышен лимит на количество запросов на подписки в течение установленного отрезка времени */
+  SUBSCRIPTION_STATUS_TOO_MANY_REQUESTS = 8,
   UNRECOGNIZED = -1,
 }
 
@@ -150,6 +152,9 @@ export function subscriptionStatusFromJSON(object: any): SubscriptionStatus {
     case 7:
     case "SUBSCRIPTION_STATUS_INTERNAL_ERROR":
       return SubscriptionStatus.SUBSCRIPTION_STATUS_INTERNAL_ERROR;
+    case 8:
+    case "SUBSCRIPTION_STATUS_TOO_MANY_REQUESTS":
+      return SubscriptionStatus.SUBSCRIPTION_STATUS_TOO_MANY_REQUESTS;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -175,6 +180,8 @@ export function subscriptionStatusToJSON(object: SubscriptionStatus): string {
       return "SUBSCRIPTION_STATUS_LIMIT_IS_EXCEEDED";
     case SubscriptionStatus.SUBSCRIPTION_STATUS_INTERNAL_ERROR:
       return "SUBSCRIPTION_STATUS_INTERNAL_ERROR";
+    case SubscriptionStatus.SUBSCRIPTION_STATUS_TOO_MANY_REQUESTS:
+      return "SUBSCRIPTION_STATUS_TOO_MANY_REQUESTS";
     case SubscriptionStatus.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -302,6 +309,19 @@ export interface MarketDataRequest {
   subscribeLastPriceRequest?: SubscribeLastPriceRequest | undefined;
 }
 
+export interface MarketDataServerSideStreamRequest {
+  /** Запрос подписки на свечи. */
+  subscribeCandlesRequest?: SubscribeCandlesRequest;
+  /** Запрос подписки на стаканы. */
+  subscribeOrderBookRequest?: SubscribeOrderBookRequest;
+  /** Запрос подписки на ленту обезличенных сделок. */
+  subscribeTradesRequest?: SubscribeTradesRequest;
+  /** Запрос подписки на торговые статусы инструментов. */
+  subscribeInfoRequest?: SubscribeInfoRequest;
+  /** Запрос подписки на последние цены. */
+  subscribeLastPriceRequest?: SubscribeLastPriceRequest;
+}
+
 /** Пакет биржевой информации по подписке. */
 export interface MarketDataResponse {
   /** Результат подписки на свечи. */
@@ -334,6 +354,8 @@ export interface SubscribeCandlesRequest {
   subscriptionAction: SubscriptionAction;
   /** Массив инструментов для подписки на свечи. */
   instruments: CandleInstrument[];
+  /** Флаг ожидания закрытия временного интервала для отправки свечи. */
+  waitingClose: boolean;
 }
 
 /** Запрос изменения статус подписки на свечи. */
@@ -670,7 +692,7 @@ export interface GetTradingStatusResponse {
   apiTradeAvailableFlag: boolean;
 }
 
-/** Запрос последних обезличенных сделок по инструменту. */
+/** Запрос последних обезличенных сделок по инструменту на текущий торговый день с максимальным интервалом в 1 час. */
 export interface GetLastTradesRequest {
   /** Figi-идентификатор инструмента */
   figi: string;
@@ -680,7 +702,7 @@ export interface GetLastTradesRequest {
   to?: Date;
 }
 
-/** Последние обезличенные сделки по инструменту. */
+/** Последние обезличенные сделки по инструменту на текущий торговый день с максимальным интервалом в 1 час. */
 export interface GetLastTradesResponse {
   /** Массив сделок */
   trades: Trade[];
@@ -800,6 +822,148 @@ export const MarketDataRequest = {
   },
 
   toJSON(message: MarketDataRequest): unknown {
+    const obj: any = {};
+    message.subscribeCandlesRequest !== undefined &&
+      (obj.subscribeCandlesRequest = message.subscribeCandlesRequest
+        ? SubscribeCandlesRequest.toJSON(message.subscribeCandlesRequest)
+        : undefined);
+    message.subscribeOrderBookRequest !== undefined &&
+      (obj.subscribeOrderBookRequest = message.subscribeOrderBookRequest
+        ? SubscribeOrderBookRequest.toJSON(message.subscribeOrderBookRequest)
+        : undefined);
+    message.subscribeTradesRequest !== undefined &&
+      (obj.subscribeTradesRequest = message.subscribeTradesRequest
+        ? SubscribeTradesRequest.toJSON(message.subscribeTradesRequest)
+        : undefined);
+    message.subscribeInfoRequest !== undefined &&
+      (obj.subscribeInfoRequest = message.subscribeInfoRequest
+        ? SubscribeInfoRequest.toJSON(message.subscribeInfoRequest)
+        : undefined);
+    message.subscribeLastPriceRequest !== undefined &&
+      (obj.subscribeLastPriceRequest = message.subscribeLastPriceRequest
+        ? SubscribeLastPriceRequest.toJSON(message.subscribeLastPriceRequest)
+        : undefined);
+    return obj;
+  },
+};
+
+function createBaseMarketDataServerSideStreamRequest(): MarketDataServerSideStreamRequest {
+  return {
+    subscribeCandlesRequest: undefined,
+    subscribeOrderBookRequest: undefined,
+    subscribeTradesRequest: undefined,
+    subscribeInfoRequest: undefined,
+    subscribeLastPriceRequest: undefined,
+  };
+}
+
+export const MarketDataServerSideStreamRequest = {
+  encode(
+    message: MarketDataServerSideStreamRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.subscribeCandlesRequest !== undefined) {
+      SubscribeCandlesRequest.encode(
+        message.subscribeCandlesRequest,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.subscribeOrderBookRequest !== undefined) {
+      SubscribeOrderBookRequest.encode(
+        message.subscribeOrderBookRequest,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    if (message.subscribeTradesRequest !== undefined) {
+      SubscribeTradesRequest.encode(
+        message.subscribeTradesRequest,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    if (message.subscribeInfoRequest !== undefined) {
+      SubscribeInfoRequest.encode(
+        message.subscribeInfoRequest,
+        writer.uint32(34).fork()
+      ).ldelim();
+    }
+    if (message.subscribeLastPriceRequest !== undefined) {
+      SubscribeLastPriceRequest.encode(
+        message.subscribeLastPriceRequest,
+        writer.uint32(42).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): MarketDataServerSideStreamRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMarketDataServerSideStreamRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.subscribeCandlesRequest = SubscribeCandlesRequest.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 2:
+          message.subscribeOrderBookRequest = SubscribeOrderBookRequest.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 3:
+          message.subscribeTradesRequest = SubscribeTradesRequest.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 4:
+          message.subscribeInfoRequest = SubscribeInfoRequest.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 5:
+          message.subscribeLastPriceRequest = SubscribeLastPriceRequest.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MarketDataServerSideStreamRequest {
+    return {
+      subscribeCandlesRequest: isSet(object.subscribeCandlesRequest)
+        ? SubscribeCandlesRequest.fromJSON(object.subscribeCandlesRequest)
+        : undefined,
+      subscribeOrderBookRequest: isSet(object.subscribeOrderBookRequest)
+        ? SubscribeOrderBookRequest.fromJSON(object.subscribeOrderBookRequest)
+        : undefined,
+      subscribeTradesRequest: isSet(object.subscribeTradesRequest)
+        ? SubscribeTradesRequest.fromJSON(object.subscribeTradesRequest)
+        : undefined,
+      subscribeInfoRequest: isSet(object.subscribeInfoRequest)
+        ? SubscribeInfoRequest.fromJSON(object.subscribeInfoRequest)
+        : undefined,
+      subscribeLastPriceRequest: isSet(object.subscribeLastPriceRequest)
+        ? SubscribeLastPriceRequest.fromJSON(object.subscribeLastPriceRequest)
+        : undefined,
+    };
+  },
+
+  toJSON(message: MarketDataServerSideStreamRequest): unknown {
     const obj: any = {};
     message.subscribeCandlesRequest !== undefined &&
       (obj.subscribeCandlesRequest = message.subscribeCandlesRequest
@@ -1036,7 +1200,7 @@ export const MarketDataResponse = {
 };
 
 function createBaseSubscribeCandlesRequest(): SubscribeCandlesRequest {
-  return { subscriptionAction: 0, instruments: [] };
+  return { subscriptionAction: 0, instruments: [], waitingClose: false };
 }
 
 export const SubscribeCandlesRequest = {
@@ -1049,6 +1213,9 @@ export const SubscribeCandlesRequest = {
     }
     for (const v of message.instruments) {
       CandleInstrument.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.waitingClose === true) {
+      writer.uint32(24).bool(message.waitingClose);
     }
     return writer;
   },
@@ -1071,6 +1238,9 @@ export const SubscribeCandlesRequest = {
             CandleInstrument.decode(reader, reader.uint32())
           );
           break;
+        case 3:
+          message.waitingClose = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1087,6 +1257,9 @@ export const SubscribeCandlesRequest = {
       instruments: Array.isArray(object?.instruments)
         ? object.instruments.map((e: any) => CandleInstrument.fromJSON(e))
         : [],
+      waitingClose: isSet(object.waitingClose)
+        ? Boolean(object.waitingClose)
+        : false,
     };
   },
 
@@ -1103,6 +1276,8 @@ export const SubscribeCandlesRequest = {
     } else {
       obj.instruments = [];
     }
+    message.waitingClose !== undefined &&
+      (obj.waitingClose = message.waitingClose);
     return obj;
   },
 };
@@ -3774,7 +3949,7 @@ export const MarketDataServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Метод запроса последних обезличенных сделок по инструменту. */
+    /** Метод запроса последних обезличенных сделок по инструменту на текущий торговый день с максимальным интервалом в 1 час. */
     getLastTrades: {
       name: "GetLastTrades",
       requestType: GetLastTradesRequest,
@@ -3807,7 +3982,7 @@ export interface MarketDataServiceServiceImplementation<CallContextExt = {}> {
     request: GetTradingStatusRequest,
     context: CallContext & CallContextExt
   ): Promise<GetTradingStatusResponse>;
-  /** Метод запроса последних обезличенных сделок по инструменту. */
+  /** Метод запроса последних обезличенных сделок по инструменту на текущий торговый день с максимальным интервалом в 1 час. */
   getLastTrades(
     request: GetLastTradesRequest,
     context: CallContext & CallContextExt
@@ -3835,7 +4010,7 @@ export interface MarketDataServiceClient<CallOptionsExt = {}> {
     request: GetTradingStatusRequest,
     options?: CallOptions & CallOptionsExt
   ): Promise<GetTradingStatusResponse>;
-  /** Метод запроса последних обезличенных сделок по инструменту. */
+  /** Метод запроса последних обезличенных сделок по инструменту на текущий торговый день с максимальным интервалом в 1 час. */
   getLastTrades(
     request: GetLastTradesRequest,
     options?: CallOptions & CallOptionsExt
@@ -3857,6 +4032,15 @@ export const MarketDataStreamServiceDefinition = {
       responseStream: true,
       options: {},
     },
+    /** Server-side стрим предоставления биржевой информации. */
+    marketDataServerSideStream: {
+      name: "MarketDataServerSideStream",
+      requestType: MarketDataServerSideStreamRequest,
+      requestStream: false,
+      responseType: MarketDataResponse,
+      responseStream: true,
+      options: {},
+    },
   },
 } as const;
 
@@ -3868,12 +4052,22 @@ export interface MarketDataStreamServiceServiceImplementation<
     request: AsyncIterable<MarketDataRequest>,
     context: CallContext & CallContextExt
   ): ServerStreamingMethodResult<MarketDataResponse>;
+  /** Server-side стрим предоставления биржевой информации. */
+  marketDataServerSideStream(
+    request: MarketDataServerSideStreamRequest,
+    context: CallContext & CallContextExt
+  ): ServerStreamingMethodResult<MarketDataResponse>;
 }
 
 export interface MarketDataStreamServiceClient<CallOptionsExt = {}> {
   /** Bi-directional стрим предоставления биржевой информации. */
   marketDataStream(
     request: AsyncIterable<MarketDataRequest>,
+    options?: CallOptions & CallOptionsExt
+  ): AsyncIterable<MarketDataResponse>;
+  /** Server-side стрим предоставления биржевой информации. */
+  marketDataServerSideStream(
+    request: MarketDataServerSideStreamRequest,
     options?: CallOptions & CallOptionsExt
   ): AsyncIterable<MarketDataResponse>;
 }

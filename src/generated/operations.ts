@@ -86,7 +86,7 @@ export enum OperationType {
   OPERATION_TYPE_BUY = 15,
   /** OPERATION_TYPE_BUY_CARD - Покупка ЦБ с карты. */
   OPERATION_TYPE_BUY_CARD = 16,
-  /** OPERATION_TYPE_INPUT_SECURITIES - Завод ценных бумаг из другого депозитария. */
+  /** OPERATION_TYPE_INPUT_SECURITIES - Перевод ценных бумаг из другого депозитария. */
   OPERATION_TYPE_INPUT_SECURITIES = 17,
   /** OPERATION_TYPE_SELL_MARGIN - Продажа в результате Margin-call. */
   OPERATION_TYPE_SELL_MARGIN = 18,
@@ -421,7 +421,7 @@ export interface Operation {
   price?: MoneyValue;
   /** Статус операции. */
   state: OperationState;
-  /** Количество лотов инструмента. */
+  /** Количество единиц инструмента. */
   quantity: number;
   /** Неисполненный остаток по сделке. */
   quantityRest: number;
@@ -521,7 +521,7 @@ export interface PortfolioPosition {
   quantity?: Quotation;
   /** Средневзвешенная цена позиции. **Возможна задержка до секунды для пересчёта**. */
   averagePositionPrice?: MoneyValue;
-  /** Текущая рассчитанная относительная доходность позиции, в %. */
+  /** Текущая рассчитанная доходность позиции. */
   expectedYield?: Quotation;
   /** Текущий НКД. */
   currentNkd?: MoneyValue;
