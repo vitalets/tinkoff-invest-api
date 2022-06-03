@@ -21,4 +21,14 @@ describe('stream', () => {
     ]);
   });
 
+  it('подписка: неверный figi - ошибки нет, subscriptionStatus в ответе = 2', async () => {
+    testApi.stream.market.watch({ candles: [
+      { figi: 'bad figi', interval: SubscriptionInterval.SUBSCRIPTION_INTERVAL_ONE_MINUTE }
+    ]});
+    const data = await waitMarketStreamEvent(testApi);
+    assert.deepEqual(data.subscribeCandlesResponse?.candlesSubscriptions, [
+      { figi: 'bad figi', interval: 1, subscriptionStatus: 2 }
+    ]);
+  });
+
 });
