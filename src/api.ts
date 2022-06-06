@@ -2,7 +2,7 @@
  * Tinkoff Invest API.
  */
 import { createChannel, createClientFactory, Client, Channel, Metadata, ChannelCredentials } from 'nice-grpc';
-import { errorMiddleware } from './api-error.js';
+import { errorMiddleware, TinkoffApiError } from './api-error.js';
 import { Helpers } from './helpers.js';
 import { MarketStream } from './stream/market.js';
 import { InstrumentsServiceDefinition } from './generated/instruments.js';
@@ -13,6 +13,8 @@ import { SandboxServiceDefinition } from './generated/sandbox.js';
 import { StopOrdersServiceDefinition } from './generated/stoporders.js';
 import { UsersServiceDefinition } from './generated/users.js';
 import { TradesStream } from './stream/trades.js';
+
+export { TinkoffApiError };
 
 export interface TinkoffInvestApiOptions {
   /** Токен доступа */
