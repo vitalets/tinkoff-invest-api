@@ -23,7 +23,7 @@ describe('candles-loader', () => {
     });
     assert.equal(candles.length, 40);
     assert.equal(candles[0].time?.toISOString(), '2022-04-22T07:00:00.000Z');
-    assert.equal(candles[candles.length - 1].time?.toISOString(), '2022-04-25T07:45:00.000Z');
+    assert.equal(candles.slice(-1)[0].time?.toISOString(), '2022-04-25T07:45:00.000Z');
     assert.deepEqual(await fg(`${candlesCacheDir}/**`), [
       `test/.cache/candles/BBG00QPYJ5H0/15_min/2022-04-22.json`,
       `test/.cache/candles/BBG00QPYJ5H0/15_min/2022-04-23.json`,
