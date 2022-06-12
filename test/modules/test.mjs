@@ -1,6 +1,8 @@
+import assert from 'assert';
 import { TinkoffInvestApi } from 'tinkoff-invest-api';
-import { HistoricCandle } from 'tinkoff-invest-api/generated/marketdata';
+import { CandleInterval } from 'tinkoff-invest-api/generated/marketdata';
 
-new TinkoffInvestApi({ token: 'token' });
+assert(new TinkoffInvestApi({ token: 'token' }));
+assert.equal(CandleInterval.CANDLE_INTERVAL_1_MIN, 1);
 
 console.log('MJS: ok!');
