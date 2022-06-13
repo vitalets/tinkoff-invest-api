@@ -4,44 +4,7 @@
   "version": "4.0.0-1",
   "type": "module",
   "main": "./cjs/index.js",
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./cjs/index.js"
-    },
-    "./common": {
-      "import": "./dist/generated/common.js",
-      "require": "./cjs/generated/common.js"
-    },
-    "./instruments": {
-      "import": "./dist/generated/instruments.js",
-      "require": "./cjs/generated/instruments.js"
-    },
-    "./marketdata": {
-      "import": "./dist/generated/marketdata.js",
-      "require": "./cjs/generated/marketdata.js"
-    },
-    "./operations": {
-      "import": "./dist/generated/operations.js",
-      "require": "./cjs/generated/operations.js"
-    },
-    "./orders": {
-      "import": "./dist/generated/orders.js",
-      "require": "./cjs/generated/orders.js"
-    },
-    "./sandbox": {
-      "import": "./dist/generated/sandbox.js",
-      "require": "./cjs/generated/sandbox.js"
-    },
-    "./stoporders": {
-      "import": "./dist/generated/stoporders.js",
-      "require": "./cjs/generated/stoporders.js"
-    },
-    "./users": {
-      "import": "./dist/generated/users.js",
-      "require": "./cjs/generated/users.js"
-    }
-  },
+  "module": "./dist/index.js",
   "files": [
     "src",
     "dist",
