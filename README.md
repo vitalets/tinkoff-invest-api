@@ -20,7 +20,6 @@ Node.js SDK для работы с [Tinkoff Invest API](https://tinkoff.github.i
 ```
 npm i tinkoff-invest-api
 ```
-> Примечание: библиотека поставляется в формате [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c)
 
 ## Использование
 ### Подключение
