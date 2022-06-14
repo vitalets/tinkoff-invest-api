@@ -1,7 +1,7 @@
 {
   "name": "tinkoff-invest-api",
   "description": "Node.js SDK for Tinkoff Invest API",
-  "version": "4.0.0-2",
+  "version": "4.0.0",
   "type": "module",
   "main": "./cjs/index.js",
   "module": "./dist/index.js",
