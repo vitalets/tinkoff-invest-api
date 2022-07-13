@@ -35,7 +35,7 @@ export class MarketStream extends BaseStream<MarketDataRequest, MarketDataRespon
     this.createSubscription(request, SubscriptionAction.SUBSCRIPTION_ACTION_UNSUBSCRIBE);
   }
 
-  private ensureConnected() {
+  protected ensureConnected() {
     if (!this.connected) {
       const req = this.createRequestIterable();
       const call = this.api.marketdataStream.marketDataStream(req);
@@ -43,7 +43,7 @@ export class MarketStream extends BaseStream<MarketDataRequest, MarketDataRespon
     }
   }
 
-  private createSubscription(request: MarketDataWatch, subscriptionAction: SubscriptionAction) {
+  protected createSubscription(request: MarketDataWatch, subscriptionAction: SubscriptionAction) {
     const keys = Object.keys(request) as (keyof MarketDataWatch)[];
     keys.forEach(key => {
       const capitalKey = capitalize(key) as Capitalize<typeof key>;

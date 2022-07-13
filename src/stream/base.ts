@@ -4,6 +4,12 @@
 import { on, EventEmitter } from 'node:events';
 import { TinkoffInvestApi } from '../api.js';
 
+type EventMap<Res> = {
+  data: (data: Res) => unknown,
+  close: () => unknown,
+  error: (e: Error) => unknown, // todo
+}
+
 export abstract class BaseStream<Req, Res> {
   connected = false;
   protected emitter = new EventEmitter();
@@ -13,7 +19,7 @@ export abstract class BaseStream<Req, Res> {
   /**
    * Установить обработчик.
    */
-  on(event: 'data', handler: (data: Res) => unknown) {
+  on<T extends keyof EventMap<Res>>(event: T, handler: EventMap<Res>[T]) {
     this.emitter.on(event, handler);
     return () => this.emitter.off(event, handler);
   }
@@ -21,7 +27,7 @@ export abstract class BaseStream<Req, Res> {
   /**
    * Удалить обработчик.
    */
-  off(event: 'data', handler: (data: Res) => unknown) {
+  off<T extends keyof EventMap<Res>>(event: T, handler: EventMap<Res>[T]) {
     this.emitter.off(event, handler);
   }
 
@@ -57,5 +63,6 @@ export abstract class BaseStream<Req, Res> {
     }
     // Если вышли из цикла, значит соединение разорвано
     this.connected = false;
+    this.emitter.emit('close');
   }
 }

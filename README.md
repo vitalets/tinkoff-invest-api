@@ -57,6 +57,7 @@ api.stream.market.watch({ candles: [
 
 // обработка событий
 api.stream.market.on('data', data => console.log(data));
+api.stream.market.on('close', () => console.log('closed'));
 
 // закрыть соединение через 3 сек
 setTimeout(() => api.stream.market.cancel(), 3000);
