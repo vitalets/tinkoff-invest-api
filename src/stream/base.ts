@@ -10,6 +10,9 @@ type EventMap<Res> = {
   error: (e: Error) => unknown, // todo
 }
 
+// Используем null как специальное значение, чтобы выйти из цикла в async итераторе и закрыть соединение
+const CLOSE_STEAM_VALUE = null;
+
 export abstract class BaseStream<Req, Res> {
   connected = false;
   protected emitter = new EventEmitter();
@@ -35,7 +38,7 @@ export abstract class BaseStream<Req, Res> {
    * Отмена запроса.
    */
   cancel() {
-    this.sendSubscriptionRequest(null);
+    this.sendSubscriptionRequest(CLOSE_STEAM_VALUE);
     // todo: remove all listeners?
     // todo: make async and return promise
   }
@@ -46,8 +49,7 @@ export abstract class BaseStream<Req, Res> {
     // поэтому трансформируем все вызовы в новый AsyncIterable, куда передается только первый аргумент
     for await (const data of innerReq) {
       const value = data[ 0 ];
-      // Используем null как специальное значение, чтобы выйти из цикла и закрыть соединение
-      if (value === null) break;
+      if (value === CLOSE_STEAM_VALUE) break;
       yield value as Req;
     }
   }
