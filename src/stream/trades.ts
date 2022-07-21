@@ -10,6 +10,7 @@ export class TradesStream extends BaseStream<TradesStreamRequest, TradesStreamRe
    * Подписаться на обновления.
    */
   watch(request: TradesStreamRequest) {
+    // тут работает немного по-другому, т.к. request не AsyncIterable
     const call = this.api.ordersStream.tradesStream(request);
     this.loop(call);
   }

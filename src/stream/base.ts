@@ -6,12 +6,12 @@ import { TinkoffInvestApi } from '../api.js';
 
 type EventMap<Res> = {
   data: (data: Res) => unknown,
-  close: () => unknown,
-  error: (e: Error) => unknown, // todo
+  close: (reason?: Error) => unknown,
+  error: (e: Error) => unknown,
 }
 
 // Используем null как специальное значение, чтобы выйти из цикла в async итераторе и закрыть соединение
-const CLOSE_STEAM_VALUE = null;
+const CLOSE_STREAM_VALUE = null;
 
 export abstract class BaseStream<Req, Res> {
   connected = false;
@@ -38,7 +38,7 @@ export abstract class BaseStream<Req, Res> {
    * Отмена запроса.
    */
   cancel() {
-    this.sendSubscriptionRequest(CLOSE_STEAM_VALUE);
+    this.sendSubscriptionRequest(CLOSE_STREAM_VALUE);
     // todo: remove all listeners?
     // todo: make async and return promise
   }
@@ -49,7 +49,7 @@ export abstract class BaseStream<Req, Res> {
     // поэтому трансформируем все вызовы в новый AsyncIterable, куда передается только первый аргумент
     for await (const data of innerReq) {
       const value = data[ 0 ];
-      if (value === CLOSE_STEAM_VALUE) break;
+      if (value === CLOSE_STREAM_VALUE) break;
       yield value as Req;
     }
   }
@@ -60,11 +60,18 @@ export abstract class BaseStream<Req, Res> {
 
   protected async loop(call: AsyncIterable<Res>) {
     this.connected = true;
-    for await (const data of call) {
-      this.emitter.emit('data', data);
+    let reason: Error | undefined = undefined;
+    try {
+      for await (const data of call) {
+        this.emitter.emit('data', data);
+      }
+    } catch (e) {
+      reason = e;
+      this.emitter.emit('error', e);
+    } finally {
+      // Если вышли из цикла, значит соединение разорвано
+      this.connected = false;
+      this.emitter.emit('close', reason);
     }
-    // Если вышли из цикла, значит соединение разорвано
-    this.connected = false;
-    this.emitter.emit('close');
   }
 }
