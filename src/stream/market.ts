@@ -4,6 +4,8 @@
  */
 import { BaseStream } from './base.js';
 import { MarketDataRequest, MarketDataResponse, SubscriptionAction } from '../generated/marketdata.js';
+import type { TinkoffInvestApi } from '../api.js';
+import { StreamEvents } from './events.js';
 
 type MarketDataWatch = {
   candles?: Required<MarketDataRequest>['subscribeCandlesRequest']['instruments'],
@@ -19,22 +21,44 @@ type MarketDataWatch = {
 // }
 
 export class MarketStream extends BaseStream<MarketDataRequest, MarketDataResponse> {
+
+  /**
+   * Список активных подписок
+   */
+  private subscribers = new Set<MarketDataWatch>();
+
+  constructor(public api: TinkoffInvestApi) {
+    super(api);
+
+    this.emitter.on(StreamEvents.close, this.restoreSubscribe);
+  }
+
   /**
    * Подписаться на обновления.
    */
   watch(request: MarketDataWatch) {
     this.ensureConnected();
     this.createSubscription(request, SubscriptionAction.SUBSCRIPTION_ACTION_SUBSCRIBE);
+    this.subscribers.add(request);
+
+    return () => {
+      this.unwatch(request);
+    };
   }
 
   /**
-   * Отписаться от обновлений.
+   * Отписаться от обновлений в ручном режиме
+   * NB!: Для безопасной отписки можно использовать возвращаемую функцию из метода `this.watch`
    */
   unwatch(request: MarketDataWatch) {
     this.ensureConnected();
     this.createSubscription(request, SubscriptionAction.SUBSCRIPTION_ACTION_UNSUBSCRIBE);
+    this.subscribers.delete(request);
   }
 
+  /**
+   * Подключитсья при необходимости
+   */
   protected ensureConnected() {
     if (!this.connected) {
       const req = this.createRequestIterable();
@@ -43,6 +67,9 @@ export class MarketStream extends BaseStream<MarketDataRequest, MarketDataRespon
     }
   }
 
+  /**
+   * Создание подписки
+   */
   protected createSubscription(request: MarketDataWatch, subscriptionAction: SubscriptionAction) {
     const keys = Object.keys(request) as (keyof MarketDataWatch)[];
     keys.forEach(key => {
@@ -53,6 +80,15 @@ export class MarketStream extends BaseStream<MarketDataRequest, MarketDataRespon
       this.sendSubscriptionRequest({ [reqKey]: { subscriptionAction, instruments } });
     });
   }
+
+  /**
+   * Восстановление подписок маркет стримов
+   */
+  protected restoreSubscribe = () => {
+    this.subscribers.forEach((request: MarketDataWatch) => {
+        this.watch(request);
+    });
+  };
 }
 
 function capitalize(s: string) {

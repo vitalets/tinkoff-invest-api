@@ -3,12 +3,7 @@
  */
 import { on, EventEmitter } from 'node:events';
 import { TinkoffInvestApi } from '../api.js';
-
-type EventMap<Res> = {
-  data: (data: Res) => unknown,
-  close: () => unknown,
-  error: (e: Error) => unknown, // todo
-}
+import { EventMap, StreamEvents } from './events.js';
 
 export abstract class BaseStream<Req, Res> {
   connected = false;
@@ -59,10 +54,10 @@ export abstract class BaseStream<Req, Res> {
   protected async loop(call: AsyncIterable<Res>) {
     this.connected = true;
     for await (const data of call) {
-      this.emitter.emit('data', data);
+      this.emitter.emit(StreamEvents.data, data);
     }
     // Если вышли из цикла, значит соединение разорвано
     this.connected = false;
-    this.emitter.emit('close');
+    this.emitter.emit(StreamEvents.close);
   }
 }
