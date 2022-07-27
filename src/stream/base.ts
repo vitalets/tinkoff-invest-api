@@ -2,6 +2,7 @@
  * Базовый класс обертки на bi-directional grpc stream.
  */
 import { on, EventEmitter } from 'node:events';
+import TypedEmitter from 'typed-emitter';
 import { TinkoffInvestApi } from '../api.js';
 
 type EventMap<Res> = {
@@ -10,19 +11,24 @@ type EventMap<Res> = {
   error: (e: Error) => unknown,
 }
 
+type InternalEventMap<Req, Res> = EventMap<Res> & {
+  request: (req: Req | CloseReq) => unknown
+};
+
 // Используем null как специальное значение, чтобы выйти из цикла в async итераторе и закрыть соединение
 const CLOSE_STREAM_VALUE = null;
+type CloseReq = typeof CLOSE_STREAM_VALUE;
 
 export abstract class BaseStream<Req, Res> {
   connected = false;
-  protected emitter = new EventEmitter();
+  protected emitter = new EventEmitter() as TypedEmitter<InternalEventMap<Req, Res>>;
 
   constructor(public api: TinkoffInvestApi) { }
 
   /**
    * Установить обработчик.
    */
-  on<T extends keyof EventMap<Res>>(event: T, handler: EventMap<Res>[T]) {
+  on<T extends keyof EventMap<Res>>(event: T, handler: InternalEventMap<Req, Res>[T]) {
     this.emitter.on(event, handler);
     return () => this.emitter.off(event, handler);
   }
@@ -30,7 +36,7 @@ export abstract class BaseStream<Req, Res> {
   /**
    * Удалить обработчик.
    */
-  off<T extends keyof EventMap<Res>>(event: T, handler: EventMap<Res>[T]) {
+  off<T extends keyof EventMap<Res>>(event: T, handler: InternalEventMap<Req, Res>[T]) {
     this.emitter.off(event, handler);
   }
 
@@ -54,7 +60,7 @@ export abstract class BaseStream<Req, Res> {
     }
   }
 
-  protected sendSubscriptionRequest(req: Req | null) {
+  protected sendSubscriptionRequest(req: Req | CloseReq) {
     this.emitter.emit('request', req);
   }
 
