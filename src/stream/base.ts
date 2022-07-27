@@ -6,9 +6,10 @@ import TypedEmitter from 'typed-emitter';
 import { TinkoffInvestApi } from '../api.js';
 
 type EventMap<Res> = {
+  open: () => unknown,
   data: (data: Res) => unknown,
-  close: (reason?: Error) => unknown,
-  error: (e: Error) => unknown,
+  close: (error?: Error) => unknown,
+  error: (error: Error) => unknown,
 }
 
 type InternalEventMap<Req, Res> = EventMap<Res> & {
@@ -66,18 +67,19 @@ export abstract class BaseStream<Req, Res> {
 
   protected async loop(call: AsyncIterable<Res>) {
     this.connected = true;
-    let reason: Error | undefined = undefined;
+    this.emitter.emit('open');
+    let error: Error | undefined = undefined;
     try {
       for await (const data of call) {
         this.emitter.emit('data', data);
       }
     } catch (e) {
-      reason = e;
+      error = e;
       this.emitter.emit('error', e);
     } finally {
       // Если вышли из цикла, значит соединение разорвано
       this.connected = false;
-      this.emitter.emit('close', reason);
+      this.emitter.emit('close', error);
     }
   }
 }

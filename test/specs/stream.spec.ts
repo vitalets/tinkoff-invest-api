@@ -1,7 +1,7 @@
 import { MarketDataResponse, SubscriptionInterval } from '../../src/generated/marketdata.js';
 import { MarketStream } from '../../src/stream/market.js';
 
-export async function waitMarketStreamEvent(stream: MarketStream, event: 'data' | 'close' | 'error') {
+export async function waitMarketStreamEvent(stream: MarketStream, event: 'open' | 'data' | 'close' | 'error') {
   return new Promise<MarketDataResponse>(resolve => stream.on(event, resolve));
 }
 
@@ -15,7 +15,9 @@ describe('stream', () => {
   });
 
   it('подписка на свечи', async () => {
+    const openPromise = waitMarketStreamEvent(testApi.stream.market, 'open');
     testApi.stream.market.watch({ candles: [ { figi, interval } ]});
+    await openPromise;
     const data = await waitMarketStreamEvent(testApi.stream.market, 'data');
     assert.deepEqual(data.subscribeCandlesResponse?.candlesSubscriptions, [
       { figi, interval: 1, subscriptionStatus: 1 }
