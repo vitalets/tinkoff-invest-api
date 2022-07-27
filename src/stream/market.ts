@@ -85,9 +85,13 @@ export class MarketStream extends BaseStream<MarketDataRequest, MarketDataRespon
    * Восстановление подписок маркет стримов
    */
   protected restoreSubscribe = () => {
+    if (!this.subscribers.size) {
+      return;
+    }
+
+    this.emitter.emit(StreamEvents.restore);
     this.subscribers.forEach((request: MarketDataWatch) => {
         this.watch(request);
-        this.emitter.emit(StreamEvents.restore);
     });
   };
 }
