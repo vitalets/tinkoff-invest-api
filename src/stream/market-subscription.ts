@@ -31,6 +31,7 @@ type MarketSubscriptionOptions<S, D> = {
   buildRequest: (subscriptionAction: SubscriptionAction) => MarketDataRequest,
   buildResponse: (res: MarketDataResponse) => UniversalMarketResponse<S, D>,
   dataHandler: (data: D) => unknown,
+  // массив ключей под данным в запросе (по ним матчим ответы на нужный обработчик)
   requestKeys: string[],
 }
 
@@ -40,7 +41,7 @@ type MarketSubscriptionOptions<S, D> = {
 export type UniversalMarketResponse<S, D> = {
   trackingId?: string;
   subscriptions?: S[];
-  // ключи в статусе подписки, по которым определяем, что статус для нужного запроса подписки
+  // ключи в статусе подписки, по которым определяем, что статус для нужного запроса
   subscriptionKeys?: string[];
   data?: D;
   // ключ данных в ответе, по которому определяем, что данные для нужного обработчика
