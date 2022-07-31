@@ -1,7 +1,7 @@
 /**
  * Базовый класс обертки на bi-directional grpc stream.
  */
-import { on, EventEmitter } from 'node:events';
+import { on, EventEmitter, once } from 'node:events';
 import TypedEmitter from 'typed-emitter';
 import { TinkoffInvestApi } from '../api.js';
 
@@ -44,10 +44,14 @@ export abstract class BaseStream<Req, Res> {
   /**
    * Отмена запроса.
    */
-  cancel() {
-    this.sendSubscriptionRequest(CLOSE_STREAM_VALUE);
-    // todo: remove all listeners?
-    // todo: make async and return promise
+  async cancel() {
+    if (this.connected) {
+      this.sendRequest(CLOSE_STREAM_VALUE);
+      const [ error ] = await once(this.emitter, 'close');
+      return error;
+      // todo: remove all data listeners?
+      // this.emitter.removeAllListeners('data');
+    }
   }
 
   protected async *createRequestIterable() {
@@ -61,11 +65,11 @@ export abstract class BaseStream<Req, Res> {
     }
   }
 
-  protected sendSubscriptionRequest(req: Req | CloseReq) {
+  protected sendRequest(req: Req | CloseReq) {
     this.emitter.emit('request', req);
   }
 
-  protected async loop(call: AsyncIterable<Res>) {
+  protected async waitEvents(call: AsyncIterable<Res>) {
     this.connected = true;
     this.emitter.emit('open');
     let error: Error | undefined = undefined;

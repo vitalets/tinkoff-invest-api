@@ -51,19 +51,33 @@ const { candles } = await api.marketdata.getCandles({
 Для работы со стримом сделана обертка `api.stream`:
 ```ts
 // подписка на свечи
-api.stream.market.watch({ candles: [
-  { figi: 'BBG00QPYJ5H0', interval: SubscriptionInterval.SUBSCRIPTION_INTERVAL_ONE_MINUTE }
-]});
+const unsubscribe = await api.stream.market.candles({
+  instruments: [
+    { figi: 'BBG00QPYJ5H0', interval: SubscriptionInterval.SUBSCRIPTION_INTERVAL_ONE_MINUTE }
+  ],
+  waitingClose: false,
+}, candle => console.log(candle));
 
-// обработка событий
-api.stream.market.on('data', data => console.log('stream data', data));
+// обработка дополнительных событий
 api.stream.market.on('error', error => console.log('stream error', error));
 api.stream.market.on('close', error => console.log('stream closed, reason:', error));
 
-// закрыть соединение через 3 сек
-setTimeout(() => api.stream.market.cancel(), 3000);
+// отписаться
+await unsubscribe();
+
+// закрыть соединение
+await api.stream.market.cancel();
 ```
 > Примечание: со стримом можно работать и напрямую через `api.marketdataStream`. Но там `AsyncIterable`, которые менее удобны (имхо)
+
+По умолчанию стрим автоматически переподключается при потере соединения ([#4](https://github.com/vitalets/tinkoff-invest-api/issues/4)). Чтобы это отключить, установите `api.stream.market.options.autoReconnect = false`.
+
+Стримы доступны по следующим сущностям:
+* `.candles(request, handler)`
+* `.trades(request, handler)`
+* `.orderBook(request, handler)`
+* `.lastPrice(request, handler)`
+* `.info(request, handler)`
 
 ### Универсальный счет
 Для бесшовной работы со счетами в бою и песочнице сделан универсальный интерфейс `TinkoffAccount`.
