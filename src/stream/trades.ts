@@ -12,7 +12,7 @@ export class TradesStream extends BaseStream<TradesStreamRequest, TradesStreamRe
   watch(request: TradesStreamRequest) {
     // тут работает немного по-другому, т.к. request не AsyncIterable
     const call = this.api.ordersStream.tradesStream(request);
-    this.loop(call);
+    this.waitEvents(call);
   }
 
   // todo: cancel() - тут отмена работает по-другому, т.к. req не AsyncIterable

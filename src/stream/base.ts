@@ -1,14 +1,15 @@
 /**
  * Базовый класс обертки на bi-directional grpc stream.
  */
-import { on, EventEmitter } from 'node:events';
+import { on, EventEmitter, once } from 'node:events';
 import TypedEmitter from 'typed-emitter';
 import { TinkoffInvestApi } from '../api.js';
 
 type EventMap<Res> = {
+  open: () => unknown,
   data: (data: Res) => unknown,
-  close: (reason?: Error) => unknown,
-  error: (e: Error) => unknown,
+  close: (error?: Error) => unknown,
+  error: (error: Error) => unknown,
 }
 
 type InternalEventMap<Req, Res> = EventMap<Res> & {
@@ -43,10 +44,14 @@ export abstract class BaseStream<Req, Res> {
   /**
    * Отмена запроса.
    */
-  cancel() {
-    this.sendSubscriptionRequest(CLOSE_STREAM_VALUE);
-    // todo: remove all listeners?
-    // todo: make async and return promise
+  async cancel() {
+    if (this.connected) {
+      this.sendRequest(CLOSE_STREAM_VALUE);
+      const [ error ] = await once(this.emitter, 'close');
+      return error;
+      // todo: remove all data listeners?
+      // this.emitter.removeAllListeners('data');
+    }
   }
 
   protected async *createRequestIterable() {
@@ -60,24 +65,25 @@ export abstract class BaseStream<Req, Res> {
     }
   }
 
-  protected sendSubscriptionRequest(req: Req | CloseReq) {
+  protected sendRequest(req: Req | CloseReq) {
     this.emitter.emit('request', req);
   }
 
-  protected async loop(call: AsyncIterable<Res>) {
+  protected async waitEvents(call: AsyncIterable<Res>) {
     this.connected = true;
-    let reason: Error | undefined = undefined;
+    this.emitter.emit('open');
+    let error: Error | undefined = undefined;
     try {
       for await (const data of call) {
         this.emitter.emit('data', data);
       }
     } catch (e) {
-      reason = e;
+      error = e;
       this.emitter.emit('error', e);
     } finally {
       // Если вышли из цикла, значит соединение разорвано
       this.connected = false;
-      this.emitter.emit('close', reason);
+      this.emitter.emit('close', error);
     }
   }
 }
