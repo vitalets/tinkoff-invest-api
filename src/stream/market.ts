@@ -166,6 +166,8 @@ export class MarketStream extends BaseStream<MarketDataRequest, MarketDataRespon
   }
 
   async reconnect() {
+    // вызываем явно на случай если подписок нет
+    this.ensureConnected();
     // todo: если коннект есть, но хотя бы одна из подписок не может установиться, то весь reconnect фейлится.
     // Кажется, это не совсем корректно.
     for (const subscription of this.subscriptions) {
@@ -177,6 +179,7 @@ export class MarketStream extends BaseStream<MarketDataRequest, MarketDataRespon
   protected ensureConnected() {
     if (!this.connected) {
       const req = this.createRequestIterable();
+      // todo: тут не совсем понимаю, как асинхронно дождаться что соединение установлено
       const call = this.api.marketdataStream.marketDataStream(req);
       this.waitEvents(call);
     }
