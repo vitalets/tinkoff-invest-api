@@ -42,6 +42,13 @@ export abstract class BaseStream<Req, Res> {
   }
 
   /**
+   * Установлен ли обработчик.
+   */
+  hasListener<T extends keyof EventMap<Res>>(event: T, handler: InternalEventMap<Req, Res>[T]) {
+    return this.emitter.listeners(event).includes(handler);
+  }
+
+  /**
    * Отмена запроса.
    */
   async cancel() {

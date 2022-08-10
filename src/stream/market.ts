@@ -37,9 +37,13 @@ type WithoutAction<T extends SubscribeRequest> = Omit<T, 'subscriptionAction'>
 export class MarketStream extends BaseStream<MarketDataRequest, MarketDataResponse> {
   options = {
     autoReconnect: true,
+    autoReconnectDelayMin: 100,
+    autoReconnectDelayMax: 2000,
   };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   subscriptions = new Set<MarketSubscription<any, any>>();
+
+  protected autoReconnectDelay = 0;
 
   constructor(public api: TinkoffInvestApi) {
     super(api);
@@ -162,10 +166,12 @@ export class MarketStream extends BaseStream<MarketDataRequest, MarketDataRespon
   }
 
   async reconnect() {
-    // todo: check that subscription listeners removed (to avoid duplicate listeners)
+    // todo: если коннект есть, но хотя бы одна из подписок не может установиться, то весь reconnect фейлится.
+    // Кажется, это не совсем корректно.
     for (const subscription of this.subscriptions) {
       await this.watch(subscription);
     }
+    this.autoReconnectDelay = 0;
   }
 
   protected ensureConnected() {
@@ -179,8 +185,8 @@ export class MarketStream extends BaseStream<MarketDataRequest, MarketDataRespon
   protected onClose(error?: Error) {
     this.subscriptions.forEach(subscription => this.off('data', subscription.handler));
     if (error && this.options.autoReconnect) {
-      // todo: use exponential backoff
-      this.reconnect();
+      setTimeout(() => this.reconnect(), this.autoReconnectDelay);
+      this.calcAutoReconnectDelay();
     }
   }
 
@@ -188,7 +194,9 @@ export class MarketStream extends BaseStream<MarketDataRequest, MarketDataRespon
   protected async watch(subscription: MarketSubscription<any, any>) {
     this.ensureConnected();
     this.sendRequest(subscription.getRequest(SubscriptionAction.SUBSCRIPTION_ACTION_SUBSCRIBE));
-    this.on('data', subscription.handler);
+    if (!this.hasListener('data', subscription.handler)) {
+      this.on('data', subscription.handler);
+    }
     try {
       await subscription.waitStatus();
     } catch (e) {
@@ -205,5 +213,11 @@ export class MarketStream extends BaseStream<MarketDataRequest, MarketDataRespon
     await subscription.waitStatus();
     this.off('data', subscription.handler);
     this.subscriptions.delete(subscription);
+  }
+
+  protected calcAutoReconnectDelay() {
+    this.autoReconnectDelay = this.autoReconnectDelay === 0
+      ? this.options.autoReconnectDelayMin
+      : Math.min(this.autoReconnectDelay * 2, this.options.autoReconnectDelayMax);
   }
 }
