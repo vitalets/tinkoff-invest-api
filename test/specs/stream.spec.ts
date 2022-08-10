@@ -119,11 +119,13 @@ describe('stream', () => {
     const stream = new MarketStreamEmulate(testApi);
     stream.options.autoReconnect = true;
 
+    // эмулируем коннект
     await Promise.all([
       stream.candles(candlesReq, handler),
       stream.emulate(candlesStatus),
     ]);
 
+    // эмулируем обрыв соединения и ждем реконнект
     await Promise.all([
       waitMarketStreamEvent(stream, 'error'),
       waitMarketStreamEvent(stream, 'close'),
@@ -131,6 +133,7 @@ describe('stream', () => {
       stream.emulate(new Error('foo')),
     ]);
 
+    // эмулируем отправку данных после реконнекта
     await Promise.all([
       waitMarketStreamEvent(stream, 'data'),
       stream.emulate(candlesStatus),
@@ -139,6 +142,8 @@ describe('stream', () => {
     assert.equal(stream.connected, true);
     assert.equal(stream.getEmitter().listenerCount('data'), 1);
   });
+
+  // todo: test exponential reconnect?
 });
 
 export async function waitMarketStreamEvent(stream: MarketStream, event: 'open' | 'data' | 'close' | 'error') {
