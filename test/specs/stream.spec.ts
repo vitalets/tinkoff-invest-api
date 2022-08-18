@@ -22,6 +22,8 @@ describe('stream', () => {
     // отключаем autoReconnect, чтобы проще тестировать
     testApi.stream.market.options.autoReconnect = false;
     testApi.stream.market.subscriptions.clear();
+    // todo: костыль, чтобы не зависали тесты стрима
+    await new Promise(r => setTimeout(r, 3000));
   });
 
   afterEach(async () => {
