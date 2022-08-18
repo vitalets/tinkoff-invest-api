@@ -307,6 +307,8 @@ export interface MarketDataRequest {
   subscribeInfoRequest?: SubscribeInfoRequest | undefined;
   /** Запрос подписки на последние цены. */
   subscribeLastPriceRequest?: SubscribeLastPriceRequest | undefined;
+  /** Запрос своих подписок. */
+  getMySubscriptions?: GetMySubscriptions | undefined;
 }
 
 export interface MarketDataServerSideStreamRequest {
@@ -354,7 +356,7 @@ export interface SubscribeCandlesRequest {
   subscriptionAction: SubscriptionAction;
   /** Массив инструментов для подписки на свечи. */
   instruments: CandleInstrument[];
-  /** Флаг ожидания закрытия временного интервала для отправки свечи. */
+  /** Флаг ожидания закрытия временного интервала для отправки свечи, применяется только для минутных свечей. */
   waitingClose: boolean;
 }
 
@@ -692,7 +694,7 @@ export interface GetTradingStatusResponse {
   apiTradeAvailableFlag: boolean;
 }
 
-/** Запрос последних обезличенных сделок по инструменту на текущий торговый день с максимальным интервалом в 1 час. */
+/** Запрос обезличенных сделок за последний час. */
 export interface GetLastTradesRequest {
   /** Figi-идентификатор инструмента */
   figi: string;
@@ -702,11 +704,14 @@ export interface GetLastTradesRequest {
   to?: Date;
 }
 
-/** Последние обезличенные сделки по инструменту на текущий торговый день с максимальным интервалом в 1 час. */
+/** Обезличенных сделок за последний час. */
 export interface GetLastTradesResponse {
   /** Массив сделок */
   trades: Trade[];
 }
+
+/** Запрос активных подписок. */
+export interface GetMySubscriptions {}
 
 function createBaseMarketDataRequest(): MarketDataRequest {
   return {
@@ -715,6 +720,7 @@ function createBaseMarketDataRequest(): MarketDataRequest {
     subscribeTradesRequest: undefined,
     subscribeInfoRequest: undefined,
     subscribeLastPriceRequest: undefined,
+    getMySubscriptions: undefined,
   };
 }
 
@@ -751,6 +757,12 @@ export const MarketDataRequest = {
       SubscribeLastPriceRequest.encode(
         message.subscribeLastPriceRequest,
         writer.uint32(42).fork()
+      ).ldelim();
+    }
+    if (message.getMySubscriptions !== undefined) {
+      GetMySubscriptions.encode(
+        message.getMySubscriptions,
+        writer.uint32(50).fork()
       ).ldelim();
     }
     return writer;
@@ -793,6 +805,12 @@ export const MarketDataRequest = {
             reader.uint32()
           );
           break;
+        case 6:
+          message.getMySubscriptions = GetMySubscriptions.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -818,6 +836,9 @@ export const MarketDataRequest = {
       subscribeLastPriceRequest: isSet(object.subscribeLastPriceRequest)
         ? SubscribeLastPriceRequest.fromJSON(object.subscribeLastPriceRequest)
         : undefined,
+      getMySubscriptions: isSet(object.getMySubscriptions)
+        ? GetMySubscriptions.fromJSON(object.getMySubscriptions)
+        : undefined,
     };
   },
 
@@ -842,6 +863,10 @@ export const MarketDataRequest = {
     message.subscribeLastPriceRequest !== undefined &&
       (obj.subscribeLastPriceRequest = message.subscribeLastPriceRequest
         ? SubscribeLastPriceRequest.toJSON(message.subscribeLastPriceRequest)
+        : undefined);
+    message.getMySubscriptions !== undefined &&
+      (obj.getMySubscriptions = message.getMySubscriptions
+        ? GetMySubscriptions.toJSON(message.getMySubscriptions)
         : undefined);
     return obj;
   },
@@ -3907,6 +3932,43 @@ export const GetLastTradesResponse = {
   },
 };
 
+function createBaseGetMySubscriptions(): GetMySubscriptions {
+  return {};
+}
+
+export const GetMySubscriptions = {
+  encode(
+    _: GetMySubscriptions,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetMySubscriptions {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetMySubscriptions();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): GetMySubscriptions {
+    return {};
+  },
+
+  toJSON(_: GetMySubscriptions): unknown {
+    const obj: any = {};
+    return obj;
+  },
+};
+
 /** Сервис получения биржевой информации:</br> **1**. свечи;</br> **2**. стаканы;</br> **3**. торговые статусы;</br> **4**. лента сделок. */
 export type MarketDataServiceDefinition = typeof MarketDataServiceDefinition;
 export const MarketDataServiceDefinition = {
@@ -3949,7 +4011,7 @@ export const MarketDataServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Метод запроса последних обезличенных сделок по инструменту на текущий торговый день с максимальным интервалом в 1 час. */
+    /** Метод запроса обезличенных сделок за последний час. */
     getLastTrades: {
       name: "GetLastTrades",
       requestType: GetLastTradesRequest,
@@ -3982,7 +4044,7 @@ export interface MarketDataServiceServiceImplementation<CallContextExt = {}> {
     request: GetTradingStatusRequest,
     context: CallContext & CallContextExt
   ): Promise<GetTradingStatusResponse>;
-  /** Метод запроса последних обезличенных сделок по инструменту на текущий торговый день с максимальным интервалом в 1 час. */
+  /** Метод запроса обезличенных сделок за последний час. */
   getLastTrades(
     request: GetLastTradesRequest,
     context: CallContext & CallContextExt
@@ -4010,7 +4072,7 @@ export interface MarketDataServiceClient<CallOptionsExt = {}> {
     request: GetTradingStatusRequest,
     options?: CallOptions & CallOptionsExt
   ): Promise<GetTradingStatusResponse>;
-  /** Метод запроса последних обезличенных сделок по инструменту на текущий торговый день с максимальным интервалом в 1 час. */
+  /** Метод запроса обезличенных сделок за последний час. */
   getLastTrades(
     request: GetLastTradesRequest,
     options?: CallOptions & CallOptionsExt

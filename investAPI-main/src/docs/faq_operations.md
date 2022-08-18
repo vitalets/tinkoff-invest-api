@@ -4,7 +4,7 @@
 
 ###Почему в операции пустой Figi?
 
-Такое возможно для операций завода денежных средств, т.к. нет связанного с операцией биржевого
+Такое возможно для операций внесения денежных средств и подобных, т.к. нет связанного с операцией биржевого
 инструмента
 
 ###Будут ли отображаться операции по бумагам, которые прошли делистинг? 
@@ -26,3 +26,22 @@
 сообщение об ошибке.
 
 Подробнее о брокерском отчёте: [Отчёты и справки](https://www.tinkoff.ru/invest/account/help/trade-on-bs/get-report/).
+
+###Как получить информацию о позициях и доходности портфеля?
+
+Для получения информации о позиция и доходности портфеля необходимо подписаться gRPC server-side stream 
+получения сделок с биржи [PortfolioStream](/investAPI/operations/#portfoliostream) или выполнить запросы в [метод получения портфеля](/investAPI/operations/#getportfolio) и [метод получения позиций по счету](/investAPI/operations/#getpositions).
+В [PortfolioStream](/investAPI/operations/#portfoliostream) не отображаются заблокированные биржей бумаги. 
+Получить заблокированные бумаги можно в методе [GetPortfolio](/investAPI/operations/#getportfolio) и [GetPossitions](/investAPI/operations/#getpositions).
+
+###Как получить информацию об операциях?
+
+Для получения информации об операциях в TINKOFF INVEST API предусмотрен метод [getOperationsByCursor](/investAPI/operations#getoperationsbycursor).
+Данный метод имеет широкие возможности фильтрации, а так же возвращает постраничную информацию об операциях.
+
+Так же в TINKOFF INVEST API для получения списка операций существует метод [getOperations](/investAPI/operations#getoperations), являющийся более старой версией метода [getOperationsByCursor](/investAPI/operations#getoperationsbycursor).
+Однако, метод [getOperationsByCursor](/investAPI/operations#getoperationsbycursor) является более **предпочтительным** для использования.
+
+###Как понять какие бумаги в портфеле заблокированы по решению ЦБ?
+
+В методах [getPortfolio](/investAPI/operations#getportfolio) и  [getPositions](/investAPI/operations#getpositions) добавлены специальные булевы параметры, означающие что данный инструмент заблокирован депозитарием.

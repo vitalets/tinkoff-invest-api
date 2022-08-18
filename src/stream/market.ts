@@ -165,6 +165,21 @@ export class MarketStream extends BaseStream<MarketDataRequest, MarketDataRespon
     return this.watch(subscription);
   }
 
+  /**
+   * Получение текущих подписок.
+   */
+  async getMySubscriptions() {
+    this.ensureConnected();
+    this.sendRequest({ getMySubscriptions: {} });
+    return new Promise<MarketDataResponse>(resolve => {
+      const unsubscribe = this.on('data', res => {
+        if (isDataResponse(res)) return;
+        unsubscribe();
+        resolve(res);
+      });
+    });
+  }
+
   async reconnect() {
     // вызываем явно на случай если подписок нет
     this.ensureConnected();
@@ -223,4 +238,8 @@ export class MarketStream extends BaseStream<MarketDataRequest, MarketDataRespon
       ? this.options.autoReconnectDelayMin
       : Math.min(this.autoReconnectDelay * 2, this.options.autoReconnectDelayMax);
   }
+}
+
+function isDataResponse(res: MarketDataResponse) {
+  return res.candle || res.lastPrice || res.orderbook || res.ping || res.trade || res.tradingStatus;
 }

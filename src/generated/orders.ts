@@ -7,7 +7,7 @@ import { Timestamp } from "./google/protobuf/timestamp.js";
 
 export const protobufPackage = "tinkoff.public.invest.api.contract.v1";
 
-/** Направление операции */
+/** Направление операции. */
 export enum OrderDirection {
   /** ORDER_DIRECTION_UNSPECIFIED - Значение не указано */
   ORDER_DIRECTION_UNSPECIFIED = 0,
@@ -50,7 +50,7 @@ export function orderDirectionToJSON(object: OrderDirection): string {
   }
 }
 
-/** Тип заявки */
+/** Тип заявки. */
 export enum OrderType {
   /** ORDER_TYPE_UNSPECIFIED - Значение не указано */
   ORDER_TYPE_UNSPECIFIED = 0,
@@ -155,6 +155,49 @@ export function orderExecutionReportStatusToJSON(
     case OrderExecutionReportStatus.EXECUTION_REPORT_STATUS_PARTIALLYFILL:
       return "EXECUTION_REPORT_STATUS_PARTIALLYFILL";
     case OrderExecutionReportStatus.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+/** Тип цены. */
+export enum PriceType {
+  /** PRICE_TYPE_UNSPECIFIED - Значение не определено. */
+  PRICE_TYPE_UNSPECIFIED = 0,
+  /** PRICE_TYPE_POINT - Цена в пунктах (только для фьючерсов и облигаций). */
+  PRICE_TYPE_POINT = 1,
+  /** PRICE_TYPE_CURRENCY - Цена в валюте расчётов по инструменту. */
+  PRICE_TYPE_CURRENCY = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function priceTypeFromJSON(object: any): PriceType {
+  switch (object) {
+    case 0:
+    case "PRICE_TYPE_UNSPECIFIED":
+      return PriceType.PRICE_TYPE_UNSPECIFIED;
+    case 1:
+    case "PRICE_TYPE_POINT":
+      return PriceType.PRICE_TYPE_POINT;
+    case 2:
+    case "PRICE_TYPE_CURRENCY":
+      return PriceType.PRICE_TYPE_CURRENCY;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return PriceType.UNRECOGNIZED;
+  }
+}
+
+export function priceTypeToJSON(object: PriceType): string {
+  switch (object) {
+    case PriceType.PRICE_TYPE_UNSPECIFIED:
+      return "PRICE_TYPE_UNSPECIFIED";
+    case PriceType.PRICE_TYPE_POINT:
+      return "PRICE_TYPE_POINT";
+    case PriceType.PRICE_TYPE_CURRENCY:
+      return "PRICE_TYPE_CURRENCY";
+    case PriceType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
   }
@@ -336,6 +379,22 @@ export interface OrderStage {
   quantity: number;
   /** Идентификатор торговой операции. */
   tradeId: string;
+}
+
+/** Запрос изменения выставленной заявки. */
+export interface ReplaceOrderRequest {
+  /** Номер счета. */
+  accountId: string;
+  /** Идентификатор заявки на бирже. */
+  orderId: string;
+  /** Новый идентификатор запроса выставления поручения для целей идемпотентности. Максимальная длина 36 символов. Перезатирает старый ключ. */
+  idempotencyKey: string;
+  /** Количество лотов. */
+  quantity: number;
+  /** Цена за 1 инструмент. */
+  price?: Quotation;
+  /** Тип цены. */
+  priceType: PriceType;
 }
 
 function createBaseTradesStreamRequest(): TradesStreamRequest {
@@ -1678,6 +1737,107 @@ export const OrderStage = {
   },
 };
 
+function createBaseReplaceOrderRequest(): ReplaceOrderRequest {
+  return {
+    accountId: "",
+    orderId: "",
+    idempotencyKey: "",
+    quantity: 0,
+    price: undefined,
+    priceType: 0,
+  };
+}
+
+export const ReplaceOrderRequest = {
+  encode(
+    message: ReplaceOrderRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.accountId !== "") {
+      writer.uint32(10).string(message.accountId);
+    }
+    if (message.orderId !== "") {
+      writer.uint32(50).string(message.orderId);
+    }
+    if (message.idempotencyKey !== "") {
+      writer.uint32(58).string(message.idempotencyKey);
+    }
+    if (message.quantity !== 0) {
+      writer.uint32(88).int64(message.quantity);
+    }
+    if (message.price !== undefined) {
+      Quotation.encode(message.price, writer.uint32(98).fork()).ldelim();
+    }
+    if (message.priceType !== 0) {
+      writer.uint32(104).int32(message.priceType);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ReplaceOrderRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseReplaceOrderRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.accountId = reader.string();
+          break;
+        case 6:
+          message.orderId = reader.string();
+          break;
+        case 7:
+          message.idempotencyKey = reader.string();
+          break;
+        case 11:
+          message.quantity = longToNumber(reader.int64() as Long);
+          break;
+        case 12:
+          message.price = Quotation.decode(reader, reader.uint32());
+          break;
+        case 13:
+          message.priceType = reader.int32() as any;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ReplaceOrderRequest {
+    return {
+      accountId: isSet(object.accountId) ? String(object.accountId) : "",
+      orderId: isSet(object.orderId) ? String(object.orderId) : "",
+      idempotencyKey: isSet(object.idempotencyKey)
+        ? String(object.idempotencyKey)
+        : "",
+      quantity: isSet(object.quantity) ? Number(object.quantity) : 0,
+      price: isSet(object.price) ? Quotation.fromJSON(object.price) : undefined,
+      priceType: isSet(object.priceType)
+        ? priceTypeFromJSON(object.priceType)
+        : 0,
+    };
+  },
+
+  toJSON(message: ReplaceOrderRequest): unknown {
+    const obj: any = {};
+    message.accountId !== undefined && (obj.accountId = message.accountId);
+    message.orderId !== undefined && (obj.orderId = message.orderId);
+    message.idempotencyKey !== undefined &&
+      (obj.idempotencyKey = message.idempotencyKey);
+    message.quantity !== undefined &&
+      (obj.quantity = Math.round(message.quantity));
+    message.price !== undefined &&
+      (obj.price = message.price ? Quotation.toJSON(message.price) : undefined);
+    message.priceType !== undefined &&
+      (obj.priceType = priceTypeToJSON(message.priceType));
+    return obj;
+  },
+};
+
 export type OrdersStreamServiceDefinition =
   typeof OrdersStreamServiceDefinition;
 export const OrdersStreamServiceDefinition = {
@@ -1758,6 +1918,15 @@ export const OrdersServiceDefinition = {
       responseStream: false,
       options: {},
     },
+    /** Метод изменения выставленной заявки. */
+    replaceOrder: {
+      name: "ReplaceOrder",
+      requestType: ReplaceOrderRequest,
+      requestStream: false,
+      responseType: PostOrderResponse,
+      responseStream: false,
+      options: {},
+    },
   },
 } as const;
 
@@ -1782,6 +1951,11 @@ export interface OrdersServiceServiceImplementation<CallContextExt = {}> {
     request: GetOrdersRequest,
     context: CallContext & CallContextExt
   ): Promise<GetOrdersResponse>;
+  /** Метод изменения выставленной заявки. */
+  replaceOrder(
+    request: ReplaceOrderRequest,
+    context: CallContext & CallContextExt
+  ): Promise<PostOrderResponse>;
 }
 
 export interface OrdersServiceClient<CallOptionsExt = {}> {
@@ -1805,6 +1979,11 @@ export interface OrdersServiceClient<CallOptionsExt = {}> {
     request: GetOrdersRequest,
     options?: CallOptions & CallOptionsExt
   ): Promise<GetOrdersResponse>;
+  /** Метод изменения выставленной заявки. */
+  replaceOrder(
+    request: ReplaceOrderRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<PostOrderResponse>;
 }
 
 declare var self: any | undefined;

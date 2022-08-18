@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from "long";
 import _m0 from "protobufjs/minimal.js";
-import { MoneyValue, Quotation } from "./common.js";
+import { MoneyValue, Quotation, Ping } from "./common.js";
 import { CallContext, CallOptions } from "nice-grpc-common";
 import { Timestamp } from "./google/protobuf/timestamp.js";
 
@@ -15,6 +15,8 @@ export enum OperationState {
   OPERATION_STATE_EXECUTED = 1,
   /** OPERATION_STATE_CANCELED - Отменена. */
   OPERATION_STATE_CANCELED = 2,
+  /** OPERATION_STATE_PROGRESS - Исполняется. */
+  OPERATION_STATE_PROGRESS = 3,
   UNRECOGNIZED = -1,
 }
 
@@ -29,6 +31,9 @@ export function operationStateFromJSON(object: any): OperationState {
     case 2:
     case "OPERATION_STATE_CANCELED":
       return OperationState.OPERATION_STATE_CANCELED;
+    case 3:
+    case "OPERATION_STATE_PROGRESS":
+      return OperationState.OPERATION_STATE_PROGRESS;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -44,6 +49,8 @@ export function operationStateToJSON(object: OperationState): string {
       return "OPERATION_STATE_EXECUTED";
     case OperationState.OPERATION_STATE_CANCELED:
       return "OPERATION_STATE_CANCELED";
+    case OperationState.OPERATION_STATE_PROGRESS:
+      return "OPERATION_STATE_PROGRESS";
     case OperationState.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -387,6 +394,137 @@ export function operationTypeToJSON(object: OperationType): string {
   }
 }
 
+/** Результат подписки. */
+export enum PortfolioSubscriptionStatus {
+  /** PORTFOLIO_SUBSCRIPTION_STATUS_UNSPECIFIED - Тип не определён. */
+  PORTFOLIO_SUBSCRIPTION_STATUS_UNSPECIFIED = 0,
+  /** PORTFOLIO_SUBSCRIPTION_STATUS_SUCCESS - Успешно. */
+  PORTFOLIO_SUBSCRIPTION_STATUS_SUCCESS = 1,
+  /** PORTFOLIO_SUBSCRIPTION_STATUS_ACCOUNT_NOT_FOUND - Счёт не найден или недостаточно прав. */
+  PORTFOLIO_SUBSCRIPTION_STATUS_ACCOUNT_NOT_FOUND = 2,
+  /** PORTFOLIO_SUBSCRIPTION_STATUS_INTERNAL_ERROR - Произошла ошибка. */
+  PORTFOLIO_SUBSCRIPTION_STATUS_INTERNAL_ERROR = 3,
+  UNRECOGNIZED = -1,
+}
+
+export function portfolioSubscriptionStatusFromJSON(
+  object: any
+): PortfolioSubscriptionStatus {
+  switch (object) {
+    case 0:
+    case "PORTFOLIO_SUBSCRIPTION_STATUS_UNSPECIFIED":
+      return PortfolioSubscriptionStatus.PORTFOLIO_SUBSCRIPTION_STATUS_UNSPECIFIED;
+    case 1:
+    case "PORTFOLIO_SUBSCRIPTION_STATUS_SUCCESS":
+      return PortfolioSubscriptionStatus.PORTFOLIO_SUBSCRIPTION_STATUS_SUCCESS;
+    case 2:
+    case "PORTFOLIO_SUBSCRIPTION_STATUS_ACCOUNT_NOT_FOUND":
+      return PortfolioSubscriptionStatus.PORTFOLIO_SUBSCRIPTION_STATUS_ACCOUNT_NOT_FOUND;
+    case 3:
+    case "PORTFOLIO_SUBSCRIPTION_STATUS_INTERNAL_ERROR":
+      return PortfolioSubscriptionStatus.PORTFOLIO_SUBSCRIPTION_STATUS_INTERNAL_ERROR;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return PortfolioSubscriptionStatus.UNRECOGNIZED;
+  }
+}
+
+export function portfolioSubscriptionStatusToJSON(
+  object: PortfolioSubscriptionStatus
+): string {
+  switch (object) {
+    case PortfolioSubscriptionStatus.PORTFOLIO_SUBSCRIPTION_STATUS_UNSPECIFIED:
+      return "PORTFOLIO_SUBSCRIPTION_STATUS_UNSPECIFIED";
+    case PortfolioSubscriptionStatus.PORTFOLIO_SUBSCRIPTION_STATUS_SUCCESS:
+      return "PORTFOLIO_SUBSCRIPTION_STATUS_SUCCESS";
+    case PortfolioSubscriptionStatus.PORTFOLIO_SUBSCRIPTION_STATUS_ACCOUNT_NOT_FOUND:
+      return "PORTFOLIO_SUBSCRIPTION_STATUS_ACCOUNT_NOT_FOUND";
+    case PortfolioSubscriptionStatus.PORTFOLIO_SUBSCRIPTION_STATUS_INTERNAL_ERROR:
+      return "PORTFOLIO_SUBSCRIPTION_STATUS_INTERNAL_ERROR";
+    case PortfolioSubscriptionStatus.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+/** Тип инструмента. */
+export enum InstrumentType {
+  INSTRUMENT_TYPE_UNSPECIFIED = 0,
+  /** INSTRUMENT_TYPE_BOND - Облигация. */
+  INSTRUMENT_TYPE_BOND = 1,
+  /** INSTRUMENT_TYPE_SHARE - Акция. */
+  INSTRUMENT_TYPE_SHARE = 2,
+  /** INSTRUMENT_TYPE_CURRENCY - Валюта. */
+  INSTRUMENT_TYPE_CURRENCY = 3,
+  /** INSTRUMENT_TYPE_ETF - Exchange-traded fund. Фонд. */
+  INSTRUMENT_TYPE_ETF = 4,
+  /** INSTRUMENT_TYPE_FUTURES - Фьючерс. */
+  INSTRUMENT_TYPE_FUTURES = 5,
+  /** INSTRUMENT_TYPE_SP - Структурная нота. */
+  INSTRUMENT_TYPE_SP = 6,
+  /** INSTRUMENT_TYPE_OPTION - Опцион. */
+  INSTRUMENT_TYPE_OPTION = 7,
+  UNRECOGNIZED = -1,
+}
+
+export function instrumentTypeFromJSON(object: any): InstrumentType {
+  switch (object) {
+    case 0:
+    case "INSTRUMENT_TYPE_UNSPECIFIED":
+      return InstrumentType.INSTRUMENT_TYPE_UNSPECIFIED;
+    case 1:
+    case "INSTRUMENT_TYPE_BOND":
+      return InstrumentType.INSTRUMENT_TYPE_BOND;
+    case 2:
+    case "INSTRUMENT_TYPE_SHARE":
+      return InstrumentType.INSTRUMENT_TYPE_SHARE;
+    case 3:
+    case "INSTRUMENT_TYPE_CURRENCY":
+      return InstrumentType.INSTRUMENT_TYPE_CURRENCY;
+    case 4:
+    case "INSTRUMENT_TYPE_ETF":
+      return InstrumentType.INSTRUMENT_TYPE_ETF;
+    case 5:
+    case "INSTRUMENT_TYPE_FUTURES":
+      return InstrumentType.INSTRUMENT_TYPE_FUTURES;
+    case 6:
+    case "INSTRUMENT_TYPE_SP":
+      return InstrumentType.INSTRUMENT_TYPE_SP;
+    case 7:
+    case "INSTRUMENT_TYPE_OPTION":
+      return InstrumentType.INSTRUMENT_TYPE_OPTION;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return InstrumentType.UNRECOGNIZED;
+  }
+}
+
+export function instrumentTypeToJSON(object: InstrumentType): string {
+  switch (object) {
+    case InstrumentType.INSTRUMENT_TYPE_UNSPECIFIED:
+      return "INSTRUMENT_TYPE_UNSPECIFIED";
+    case InstrumentType.INSTRUMENT_TYPE_BOND:
+      return "INSTRUMENT_TYPE_BOND";
+    case InstrumentType.INSTRUMENT_TYPE_SHARE:
+      return "INSTRUMENT_TYPE_SHARE";
+    case InstrumentType.INSTRUMENT_TYPE_CURRENCY:
+      return "INSTRUMENT_TYPE_CURRENCY";
+    case InstrumentType.INSTRUMENT_TYPE_ETF:
+      return "INSTRUMENT_TYPE_ETF";
+    case InstrumentType.INSTRUMENT_TYPE_FUTURES:
+      return "INSTRUMENT_TYPE_FUTURES";
+    case InstrumentType.INSTRUMENT_TYPE_SP:
+      return "INSTRUMENT_TYPE_SP";
+    case InstrumentType.INSTRUMENT_TYPE_OPTION:
+      return "INSTRUMENT_TYPE_OPTION";
+    case InstrumentType.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
 /** Запрос получения списка операций по счёту. */
 export interface OperationsRequest {
   /** Идентификатор счёта клиента. */
@@ -525,14 +663,16 @@ export interface PortfolioPosition {
   expectedYield?: Quotation;
   /** Текущий НКД. */
   currentNkd?: MoneyValue;
-  /** Средняя цена лота в позиции в пунктах (для фьючерсов). **Возможна задержка до секунды для пересчёта**. */
+  /** Средняя цена позиции в пунктах (для фьючерсов). **Возможна задержка до секунды для пересчёта**. */
   averagePositionPricePt?: Quotation;
   /** Текущая цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента.. */
   currentPrice?: MoneyValue;
-  /** Средняя цена лота в позиции по методу FIFO. **Возможна задержка до секунды для пересчёта**. */
+  /** Средняя цена позиции по методу FIFO. **Возможна задержка до секунды для пересчёта**. */
   averagePositionPriceFifo?: MoneyValue;
   /** Количество лотов в портфеле. */
   quantityLots?: Quotation;
+  /** Заблокировано. */
+  blocked: boolean;
 }
 
 /** Баланс позиции ценной бумаги. */
@@ -543,6 +683,10 @@ export interface PositionsSecurities {
   blocked: number;
   /** Текущий незаблокированный баланс. */
   balance: number;
+  /** Заблокировано на бирже. */
+  exchangeBlocked: boolean;
+  /** Тип инструмента. */
+  instrumentType: string;
 }
 
 /** Баланс фьючерса. */
@@ -733,6 +877,148 @@ export interface DividendsForeignIssuerReport {
   dividendAmount?: Quotation;
   /** Валюта. */
   currency: string;
+}
+
+/** Запрос установки stream-соединения. */
+export interface PortfolioStreamRequest {
+  /** Массив идентификаторов счётов пользователя */
+  accounts: string[];
+}
+
+/** Информация по позициям и доходностям портфелей. */
+export interface PortfolioStreamResponse {
+  /** Объект результата подписки. */
+  subscriptions?: PortfolioSubscriptionResult | undefined;
+  /** Объект стриминга портфеля. */
+  portfolio?: PortfolioResponse | undefined;
+  /** Проверка активности стрима. */
+  ping?: Ping | undefined;
+}
+
+/** Объект результата подписки. */
+export interface PortfolioSubscriptionResult {
+  /** Массив счетов клиента. */
+  accounts: AccountSubscriptionStatus[];
+}
+
+/** Счет клиента. */
+export interface AccountSubscriptionStatus {
+  /** Идентификатор счёта */
+  accountId: string;
+  /** Результат подписки. */
+  subscriptionStatus: PortfolioSubscriptionStatus;
+}
+
+/** Запрос списка операций по счёту с пагинацией. */
+export interface GetOperationsByCursorRequest {
+  /** Идентификатор счёта клиента. */
+  accountId: string;
+  /** Идентификатор инструмента (Figi инструмента или uid инструмента) */
+  instrumentId: string;
+  /** Начало периода (по UTC). */
+  from?: Date;
+  /** Окончание периода (по UTC). */
+  to?: Date;
+  /** Идентификатор элемента, с которого начать формировать ответ. */
+  cursor: string;
+  /** Лимит количества операций. */
+  limit: number;
+  /** Тип операции. Принимает значение из списка OperationType. */
+  operationTypes: OperationType[];
+  /** Статус запрашиваемых операций, возможные значения указаны в OperationState. */
+  state: OperationState;
+  /** Флаг возвращать ли комиссии, по умолчанию false */
+  withoutCommissions: boolean;
+  /** Флаг ответ без сделок. */
+  withoutTrades: boolean;
+  /** Флаг не показывать overnight операций. */
+  withoutOvernights: boolean;
+}
+
+/** Список операций по счёту с пагинацией. */
+export interface GetOperationsByCursorResponse {
+  /** Признак, есть ли следующий элемент. */
+  hasNext: boolean;
+  /** Следующий курсор. */
+  nextCursor: string;
+  /** Список операций. */
+  items: OperationItem[];
+}
+
+/** Данные об операции. */
+export interface OperationItem {
+  /** Курсор. */
+  cursor: string;
+  /** Номер счета клиента. */
+  brokerAccountId: string;
+  /** Номер поручения. */
+  id: string;
+  /** Номер родительского поручения. */
+  parentOperationId: string;
+  /** Название операции. */
+  name: string;
+  /** Дата поручения. */
+  date?: Date;
+  /** Тип операции. */
+  type: OperationType;
+  /** Описание операции. */
+  description: string;
+  /** Статус поручения. */
+  state: OperationState;
+  /** Уникальный идентификатор инструмента. */
+  instrumentUid: string;
+  /** Figi. */
+  figi: string;
+  /** Тип инструмента. */
+  instrumentType: string;
+  /** Тип инструмента. */
+  instrumentKind: InstrumentType;
+  /** Сумма операции. */
+  payment?: MoneyValue;
+  /** Цена операции за 1 инструмент. */
+  price?: MoneyValue;
+  /** Комиссия. */
+  commission?: MoneyValue;
+  /** Доходность. */
+  yield?: MoneyValue;
+  /** Относительная доходность. */
+  yieldRelative?: Quotation;
+  /** Накопленный купонный доход. */
+  accruedInt?: MoneyValue;
+  /** Количество единиц инструмента. */
+  quantity: number;
+  /** Неисполненный остаток по сделке. */
+  quantityRest: number;
+  /** Исполненный остаток. */
+  quantityDone: number;
+  /** Дата и время снятия заявки. */
+  cancelDateTime?: Date;
+  /** Причина отмены операции. */
+  cancelReason: string;
+  /** Массив сделок. */
+  tradesInfo?: OperationItemTrades;
+}
+
+/** Массив с информацией о сделках. */
+export interface OperationItemTrades {
+  tradesSize: number;
+  trades: OperationItemTrade[];
+}
+
+/** Сделка по операции. */
+export interface OperationItemTrade {
+  /** Номер сделки */
+  num: string;
+  /** Дата сделки */
+  date?: Date;
+  /** Количество в единицах. */
+  quantity: number;
+  /** Цена. */
+  price?: MoneyValue;
+  /** Доходность. */
+  yield?: MoneyValue;
+  /** Относительная доходность. */
+  yieldRelative?: Quotation;
 }
 
 function createBaseOperationsRequest(): OperationsRequest {
@@ -1698,6 +1984,7 @@ function createBasePortfolioPosition(): PortfolioPosition {
     currentPrice: undefined,
     averagePositionPriceFifo: undefined,
     quantityLots: undefined,
+    blocked: false,
   };
 }
 
@@ -1751,6 +2038,9 @@ export const PortfolioPosition = {
     if (message.quantityLots !== undefined) {
       Quotation.encode(message.quantityLots, writer.uint32(82).fork()).ldelim();
     }
+    if (message.blocked === true) {
+      writer.uint32(168).bool(message.blocked);
+    }
     return writer;
   },
 
@@ -1800,6 +2090,9 @@ export const PortfolioPosition = {
         case 10:
           message.quantityLots = Quotation.decode(reader, reader.uint32());
           break;
+        case 21:
+          message.blocked = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1838,6 +2131,7 @@ export const PortfolioPosition = {
       quantityLots: isSet(object.quantityLots)
         ? Quotation.fromJSON(object.quantityLots)
         : undefined,
+      blocked: isSet(object.blocked) ? Boolean(object.blocked) : false,
     };
   },
 
@@ -1878,12 +2172,19 @@ export const PortfolioPosition = {
       (obj.quantityLots = message.quantityLots
         ? Quotation.toJSON(message.quantityLots)
         : undefined);
+    message.blocked !== undefined && (obj.blocked = message.blocked);
     return obj;
   },
 };
 
 function createBasePositionsSecurities(): PositionsSecurities {
-  return { figi: "", blocked: 0, balance: 0 };
+  return {
+    figi: "",
+    blocked: 0,
+    balance: 0,
+    exchangeBlocked: false,
+    instrumentType: "",
+  };
 }
 
 export const PositionsSecurities = {
@@ -1899,6 +2200,12 @@ export const PositionsSecurities = {
     }
     if (message.balance !== 0) {
       writer.uint32(24).int64(message.balance);
+    }
+    if (message.exchangeBlocked === true) {
+      writer.uint32(88).bool(message.exchangeBlocked);
+    }
+    if (message.instrumentType !== "") {
+      writer.uint32(130).string(message.instrumentType);
     }
     return writer;
   },
@@ -1919,6 +2226,12 @@ export const PositionsSecurities = {
         case 3:
           message.balance = longToNumber(reader.int64() as Long);
           break;
+        case 11:
+          message.exchangeBlocked = reader.bool();
+          break;
+        case 16:
+          message.instrumentType = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1932,6 +2245,12 @@ export const PositionsSecurities = {
       figi: isSet(object.figi) ? String(object.figi) : "",
       blocked: isSet(object.blocked) ? Number(object.blocked) : 0,
       balance: isSet(object.balance) ? Number(object.balance) : 0,
+      exchangeBlocked: isSet(object.exchangeBlocked)
+        ? Boolean(object.exchangeBlocked)
+        : false,
+      instrumentType: isSet(object.instrumentType)
+        ? String(object.instrumentType)
+        : "",
     };
   },
 
@@ -1942,6 +2261,10 @@ export const PositionsSecurities = {
       (obj.blocked = Math.round(message.blocked));
     message.balance !== undefined &&
       (obj.balance = Math.round(message.balance));
+    message.exchangeBlocked !== undefined &&
+      (obj.exchangeBlocked = message.exchangeBlocked);
+    message.instrumentType !== undefined &&
+      (obj.instrumentType = message.instrumentType);
     return obj;
   },
 };
@@ -3496,10 +3819,1054 @@ export const DividendsForeignIssuerReport = {
   },
 };
 
+function createBasePortfolioStreamRequest(): PortfolioStreamRequest {
+  return { accounts: [] };
+}
+
+export const PortfolioStreamRequest = {
+  encode(
+    message: PortfolioStreamRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    for (const v of message.accounts) {
+      writer.uint32(10).string(v!);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): PortfolioStreamRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePortfolioStreamRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.accounts.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PortfolioStreamRequest {
+    return {
+      accounts: Array.isArray(object?.accounts)
+        ? object.accounts.map((e: any) => String(e))
+        : [],
+    };
+  },
+
+  toJSON(message: PortfolioStreamRequest): unknown {
+    const obj: any = {};
+    if (message.accounts) {
+      obj.accounts = message.accounts.map((e) => e);
+    } else {
+      obj.accounts = [];
+    }
+    return obj;
+  },
+};
+
+function createBasePortfolioStreamResponse(): PortfolioStreamResponse {
+  return { subscriptions: undefined, portfolio: undefined, ping: undefined };
+}
+
+export const PortfolioStreamResponse = {
+  encode(
+    message: PortfolioStreamResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.subscriptions !== undefined) {
+      PortfolioSubscriptionResult.encode(
+        message.subscriptions,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.portfolio !== undefined) {
+      PortfolioResponse.encode(
+        message.portfolio,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    if (message.ping !== undefined) {
+      Ping.encode(message.ping, writer.uint32(26).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): PortfolioStreamResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePortfolioStreamResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.subscriptions = PortfolioSubscriptionResult.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 2:
+          message.portfolio = PortfolioResponse.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.ping = Ping.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PortfolioStreamResponse {
+    return {
+      subscriptions: isSet(object.subscriptions)
+        ? PortfolioSubscriptionResult.fromJSON(object.subscriptions)
+        : undefined,
+      portfolio: isSet(object.portfolio)
+        ? PortfolioResponse.fromJSON(object.portfolio)
+        : undefined,
+      ping: isSet(object.ping) ? Ping.fromJSON(object.ping) : undefined,
+    };
+  },
+
+  toJSON(message: PortfolioStreamResponse): unknown {
+    const obj: any = {};
+    message.subscriptions !== undefined &&
+      (obj.subscriptions = message.subscriptions
+        ? PortfolioSubscriptionResult.toJSON(message.subscriptions)
+        : undefined);
+    message.portfolio !== undefined &&
+      (obj.portfolio = message.portfolio
+        ? PortfolioResponse.toJSON(message.portfolio)
+        : undefined);
+    message.ping !== undefined &&
+      (obj.ping = message.ping ? Ping.toJSON(message.ping) : undefined);
+    return obj;
+  },
+};
+
+function createBasePortfolioSubscriptionResult(): PortfolioSubscriptionResult {
+  return { accounts: [] };
+}
+
+export const PortfolioSubscriptionResult = {
+  encode(
+    message: PortfolioSubscriptionResult,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    for (const v of message.accounts) {
+      AccountSubscriptionStatus.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): PortfolioSubscriptionResult {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePortfolioSubscriptionResult();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.accounts.push(
+            AccountSubscriptionStatus.decode(reader, reader.uint32())
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PortfolioSubscriptionResult {
+    return {
+      accounts: Array.isArray(object?.accounts)
+        ? object.accounts.map((e: any) => AccountSubscriptionStatus.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: PortfolioSubscriptionResult): unknown {
+    const obj: any = {};
+    if (message.accounts) {
+      obj.accounts = message.accounts.map((e) =>
+        e ? AccountSubscriptionStatus.toJSON(e) : undefined
+      );
+    } else {
+      obj.accounts = [];
+    }
+    return obj;
+  },
+};
+
+function createBaseAccountSubscriptionStatus(): AccountSubscriptionStatus {
+  return { accountId: "", subscriptionStatus: 0 };
+}
+
+export const AccountSubscriptionStatus = {
+  encode(
+    message: AccountSubscriptionStatus,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.accountId !== "") {
+      writer.uint32(10).string(message.accountId);
+    }
+    if (message.subscriptionStatus !== 0) {
+      writer.uint32(48).int32(message.subscriptionStatus);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): AccountSubscriptionStatus {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAccountSubscriptionStatus();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.accountId = reader.string();
+          break;
+        case 6:
+          message.subscriptionStatus = reader.int32() as any;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AccountSubscriptionStatus {
+    return {
+      accountId: isSet(object.accountId) ? String(object.accountId) : "",
+      subscriptionStatus: isSet(object.subscriptionStatus)
+        ? portfolioSubscriptionStatusFromJSON(object.subscriptionStatus)
+        : 0,
+    };
+  },
+
+  toJSON(message: AccountSubscriptionStatus): unknown {
+    const obj: any = {};
+    message.accountId !== undefined && (obj.accountId = message.accountId);
+    message.subscriptionStatus !== undefined &&
+      (obj.subscriptionStatus = portfolioSubscriptionStatusToJSON(
+        message.subscriptionStatus
+      ));
+    return obj;
+  },
+};
+
+function createBaseGetOperationsByCursorRequest(): GetOperationsByCursorRequest {
+  return {
+    accountId: "",
+    instrumentId: "",
+    from: undefined,
+    to: undefined,
+    cursor: "",
+    limit: 0,
+    operationTypes: [],
+    state: 0,
+    withoutCommissions: false,
+    withoutTrades: false,
+    withoutOvernights: false,
+  };
+}
+
+export const GetOperationsByCursorRequest = {
+  encode(
+    message: GetOperationsByCursorRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.accountId !== "") {
+      writer.uint32(10).string(message.accountId);
+    }
+    if (message.instrumentId !== "") {
+      writer.uint32(18).string(message.instrumentId);
+    }
+    if (message.from !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.from),
+        writer.uint32(50).fork()
+      ).ldelim();
+    }
+    if (message.to !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.to),
+        writer.uint32(58).fork()
+      ).ldelim();
+    }
+    if (message.cursor !== "") {
+      writer.uint32(90).string(message.cursor);
+    }
+    if (message.limit !== 0) {
+      writer.uint32(96).int32(message.limit);
+    }
+    writer.uint32(106).fork();
+    for (const v of message.operationTypes) {
+      writer.int32(v);
+    }
+    writer.ldelim();
+    if (message.state !== 0) {
+      writer.uint32(112).int32(message.state);
+    }
+    if (message.withoutCommissions === true) {
+      writer.uint32(120).bool(message.withoutCommissions);
+    }
+    if (message.withoutTrades === true) {
+      writer.uint32(128).bool(message.withoutTrades);
+    }
+    if (message.withoutOvernights === true) {
+      writer.uint32(136).bool(message.withoutOvernights);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): GetOperationsByCursorRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetOperationsByCursorRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.accountId = reader.string();
+          break;
+        case 2:
+          message.instrumentId = reader.string();
+          break;
+        case 6:
+          message.from = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
+        case 7:
+          message.to = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          break;
+        case 11:
+          message.cursor = reader.string();
+          break;
+        case 12:
+          message.limit = reader.int32();
+          break;
+        case 13:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.operationTypes.push(reader.int32() as any);
+            }
+          } else {
+            message.operationTypes.push(reader.int32() as any);
+          }
+          break;
+        case 14:
+          message.state = reader.int32() as any;
+          break;
+        case 15:
+          message.withoutCommissions = reader.bool();
+          break;
+        case 16:
+          message.withoutTrades = reader.bool();
+          break;
+        case 17:
+          message.withoutOvernights = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetOperationsByCursorRequest {
+    return {
+      accountId: isSet(object.accountId) ? String(object.accountId) : "",
+      instrumentId: isSet(object.instrumentId)
+        ? String(object.instrumentId)
+        : "",
+      from: isSet(object.from) ? fromJsonTimestamp(object.from) : undefined,
+      to: isSet(object.to) ? fromJsonTimestamp(object.to) : undefined,
+      cursor: isSet(object.cursor) ? String(object.cursor) : "",
+      limit: isSet(object.limit) ? Number(object.limit) : 0,
+      operationTypes: Array.isArray(object?.operationTypes)
+        ? object.operationTypes.map((e: any) => operationTypeFromJSON(e))
+        : [],
+      state: isSet(object.state) ? operationStateFromJSON(object.state) : 0,
+      withoutCommissions: isSet(object.withoutCommissions)
+        ? Boolean(object.withoutCommissions)
+        : false,
+      withoutTrades: isSet(object.withoutTrades)
+        ? Boolean(object.withoutTrades)
+        : false,
+      withoutOvernights: isSet(object.withoutOvernights)
+        ? Boolean(object.withoutOvernights)
+        : false,
+    };
+  },
+
+  toJSON(message: GetOperationsByCursorRequest): unknown {
+    const obj: any = {};
+    message.accountId !== undefined && (obj.accountId = message.accountId);
+    message.instrumentId !== undefined &&
+      (obj.instrumentId = message.instrumentId);
+    message.from !== undefined && (obj.from = message.from.toISOString());
+    message.to !== undefined && (obj.to = message.to.toISOString());
+    message.cursor !== undefined && (obj.cursor = message.cursor);
+    message.limit !== undefined && (obj.limit = Math.round(message.limit));
+    if (message.operationTypes) {
+      obj.operationTypes = message.operationTypes.map((e) =>
+        operationTypeToJSON(e)
+      );
+    } else {
+      obj.operationTypes = [];
+    }
+    message.state !== undefined &&
+      (obj.state = operationStateToJSON(message.state));
+    message.withoutCommissions !== undefined &&
+      (obj.withoutCommissions = message.withoutCommissions);
+    message.withoutTrades !== undefined &&
+      (obj.withoutTrades = message.withoutTrades);
+    message.withoutOvernights !== undefined &&
+      (obj.withoutOvernights = message.withoutOvernights);
+    return obj;
+  },
+};
+
+function createBaseGetOperationsByCursorResponse(): GetOperationsByCursorResponse {
+  return { hasNext: false, nextCursor: "", items: [] };
+}
+
+export const GetOperationsByCursorResponse = {
+  encode(
+    message: GetOperationsByCursorResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.hasNext === true) {
+      writer.uint32(8).bool(message.hasNext);
+    }
+    if (message.nextCursor !== "") {
+      writer.uint32(18).string(message.nextCursor);
+    }
+    for (const v of message.items) {
+      OperationItem.encode(v!, writer.uint32(50).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): GetOperationsByCursorResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetOperationsByCursorResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.hasNext = reader.bool();
+          break;
+        case 2:
+          message.nextCursor = reader.string();
+          break;
+        case 6:
+          message.items.push(OperationItem.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetOperationsByCursorResponse {
+    return {
+      hasNext: isSet(object.hasNext) ? Boolean(object.hasNext) : false,
+      nextCursor: isSet(object.nextCursor) ? String(object.nextCursor) : "",
+      items: Array.isArray(object?.items)
+        ? object.items.map((e: any) => OperationItem.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetOperationsByCursorResponse): unknown {
+    const obj: any = {};
+    message.hasNext !== undefined && (obj.hasNext = message.hasNext);
+    message.nextCursor !== undefined && (obj.nextCursor = message.nextCursor);
+    if (message.items) {
+      obj.items = message.items.map((e) =>
+        e ? OperationItem.toJSON(e) : undefined
+      );
+    } else {
+      obj.items = [];
+    }
+    return obj;
+  },
+};
+
+function createBaseOperationItem(): OperationItem {
+  return {
+    cursor: "",
+    brokerAccountId: "",
+    id: "",
+    parentOperationId: "",
+    name: "",
+    date: undefined,
+    type: 0,
+    description: "",
+    state: 0,
+    instrumentUid: "",
+    figi: "",
+    instrumentType: "",
+    instrumentKind: 0,
+    payment: undefined,
+    price: undefined,
+    commission: undefined,
+    yield: undefined,
+    yieldRelative: undefined,
+    accruedInt: undefined,
+    quantity: 0,
+    quantityRest: 0,
+    quantityDone: 0,
+    cancelDateTime: undefined,
+    cancelReason: "",
+    tradesInfo: undefined,
+  };
+}
+
+export const OperationItem = {
+  encode(
+    message: OperationItem,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.cursor !== "") {
+      writer.uint32(10).string(message.cursor);
+    }
+    if (message.brokerAccountId !== "") {
+      writer.uint32(50).string(message.brokerAccountId);
+    }
+    if (message.id !== "") {
+      writer.uint32(130).string(message.id);
+    }
+    if (message.parentOperationId !== "") {
+      writer.uint32(138).string(message.parentOperationId);
+    }
+    if (message.name !== "") {
+      writer.uint32(146).string(message.name);
+    }
+    if (message.date !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.date),
+        writer.uint32(170).fork()
+      ).ldelim();
+    }
+    if (message.type !== 0) {
+      writer.uint32(176).int32(message.type);
+    }
+    if (message.description !== "") {
+      writer.uint32(186).string(message.description);
+    }
+    if (message.state !== 0) {
+      writer.uint32(192).int32(message.state);
+    }
+    if (message.instrumentUid !== "") {
+      writer.uint32(250).string(message.instrumentUid);
+    }
+    if (message.figi !== "") {
+      writer.uint32(258).string(message.figi);
+    }
+    if (message.instrumentType !== "") {
+      writer.uint32(266).string(message.instrumentType);
+    }
+    if (message.instrumentKind !== 0) {
+      writer.uint32(272).int32(message.instrumentKind);
+    }
+    if (message.payment !== undefined) {
+      MoneyValue.encode(message.payment, writer.uint32(330).fork()).ldelim();
+    }
+    if (message.price !== undefined) {
+      MoneyValue.encode(message.price, writer.uint32(338).fork()).ldelim();
+    }
+    if (message.commission !== undefined) {
+      MoneyValue.encode(message.commission, writer.uint32(346).fork()).ldelim();
+    }
+    if (message.yield !== undefined) {
+      MoneyValue.encode(message.yield, writer.uint32(354).fork()).ldelim();
+    }
+    if (message.yieldRelative !== undefined) {
+      Quotation.encode(
+        message.yieldRelative,
+        writer.uint32(362).fork()
+      ).ldelim();
+    }
+    if (message.accruedInt !== undefined) {
+      MoneyValue.encode(message.accruedInt, writer.uint32(370).fork()).ldelim();
+    }
+    if (message.quantity !== 0) {
+      writer.uint32(408).int64(message.quantity);
+    }
+    if (message.quantityRest !== 0) {
+      writer.uint32(416).int64(message.quantityRest);
+    }
+    if (message.quantityDone !== 0) {
+      writer.uint32(424).int64(message.quantityDone);
+    }
+    if (message.cancelDateTime !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.cancelDateTime),
+        writer.uint32(450).fork()
+      ).ldelim();
+    }
+    if (message.cancelReason !== "") {
+      writer.uint32(458).string(message.cancelReason);
+    }
+    if (message.tradesInfo !== undefined) {
+      OperationItemTrades.encode(
+        message.tradesInfo,
+        writer.uint32(490).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): OperationItem {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseOperationItem();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.cursor = reader.string();
+          break;
+        case 6:
+          message.brokerAccountId = reader.string();
+          break;
+        case 16:
+          message.id = reader.string();
+          break;
+        case 17:
+          message.parentOperationId = reader.string();
+          break;
+        case 18:
+          message.name = reader.string();
+          break;
+        case 21:
+          message.date = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
+        case 22:
+          message.type = reader.int32() as any;
+          break;
+        case 23:
+          message.description = reader.string();
+          break;
+        case 24:
+          message.state = reader.int32() as any;
+          break;
+        case 31:
+          message.instrumentUid = reader.string();
+          break;
+        case 32:
+          message.figi = reader.string();
+          break;
+        case 33:
+          message.instrumentType = reader.string();
+          break;
+        case 34:
+          message.instrumentKind = reader.int32() as any;
+          break;
+        case 41:
+          message.payment = MoneyValue.decode(reader, reader.uint32());
+          break;
+        case 42:
+          message.price = MoneyValue.decode(reader, reader.uint32());
+          break;
+        case 43:
+          message.commission = MoneyValue.decode(reader, reader.uint32());
+          break;
+        case 44:
+          message.yield = MoneyValue.decode(reader, reader.uint32());
+          break;
+        case 45:
+          message.yieldRelative = Quotation.decode(reader, reader.uint32());
+          break;
+        case 46:
+          message.accruedInt = MoneyValue.decode(reader, reader.uint32());
+          break;
+        case 51:
+          message.quantity = longToNumber(reader.int64() as Long);
+          break;
+        case 52:
+          message.quantityRest = longToNumber(reader.int64() as Long);
+          break;
+        case 53:
+          message.quantityDone = longToNumber(reader.int64() as Long);
+          break;
+        case 56:
+          message.cancelDateTime = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
+        case 57:
+          message.cancelReason = reader.string();
+          break;
+        case 61:
+          message.tradesInfo = OperationItemTrades.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): OperationItem {
+    return {
+      cursor: isSet(object.cursor) ? String(object.cursor) : "",
+      brokerAccountId: isSet(object.brokerAccountId)
+        ? String(object.brokerAccountId)
+        : "",
+      id: isSet(object.id) ? String(object.id) : "",
+      parentOperationId: isSet(object.parentOperationId)
+        ? String(object.parentOperationId)
+        : "",
+      name: isSet(object.name) ? String(object.name) : "",
+      date: isSet(object.date) ? fromJsonTimestamp(object.date) : undefined,
+      type: isSet(object.type) ? operationTypeFromJSON(object.type) : 0,
+      description: isSet(object.description) ? String(object.description) : "",
+      state: isSet(object.state) ? operationStateFromJSON(object.state) : 0,
+      instrumentUid: isSet(object.instrumentUid)
+        ? String(object.instrumentUid)
+        : "",
+      figi: isSet(object.figi) ? String(object.figi) : "",
+      instrumentType: isSet(object.instrumentType)
+        ? String(object.instrumentType)
+        : "",
+      instrumentKind: isSet(object.instrumentKind)
+        ? instrumentTypeFromJSON(object.instrumentKind)
+        : 0,
+      payment: isSet(object.payment)
+        ? MoneyValue.fromJSON(object.payment)
+        : undefined,
+      price: isSet(object.price)
+        ? MoneyValue.fromJSON(object.price)
+        : undefined,
+      commission: isSet(object.commission)
+        ? MoneyValue.fromJSON(object.commission)
+        : undefined,
+      yield: isSet(object.yield)
+        ? MoneyValue.fromJSON(object.yield)
+        : undefined,
+      yieldRelative: isSet(object.yieldRelative)
+        ? Quotation.fromJSON(object.yieldRelative)
+        : undefined,
+      accruedInt: isSet(object.accruedInt)
+        ? MoneyValue.fromJSON(object.accruedInt)
+        : undefined,
+      quantity: isSet(object.quantity) ? Number(object.quantity) : 0,
+      quantityRest: isSet(object.quantityRest)
+        ? Number(object.quantityRest)
+        : 0,
+      quantityDone: isSet(object.quantityDone)
+        ? Number(object.quantityDone)
+        : 0,
+      cancelDateTime: isSet(object.cancelDateTime)
+        ? fromJsonTimestamp(object.cancelDateTime)
+        : undefined,
+      cancelReason: isSet(object.cancelReason)
+        ? String(object.cancelReason)
+        : "",
+      tradesInfo: isSet(object.tradesInfo)
+        ? OperationItemTrades.fromJSON(object.tradesInfo)
+        : undefined,
+    };
+  },
+
+  toJSON(message: OperationItem): unknown {
+    const obj: any = {};
+    message.cursor !== undefined && (obj.cursor = message.cursor);
+    message.brokerAccountId !== undefined &&
+      (obj.brokerAccountId = message.brokerAccountId);
+    message.id !== undefined && (obj.id = message.id);
+    message.parentOperationId !== undefined &&
+      (obj.parentOperationId = message.parentOperationId);
+    message.name !== undefined && (obj.name = message.name);
+    message.date !== undefined && (obj.date = message.date.toISOString());
+    message.type !== undefined &&
+      (obj.type = operationTypeToJSON(message.type));
+    message.description !== undefined &&
+      (obj.description = message.description);
+    message.state !== undefined &&
+      (obj.state = operationStateToJSON(message.state));
+    message.instrumentUid !== undefined &&
+      (obj.instrumentUid = message.instrumentUid);
+    message.figi !== undefined && (obj.figi = message.figi);
+    message.instrumentType !== undefined &&
+      (obj.instrumentType = message.instrumentType);
+    message.instrumentKind !== undefined &&
+      (obj.instrumentKind = instrumentTypeToJSON(message.instrumentKind));
+    message.payment !== undefined &&
+      (obj.payment = message.payment
+        ? MoneyValue.toJSON(message.payment)
+        : undefined);
+    message.price !== undefined &&
+      (obj.price = message.price
+        ? MoneyValue.toJSON(message.price)
+        : undefined);
+    message.commission !== undefined &&
+      (obj.commission = message.commission
+        ? MoneyValue.toJSON(message.commission)
+        : undefined);
+    message.yield !== undefined &&
+      (obj.yield = message.yield
+        ? MoneyValue.toJSON(message.yield)
+        : undefined);
+    message.yieldRelative !== undefined &&
+      (obj.yieldRelative = message.yieldRelative
+        ? Quotation.toJSON(message.yieldRelative)
+        : undefined);
+    message.accruedInt !== undefined &&
+      (obj.accruedInt = message.accruedInt
+        ? MoneyValue.toJSON(message.accruedInt)
+        : undefined);
+    message.quantity !== undefined &&
+      (obj.quantity = Math.round(message.quantity));
+    message.quantityRest !== undefined &&
+      (obj.quantityRest = Math.round(message.quantityRest));
+    message.quantityDone !== undefined &&
+      (obj.quantityDone = Math.round(message.quantityDone));
+    message.cancelDateTime !== undefined &&
+      (obj.cancelDateTime = message.cancelDateTime.toISOString());
+    message.cancelReason !== undefined &&
+      (obj.cancelReason = message.cancelReason);
+    message.tradesInfo !== undefined &&
+      (obj.tradesInfo = message.tradesInfo
+        ? OperationItemTrades.toJSON(message.tradesInfo)
+        : undefined);
+    return obj;
+  },
+};
+
+function createBaseOperationItemTrades(): OperationItemTrades {
+  return { tradesSize: 0, trades: [] };
+}
+
+export const OperationItemTrades = {
+  encode(
+    message: OperationItemTrades,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.tradesSize !== 0) {
+      writer.uint32(8).int32(message.tradesSize);
+    }
+    for (const v of message.trades) {
+      OperationItemTrade.encode(v!, writer.uint32(50).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): OperationItemTrades {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseOperationItemTrades();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.tradesSize = reader.int32();
+          break;
+        case 6:
+          message.trades.push(
+            OperationItemTrade.decode(reader, reader.uint32())
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): OperationItemTrades {
+    return {
+      tradesSize: isSet(object.tradesSize) ? Number(object.tradesSize) : 0,
+      trades: Array.isArray(object?.trades)
+        ? object.trades.map((e: any) => OperationItemTrade.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: OperationItemTrades): unknown {
+    const obj: any = {};
+    message.tradesSize !== undefined &&
+      (obj.tradesSize = Math.round(message.tradesSize));
+    if (message.trades) {
+      obj.trades = message.trades.map((e) =>
+        e ? OperationItemTrade.toJSON(e) : undefined
+      );
+    } else {
+      obj.trades = [];
+    }
+    return obj;
+  },
+};
+
+function createBaseOperationItemTrade(): OperationItemTrade {
+  return {
+    num: "",
+    date: undefined,
+    quantity: 0,
+    price: undefined,
+    yield: undefined,
+    yieldRelative: undefined,
+  };
+}
+
+export const OperationItemTrade = {
+  encode(
+    message: OperationItemTrade,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.num !== "") {
+      writer.uint32(10).string(message.num);
+    }
+    if (message.date !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.date),
+        writer.uint32(50).fork()
+      ).ldelim();
+    }
+    if (message.quantity !== 0) {
+      writer.uint32(88).int64(message.quantity);
+    }
+    if (message.price !== undefined) {
+      MoneyValue.encode(message.price, writer.uint32(130).fork()).ldelim();
+    }
+    if (message.yield !== undefined) {
+      MoneyValue.encode(message.yield, writer.uint32(170).fork()).ldelim();
+    }
+    if (message.yieldRelative !== undefined) {
+      Quotation.encode(
+        message.yieldRelative,
+        writer.uint32(178).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): OperationItemTrade {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseOperationItemTrade();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.num = reader.string();
+          break;
+        case 6:
+          message.date = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
+        case 11:
+          message.quantity = longToNumber(reader.int64() as Long);
+          break;
+        case 16:
+          message.price = MoneyValue.decode(reader, reader.uint32());
+          break;
+        case 21:
+          message.yield = MoneyValue.decode(reader, reader.uint32());
+          break;
+        case 22:
+          message.yieldRelative = Quotation.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): OperationItemTrade {
+    return {
+      num: isSet(object.num) ? String(object.num) : "",
+      date: isSet(object.date) ? fromJsonTimestamp(object.date) : undefined,
+      quantity: isSet(object.quantity) ? Number(object.quantity) : 0,
+      price: isSet(object.price)
+        ? MoneyValue.fromJSON(object.price)
+        : undefined,
+      yield: isSet(object.yield)
+        ? MoneyValue.fromJSON(object.yield)
+        : undefined,
+      yieldRelative: isSet(object.yieldRelative)
+        ? Quotation.fromJSON(object.yieldRelative)
+        : undefined,
+    };
+  },
+
+  toJSON(message: OperationItemTrade): unknown {
+    const obj: any = {};
+    message.num !== undefined && (obj.num = message.num);
+    message.date !== undefined && (obj.date = message.date.toISOString());
+    message.quantity !== undefined &&
+      (obj.quantity = Math.round(message.quantity));
+    message.price !== undefined &&
+      (obj.price = message.price
+        ? MoneyValue.toJSON(message.price)
+        : undefined);
+    message.yield !== undefined &&
+      (obj.yield = message.yield
+        ? MoneyValue.toJSON(message.yield)
+        : undefined);
+    message.yieldRelative !== undefined &&
+      (obj.yieldRelative = message.yieldRelative
+        ? Quotation.toJSON(message.yieldRelative)
+        : undefined);
+    return obj;
+  },
+};
+
 /**
  * Сервис предназначен для получения:</br> **1**.  списка операций по счёту;</br> **2**.
  * портфеля по счёту;</br> **3**. позиций ценных бумаг на счёте;</br> **4**.
- * доступного остатка для вывода средств;</br> **4**. получения различных отчётов.
+ * доступного остатка для вывода средств;</br> **5**. получения различных отчётов.
  */
 export type OperationsServiceDefinition = typeof OperationsServiceDefinition;
 export const OperationsServiceDefinition = {
@@ -3560,6 +4927,15 @@ export const OperationsServiceDefinition = {
       responseStream: false,
       options: {},
     },
+    /** Метод получения списка операций по счёту с пагинацией. */
+    getOperationsByCursor: {
+      name: "GetOperationsByCursor",
+      requestType: GetOperationsByCursorRequest,
+      requestStream: false,
+      responseType: GetOperationsByCursorResponse,
+      responseStream: false,
+      options: {},
+    },
   },
 } as const;
 
@@ -3594,6 +4970,11 @@ export interface OperationsServiceServiceImplementation<CallContextExt = {}> {
     request: GetDividendsForeignIssuerRequest,
     context: CallContext & CallContextExt
   ): Promise<GetDividendsForeignIssuerResponse>;
+  /** Метод получения списка операций по счёту с пагинацией. */
+  getOperationsByCursor(
+    request: GetOperationsByCursorRequest,
+    context: CallContext & CallContextExt
+  ): Promise<GetOperationsByCursorResponse>;
 }
 
 export interface OperationsServiceClient<CallOptionsExt = {}> {
@@ -3627,6 +5008,47 @@ export interface OperationsServiceClient<CallOptionsExt = {}> {
     request: GetDividendsForeignIssuerRequest,
     options?: CallOptions & CallOptionsExt
   ): Promise<GetDividendsForeignIssuerResponse>;
+  /** Метод получения списка операций по счёту с пагинацией. */
+  getOperationsByCursor(
+    request: GetOperationsByCursorRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<GetOperationsByCursorResponse>;
+}
+
+export type OperationsStreamServiceDefinition =
+  typeof OperationsStreamServiceDefinition;
+export const OperationsStreamServiceDefinition = {
+  name: "OperationsStreamService",
+  fullName: "tinkoff.public.invest.api.contract.v1.OperationsStreamService",
+  methods: {
+    /** Server-side stream обновлений портфеля */
+    portfolioStream: {
+      name: "PortfolioStream",
+      requestType: PortfolioStreamRequest,
+      requestStream: false,
+      responseType: PortfolioStreamResponse,
+      responseStream: true,
+      options: {},
+    },
+  },
+} as const;
+
+export interface OperationsStreamServiceServiceImplementation<
+  CallContextExt = {}
+> {
+  /** Server-side stream обновлений портфеля */
+  portfolioStream(
+    request: PortfolioStreamRequest,
+    context: CallContext & CallContextExt
+  ): ServerStreamingMethodResult<PortfolioStreamResponse>;
+}
+
+export interface OperationsStreamServiceClient<CallOptionsExt = {}> {
+  /** Server-side stream обновлений портфеля */
+  portfolioStream(
+    request: PortfolioStreamRequest,
+    options?: CallOptions & CallOptionsExt
+  ): AsyncIterable<PortfolioStreamResponse>;
 }
 
 declare var self: any | undefined;
@@ -3677,3 +5099,7 @@ if (_m0.util.Long !== Long) {
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;
 }
+
+export type ServerStreamingMethodResult<Response> = {
+  [Symbol.asyncIterator](): AsyncIterator<Response, void>;
+};

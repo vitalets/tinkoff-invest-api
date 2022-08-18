@@ -8,7 +8,7 @@ describe('stream', () => {
   const interval = SubscriptionInterval.SUBSCRIPTION_INTERVAL_ONE_MINUTE;
   const waitingClose = false;
   const candlesReq = { instruments: [ { figi, interval } ], waitingClose };
-  const handler = () => {}; // eslint-disable-line @typescript-eslint/no-empty-function
+  const handler = () => { }; // eslint-disable-line @typescript-eslint/no-empty-function
   const candlesStatus: MarketDataResponse = {
     subscribeCandlesResponse: {
       trackingId: 'xxx',
@@ -18,7 +18,7 @@ describe('stream', () => {
     }
   };
 
-  beforeEach(() => {
+  beforeEach(async () => {
     // отключаем autoReconnect, чтобы проще тестировать
     testApi.stream.market.options.autoReconnect = false;
     testApi.stream.market.subscriptions.clear();
@@ -26,6 +26,21 @@ describe('stream', () => {
 
   afterEach(async () => {
     await testApi.stream.market.cancel();
+  });
+
+  it('getMySubscriptions', async () => {
+    const res1 = await testApi.stream.market.getMySubscriptions();
+    const unsubscribe = await testApi.stream.market.candles(candlesReq, handler);
+    const res2 = await testApi.stream.market.getMySubscriptions();
+    await unsubscribe();
+    const res3 = await testApi.stream.market.getMySubscriptions();
+
+    assert.deepEqual(getNonEmptyKeys(res1), []);
+    assert.deepEqual(getNonEmptyKeys(res2), [ 'subscribeCandlesResponse' ]);
+    assert.deepEqual(res2.subscribeCandlesResponse?.candlesSubscriptions, [
+      { figi, interval: 1, subscriptionStatus: 1 }
+    ]);
+    assert.deepEqual(getNonEmptyKeys(res3), []);
   });
 
   it('подписка на свечи по конкретным figi', async () => {
@@ -38,18 +53,18 @@ describe('stream', () => {
     ]);
 
     // нужный figi и interval
-    const ownFigiAndInterval = { candle: { figi, interval, volume: 1 }};
+    const ownFigiAndInterval = { candle: { figi, interval, volume: 1 } };
     await Promise.all([ stream.emulate(ownFigiAndInterval), waitMarketStreamEvent(stream, 'data') ]);
 
     assert.equal(calls.length, 1);
-    assert.deepEqual(calls[0], { figi, interval, volume: 1 });
+    assert.deepEqual(calls[ 0 ], { figi, interval, volume: 1 });
 
     // другой figi
-    const anotherFigi = { candle: { figi: 'another_figi', interval, volume: 2 }};
+    const anotherFigi = { candle: { figi: 'another_figi', interval, volume: 2 } };
     await Promise.all([ stream.emulate(anotherFigi), waitMarketStreamEvent(stream, 'data') ]);
 
     // другой interval
-    const anotherInterval = { candle: { figi, interval: 2, volume: 3 }};
+    const anotherInterval = { candle: { figi, interval: 2, volume: 3 } };
     await Promise.all([ stream.emulate(anotherInterval), waitMarketStreamEvent(stream, 'data') ]);
 
     assert.equal(calls.length, 1);
@@ -183,4 +198,9 @@ class MarketStreamEmulate extends MarketStream {
       yield value as MarketDataResponse;
     }
   }
+}
+
+function getNonEmptyKeys(obj: MarketDataResponse) {
+  const keys = Object.keys(obj) as (keyof MarketDataResponse)[];
+  return keys.filter(key => Boolean(obj[key]));
 }

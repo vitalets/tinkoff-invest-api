@@ -470,7 +470,7 @@ export function realExchangeToJSON(object: RealExchange): string {
   }
 }
 
-/** Запрос расписания торгов */
+/** Запрос расписания торгов. */
 export interface TradingSchedulesRequest {
   /** Наименование биржи или расчетного календаря. </br>Если не передаётся, возвращается информация по всем доступным торговым площадкам. */
   exchange: string;
@@ -480,7 +480,7 @@ export interface TradingSchedulesRequest {
   to?: Date;
 }
 
-/** Список торговых площадок */
+/** Список торговых площадок. */
 export interface TradingSchedulesResponse {
   /** Список торговых площадок и режимов торгов. */
   exchanges: TradingSchedule[];
@@ -571,15 +571,15 @@ export interface GetBondCouponsResponse {
 export interface Coupon {
   /** Figi-идентификатор инструмента. */
   figi: string;
-  /** Дата выплаты купона */
+  /** Дата выплаты купона. */
   couponDate?: Date;
-  /** Номер купона */
+  /** Номер купона. */
   couponNumber: number;
-  /** (Опционально) Дата фиксации реестра для выплаты купона */
+  /** (Опционально) Дата фиксации реестра для выплаты купона. */
   fixDate?: Date;
-  /** Выплата на одну облигацию */
+  /** Выплата на одну облигацию. */
   payOneBond?: MoneyValue;
-  /** Тип купона */
+  /** Тип купона. */
   couponType: CouponType;
   /** Начало купонного периода. */
   couponStartDate?: Date;
@@ -717,6 +717,14 @@ export interface Bond {
   uid: string;
   /** Реальная площадка исполнения расчётов. */
   realExchange: RealExchange;
+  /** Уникальный идентификатор позиции инструмента. */
+  positionUid: string;
+  /** Признак доступности для ИИС. */
+  forIisFlag: boolean;
+  /** Дата первой минутной свечи. */
+  first1minCandleDate?: Date;
+  /** Дата первой дневной свечи. */
+  first1dayCandleDate?: Date;
 }
 
 /** Объект передачи информации о валюте. */
@@ -775,6 +783,14 @@ export interface Currency {
   uid: string;
   /** Реальная площадка исполнения расчётов. */
   realExchange: RealExchange;
+  /** Уникальный идентификатор позиции инструмента. */
+  positionUid: string;
+  /** Признак доступности для ИИС. */
+  forIisFlag: boolean;
+  /** Дата первой минутной свечи. */
+  first1minCandleDate?: Date;
+  /** Дата первой дневной свечи. */
+  first1dayCandleDate?: Date;
 }
 
 /** Объект передачи информации об инвестиционном фонде. */
@@ -841,6 +857,14 @@ export interface Etf {
   uid: string;
   /** Реальная площадка исполнения расчётов. */
   realExchange: RealExchange;
+  /** Уникальный идентификатор позиции инструмента. */
+  positionUid: string;
+  /** Признак доступности для ИИС. */
+  forIisFlag: boolean;
+  /** Дата первой минутной свечи. */
+  first1minCandleDate?: Date;
+  /** Дата первой дневной свечи. */
+  first1dayCandleDate?: Date;
 }
 
 /** Объект передачи информации о фьючерсе. */
@@ -909,6 +933,16 @@ export interface Future {
   uid: string;
   /** Реальная площадка исполнения расчётов. */
   realExchange: RealExchange;
+  /** Уникальный идентификатор позиции инструмента. */
+  positionUid: string;
+  /** Уникальный идентификатор позиции основного инструмента. */
+  basicAssetPositionUid: string;
+  /** Признак доступности для ИИС. */
+  forIisFlag: boolean;
+  /** Дата первой минутной свечи. */
+  first1minCandleDate?: Date;
+  /** Дата первой дневной свечи. */
+  first1dayCandleDate?: Date;
 }
 
 /** Объект передачи информации об акции. */
@@ -977,6 +1011,14 @@ export interface Share {
   uid: string;
   /** Реальная площадка исполнения расчётов. */
   realExchange: RealExchange;
+  /** Уникальный идентификатор позиции инструмента. */
+  positionUid: string;
+  /** Признак доступности для ИИС. */
+  forIisFlag: boolean;
+  /** Дата первой минутной свечи. */
+  first1minCandleDate?: Date;
+  /** Дата первой дневной свечи. */
+  first1dayCandleDate?: Date;
 }
 
 /** Запрос НКД по облигации */
@@ -1085,6 +1127,14 @@ export interface Instrument {
   uid: string;
   /** Реальная площадка исполнения расчётов. */
   realExchange: RealExchange;
+  /** Уникальный идентификатор позиции инструмента. */
+  positionUid: string;
+  /** Признак доступности для ИИС. */
+  forIisFlag: boolean;
+  /** Дата первой минутной свечи. */
+  first1minCandleDate?: Date;
+  /** Дата первой дневной свечи. */
+  first1dayCandleDate?: Date;
 }
 
 /** Запрос дивидендов. */
@@ -1450,16 +1500,16 @@ export interface InstrumentLink {
   instrumentUid: string;
 }
 
-/** Запрос избранных инструментов. */
+/** Запрос списка избранных инструментов, входные параметры не требуются. */
 export interface GetFavoritesRequest {}
 
-/** Ответ избранных инструментов. */
+/** В ответ передаётся список избранных инструментов в качестве массива. */
 export interface GetFavoritesResponse {
   /** Массив инструментов */
   favoriteInstruments: FavoriteInstrument[];
 }
 
-/** Избранный инструмент. */
+/** Массив избранных инструментов. */
 export interface FavoriteInstrument {
   /** Figi-идентификатор инструмента. */
   figi: string;
@@ -1477,7 +1527,7 @@ export interface FavoriteInstrument {
   apiTradeAvailableFlag: boolean;
 }
 
-/** Запрос редактирования избранных инструментов. */
+/** Запрос редактирования списка избранных инструментов. */
 export interface EditFavoritesRequest {
   /** Массив инструментов. */
   instruments: EditFavoritesRequestInstrument[];
@@ -1485,13 +1535,13 @@ export interface EditFavoritesRequest {
   actionType: EditFavoritesActionType;
 }
 
-/** Избранный инструмент для редактирования. */
+/** Массив инструментов для редактирования списка избранных инструментов. */
 export interface EditFavoritesRequestInstrument {
   /** Figi-идентификатор инструмента. */
   figi: string;
 }
 
-/** Результат редактирования избранных инструментов. */
+/** Результат редактирования списка избранных инструментов. */
 export interface EditFavoritesResponse {
   /** Массив инструментов */
   favoriteInstruments: FavoriteInstrument[];
@@ -1546,6 +1596,16 @@ export interface InstrumentShort {
   name: string;
   /** Уникальный идентификатор инструмента. */
   uid: string;
+  /** Уникальный идентификатор позиции инструмента. */
+  positionUid: string;
+  /** Признак доступности торгов через API. */
+  apiTradeAvailableFlag: boolean;
+  /** Признак доступности для ИИС. */
+  forIisFlag: boolean;
+  /** Дата первой минутной свечи. */
+  first1minCandleDate?: Date;
+  /** Дата первой дневной свечи. */
+  first1dayCandleDate?: Date;
 }
 
 /** Запрос списка брендов. */
@@ -2989,6 +3049,10 @@ function createBaseBond(): Bond {
     apiTradeAvailableFlag: false,
     uid: "",
     realExchange: 0,
+    positionUid: "",
+    forIisFlag: false,
+    first1minCandleDate: undefined,
+    first1dayCandleDate: undefined,
   };
 }
 
@@ -3126,6 +3190,24 @@ export const Bond = {
     if (message.realExchange !== 0) {
       writer.uint32(328).int32(message.realExchange);
     }
+    if (message.positionUid !== "") {
+      writer.uint32(338).string(message.positionUid);
+    }
+    if (message.forIisFlag === true) {
+      writer.uint32(408).bool(message.forIisFlag);
+    }
+    if (message.first1minCandleDate !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.first1minCandleDate),
+        writer.uint32(490).fork()
+      ).ldelim();
+    }
+    if (message.first1dayCandleDate !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.first1dayCandleDate),
+        writer.uint32(498).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -3259,6 +3341,22 @@ export const Bond = {
         case 41:
           message.realExchange = reader.int32() as any;
           break;
+        case 42:
+          message.positionUid = reader.string();
+          break;
+        case 51:
+          message.forIisFlag = reader.bool();
+          break;
+        case 61:
+          message.first1minCandleDate = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
+        case 62:
+          message.first1dayCandleDate = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -3356,6 +3454,14 @@ export const Bond = {
       realExchange: isSet(object.realExchange)
         ? realExchangeFromJSON(object.realExchange)
         : 0,
+      positionUid: isSet(object.positionUid) ? String(object.positionUid) : "",
+      forIisFlag: isSet(object.forIisFlag) ? Boolean(object.forIisFlag) : false,
+      first1minCandleDate: isSet(object.first1minCandleDate)
+        ? fromJsonTimestamp(object.first1minCandleDate)
+        : undefined,
+      first1dayCandleDate: isSet(object.first1dayCandleDate)
+        ? fromJsonTimestamp(object.first1dayCandleDate)
+        : undefined,
     };
   },
 
@@ -3443,6 +3549,13 @@ export const Bond = {
     message.uid !== undefined && (obj.uid = message.uid);
     message.realExchange !== undefined &&
       (obj.realExchange = realExchangeToJSON(message.realExchange));
+    message.positionUid !== undefined &&
+      (obj.positionUid = message.positionUid);
+    message.forIisFlag !== undefined && (obj.forIisFlag = message.forIisFlag);
+    message.first1minCandleDate !== undefined &&
+      (obj.first1minCandleDate = message.first1minCandleDate.toISOString());
+    message.first1dayCandleDate !== undefined &&
+      (obj.first1dayCandleDate = message.first1dayCandleDate.toISOString());
     return obj;
   },
 };
@@ -3476,6 +3589,10 @@ function createBaseCurrency(): Currency {
     apiTradeAvailableFlag: false,
     uid: "",
     realExchange: 0,
+    positionUid: "",
+    forIisFlag: false,
+    first1minCandleDate: undefined,
+    first1dayCandleDate: undefined,
   };
 }
 
@@ -3568,6 +3685,24 @@ export const Currency = {
     if (message.realExchange !== 0) {
       writer.uint32(224).int32(message.realExchange);
     }
+    if (message.positionUid !== "") {
+      writer.uint32(234).string(message.positionUid);
+    }
+    if (message.forIisFlag === true) {
+      writer.uint32(328).bool(message.forIisFlag);
+    }
+    if (message.first1minCandleDate !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.first1minCandleDate),
+        writer.uint32(450).fork()
+      ).ldelim();
+    }
+    if (message.first1dayCandleDate !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.first1dayCandleDate),
+        writer.uint32(458).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -3659,6 +3794,22 @@ export const Currency = {
         case 28:
           message.realExchange = reader.int32() as any;
           break;
+        case 29:
+          message.positionUid = reader.string();
+          break;
+        case 41:
+          message.forIisFlag = reader.bool();
+          break;
+        case 56:
+          message.first1minCandleDate = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
+        case 57:
+          message.first1dayCandleDate = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -3726,6 +3877,14 @@ export const Currency = {
       realExchange: isSet(object.realExchange)
         ? realExchangeFromJSON(object.realExchange)
         : 0,
+      positionUid: isSet(object.positionUid) ? String(object.positionUid) : "",
+      forIisFlag: isSet(object.forIisFlag) ? Boolean(object.forIisFlag) : false,
+      first1minCandleDate: isSet(object.first1minCandleDate)
+        ? fromJsonTimestamp(object.first1minCandleDate)
+        : undefined,
+      first1dayCandleDate: isSet(object.first1dayCandleDate)
+        ? fromJsonTimestamp(object.first1dayCandleDate)
+        : undefined,
     };
   },
 
@@ -3787,6 +3946,13 @@ export const Currency = {
     message.uid !== undefined && (obj.uid = message.uid);
     message.realExchange !== undefined &&
       (obj.realExchange = realExchangeToJSON(message.realExchange));
+    message.positionUid !== undefined &&
+      (obj.positionUid = message.positionUid);
+    message.forIisFlag !== undefined && (obj.forIisFlag = message.forIisFlag);
+    message.first1minCandleDate !== undefined &&
+      (obj.first1minCandleDate = message.first1minCandleDate.toISOString());
+    message.first1dayCandleDate !== undefined &&
+      (obj.first1dayCandleDate = message.first1dayCandleDate.toISOString());
     return obj;
   },
 };
@@ -3824,6 +3990,10 @@ function createBaseEtf(): Etf {
     apiTradeAvailableFlag: false,
     uid: "",
     realExchange: 0,
+    positionUid: "",
+    forIisFlag: false,
+    first1minCandleDate: undefined,
+    first1dayCandleDate: undefined,
   };
 }
 
@@ -3931,6 +4101,24 @@ export const Etf = {
     if (message.realExchange !== 0) {
       writer.uint32(256).int32(message.realExchange);
     }
+    if (message.positionUid !== "") {
+      writer.uint32(266).string(message.positionUid);
+    }
+    if (message.forIisFlag === true) {
+      writer.uint32(328).bool(message.forIisFlag);
+    }
+    if (message.first1minCandleDate !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.first1minCandleDate),
+        writer.uint32(450).fork()
+      ).ldelim();
+    }
+    if (message.first1dayCandleDate !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.first1dayCandleDate),
+        writer.uint32(458).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -4036,6 +4224,22 @@ export const Etf = {
         case 32:
           message.realExchange = reader.int32() as any;
           break;
+        case 33:
+          message.positionUid = reader.string();
+          break;
+        case 41:
+          message.forIisFlag = reader.bool();
+          break;
+        case 56:
+          message.first1minCandleDate = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
+        case 57:
+          message.first1dayCandleDate = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -4111,6 +4315,14 @@ export const Etf = {
       realExchange: isSet(object.realExchange)
         ? realExchangeFromJSON(object.realExchange)
         : 0,
+      positionUid: isSet(object.positionUid) ? String(object.positionUid) : "",
+      forIisFlag: isSet(object.forIisFlag) ? Boolean(object.forIisFlag) : false,
+      first1minCandleDate: isSet(object.first1minCandleDate)
+        ? fromJsonTimestamp(object.first1minCandleDate)
+        : undefined,
+      first1dayCandleDate: isSet(object.first1dayCandleDate)
+        ? fromJsonTimestamp(object.first1dayCandleDate)
+        : undefined,
     };
   },
 
@@ -4180,6 +4392,13 @@ export const Etf = {
     message.uid !== undefined && (obj.uid = message.uid);
     message.realExchange !== undefined &&
       (obj.realExchange = realExchangeToJSON(message.realExchange));
+    message.positionUid !== undefined &&
+      (obj.positionUid = message.positionUid);
+    message.forIisFlag !== undefined && (obj.forIisFlag = message.forIisFlag);
+    message.first1minCandleDate !== undefined &&
+      (obj.first1minCandleDate = message.first1minCandleDate.toISOString());
+    message.first1dayCandleDate !== undefined &&
+      (obj.first1dayCandleDate = message.first1dayCandleDate.toISOString());
     return obj;
   },
 };
@@ -4218,6 +4437,11 @@ function createBaseFuture(): Future {
     apiTradeAvailableFlag: false,
     uid: "",
     realExchange: 0,
+    positionUid: "",
+    basicAssetPositionUid: "",
+    forIisFlag: false,
+    first1minCandleDate: undefined,
+    first1dayCandleDate: undefined,
   };
 }
 
@@ -4337,6 +4561,27 @@ export const Future = {
     if (message.realExchange !== 0) {
       writer.uint32(256).int32(message.realExchange);
     }
+    if (message.positionUid !== "") {
+      writer.uint32(266).string(message.positionUid);
+    }
+    if (message.basicAssetPositionUid !== "") {
+      writer.uint32(274).string(message.basicAssetPositionUid);
+    }
+    if (message.forIisFlag === true) {
+      writer.uint32(328).bool(message.forIisFlag);
+    }
+    if (message.first1minCandleDate !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.first1minCandleDate),
+        writer.uint32(450).fork()
+      ).ldelim();
+    }
+    if (message.first1dayCandleDate !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.first1dayCandleDate),
+        writer.uint32(458).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -4449,6 +4694,25 @@ export const Future = {
         case 32:
           message.realExchange = reader.int32() as any;
           break;
+        case 33:
+          message.positionUid = reader.string();
+          break;
+        case 34:
+          message.basicAssetPositionUid = reader.string();
+          break;
+        case 41:
+          message.forIisFlag = reader.bool();
+          break;
+        case 56:
+          message.first1minCandleDate = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
+        case 57:
+          message.first1dayCandleDate = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -4525,6 +4789,17 @@ export const Future = {
       realExchange: isSet(object.realExchange)
         ? realExchangeFromJSON(object.realExchange)
         : 0,
+      positionUid: isSet(object.positionUid) ? String(object.positionUid) : "",
+      basicAssetPositionUid: isSet(object.basicAssetPositionUid)
+        ? String(object.basicAssetPositionUid)
+        : "",
+      forIisFlag: isSet(object.forIisFlag) ? Boolean(object.forIisFlag) : false,
+      first1minCandleDate: isSet(object.first1minCandleDate)
+        ? fromJsonTimestamp(object.first1minCandleDate)
+        : undefined,
+      first1dayCandleDate: isSet(object.first1dayCandleDate)
+        ? fromJsonTimestamp(object.first1dayCandleDate)
+        : undefined,
     };
   },
 
@@ -4594,6 +4869,15 @@ export const Future = {
     message.uid !== undefined && (obj.uid = message.uid);
     message.realExchange !== undefined &&
       (obj.realExchange = realExchangeToJSON(message.realExchange));
+    message.positionUid !== undefined &&
+      (obj.positionUid = message.positionUid);
+    message.basicAssetPositionUid !== undefined &&
+      (obj.basicAssetPositionUid = message.basicAssetPositionUid);
+    message.forIisFlag !== undefined && (obj.forIisFlag = message.forIisFlag);
+    message.first1minCandleDate !== undefined &&
+      (obj.first1minCandleDate = message.first1minCandleDate.toISOString());
+    message.first1dayCandleDate !== undefined &&
+      (obj.first1dayCandleDate = message.first1dayCandleDate.toISOString());
     return obj;
   },
 };
@@ -4632,6 +4916,10 @@ function createBaseShare(): Share {
     apiTradeAvailableFlag: false,
     uid: "",
     realExchange: 0,
+    positionUid: "",
+    forIisFlag: false,
+    first1minCandleDate: undefined,
+    first1dayCandleDate: undefined,
   };
 }
 
@@ -4738,6 +5026,24 @@ export const Share = {
     }
     if (message.realExchange !== 0) {
       writer.uint32(272).int32(message.realExchange);
+    }
+    if (message.positionUid !== "") {
+      writer.uint32(282).string(message.positionUid);
+    }
+    if (message.forIisFlag === true) {
+      writer.uint32(368).bool(message.forIisFlag);
+    }
+    if (message.first1minCandleDate !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.first1minCandleDate),
+        writer.uint32(450).fork()
+      ).ldelim();
+    }
+    if (message.first1dayCandleDate !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.first1dayCandleDate),
+        writer.uint32(458).fork()
+      ).ldelim();
     }
     return writer;
   },
@@ -4847,6 +5153,22 @@ export const Share = {
         case 34:
           message.realExchange = reader.int32() as any;
           break;
+        case 35:
+          message.positionUid = reader.string();
+          break;
+        case 46:
+          message.forIisFlag = reader.bool();
+          break;
+        case 56:
+          message.first1minCandleDate = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
+        case 57:
+          message.first1dayCandleDate = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -4925,6 +5247,14 @@ export const Share = {
       realExchange: isSet(object.realExchange)
         ? realExchangeFromJSON(object.realExchange)
         : 0,
+      positionUid: isSet(object.positionUid) ? String(object.positionUid) : "",
+      forIisFlag: isSet(object.forIisFlag) ? Boolean(object.forIisFlag) : false,
+      first1minCandleDate: isSet(object.first1minCandleDate)
+        ? fromJsonTimestamp(object.first1minCandleDate)
+        : undefined,
+      first1dayCandleDate: isSet(object.first1dayCandleDate)
+        ? fromJsonTimestamp(object.first1dayCandleDate)
+        : undefined,
     };
   },
 
@@ -4995,6 +5325,13 @@ export const Share = {
     message.uid !== undefined && (obj.uid = message.uid);
     message.realExchange !== undefined &&
       (obj.realExchange = realExchangeToJSON(message.realExchange));
+    message.positionUid !== undefined &&
+      (obj.positionUid = message.positionUid);
+    message.forIisFlag !== undefined && (obj.forIisFlag = message.forIisFlag);
+    message.first1minCandleDate !== undefined &&
+      (obj.first1minCandleDate = message.first1minCandleDate.toISOString());
+    message.first1dayCandleDate !== undefined &&
+      (obj.first1dayCandleDate = message.first1dayCandleDate.toISOString());
     return obj;
   },
 };
@@ -5469,6 +5806,10 @@ function createBaseInstrument(): Instrument {
     apiTradeAvailableFlag: false,
     uid: "",
     realExchange: 0,
+    positionUid: "",
+    forIisFlag: false,
+    first1minCandleDate: undefined,
+    first1dayCandleDate: undefined,
   };
 }
 
@@ -5558,6 +5899,24 @@ export const Instrument = {
     if (message.realExchange !== 0) {
       writer.uint32(208).int32(message.realExchange);
     }
+    if (message.positionUid !== "") {
+      writer.uint32(218).string(message.positionUid);
+    }
+    if (message.forIisFlag === true) {
+      writer.uint32(288).bool(message.forIisFlag);
+    }
+    if (message.first1minCandleDate !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.first1minCandleDate),
+        writer.uint32(450).fork()
+      ).ldelim();
+    }
+    if (message.first1dayCandleDate !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.first1dayCandleDate),
+        writer.uint32(458).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -5646,6 +6005,22 @@ export const Instrument = {
         case 26:
           message.realExchange = reader.int32() as any;
           break;
+        case 27:
+          message.positionUid = reader.string();
+          break;
+        case 36:
+          message.forIisFlag = reader.bool();
+          break;
+        case 56:
+          message.first1minCandleDate = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
+        case 57:
+          message.first1dayCandleDate = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -5710,6 +6085,14 @@ export const Instrument = {
       realExchange: isSet(object.realExchange)
         ? realExchangeFromJSON(object.realExchange)
         : 0,
+      positionUid: isSet(object.positionUid) ? String(object.positionUid) : "",
+      forIisFlag: isSet(object.forIisFlag) ? Boolean(object.forIisFlag) : false,
+      first1minCandleDate: isSet(object.first1minCandleDate)
+        ? fromJsonTimestamp(object.first1minCandleDate)
+        : undefined,
+      first1dayCandleDate: isSet(object.first1dayCandleDate)
+        ? fromJsonTimestamp(object.first1dayCandleDate)
+        : undefined,
     };
   },
 
@@ -5767,6 +6150,13 @@ export const Instrument = {
     message.uid !== undefined && (obj.uid = message.uid);
     message.realExchange !== undefined &&
       (obj.realExchange = realExchangeToJSON(message.realExchange));
+    message.positionUid !== undefined &&
+      (obj.positionUid = message.positionUid);
+    message.forIisFlag !== undefined && (obj.forIisFlag = message.forIisFlag);
+    message.first1minCandleDate !== undefined &&
+      (obj.first1minCandleDate = message.first1minCandleDate.toISOString());
+    message.first1dayCandleDate !== undefined &&
+      (obj.first1dayCandleDate = message.first1dayCandleDate.toISOString());
     return obj;
   },
 };
@@ -8996,6 +9386,11 @@ function createBaseInstrumentShort(): InstrumentShort {
     instrumentType: "",
     name: "",
     uid: "",
+    positionUid: "",
+    apiTradeAvailableFlag: false,
+    forIisFlag: false,
+    first1minCandleDate: undefined,
+    first1dayCandleDate: undefined,
   };
 }
 
@@ -9024,6 +9419,27 @@ export const InstrumentShort = {
     }
     if (message.uid !== "") {
       writer.uint32(58).string(message.uid);
+    }
+    if (message.positionUid !== "") {
+      writer.uint32(66).string(message.positionUid);
+    }
+    if (message.apiTradeAvailableFlag === true) {
+      writer.uint32(88).bool(message.apiTradeAvailableFlag);
+    }
+    if (message.forIisFlag === true) {
+      writer.uint32(96).bool(message.forIisFlag);
+    }
+    if (message.first1minCandleDate !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.first1minCandleDate),
+        writer.uint32(210).fork()
+      ).ldelim();
+    }
+    if (message.first1dayCandleDate !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.first1dayCandleDate),
+        writer.uint32(218).fork()
+      ).ldelim();
     }
     return writer;
   },
@@ -9056,6 +9472,25 @@ export const InstrumentShort = {
         case 7:
           message.uid = reader.string();
           break;
+        case 8:
+          message.positionUid = reader.string();
+          break;
+        case 11:
+          message.apiTradeAvailableFlag = reader.bool();
+          break;
+        case 12:
+          message.forIisFlag = reader.bool();
+          break;
+        case 26:
+          message.first1minCandleDate = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
+        case 27:
+          message.first1dayCandleDate = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -9075,6 +9510,17 @@ export const InstrumentShort = {
         : "",
       name: isSet(object.name) ? String(object.name) : "",
       uid: isSet(object.uid) ? String(object.uid) : "",
+      positionUid: isSet(object.positionUid) ? String(object.positionUid) : "",
+      apiTradeAvailableFlag: isSet(object.apiTradeAvailableFlag)
+        ? Boolean(object.apiTradeAvailableFlag)
+        : false,
+      forIisFlag: isSet(object.forIisFlag) ? Boolean(object.forIisFlag) : false,
+      first1minCandleDate: isSet(object.first1minCandleDate)
+        ? fromJsonTimestamp(object.first1minCandleDate)
+        : undefined,
+      first1dayCandleDate: isSet(object.first1dayCandleDate)
+        ? fromJsonTimestamp(object.first1dayCandleDate)
+        : undefined,
     };
   },
 
@@ -9088,6 +9534,15 @@ export const InstrumentShort = {
       (obj.instrumentType = message.instrumentType);
     message.name !== undefined && (obj.name = message.name);
     message.uid !== undefined && (obj.uid = message.uid);
+    message.positionUid !== undefined &&
+      (obj.positionUid = message.positionUid);
+    message.apiTradeAvailableFlag !== undefined &&
+      (obj.apiTradeAvailableFlag = message.apiTradeAvailableFlag);
+    message.forIisFlag !== undefined && (obj.forIisFlag = message.forIisFlag);
+    message.first1minCandleDate !== undefined &&
+      (obj.first1minCandleDate = message.first1minCandleDate.toISOString());
+    message.first1dayCandleDate !== undefined &&
+      (obj.first1dayCandleDate = message.first1dayCandleDate.toISOString());
     return obj;
   },
 };
@@ -9264,7 +9719,7 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Метод получения графика выплат купонов по облигации */
+    /** Метод получения графика выплат купонов по облигации. */
     getBondCoupons: {
       name: "GetBondCoupons",
       requestType: GetBondCouponsRequest,
@@ -9399,7 +9854,7 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Метод получения избранных инструментов. */
+    /** Метод получения списка избранных инструментов. */
     getFavorites: {
       name: "GetFavorites",
       requestType: GetFavoritesRequest,
@@ -9408,7 +9863,7 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Метод редактирования избранных инструментов. */
+    /** Метод редактирования списка избранных инструментов. */
     editFavorites: {
       name: "EditFavorites",
       requestType: EditFavoritesRequest,
@@ -9472,7 +9927,7 @@ export interface InstrumentsServiceServiceImplementation<CallContextExt = {}> {
     request: InstrumentsRequest,
     context: CallContext & CallContextExt
   ): Promise<BondsResponse>;
-  /** Метод получения графика выплат купонов по облигации */
+  /** Метод получения графика выплат купонов по облигации. */
   getBondCoupons(
     request: GetBondCouponsRequest,
     context: CallContext & CallContextExt
@@ -9547,12 +10002,12 @@ export interface InstrumentsServiceServiceImplementation<CallContextExt = {}> {
     request: AssetsRequest,
     context: CallContext & CallContextExt
   ): Promise<AssetsResponse>;
-  /** Метод получения избранных инструментов. */
+  /** Метод получения списка избранных инструментов. */
   getFavorites(
     request: GetFavoritesRequest,
     context: CallContext & CallContextExt
   ): Promise<GetFavoritesResponse>;
-  /** Метод редактирования избранных инструментов. */
+  /** Метод редактирования списка избранных инструментов. */
   editFavorites(
     request: EditFavoritesRequest,
     context: CallContext & CallContextExt
@@ -9595,7 +10050,7 @@ export interface InstrumentsServiceClient<CallOptionsExt = {}> {
     request: InstrumentsRequest,
     options?: CallOptions & CallOptionsExt
   ): Promise<BondsResponse>;
-  /** Метод получения графика выплат купонов по облигации */
+  /** Метод получения графика выплат купонов по облигации. */
   getBondCoupons(
     request: GetBondCouponsRequest,
     options?: CallOptions & CallOptionsExt
@@ -9670,12 +10125,12 @@ export interface InstrumentsServiceClient<CallOptionsExt = {}> {
     request: AssetsRequest,
     options?: CallOptions & CallOptionsExt
   ): Promise<AssetsResponse>;
-  /** Метод получения избранных инструментов. */
+  /** Метод получения списка избранных инструментов. */
   getFavorites(
     request: GetFavoritesRequest,
     options?: CallOptions & CallOptionsExt
   ): Promise<GetFavoritesResponse>;
-  /** Метод редактирования избранных инструментов. */
+  /** Метод редактирования списка избранных инструментов. */
   editFavorites(
     request: EditFavoritesRequest,
     options?: CallOptions & CallOptionsExt

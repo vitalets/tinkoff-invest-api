@@ -26,6 +26,8 @@ nav:
   - "Работа с торговыми поручениями": orders_details.md
   - "Квалифицированный инвестор": accredited_investor.md
   - "Правила обработки корпоративных действий": faq_corp_action.md
+  - "Как ускорить работу с биржей": speedup.md
+  - "Дедлайны запросов": deadlines.md
 - Ответы на частые вопросы: faq.md
 - Языки программирования:
   - Python: faq_python.md
@@ -50,6 +52,7 @@ nav:
 - Сервис котировок:
   - Описание: head-marketdata.md
   - Методы: marketdata.md
+  - Получение исторических рыночных данных: get_history.md
   - FAQ: faq_marketdata.md
 - Сервис стоп-заявок:
   - Описание: head-stoporders.md
