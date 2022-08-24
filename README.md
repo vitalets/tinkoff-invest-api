@@ -7,7 +7,7 @@ Node.js SDK для работы с [Tinkoff Invest API](https://tinkoff.github.i
 - [Использование](#%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5)
   * [Подключение](#%D0%BF%D0%BE%D0%B4%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B5)
   * [Unary-запросы](#unary-%D0%B7%D0%B0%D0%BF%D1%80%D0%BE%D1%81%D1%8B)
-  * [Стрим](#%D1%81%D1%82%D1%80%D0%B8%D0%BC)
+  * [Стримы](#%D1%81%D1%82%D1%80%D0%B8%D0%BC%D1%8B)
   * [Универсальный счет](#%D1%83%D0%BD%D0%B8%D0%B2%D0%B5%D1%80%D1%81%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9-%D1%81%D1%87%D0%B5%D1%82)
   * [Кеширование свечей](#%D0%BA%D0%B5%D1%88%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D1%81%D0%B2%D0%B5%D1%87%D0%B5%D0%B9)
   * [Хелперы](#%D1%85%D0%B5%D0%BB%D0%BF%D0%B5%D1%80%D1%8B)
@@ -47,7 +47,7 @@ const { candles } = await api.marketdata.getCandles({
 });
 ```
 
-### Стрим
+### Стримы
 Для работы со стримом сделана обертка `api.stream`:
 ```ts
 // подписка на свечи
@@ -58,12 +58,15 @@ const unsubscribe = await api.stream.market.candles({
   waitingClose: false,
 }, candle => console.log(candle));
 
+// отписаться
+await unsubscribe();
+
 // обработка дополнительных событий
 api.stream.market.on('error', error => console.log('stream error', error));
 api.stream.market.on('close', error => console.log('stream closed, reason:', error));
 
-// отписаться
-await unsubscribe();
+// получить список текущих подписок
+const data = await api.stream.market.getMySubscriptions();
 
 // закрыть соединение
 await api.stream.market.cancel();
