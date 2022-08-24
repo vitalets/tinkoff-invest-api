@@ -11,7 +11,8 @@ import { getCommonPart } from './utils/string.js';
 
 export class Helpers {
   /**
-   * Переводит число в Quotation { units, nano }
+   * Переводит число в Quotation.
+   * Пример: 123.4 -> { units: 123, nano: 400000000 }
    */
   static toQuotation(value: number): Quotation {
     const sign = value < 0 ? -1 : 1;
@@ -27,6 +28,7 @@ export class Helpers {
 
   /**
    * Переводит число в MoneyValue { units, nano, currency }
+   * Пример: (123.4, 'rub') -> { units: 123, nano: 400000000, currency: 'rub' }
    */
   static toMoneyValue(value: number, currency: string): MoneyValue {
     const { units, nano } = Helpers.toQuotation(value);
@@ -34,14 +36,16 @@ export class Helpers {
   }
 
   /**
-   * Переводит MoneyValue в строку
+   * Переводит MoneyValue в строку.
+   * Пример: { units: 123, nano: 400000000, currency: 'rub' } -> '123.4 rub'
    */
   static toMoneyString(value: MoneyValue | undefined) {
     return `${Helpers.toNumber(value)} ${value?.currency}`;
   }
 
   /**
-   * Переводит Quotation или MoneyValue в число
+   * Переводит Quotation или MoneyValue в число.
+   * Пример: { units: 123, nano: 400000000 } -> 123.4
    */
   static toNumber<T extends Quotation | MoneyValue | undefined>(value: T) {
     return (value ? value.units + value.nano / 1000000000 : value) as T extends undefined ? undefined : number;
@@ -61,7 +65,7 @@ export class Helpers {
 
   /**
    * Переводит значения констант в человеко-читаемые строки.
-   * Например: CandleInterval.CANDLE_INTERVAL_1_MIN -> '1_MIN'
+   * Пример: CandleInterval.CANDLE_INTERVAL_1_MIN -> '1_MIN'
    */
   static toHuman<T extends Enums>(value: T, values: getEnumType<T>) {
     const str = values[value] || '';

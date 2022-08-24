@@ -114,7 +114,7 @@ const order = await account.postOrder({
 Все методы универсального счета можно посмотреть [тут](https://github.com/vitalets/tinkoff-invest-api/blob/main/src/account/real.ts).
 
 ### Кеширование свечей
-Кеширование свечей позволяет сократить кол-во запросов к API, а также более удобно получать необходимые свечи за любой период времени. Для загрузки свечей с учетом кеша используется класс `CandlesLoader`:
+Кеширование свечей позволяет сократить кол-во запросов к API, а также более удобно получать необходимые свечи за любой период времени (в исходном API есть ограничения на диапазоны дат запроса). Для загрузки свечей с учетом кеша используется класс `CandlesLoader`:
 ```ts
 import { TinkoffInvestApi, CandlesLoader } from 'tinkoff-invest-api';
 
@@ -132,7 +132,7 @@ const { candles } = await candlesLoader.getCandles({
 ```
 
 <details>
-<summary>Для кеширования `CandlesLoader` создает следующую структуру файлов со свечами:</summary>
+<summary>Для кеширования `CandlesLoader` создает на файловой системе следующую структуру:</summary>
 
 ```
 .cache
@@ -163,22 +163,26 @@ const { candles } = await candlesLoader.getCandles({
 import { Helpers } from 'tinkoff-invest-api';
 
 /**
- * Переводит число в Quotation { units, nano }
+ * Переводит число в Quotation.
+ * Пример: 123.4 -> { units: 123, nano: 400000000 }
  */
 Helpers.toQuotation(value: number): Quotation;
 
 /**
- * Переводит число в MoneyValue { units, nano, currency }
+ * Переводит число в MoneyValue.
+ * Пример: (123.4, 'rub') -> { units: 123, nano: 400000000, currency: 'rub' }
  */
 Helpers.toMoneyValue(value: number, currency: string): MoneyValue;
 
 /**
- * Переводит MoneyValue в строку
+ * Переводит MoneyValue в строку.
+ * Пример: { units: 123, nano: 400000000, currency: 'rub' } -> '123.4 rub'
  */
 Helpers.toMoneyString(value: MoneyValue | undefined): string;
 
 /**
- * Переводит Quotation или MoneyValue в число
+ * Переводит Quotation или MoneyValue в число.
+ * Пример: { units: 123, nano: 400000000 } -> 123.4
  */
 Helpers.toNumber(value: Quotation | MoneyValue): number;
 
