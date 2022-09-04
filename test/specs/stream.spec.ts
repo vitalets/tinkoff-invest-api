@@ -34,15 +34,24 @@ describe('stream', () => {
     const res1 = await testApi.stream.market.getMySubscriptions();
     const unsubscribe = await testApi.stream.market.candles(candlesReq, handler);
     const res2 = await testApi.stream.market.getMySubscriptions();
-    await unsubscribe();
+    await testApi.stream.market.candles({
+      instruments: [ { figi: 'BBG00QPYJ5H0', interval } ], waitingClose
+    }, handler);
     const res3 = await testApi.stream.market.getMySubscriptions();
-
+    await unsubscribe();
+    const res4 = await testApi.stream.market.getMySubscriptions();
     assert.deepEqual(getNonEmptyKeys(res1), []);
     assert.deepEqual(getNonEmptyKeys(res2), [ 'subscribeCandlesResponse' ]);
     assert.deepEqual(res2.subscribeCandlesResponse?.candlesSubscriptions, [
       { figi, interval: 1, subscriptionStatus: 1 }
     ]);
-    assert.deepEqual(getNonEmptyKeys(res3), []);
+    assert.deepEqual(res3.subscribeCandlesResponse?.candlesSubscriptions, [
+      { figi, interval: 1, subscriptionStatus: 1 },
+      { figi: 'BBG00QPYJ5H0', interval: 1, subscriptionStatus: 1 },
+    ]);
+    assert.deepEqual(res4.subscribeCandlesResponse?.candlesSubscriptions, [
+      { figi: 'BBG00QPYJ5H0', interval: 1, subscriptionStatus: 1 }
+    ]);
   });
 
   it('подписка на свечи по конкретным figi', async () => {
