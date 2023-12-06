@@ -28,13 +28,16 @@ service SandboxService { //Сервис для работы с песочниц�
   //Метод выставления торгового поручения в песочнице.
   rpc PostSandboxOrder(PostOrderRequest) returns (PostOrderResponse);
 
+  //Метод изменения выставленной заявки.
+  rpc ReplaceSandboxOrder(ReplaceOrderRequest) returns (PostOrderResponse);
+
   //Метод получения списка активных заявок по счёту в песочнице.
   rpc GetSandboxOrders(GetOrdersRequest) returns (GetOrdersResponse);
 
   //Метод отмены торгового поручения в песочнице.
   rpc CancelSandboxOrder(CancelOrderRequest) returns (CancelOrderResponse);
 
-  //Метод получения статуса заявки в песочнице.
+  //Метод получения статуса заявки в песочнице. Заявки хранятся в таблице 7 дней.
   rpc GetSandboxOrderState(GetOrderStateRequest) returns (OrderState);
 
   //Метод получения позиций по виртуальному счёту песочницы.
@@ -43,11 +46,17 @@ service SandboxService { //Сервис для работы с песочниц�
   //Метод получения операций в песочнице по номеру счёта.
   rpc GetSandboxOperations(OperationsRequest) returns (OperationsResponse);
 
+  //Метод получения операций в песочнице по номеру счета с пагинацией.
+  rpc GetSandboxOperationsByCursor(GetOperationsByCursorRequest) returns (GetOperationsByCursorResponse);
+
   //Метод получения портфолио в песочнице.
   rpc GetSandboxPortfolio(PortfolioRequest) returns (PortfolioResponse);
 
   //Метод пополнения счёта в песочнице.
   rpc SandboxPayIn(SandboxPayInRequest) returns (SandboxPayInResponse);
+
+  //Метод получения доступного остатка для вывода средств в песочнице.
+  rpc GetSandboxWithdrawLimits(WithdrawLimitsRequest) returns (WithdrawLimitsResponse);
 }
 
 //Запрос открытия счёта в песочнице.

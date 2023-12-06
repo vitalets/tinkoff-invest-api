@@ -81,7 +81,7 @@ export class CandlesReq {
     const { from, to } = this.dateIterator.getCurrentChunkRange();
     const apiStr = this.api.isBacktest ? 'API (backtest)' : 'API';
     this.debug(`Загружаю свечи из ${apiStr}: ${from.toISOString()} - ${to.toISOString()}`);
-    const { candles } = await this.api.marketdata.getCandles({ figi, interval, from, to });
+    const { candles } = await this.api.marketdata.getCandles({ figi, instrumentId: figi, interval, from, to });
     this.debug(`Загружено свечей: ${candles.length}`);
     return candles;
   }
@@ -134,7 +134,7 @@ export class CandlesReq {
     return path.join(
       this.options.cacheDir,
       'candles',
-      this.params.figi,
+      this.params.instrumentId || this.params.figi,
       isYearChunk ? 'day' : candleIntervalToString(this.params.interval),
       `${dateStr}.json`
     );

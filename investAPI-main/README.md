@@ -4,6 +4,10 @@ Tinkoff Invest API — это интерфейс для взаимодейств
 
 [Документация для разработчиков](https://tinkoff.github.io/investAPI/)
 
+# Акции
+
+С 25 июля 2022 действует акция с кэшбэком в размере 10% от комиссии по всем торговым поручениям, выставляемым через [API](https://www.tinkoff.ru/invest/open-api/).
+
 # Примеры решаемых задач
 
 ### Анализ котировок бумаг
@@ -56,13 +60,16 @@ API реализован на быстром, удобном и функцион
 Вы можете как самостоятельно создать обертку по [proto-контрактам](https://github.com/Tinkoff/investAPI/tree/main/src/docs/contracts) так воспользоваться одним из SDK:
 
 ## Официальные
+* [go](https://github.com/Tinkoff/invest-api-go-sdk)
 * [python](https://github.com/Tinkoff/invest-python)
 * [java](https://github.com/Tinkoff/invest-api-java-sdk)
 * [csharp](https://github.com/Tinkoff/invest-api-csharp-sdk)
 
 ## Неофициальные
 * [golang](https://github.com/ssummers02/invest-api-go-sdk)
-* [nodejs](https://github.com/betslus1/unofficial-tinkoff-invest-api_v2-lazy-sdk-NODEJS)
+* nodejs
+  - [betslus1/unofficial-tinkoff-invest-api_v2-lazy-sdk-NODEJS](https://github.com/betslus1/unofficial-tinkoff-invest-api_v2-lazy-sdk-NODEJS)
+  - [vitalets/tinkoff-invest-api](https://github.com/vitalets/tinkoff-invest-api)
 * [golang](https://github.com/vodolaz095/go-investAPI)
 * [haskell](https://github.com/nickmi11er/tinkoff-invest-haskell)
 * [php](https://github.com/metaseller/tinkoff-invest-api-v2-php)

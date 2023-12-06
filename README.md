@@ -33,15 +33,22 @@ const api = new TinkoffInvestApi({ token: '<your-token>' });
 
 ### Unary-запросы
 ```ts
+import { PortfolioRequest_CurrencyRequest } from 'tinkoff-invest-api/dist/generated/operations.js';
+import { CandleInterval } from 'tinkoff-invest-api/dist/generated/marketdata.js';
+
 // получить список счетов
 const { accounts } = await api.users.getAccounts({});
 
 // получить портфель по id счета
-const portfolio = await api.operations.getPortfolio({ accountId: accounts[0].id });
+const portfolio = await api.operations.getPortfolio({
+  accountId: accounts[0].id,
+  currency: PortfolioRequest_CurrencyRequest.RUB
+});
 
 // получить 1-минутные свечи за последние 5 мин для акций Тинкофф Групп
 const { candles } = await api.marketdata.getCandles({
   figi: 'BBG00QPYJ5H0',
+  instrumentId: 'BBG00QPYJ5H0',
   interval: CandleInterval.CANDLE_INTERVAL_1_MIN,
   ...api.helpers.fromTo('-5m'), // <- удобный хелпер для получения { from, to }
 });
@@ -50,10 +57,16 @@ const { candles } = await api.marketdata.getCandles({
 ### Стримы
 Для работы со стримом сделана обертка `api.stream`:
 ```ts
+import { SubscriptionInterval } from 'tinkoff-invest-api/dist/generated/marketdata.js';
+
 // подписка на свечи
 const unsubscribe = await api.stream.market.candles({
   instruments: [
-    { figi: 'BBG00QPYJ5H0', interval: SubscriptionInterval.SUBSCRIPTION_INTERVAL_ONE_MINUTE }
+    {
+      figi: 'BBG00QPYJ5H0',
+      instrumentId: 'BBG00QPYJ5H0',
+      interval: SubscriptionInterval.SUBSCRIPTION_INTERVAL_ONE_MINUTE
+    }
   ],
   waitingClose: false,
 }, candle => console.log(candle));
@@ -117,6 +130,7 @@ const order = await account.postOrder({
 Кеширование свечей позволяет сократить кол-во запросов к API, а также удобно получать нужное кол-во свечей за любой период времени (в исходном API есть ограничения на диапазоны дат запроса). Для загрузки свечей с учетом кеша используется класс `CandlesLoader`:
 ```ts
 import { TinkoffInvestApi, CandlesLoader } from 'tinkoff-invest-api';
+import { CandleInterval } from 'tinkoff-invest-api/dist/generated/marketdata.js';
 
 const api = new TinkoffInvestApi({ token: '<your-token>' });
 
@@ -126,6 +140,7 @@ const candlesLoader = new CandlesLoader(api, { cacheDir: '.cache' });
 // загрузить минимум 100 последних свечей (в понедельник будут использованы данные пятницы, итп)
 const { candles } = await candlesLoader.getCandles({
   figi: 'BBG004730N88',
+  instrumentId: 'BBG004730N88',
   interval: CandleInterval.CANDLE_INTERVAL_15_MIN,
   minCount: 100, // <- этот параметр позволяет задать кол-во свечей в результате
 });

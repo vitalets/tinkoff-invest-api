@@ -1,8 +1,5 @@
 
 
- <!-- range HasServices -->
-
-
 
 
 
@@ -52,23 +49,6 @@
 
 
 
-#### Account
-Информация о счёте.
-
-
-| Field | Type | Description |
-| ----- | ---- | ----------- |
-| id |  [string](#string) | Идентификатор счёта. |
-| type |  [AccountType](#accounttype) | Тип счёта. |
-| name |  [string](#string) | Название счёта. |
-| status |  [AccountStatus](#accountstatus) | Статус счёта. |
-| opened_date |  [google.protobuf.Timestamp](#googleprotobuftimestamp) | Дата открытия счёта в часовом поясе UTC. |
-| closed_date |  [google.protobuf.Timestamp](#googleprotobuftimestamp) | Дата закрытия счёта в часовом поясе UTC. |
-| access_level |  [AccessLevel](#accesslevel) | Уровень доступа к текущему счёту (определяется токеном). |
- <!-- end Fields -->
- <!-- end HasFields -->
-
-
 #### GetAccountsRequest
 Запрос получения счетов пользователя.
 
@@ -86,22 +66,19 @@
  <!-- end HasFields -->
 
 
-#### GetInfoRequest
-Запрос информации о пользователе.
-
- <!-- end HasFields -->
-
-
-#### GetInfoResponse
-Информация о пользователе.
+#### Account
+Информация о счёте.
 
 
 | Field | Type | Description |
 | ----- | ---- | ----------- |
-| prem_status |  [bool](#bool) | Признак премиум клиента. |
-| qual_status |  [bool](#bool) | Признак квалифицированного инвестора. |
-| qualified_for_work_with | Массив объектов [string](#string) | Набор требующих тестирования инструментов и возможностей, с которыми может работать пользователь. [Подробнее](https://tinkoff.github.io/investAPI/faq_users/). |
-| tariff |  [string](#string) | Наименование тарифа пользователя. |
+| id |  [string](#string) | Идентификатор счёта. |
+| type |  [AccountType](#accounttype) | Тип счёта. |
+| name |  [string](#string) | Название счёта. |
+| status |  [AccountStatus](#accountstatus) | Статус счёта. |
+| opened_date |  [google.protobuf.Timestamp](#googleprotobuftimestamp) | Дата открытия счёта в часовом поясе UTC. |
+| closed_date |  [google.protobuf.Timestamp](#googleprotobuftimestamp) | Дата закрытия счёта в часовом поясе UTC. |
+| access_level |  [AccessLevel](#accesslevel) | Уровень доступа к текущему счёту (определяется токеном). |
  <!-- end Fields -->
  <!-- end HasFields -->
 
@@ -128,6 +105,7 @@
 | minimal_margin |  [MoneyValue](#moneyvalue) | Минимальная маржа — это минимальное обеспечение для поддержания позиции, которую вы уже открыли. Подробнее: [начальная и минимальная маржа](https://help.tinkoff.ru/margin-trade/short/initial-and-maintenance-margin/). |
 | funds_sufficiency_level |  [Quotation](#quotation) | Уровень достаточности средств. Соотношение стоимости ликвидного портфеля к начальной марже. |
 | amount_of_missing_funds |  [MoneyValue](#moneyvalue) | Объем недостающих средств. Разница между стартовой маржой и ликвидной стоимости портфеля. |
+| corrected_margin |  [MoneyValue](#moneyvalue) | Скорректированная маржа.Начальная маржа, в которой плановые позиции рассчитываются с учётом активных заявок на покупку позиций лонг или продажу позиций шорт. |
  <!-- end Fields -->
  <!-- end HasFields -->
 
@@ -144,20 +122,8 @@
 
 | Field | Type | Description |
 | ----- | ---- | ----------- |
-| unary_limits | Массив объектов [UnaryLimit](#unarylimit) | Массив лимитов пользователя по unary-запросам |
-| stream_limits | Массив объектов [StreamLimit](#streamlimit) | Массив лимитов пользователей для stream-соединений |
- <!-- end Fields -->
- <!-- end HasFields -->
-
-
-#### StreamLimit
-Лимит stream-соединений.
-
-
-| Field | Type | Description |
-| ----- | ---- | ----------- |
-| limit |  [int32](#int32) | Максимальное количество stream-соединений |
-| streams | Массив объектов [string](#string) | Названия stream-методов |
+| unary_limits | Массив объектов [UnaryLimit](#unarylimit) | Массив лимитов пользователя по unary-запросам. |
+| stream_limits | Массив объектов [StreamLimit](#streamlimit) | Массив лимитов пользователей для stream-соединений. |
  <!-- end Fields -->
  <!-- end HasFields -->
 
@@ -168,8 +134,41 @@
 
 | Field | Type | Description |
 | ----- | ---- | ----------- |
-| limit_per_minute |  [int32](#int32) | Количество unary-запросов в минуту |
-| methods | Массив объектов [string](#string) | Названия методов |
+| limit_per_minute |  [int32](#int32) | Количество unary-запросов в минуту. |
+| methods | Массив объектов [string](#string) | Названия методов. |
+ <!-- end Fields -->
+ <!-- end HasFields -->
+
+
+#### StreamLimit
+Лимит stream-соединений.
+
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| limit |  [int32](#int32) | Максимальное количество stream-соединений. |
+| streams | Массив объектов [string](#string) | Названия stream-методов. |
+| open |  [int32](#int32) | Текущее количество открытых stream-соединений. |
+ <!-- end Fields -->
+ <!-- end HasFields -->
+
+
+#### GetInfoRequest
+Запрос информации о пользователе.
+
+ <!-- end HasFields -->
+
+
+#### GetInfoResponse
+Информация о пользователе.
+
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| prem_status |  [bool](#bool) | Признак премиум клиента. |
+| qual_status |  [bool](#bool) | Признак квалифицированного инвестора. |
+| qualified_for_work_with | Массив объектов [string](#string) | Набор требующих тестирования инструментов и возможностей, с которыми может работать пользователь. [Подробнее](https://tinkoff.github.io/investAPI/faq_users/). |
+| tariff |  [string](#string) | Наименование тарифа пользователя. |
  <!-- end Fields -->
  <!-- end HasFields -->
  <!-- end messages -->
@@ -177,15 +176,15 @@
 ### Enums
 
 
-#### AccessLevel
-Уровень доступа к счёту.
+#### AccountType
+Тип счёта.
 
 | Name | Number | Description |
 | ---- | ------ | ----------- |
-| ACCOUNT_ACCESS_LEVEL_UNSPECIFIED | 0 | Уровень доступа не определён. |
-| ACCOUNT_ACCESS_LEVEL_FULL_ACCESS | 1 | Полный доступ к счёту. |
-| ACCOUNT_ACCESS_LEVEL_READ_ONLY | 2 | Доступ с уровнем прав "только чтение". |
-| ACCOUNT_ACCESS_LEVEL_NO_ACCESS | 3 | Доступ отсутствует. |
+| ACCOUNT_TYPE_UNSPECIFIED | 0 | Тип аккаунта не определён. |
+| ACCOUNT_TYPE_TINKOFF | 1 | Брокерский счёт Тинькофф. |
+| ACCOUNT_TYPE_TINKOFF_IIS | 2 | ИИС счёт. |
+| ACCOUNT_TYPE_INVEST_BOX | 3 | Инвесткопилка. |
 
 
 
@@ -203,15 +202,15 @@
 
 
 
-#### AccountType
-Тип счёта.
+#### AccessLevel
+Уровень доступа к счёту.
 
 | Name | Number | Description |
 | ---- | ------ | ----------- |
-| ACCOUNT_TYPE_UNSPECIFIED | 0 | Тип аккаунта не определён. |
-| ACCOUNT_TYPE_TINKOFF | 1 | Брокерский счёт Тинькофф. |
-| ACCOUNT_TYPE_TINKOFF_IIS | 2 | ИИС счёт. |
-| ACCOUNT_TYPE_INVEST_BOX | 3 | Инвесткопилка. |
+| ACCOUNT_ACCESS_LEVEL_UNSPECIFIED | 0 | Уровень доступа не определён. |
+| ACCOUNT_ACCESS_LEVEL_FULL_ACCESS | 1 | Полный доступ к счёту. |
+| ACCOUNT_ACCESS_LEVEL_READ_ONLY | 2 | Доступ с уровнем прав "только чтение". |
+| ACCOUNT_ACCESS_LEVEL_NO_ACCESS | 3 | Доступ отсутствует. |
 
 
  <!-- range .Enums -->

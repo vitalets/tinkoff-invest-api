@@ -2,7 +2,7 @@
  * Реальный счет
  */
 import { TinkoffInvestApi } from '../api.js';
-import { OperationsRequest } from '../generated/operations.js';
+import { OperationsRequest, PortfolioRequest_CurrencyRequest } from '../generated/operations.js';
 import { PostOrderRequest } from '../generated/orders.js';
 import { OmitAccount } from './types.js';
 
@@ -16,8 +16,8 @@ export class RealAccount {
     return accounts.find(a => a.id === this.accountId);
   }
 
-  async getPortfolio() {
-    return this.api.operations.getPortfolio({ accountId: this.accountId });
+  async getPortfolio(currency: PortfolioRequest_CurrencyRequest = PortfolioRequest_CurrencyRequest.RUB) {
+    return this.api.operations.getPortfolio({ accountId: this.accountId, currency });
   }
 
   async getOperations(request: OmitAccount<OperationsRequest>) {

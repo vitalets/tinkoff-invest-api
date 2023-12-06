@@ -32,7 +32,7 @@ import {
 import { TinkoffInvestApi } from '../api.js';
 
 type SubscribeRequest = Required<MarketDataRequest>[keyof MarketDataRequest];
-type WithoutAction<T extends SubscribeRequest> = Omit<T, 'subscriptionAction'>
+export type WithoutAction<T extends SubscribeRequest> = Omit<T, 'subscriptionAction'>
 
 export class MarketStream extends BaseStream<MarketDataRequest, MarketDataResponse> {
   options = {

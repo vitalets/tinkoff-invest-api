@@ -3,10 +3,13 @@ import Long from "long";
 import _m0 from "protobufjs/minimal.js";
 import {
   MoneyValue,
-  Quotation,
   SecurityTradingStatus,
+  Quotation,
+  InstrumentType,
   securityTradingStatusFromJSON,
   securityTradingStatusToJSON,
+  instrumentTypeFromJSON,
+  instrumentTypeToJSON,
 } from "./common.js";
 import { CallContext, CallOptions } from "nice-grpc-common";
 import { Timestamp } from "./google/protobuf/timestamp.js";
@@ -91,6 +94,182 @@ export function couponTypeToJSON(object: CouponType): string {
   }
 }
 
+/** Тип опциона по направлению сделки. */
+export enum OptionDirection {
+  /** OPTION_DIRECTION_UNSPECIFIED - Тип не определен. */
+  OPTION_DIRECTION_UNSPECIFIED = 0,
+  /** OPTION_DIRECTION_PUT - Опцион на продажу. */
+  OPTION_DIRECTION_PUT = 1,
+  /** OPTION_DIRECTION_CALL - Опцион на покупку. */
+  OPTION_DIRECTION_CALL = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function optionDirectionFromJSON(object: any): OptionDirection {
+  switch (object) {
+    case 0:
+    case "OPTION_DIRECTION_UNSPECIFIED":
+      return OptionDirection.OPTION_DIRECTION_UNSPECIFIED;
+    case 1:
+    case "OPTION_DIRECTION_PUT":
+      return OptionDirection.OPTION_DIRECTION_PUT;
+    case 2:
+    case "OPTION_DIRECTION_CALL":
+      return OptionDirection.OPTION_DIRECTION_CALL;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return OptionDirection.UNRECOGNIZED;
+  }
+}
+
+export function optionDirectionToJSON(object: OptionDirection): string {
+  switch (object) {
+    case OptionDirection.OPTION_DIRECTION_UNSPECIFIED:
+      return "OPTION_DIRECTION_UNSPECIFIED";
+    case OptionDirection.OPTION_DIRECTION_PUT:
+      return "OPTION_DIRECTION_PUT";
+    case OptionDirection.OPTION_DIRECTION_CALL:
+      return "OPTION_DIRECTION_CALL";
+    case OptionDirection.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+/** Тип расчетов по опциону. */
+export enum OptionPaymentType {
+  /** OPTION_PAYMENT_TYPE_UNSPECIFIED - Тип не определен. */
+  OPTION_PAYMENT_TYPE_UNSPECIFIED = 0,
+  /** OPTION_PAYMENT_TYPE_PREMIUM - Опционы с использованием премии в расчетах. */
+  OPTION_PAYMENT_TYPE_PREMIUM = 1,
+  /** OPTION_PAYMENT_TYPE_MARGINAL - Маржируемые опционы. */
+  OPTION_PAYMENT_TYPE_MARGINAL = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function optionPaymentTypeFromJSON(object: any): OptionPaymentType {
+  switch (object) {
+    case 0:
+    case "OPTION_PAYMENT_TYPE_UNSPECIFIED":
+      return OptionPaymentType.OPTION_PAYMENT_TYPE_UNSPECIFIED;
+    case 1:
+    case "OPTION_PAYMENT_TYPE_PREMIUM":
+      return OptionPaymentType.OPTION_PAYMENT_TYPE_PREMIUM;
+    case 2:
+    case "OPTION_PAYMENT_TYPE_MARGINAL":
+      return OptionPaymentType.OPTION_PAYMENT_TYPE_MARGINAL;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return OptionPaymentType.UNRECOGNIZED;
+  }
+}
+
+export function optionPaymentTypeToJSON(object: OptionPaymentType): string {
+  switch (object) {
+    case OptionPaymentType.OPTION_PAYMENT_TYPE_UNSPECIFIED:
+      return "OPTION_PAYMENT_TYPE_UNSPECIFIED";
+    case OptionPaymentType.OPTION_PAYMENT_TYPE_PREMIUM:
+      return "OPTION_PAYMENT_TYPE_PREMIUM";
+    case OptionPaymentType.OPTION_PAYMENT_TYPE_MARGINAL:
+      return "OPTION_PAYMENT_TYPE_MARGINAL";
+    case OptionPaymentType.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+/** Тип опциона по стилю. */
+export enum OptionStyle {
+  /** OPTION_STYLE_UNSPECIFIED - Тип не определен. */
+  OPTION_STYLE_UNSPECIFIED = 0,
+  /** OPTION_STYLE_AMERICAN - Американский опцион. */
+  OPTION_STYLE_AMERICAN = 1,
+  /** OPTION_STYLE_EUROPEAN - Европейский опцион. */
+  OPTION_STYLE_EUROPEAN = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function optionStyleFromJSON(object: any): OptionStyle {
+  switch (object) {
+    case 0:
+    case "OPTION_STYLE_UNSPECIFIED":
+      return OptionStyle.OPTION_STYLE_UNSPECIFIED;
+    case 1:
+    case "OPTION_STYLE_AMERICAN":
+      return OptionStyle.OPTION_STYLE_AMERICAN;
+    case 2:
+    case "OPTION_STYLE_EUROPEAN":
+      return OptionStyle.OPTION_STYLE_EUROPEAN;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return OptionStyle.UNRECOGNIZED;
+  }
+}
+
+export function optionStyleToJSON(object: OptionStyle): string {
+  switch (object) {
+    case OptionStyle.OPTION_STYLE_UNSPECIFIED:
+      return "OPTION_STYLE_UNSPECIFIED";
+    case OptionStyle.OPTION_STYLE_AMERICAN:
+      return "OPTION_STYLE_AMERICAN";
+    case OptionStyle.OPTION_STYLE_EUROPEAN:
+      return "OPTION_STYLE_EUROPEAN";
+    case OptionStyle.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+/** Тип опциона по способу исполнения. */
+export enum OptionSettlementType {
+  /** OPTION_EXECUTION_TYPE_UNSPECIFIED - Тип не определен. */
+  OPTION_EXECUTION_TYPE_UNSPECIFIED = 0,
+  /** OPTION_EXECUTION_TYPE_PHYSICAL_DELIVERY - Поставочный тип опциона. */
+  OPTION_EXECUTION_TYPE_PHYSICAL_DELIVERY = 1,
+  /** OPTION_EXECUTION_TYPE_CASH_SETTLEMENT - Расчетный тип опциона. */
+  OPTION_EXECUTION_TYPE_CASH_SETTLEMENT = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function optionSettlementTypeFromJSON(
+  object: any
+): OptionSettlementType {
+  switch (object) {
+    case 0:
+    case "OPTION_EXECUTION_TYPE_UNSPECIFIED":
+      return OptionSettlementType.OPTION_EXECUTION_TYPE_UNSPECIFIED;
+    case 1:
+    case "OPTION_EXECUTION_TYPE_PHYSICAL_DELIVERY":
+      return OptionSettlementType.OPTION_EXECUTION_TYPE_PHYSICAL_DELIVERY;
+    case 2:
+    case "OPTION_EXECUTION_TYPE_CASH_SETTLEMENT":
+      return OptionSettlementType.OPTION_EXECUTION_TYPE_CASH_SETTLEMENT;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return OptionSettlementType.UNRECOGNIZED;
+  }
+}
+
+export function optionSettlementTypeToJSON(
+  object: OptionSettlementType
+): string {
+  switch (object) {
+    case OptionSettlementType.OPTION_EXECUTION_TYPE_UNSPECIFIED:
+      return "OPTION_EXECUTION_TYPE_UNSPECIFIED";
+    case OptionSettlementType.OPTION_EXECUTION_TYPE_PHYSICAL_DELIVERY:
+      return "OPTION_EXECUTION_TYPE_PHYSICAL_DELIVERY";
+    case OptionSettlementType.OPTION_EXECUTION_TYPE_CASH_SETTLEMENT:
+      return "OPTION_EXECUTION_TYPE_CASH_SETTLEMENT";
+    case OptionSettlementType.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
 /** Тип идентификатора инструмента. Подробнее об идентификации инструментов: [Идентификация инструментов](https://tinkoff.github.io/investAPI/faq_identification/) */
 export enum InstrumentIdType {
   /** INSTRUMENT_ID_UNSPECIFIED - Значение не определено. */
@@ -101,6 +280,8 @@ export enum InstrumentIdType {
   INSTRUMENT_ID_TYPE_TICKER = 2,
   /** INSTRUMENT_ID_TYPE_UID - Уникальный идентификатор. */
   INSTRUMENT_ID_TYPE_UID = 3,
+  /** INSTRUMENT_ID_TYPE_POSITION_UID - Идентификатор позиции. */
+  INSTRUMENT_ID_TYPE_POSITION_UID = 4,
   UNRECOGNIZED = -1,
 }
 
@@ -118,6 +299,9 @@ export function instrumentIdTypeFromJSON(object: any): InstrumentIdType {
     case 3:
     case "INSTRUMENT_ID_TYPE_UID":
       return InstrumentIdType.INSTRUMENT_ID_TYPE_UID;
+    case 4:
+    case "INSTRUMENT_ID_TYPE_POSITION_UID":
+      return InstrumentIdType.INSTRUMENT_ID_TYPE_POSITION_UID;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -135,6 +319,8 @@ export function instrumentIdTypeToJSON(object: InstrumentIdType): string {
       return "INSTRUMENT_ID_TYPE_TICKER";
     case InstrumentIdType.INSTRUMENT_ID_TYPE_UID:
       return "INSTRUMENT_ID_TYPE_UID";
+    case InstrumentIdType.INSTRUMENT_ID_TYPE_POSITION_UID:
+      return "INSTRUMENT_ID_TYPE_POSITION_UID";
     case InstrumentIdType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -145,7 +331,7 @@ export function instrumentIdTypeToJSON(object: InstrumentIdType): string {
 export enum InstrumentStatus {
   /** INSTRUMENT_STATUS_UNSPECIFIED - Значение не определено. */
   INSTRUMENT_STATUS_UNSPECIFIED = 0,
-  /** INSTRUMENT_STATUS_BASE - Базовый список инструментов (по умолчанию). Инструменты доступные для торговли через TINKOFF INVEST API. */
+  /** INSTRUMENT_STATUS_BASE - Базовый список инструментов (по умолчанию). Инструменты доступные для торговли через TINKOFF INVEST API. Cейчас списки бумаг, доступных из api и других интерфейсах совпадают (за исключением внебиржевых бумаг), но в будущем возможны ситуации, когда списки инструментов будут отличаться */
   INSTRUMENT_STATUS_BASE = 1,
   /** INSTRUMENT_STATUS_ALL - Список всех инструментов. */
   INSTRUMENT_STATUS_ALL = 2,
@@ -470,6 +656,49 @@ export function realExchangeToJSON(object: RealExchange): string {
   }
 }
 
+/** Уровень риска облигации. */
+export enum RiskLevel {
+  /** RISK_LEVEL_HIGH - Высокий уровень риска */
+  RISK_LEVEL_HIGH = 0,
+  /** RISK_LEVEL_MODERATE - Средний уровень риска */
+  RISK_LEVEL_MODERATE = 1,
+  /** RISK_LEVEL_LOW - Низкий уровень риска */
+  RISK_LEVEL_LOW = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function riskLevelFromJSON(object: any): RiskLevel {
+  switch (object) {
+    case 0:
+    case "RISK_LEVEL_HIGH":
+      return RiskLevel.RISK_LEVEL_HIGH;
+    case 1:
+    case "RISK_LEVEL_MODERATE":
+      return RiskLevel.RISK_LEVEL_MODERATE;
+    case 2:
+    case "RISK_LEVEL_LOW":
+      return RiskLevel.RISK_LEVEL_LOW;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return RiskLevel.UNRECOGNIZED;
+  }
+}
+
+export function riskLevelToJSON(object: RiskLevel): string {
+  switch (object) {
+    case RiskLevel.RISK_LEVEL_HIGH:
+      return "RISK_LEVEL_HIGH";
+    case RiskLevel.RISK_LEVEL_MODERATE:
+      return "RISK_LEVEL_MODERATE";
+    case RiskLevel.RISK_LEVEL_LOW:
+      return "RISK_LEVEL_LOW";
+    case RiskLevel.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
 /** Запрос расписания торгов. */
 export interface TradingSchedulesRequest {
   /** Наименование биржи или расчетного календаря. </br>Если не передаётся, возвращается информация по всем доступным торговым площадкам. */
@@ -522,6 +751,10 @@ export interface TradingDay {
   premarketStartTime?: Date;
   /** Время окончания премаркета в часовом поясе UTC. */
   premarketEndTime?: Date;
+  /** Время начала аукциона закрытия в часовом поясе UTC. */
+  closingAuctionStartTime?: Date;
+  /** Время окончания аукциона открытия в часовом поясе UTC. */
+  openingAuctionEndTime?: Date;
 }
 
 /** Запрос получения инструмента по идентификатору. */
@@ -538,6 +771,14 @@ export interface InstrumentRequest {
 export interface InstrumentsRequest {
   /** Статус запрашиваемых инструментов. Возможные значения: [InstrumentStatus](#instrumentstatus) */
   instrumentStatus: InstrumentStatus;
+}
+
+/** Параметры фильтрации опционов */
+export interface FilterOptionsRequest {
+  /** Идентификатор базового актива опциона.  Обязательный параметр. */
+  basicAssetUid: string;
+  /** Идентификатор позиции базового актива опциона */
+  basicAssetPositionUid: string;
 }
 
 /** Информация об облигации. */
@@ -625,6 +866,110 @@ export interface FuturesResponse {
   instruments: Future[];
 }
 
+/** Данные по опциону. */
+export interface OptionResponse {
+  /** Информация по опциону. */
+  instrument?: Option;
+}
+
+/** Данные по опционам. */
+export interface OptionsResponse {
+  /** Массив данных по опциону. */
+  instruments: Option[];
+}
+
+/** Опцион. */
+export interface Option {
+  /** Уникальный идентификатор инструмента. */
+  uid: string;
+  /** Уникальный идентификатор позиции. */
+  positionUid: string;
+  /** Тикер инструмента. */
+  ticker: string;
+  /** Класс-код. */
+  classCode: string;
+  /** Уникальный идентификатор позиции основного инструмента. */
+  basicAssetPositionUid: string;
+  /** Текущий режим торгов инструмента. */
+  tradingStatus: SecurityTradingStatus;
+  /** Реальная площадка исполнения расчётов (биржа). Допустимые значения: [REAL_EXCHANGE_MOEX, REAL_EXCHANGE_RTS] */
+  realExchange: RealExchange;
+  /** Направление опциона. */
+  direction: OptionDirection;
+  /** Тип расчетов по опциону. */
+  paymentType: OptionPaymentType;
+  /** Стиль опциона. */
+  style: OptionStyle;
+  /** Способ исполнения опциона. */
+  settlementType: OptionSettlementType;
+  /** Название инструмента. */
+  name: string;
+  /** Валюта. */
+  currency: string;
+  /** Валюта, в которой оценивается контракт. */
+  settlementCurrency: string;
+  /** Тип актива. */
+  assetType: string;
+  /** Основной актив. */
+  basicAsset: string;
+  /** Tорговая площадка (секция биржи). */
+  exchange: string;
+  /** Код страны рисков. */
+  countryOfRisk: string;
+  /** Наименование страны рисков. */
+  countryOfRiskName: string;
+  /** Сектор экономики. */
+  sector: string;
+  /** Количество бумаг в лоте. */
+  lot: number;
+  /** Размер основного актива. */
+  basicAssetSize?: Quotation;
+  /** Коэффициент ставки риска длинной позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР). 1 – клиент с повышенным уровнем риска (КПУР) */
+  klong?: Quotation;
+  /** Коэффициент ставки риска короткой позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР). 1 – клиент с повышенным уровнем риска (КПУР) */
+  kshort?: Quotation;
+  /** Ставка риска начальной маржи для КСУР лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
+  dlong?: Quotation;
+  /** Ставка риска начальной маржи для КСУР шорт.  Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
+  dshort?: Quotation;
+  /** Ставка риска начальной маржи для КПУР лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
+  dlongMin?: Quotation;
+  /** Ставка риска начальной маржи для КПУР шорт.  Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
+  dshortMin?: Quotation;
+  /** Минимальный шаг цены. */
+  minPriceIncrement?: Quotation;
+  /** Цена страйка. */
+  strikePrice?: MoneyValue;
+  /** Дата истечения срока в формате UTC. */
+  expirationDate?: Date;
+  /** Дата начала обращения контракта в формате UTC. */
+  firstTradeDate?: Date;
+  /** Дата исполнения в формате UTC. */
+  lastTradeDate?: Date;
+  /** Дата первой минутной свечи в формате UTC. */
+  first1minCandleDate?: Date;
+  /** Дата первой дневной свечи в формате UTC. */
+  first1dayCandleDate?: Date;
+  /** Признак доступности для операций шорт. */
+  shortEnabledFlag: boolean;
+  /** Возможность покупки/продажи на ИИС. */
+  forIisFlag: boolean;
+  /** Признак внебиржевой ценной бумаги. */
+  otcFlag: boolean;
+  /** Признак доступности для покупки. */
+  buyAvailableFlag: boolean;
+  /** Признак доступности для продажи. */
+  sellAvailableFlag: boolean;
+  /** Флаг отображающий доступность торговли инструментом только для квалифицированных инвесторов. */
+  forQualInvestorFlag: boolean;
+  /** Флаг отображающий доступность торговли инструментом по выходным. */
+  weekendFlag: boolean;
+  /** Флаг заблокированного ТКС. */
+  blockedTcaFlag: boolean;
+  /** Параметр указывает на возможность торговать инструментом через API. */
+  apiTradeAvailableFlag: boolean;
+}
+
 /** Данные по акции. */
 export interface ShareResponse {
   /** Информация об акции. */
@@ -651,23 +996,23 @@ export interface Bond {
   lot: number;
   /** Валюта расчётов. */
   currency: string;
-  /** Коэффициент ставки риска длинной позиции по инструменту. */
+  /** Коэффициент ставки риска длинной позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР). 1 – клиент с повышенным уровнем риска (КПУР) */
   klong?: Quotation;
-  /** Коэффициент ставки риска короткой позиции по инструменту. */
+  /** Коэффициент ставки риска короткой позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР). 1 – клиент с повышенным уровнем риска (КПУР) */
   kshort?: Quotation;
-  /** Ставка риска минимальной маржи в лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
+  /** Ставка риска начальной маржи для КСУР лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
   dlong?: Quotation;
-  /** Ставка риска минимальной маржи в шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
+  /** Ставка риска начальной маржи для КСУР шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
   dshort?: Quotation;
-  /** Ставка риска начальной маржи в лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
+  /** Ставка риска начальной маржи для КПУР лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
   dlongMin?: Quotation;
-  /** Ставка риска начальной маржи в шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
+  /** Ставка риска начальной маржи для КПУР шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
   dshortMin?: Quotation;
   /** Признак доступности для операций в шорт. */
   shortEnabledFlag: boolean;
   /** Название инструмента. */
   name: string;
-  /** Торговая площадка. */
+  /** Tорговая площадка (секция биржи). */
   exchange: string;
   /** Количество выплат по купонам в год. */
   couponQuantityPerYear: number;
@@ -675,6 +1020,8 @@ export interface Bond {
   maturityDate?: Date;
   /** Номинал облигации. */
   nominal?: MoneyValue;
+  /** Первоначальный номинал облигации. */
+  initialNominal?: MoneyValue;
   /** Дата выпуска облигации в часовом поясе UTC. */
   stateRegDate?: Date;
   /** Дата размещения в часовом поясе UTC. */
@@ -711,20 +1058,32 @@ export interface Bond {
   amortizationFlag: boolean;
   /** Шаг цены. */
   minPriceIncrement?: Quotation;
-  /** Признак доступности торгов через API. */
+  /** Параметр указывает на возможность торговать инструментом через API. */
   apiTradeAvailableFlag: boolean;
   /** Уникальный идентификатор инструмента. */
   uid: string;
-  /** Реальная площадка исполнения расчётов. */
+  /** Реальная площадка исполнения расчётов. (биржа) */
   realExchange: RealExchange;
   /** Уникальный идентификатор позиции инструмента. */
   positionUid: string;
   /** Признак доступности для ИИС. */
   forIisFlag: boolean;
+  /** Флаг отображающий доступность торговли инструментом только для квалифицированных инвесторов. */
+  forQualInvestorFlag: boolean;
+  /** Флаг отображающий доступность торговли инструментом по выходным */
+  weekendFlag: boolean;
+  /** Флаг заблокированного ТКС */
+  blockedTcaFlag: boolean;
+  /** Признак субординированной облигации. */
+  subordinatedFlag: boolean;
+  /** Флаг достаточной ликвидности */
+  liquidityFlag: boolean;
   /** Дата первой минутной свечи. */
   first1minCandleDate?: Date;
   /** Дата первой дневной свечи. */
   first1dayCandleDate?: Date;
+  /** Уровень риска. */
+  riskLevel: RiskLevel;
 }
 
 /** Объект передачи информации о валюте. */
@@ -741,23 +1100,23 @@ export interface Currency {
   lot: number;
   /** Валюта расчётов. */
   currency: string;
-  /** Коэффициент ставки риска длинной позиции по инструменту. */
+  /** Коэффициент ставки риска длинной позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР). 1 – клиент с повышенным уровнем риска (КПУР) */
   klong?: Quotation;
-  /** Коэффициент ставки риска короткой позиции по инструменту. */
+  /** Коэффициент ставки риска короткой позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР). 1 – клиент с повышенным уровнем риска (КПУР) */
   kshort?: Quotation;
-  /** Ставка риска минимальной маржи в лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
+  /** Ставка риска начальной маржи для КСУР лонг.Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
   dlong?: Quotation;
-  /** Ставка риска минимальной маржи в шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
+  /** Ставка риска начальной маржи для КСУР шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
   dshort?: Quotation;
-  /** Ставка риска начальной маржи в лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
+  /** Ставка риска начальной маржи для КПУР лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
   dlongMin?: Quotation;
-  /** Ставка риска начальной маржи в шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
+  /** Ставка риска начальной маржи для КПУР шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
   dshortMin?: Quotation;
   /** Признак доступности для операций в шорт. */
   shortEnabledFlag: boolean;
   /** Название инструмента. */
   name: string;
-  /** Торговая площадка. */
+  /** Tорговая площадка (секция биржи) */
   exchange: string;
   /** Номинал. */
   nominal?: MoneyValue;
@@ -777,16 +1136,22 @@ export interface Currency {
   isoCurrencyName: string;
   /** Шаг цены. */
   minPriceIncrement?: Quotation;
-  /** Признак доступности торгов через API. */
+  /** Параметр указывает на возможность торговать инструментом через API. */
   apiTradeAvailableFlag: boolean;
   /** Уникальный идентификатор инструмента. */
   uid: string;
-  /** Реальная площадка исполнения расчётов. */
+  /** Реальная площадка исполнения расчётов (биржа). */
   realExchange: RealExchange;
   /** Уникальный идентификатор позиции инструмента. */
   positionUid: string;
   /** Признак доступности для ИИС. */
   forIisFlag: boolean;
+  /** Флаг отображающий доступность торговли инструментом только для квалифицированных инвесторов. */
+  forQualInvestorFlag: boolean;
+  /** Флаг отображающий доступность торговли инструментом по выходным. */
+  weekendFlag: boolean;
+  /** Флаг заблокированного ТКС. */
+  blockedTcaFlag: boolean;
   /** Дата первой минутной свечи. */
   first1minCandleDate?: Date;
   /** Дата первой дневной свечи. */
@@ -807,23 +1172,23 @@ export interface Etf {
   lot: number;
   /** Валюта расчётов. */
   currency: string;
-  /** Коэффициент ставки риска длинной позиции по инструменту. */
+  /** Коэффициент ставки риска длинной позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР). 1 – клиент с повышенным уровнем риска (КПУР) */
   klong?: Quotation;
-  /** Коэффициент ставки риска короткой позиции по инструменту. */
+  /** Коэффициент ставки риска короткой позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР). 1 – клиент с повышенным уровнем риска (КПУР) */
   kshort?: Quotation;
-  /** Ставка риска минимальной маржи в лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
+  /** Ставка риска начальной маржи для КСУР лонг.Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
   dlong?: Quotation;
-  /** Ставка риска минимальной маржи в шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
+  /** Ставка риска начальной маржи для КСУР шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
   dshort?: Quotation;
-  /** Ставка риска начальной маржи в лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
+  /** Ставка риска начальной маржи для КПУР лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
   dlongMin?: Quotation;
-  /** Ставка риска начальной маржи в шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
+  /** Ставка риска начальной маржи для КПУР шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
   dshortMin?: Quotation;
   /** Признак доступности для операций в шорт. */
   shortEnabledFlag: boolean;
   /** Название инструмента. */
   name: string;
-  /** Торговая площадка. */
+  /** Tорговая площадка (секция биржи). */
   exchange: string;
   /** Размер фиксированной комиссии фонда. */
   fixedCommission?: Quotation;
@@ -851,16 +1216,24 @@ export interface Etf {
   sellAvailableFlag: boolean;
   /** Шаг цены. */
   minPriceIncrement?: Quotation;
-  /** Признак доступности торгов через API. */
+  /** Параметр указывает на возможность торговать инструментом через API. */
   apiTradeAvailableFlag: boolean;
   /** Уникальный идентификатор инструмента. */
   uid: string;
-  /** Реальная площадка исполнения расчётов. */
+  /** Реальная площадка исполнения расчётов (биржа). */
   realExchange: RealExchange;
   /** Уникальный идентификатор позиции инструмента. */
   positionUid: string;
   /** Признак доступности для ИИС. */
   forIisFlag: boolean;
+  /** Флаг отображающий доступность торговли инструментом только для квалифицированных инвесторов. */
+  forQualInvestorFlag: boolean;
+  /** Флаг отображающий доступность торговли инструментом по выходным. */
+  weekendFlag: boolean;
+  /** Флаг заблокированного ТКС. */
+  blockedTcaFlag: boolean;
+  /** Флаг достаточной ликвидности */
+  liquidityFlag: boolean;
   /** Дата первой минутной свечи. */
   first1minCandleDate?: Date;
   /** Дата первой дневной свечи. */
@@ -879,23 +1252,23 @@ export interface Future {
   lot: number;
   /** Валюта расчётов. */
   currency: string;
-  /** Коэффициент ставки риска длинной позиции по клиенту. */
+  /** Коэффициент ставки риска длинной позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР). 1 – клиент с повышенным уровнем риска (КПУР) */
   klong?: Quotation;
-  /** Коэффициент ставки риска короткой позиции по клиенту. */
+  /** Коэффициент ставки риска короткой позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР). 1 – клиент с повышенным уровнем риска (КПУР) */
   kshort?: Quotation;
-  /** Ставка риска минимальной маржи в лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
+  /** Ставка риска начальной маржи для КСУР лонг.Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
   dlong?: Quotation;
-  /** Ставка риска минимальной маржи в шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
+  /** Ставка риска начальной маржи для КСУР шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
   dshort?: Quotation;
-  /** Ставка риска начальной маржи в лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
+  /** Ставка риска начальной маржи для КПУР лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
   dlongMin?: Quotation;
-  /** Ставка риска начальной маржи в шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
+  /** Ставка риска начальной маржи для КПУР шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
   dshortMin?: Quotation;
   /** Признак доступности для операций шорт. */
   shortEnabledFlag: boolean;
   /** Название инструмента. */
   name: string;
-  /** Торговая площадка. */
+  /** Tорговая площадка (секция биржи). */
   exchange: string;
   /** Дата начала обращения контракта в часовом поясе UTC. */
   firstTradeDate?: Date;
@@ -927,11 +1300,11 @@ export interface Future {
   sellAvailableFlag: boolean;
   /** Шаг цены. */
   minPriceIncrement?: Quotation;
-  /** Признак доступности торгов через API. */
+  /** Параметр указывает на возможность торговать инструментом через API. */
   apiTradeAvailableFlag: boolean;
   /** Уникальный идентификатор инструмента. */
   uid: string;
-  /** Реальная площадка исполнения расчётов. */
+  /** Реальная площадка исполнения расчётов (биржа). */
   realExchange: RealExchange;
   /** Уникальный идентификатор позиции инструмента. */
   positionUid: string;
@@ -939,6 +1312,12 @@ export interface Future {
   basicAssetPositionUid: string;
   /** Признак доступности для ИИС. */
   forIisFlag: boolean;
+  /** Флаг отображающий доступность торговли инструментом только для квалифицированных инвесторов. */
+  forQualInvestorFlag: boolean;
+  /** Флаг отображающий доступность торговли инструментом по выходным. */
+  weekendFlag: boolean;
+  /** Флаг заблокированного ТКС. */
+  blockedTcaFlag: boolean;
   /** Дата первой минутной свечи. */
   first1minCandleDate?: Date;
   /** Дата первой дневной свечи. */
@@ -959,23 +1338,23 @@ export interface Share {
   lot: number;
   /** Валюта расчётов. */
   currency: string;
-  /** Коэффициент ставки риска длинной позиции по инструменту. */
+  /** Коэффициент ставки риска длинной позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР). 1 – клиент с повышенным уровнем риска (КПУР) */
   klong?: Quotation;
-  /** Коэффициент ставки риска короткой позиции по инструменту. */
+  /** Коэффициент ставки риска короткой позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР). 1 – клиент с повышенным уровнем риска (КПУР) */
   kshort?: Quotation;
-  /** Ставка риска минимальной маржи в лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
+  /** Ставка риска начальной маржи для КСУР лонг.Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
   dlong?: Quotation;
-  /** Ставка риска минимальной маржи в шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
+  /** Ставка риска начальной маржи для КСУР шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
   dshort?: Quotation;
-  /** Ставка риска начальной маржи в лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
+  /** Ставка риска начальной маржи для КПУР лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
   dlongMin?: Quotation;
-  /** Ставка риска начальной маржи в шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
+  /** Ставка риска начальной маржи для КПУР шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
   dshortMin?: Quotation;
   /** Признак доступности для операций в шорт. */
   shortEnabledFlag: boolean;
   /** Название инструмента. */
   name: string;
-  /** Торговая площадка. */
+  /** Tорговая площадка (секция биржи). */
   exchange: string;
   /** Дата IPO акции в часовом поясе UTC. */
   ipoDate?: Date;
@@ -1005,16 +1384,24 @@ export interface Share {
   shareType: ShareType;
   /** Шаг цены. */
   minPriceIncrement?: Quotation;
-  /** Признак доступности торгов через API. */
+  /** Параметр указывает на возможность торговать инструментом через API. */
   apiTradeAvailableFlag: boolean;
   /** Уникальный идентификатор инструмента. */
   uid: string;
-  /** Реальная площадка исполнения расчётов. */
+  /** Реальная площадка исполнения расчётов (биржа). */
   realExchange: RealExchange;
   /** Уникальный идентификатор позиции инструмента. */
   positionUid: string;
   /** Признак доступности для ИИС. */
   forIisFlag: boolean;
+  /** Флаг отображающий доступность торговли инструментом только для квалифицированных инвесторов. */
+  forQualInvestorFlag: boolean;
+  /** Флаг отображающий доступность торговли инструментом по выходным */
+  weekendFlag: boolean;
+  /** Флаг заблокированного ТКС */
+  blockedTcaFlag: boolean;
+  /** Флаг достаточной ликвидности */
+  liquidityFlag: boolean;
   /** Дата первой минутной свечи. */
   first1minCandleDate?: Date;
   /** Дата первой дневной свечи. */
@@ -1087,23 +1474,23 @@ export interface Instrument {
   lot: number;
   /** Валюта расчётов. */
   currency: string;
-  /** Коэффициент ставки риска длинной позиции по инструменту. */
+  /** Коэффициент ставки риска длинной позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР). 1 – клиент с повышенным уровнем риска (КПУР) */
   klong?: Quotation;
-  /** Коэффициент ставки риска короткой позиции по инструменту. */
+  /** Коэффициент ставки риска короткой позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР). 1 – клиент с повышенным уровнем риска (КПУР) */
   kshort?: Quotation;
-  /** Ставка риска минимальной маржи в лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
+  /** ССтавка риска начальной маржи для КСУР лонг.Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
   dlong?: Quotation;
-  /** Ставка риска минимальной маржи в шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
+  /** Ставка риска начальной маржи для КСУР шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
   dshort?: Quotation;
-  /** Ставка риска начальной маржи в лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
+  /** Ставка риска начальной маржи для КПУР лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
   dlongMin?: Quotation;
-  /** Ставка риска начальной маржи в шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
+  /** Ставка риска начальной маржи для КПУР шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
   dshortMin?: Quotation;
   /** Признак доступности для операций в шорт. */
   shortEnabledFlag: boolean;
   /** Название инструмента. */
   name: string;
-  /** Торговая площадка. */
+  /** Tорговая площадка (секция биржи). */
   exchange: string;
   /** Код страны риска, т.е. страны, в которой компания ведёт основной бизнес. */
   countryOfRisk: string;
@@ -1121,16 +1508,24 @@ export interface Instrument {
   sellAvailableFlag: boolean;
   /** Шаг цены. */
   minPriceIncrement?: Quotation;
-  /** Признак доступности торгов через API. */
+  /** Параметр указывает на возможность торговать инструментом через API. */
   apiTradeAvailableFlag: boolean;
   /** Уникальный идентификатор инструмента. */
   uid: string;
-  /** Реальная площадка исполнения расчётов. */
+  /** Реальная площадка исполнения расчётов (биржа). */
   realExchange: RealExchange;
   /** Уникальный идентификатор позиции инструмента. */
   positionUid: string;
   /** Признак доступности для ИИС. */
   forIisFlag: boolean;
+  /** Флаг отображающий доступность торговли инструментом только для квалифицированных инвесторов. */
+  forQualInvestorFlag: boolean;
+  /** Флаг отображающий доступность торговли инструментом по выходным */
+  weekendFlag: boolean;
+  /** Флаг заблокированного ТКС */
+  blockedTcaFlag: boolean;
+  /** Тип инструмента. */
+  instrumentKind: InstrumentType;
   /** Дата первой минутной свечи. */
   first1minCandleDate?: Date;
   /** Дата первой дневной свечи. */
@@ -1189,7 +1584,9 @@ export interface AssetResponse {
 }
 
 /** Запрос списка активов. */
-export interface AssetsRequest {}
+export interface AssetsRequest {
+  instrumentType: InstrumentType;
+}
 
 /** Список активов. */
 export interface AssetsResponse {
@@ -1260,6 +1657,8 @@ export interface AssetSecurity {
   isin: string;
   /** Тип ценной бумаги. */
   type: string;
+  /** Тип инструмента. */
+  instrumentKind: InstrumentType;
   /** Акция. Заполняется только для акций (тип актива asset.type = "ASSET_TYPE_SECURITY" и security.type = share). */
   share?: AssetShare | undefined;
   /** Облигация. Заполняется только для облигаций (тип актива asset.type = "ASSET_TYPE_SECURITY" и security.type = bond). */
@@ -1490,6 +1889,10 @@ export interface AssetInstrument {
   classCode: string;
   /** Массив связанных инструментов. */
   links: InstrumentLink[];
+  /** Тип инструмента. */
+  instrumentKind: InstrumentType;
+  /** id позиции. */
+  positionUid: string;
 }
 
 /** Связь с другим инструментом. */
@@ -1523,8 +1926,10 @@ export interface FavoriteInstrument {
   instrumentType: string;
   /** Признак внебиржевой ценной бумаги. */
   otcFlag: boolean;
-  /** Признак доступности торгов через API. */
+  /** Параметр указывает на возможность торговать инструментом через API. */
   apiTradeAvailableFlag: boolean;
+  /** Тип инструмента. */
+  instrumentKind: InstrumentType;
 }
 
 /** Запрос редактирования списка избранных инструментов. */
@@ -1572,6 +1977,10 @@ export interface CountryResponse {
 export interface FindInstrumentRequest {
   /** Строка поиска. */
   query: string;
+  /** Фильтр по типу инструмента. */
+  instrumentKind: InstrumentType;
+  /** Фильтр для отображения только торговых инструментов. */
+  apiTradeAvailableFlag: boolean;
 }
 
 /** Результат поиска инструментов. */
@@ -1598,7 +2007,9 @@ export interface InstrumentShort {
   uid: string;
   /** Уникальный идентификатор позиции инструмента. */
   positionUid: string;
-  /** Признак доступности торгов через API. */
+  /** Тип инструмента. */
+  instrumentKind: InstrumentType;
+  /** Параметр указывает на возможность торговать инструментом через API. */
   apiTradeAvailableFlag: boolean;
   /** Признак доступности для ИИС. */
   forIisFlag: boolean;
@@ -1606,6 +2017,12 @@ export interface InstrumentShort {
   first1minCandleDate?: Date;
   /** Дата первой дневной свечи. */
   first1dayCandleDate?: Date;
+  /** Флаг отображающий доступность торговли инструментом только для квалифицированных инвесторов. */
+  forQualInvestorFlag: boolean;
+  /** Флаг отображающий доступность торговли инструментом по выходным */
+  weekendFlag: boolean;
+  /** Флаг заблокированного ТКС */
+  blockedTcaFlag: boolean;
 }
 
 /** Запрос списка брендов. */
@@ -1832,6 +2249,8 @@ function createBaseTradingDay(): TradingDay {
     clearingEndTime: undefined,
     premarketStartTime: undefined,
     premarketEndTime: undefined,
+    closingAuctionStartTime: undefined,
+    openingAuctionEndTime: undefined,
   };
 }
 
@@ -1915,6 +2334,18 @@ export const TradingDay = {
         writer.uint32(122).fork()
       ).ldelim();
     }
+    if (message.closingAuctionStartTime !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.closingAuctionStartTime),
+        writer.uint32(130).fork()
+      ).ldelim();
+    }
+    if (message.openingAuctionEndTime !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.openingAuctionEndTime),
+        writer.uint32(138).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -1988,6 +2419,16 @@ export const TradingDay = {
             Timestamp.decode(reader, reader.uint32())
           );
           break;
+        case 16:
+          message.closingAuctionStartTime = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
+        case 17:
+          message.openingAuctionEndTime = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2037,6 +2478,12 @@ export const TradingDay = {
       premarketEndTime: isSet(object.premarketEndTime)
         ? fromJsonTimestamp(object.premarketEndTime)
         : undefined,
+      closingAuctionStartTime: isSet(object.closingAuctionStartTime)
+        ? fromJsonTimestamp(object.closingAuctionStartTime)
+        : undefined,
+      openingAuctionEndTime: isSet(object.openingAuctionEndTime)
+        ? fromJsonTimestamp(object.openingAuctionEndTime)
+        : undefined,
     };
   },
 
@@ -2069,6 +2516,11 @@ export const TradingDay = {
       (obj.premarketStartTime = message.premarketStartTime.toISOString());
     message.premarketEndTime !== undefined &&
       (obj.premarketEndTime = message.premarketEndTime.toISOString());
+    message.closingAuctionStartTime !== undefined &&
+      (obj.closingAuctionStartTime =
+        message.closingAuctionStartTime.toISOString());
+    message.openingAuctionEndTime !== undefined &&
+      (obj.openingAuctionEndTime = message.openingAuctionEndTime.toISOString());
     return obj;
   },
 };
@@ -2183,6 +2635,69 @@ export const InstrumentsRequest = {
     const obj: any = {};
     message.instrumentStatus !== undefined &&
       (obj.instrumentStatus = instrumentStatusToJSON(message.instrumentStatus));
+    return obj;
+  },
+};
+
+function createBaseFilterOptionsRequest(): FilterOptionsRequest {
+  return { basicAssetUid: "", basicAssetPositionUid: "" };
+}
+
+export const FilterOptionsRequest = {
+  encode(
+    message: FilterOptionsRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.basicAssetUid !== "") {
+      writer.uint32(10).string(message.basicAssetUid);
+    }
+    if (message.basicAssetPositionUid !== "") {
+      writer.uint32(18).string(message.basicAssetPositionUid);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): FilterOptionsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseFilterOptionsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.basicAssetUid = reader.string();
+          break;
+        case 2:
+          message.basicAssetPositionUid = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): FilterOptionsRequest {
+    return {
+      basicAssetUid: isSet(object.basicAssetUid)
+        ? String(object.basicAssetUid)
+        : "",
+      basicAssetPositionUid: isSet(object.basicAssetPositionUid)
+        ? String(object.basicAssetPositionUid)
+        : "",
+    };
+  },
+
+  toJSON(message: FilterOptionsRequest): unknown {
+    const obj: any = {};
+    message.basicAssetUid !== undefined &&
+      (obj.basicAssetUid = message.basicAssetUid);
+    message.basicAssetPositionUid !== undefined &&
+      (obj.basicAssetPositionUid = message.basicAssetPositionUid);
     return obj;
   },
 };
@@ -2903,6 +3418,682 @@ export const FuturesResponse = {
   },
 };
 
+function createBaseOptionResponse(): OptionResponse {
+  return { instrument: undefined };
+}
+
+export const OptionResponse = {
+  encode(
+    message: OptionResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.instrument !== undefined) {
+      Option.encode(message.instrument, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): OptionResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseOptionResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.instrument = Option.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): OptionResponse {
+    return {
+      instrument: isSet(object.instrument)
+        ? Option.fromJSON(object.instrument)
+        : undefined,
+    };
+  },
+
+  toJSON(message: OptionResponse): unknown {
+    const obj: any = {};
+    message.instrument !== undefined &&
+      (obj.instrument = message.instrument
+        ? Option.toJSON(message.instrument)
+        : undefined);
+    return obj;
+  },
+};
+
+function createBaseOptionsResponse(): OptionsResponse {
+  return { instruments: [] };
+}
+
+export const OptionsResponse = {
+  encode(
+    message: OptionsResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    for (const v of message.instruments) {
+      Option.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): OptionsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseOptionsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.instruments.push(Option.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): OptionsResponse {
+    return {
+      instruments: Array.isArray(object?.instruments)
+        ? object.instruments.map((e: any) => Option.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: OptionsResponse): unknown {
+    const obj: any = {};
+    if (message.instruments) {
+      obj.instruments = message.instruments.map((e) =>
+        e ? Option.toJSON(e) : undefined
+      );
+    } else {
+      obj.instruments = [];
+    }
+    return obj;
+  },
+};
+
+function createBaseOption(): Option {
+  return {
+    uid: "",
+    positionUid: "",
+    ticker: "",
+    classCode: "",
+    basicAssetPositionUid: "",
+    tradingStatus: 0,
+    realExchange: 0,
+    direction: 0,
+    paymentType: 0,
+    style: 0,
+    settlementType: 0,
+    name: "",
+    currency: "",
+    settlementCurrency: "",
+    assetType: "",
+    basicAsset: "",
+    exchange: "",
+    countryOfRisk: "",
+    countryOfRiskName: "",
+    sector: "",
+    lot: 0,
+    basicAssetSize: undefined,
+    klong: undefined,
+    kshort: undefined,
+    dlong: undefined,
+    dshort: undefined,
+    dlongMin: undefined,
+    dshortMin: undefined,
+    minPriceIncrement: undefined,
+    strikePrice: undefined,
+    expirationDate: undefined,
+    firstTradeDate: undefined,
+    lastTradeDate: undefined,
+    first1minCandleDate: undefined,
+    first1dayCandleDate: undefined,
+    shortEnabledFlag: false,
+    forIisFlag: false,
+    otcFlag: false,
+    buyAvailableFlag: false,
+    sellAvailableFlag: false,
+    forQualInvestorFlag: false,
+    weekendFlag: false,
+    blockedTcaFlag: false,
+    apiTradeAvailableFlag: false,
+  };
+}
+
+export const Option = {
+  encode(
+    message: Option,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.uid !== "") {
+      writer.uint32(10).string(message.uid);
+    }
+    if (message.positionUid !== "") {
+      writer.uint32(18).string(message.positionUid);
+    }
+    if (message.ticker !== "") {
+      writer.uint32(26).string(message.ticker);
+    }
+    if (message.classCode !== "") {
+      writer.uint32(34).string(message.classCode);
+    }
+    if (message.basicAssetPositionUid !== "") {
+      writer.uint32(42).string(message.basicAssetPositionUid);
+    }
+    if (message.tradingStatus !== 0) {
+      writer.uint32(168).int32(message.tradingStatus);
+    }
+    if (message.realExchange !== 0) {
+      writer.uint32(248).int32(message.realExchange);
+    }
+    if (message.direction !== 0) {
+      writer.uint32(328).int32(message.direction);
+    }
+    if (message.paymentType !== 0) {
+      writer.uint32(336).int32(message.paymentType);
+    }
+    if (message.style !== 0) {
+      writer.uint32(344).int32(message.style);
+    }
+    if (message.settlementType !== 0) {
+      writer.uint32(352).int32(message.settlementType);
+    }
+    if (message.name !== "") {
+      writer.uint32(810).string(message.name);
+    }
+    if (message.currency !== "") {
+      writer.uint32(890).string(message.currency);
+    }
+    if (message.settlementCurrency !== "") {
+      writer.uint32(898).string(message.settlementCurrency);
+    }
+    if (message.assetType !== "") {
+      writer.uint32(1050).string(message.assetType);
+    }
+    if (message.basicAsset !== "") {
+      writer.uint32(1058).string(message.basicAsset);
+    }
+    if (message.exchange !== "") {
+      writer.uint32(1130).string(message.exchange);
+    }
+    if (message.countryOfRisk !== "") {
+      writer.uint32(1210).string(message.countryOfRisk);
+    }
+    if (message.countryOfRiskName !== "") {
+      writer.uint32(1218).string(message.countryOfRiskName);
+    }
+    if (message.sector !== "") {
+      writer.uint32(1290).string(message.sector);
+    }
+    if (message.lot !== 0) {
+      writer.uint32(1608).int32(message.lot);
+    }
+    if (message.basicAssetSize !== undefined) {
+      Quotation.encode(
+        message.basicAssetSize,
+        writer.uint32(1690).fork()
+      ).ldelim();
+    }
+    if (message.klong !== undefined) {
+      Quotation.encode(message.klong, writer.uint32(1770).fork()).ldelim();
+    }
+    if (message.kshort !== undefined) {
+      Quotation.encode(message.kshort, writer.uint32(1778).fork()).ldelim();
+    }
+    if (message.dlong !== undefined) {
+      Quotation.encode(message.dlong, writer.uint32(1786).fork()).ldelim();
+    }
+    if (message.dshort !== undefined) {
+      Quotation.encode(message.dshort, writer.uint32(1794).fork()).ldelim();
+    }
+    if (message.dlongMin !== undefined) {
+      Quotation.encode(message.dlongMin, writer.uint32(1802).fork()).ldelim();
+    }
+    if (message.dshortMin !== undefined) {
+      Quotation.encode(message.dshortMin, writer.uint32(1810).fork()).ldelim();
+    }
+    if (message.minPriceIncrement !== undefined) {
+      Quotation.encode(
+        message.minPriceIncrement,
+        writer.uint32(1850).fork()
+      ).ldelim();
+    }
+    if (message.strikePrice !== undefined) {
+      MoneyValue.encode(
+        message.strikePrice,
+        writer.uint32(1930).fork()
+      ).ldelim();
+    }
+    if (message.expirationDate !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.expirationDate),
+        writer.uint32(2410).fork()
+      ).ldelim();
+    }
+    if (message.firstTradeDate !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.firstTradeDate),
+        writer.uint32(2490).fork()
+      ).ldelim();
+    }
+    if (message.lastTradeDate !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.lastTradeDate),
+        writer.uint32(2498).fork()
+      ).ldelim();
+    }
+    if (message.first1minCandleDate !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.first1minCandleDate),
+        writer.uint32(2570).fork()
+      ).ldelim();
+    }
+    if (message.first1dayCandleDate !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.first1dayCandleDate),
+        writer.uint32(2578).fork()
+      ).ldelim();
+    }
+    if (message.shortEnabledFlag === true) {
+      writer.uint32(3208).bool(message.shortEnabledFlag);
+    }
+    if (message.forIisFlag === true) {
+      writer.uint32(3216).bool(message.forIisFlag);
+    }
+    if (message.otcFlag === true) {
+      writer.uint32(3224).bool(message.otcFlag);
+    }
+    if (message.buyAvailableFlag === true) {
+      writer.uint32(3232).bool(message.buyAvailableFlag);
+    }
+    if (message.sellAvailableFlag === true) {
+      writer.uint32(3240).bool(message.sellAvailableFlag);
+    }
+    if (message.forQualInvestorFlag === true) {
+      writer.uint32(3248).bool(message.forQualInvestorFlag);
+    }
+    if (message.weekendFlag === true) {
+      writer.uint32(3256).bool(message.weekendFlag);
+    }
+    if (message.blockedTcaFlag === true) {
+      writer.uint32(3264).bool(message.blockedTcaFlag);
+    }
+    if (message.apiTradeAvailableFlag === true) {
+      writer.uint32(3272).bool(message.apiTradeAvailableFlag);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Option {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseOption();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.uid = reader.string();
+          break;
+        case 2:
+          message.positionUid = reader.string();
+          break;
+        case 3:
+          message.ticker = reader.string();
+          break;
+        case 4:
+          message.classCode = reader.string();
+          break;
+        case 5:
+          message.basicAssetPositionUid = reader.string();
+          break;
+        case 21:
+          message.tradingStatus = reader.int32() as any;
+          break;
+        case 31:
+          message.realExchange = reader.int32() as any;
+          break;
+        case 41:
+          message.direction = reader.int32() as any;
+          break;
+        case 42:
+          message.paymentType = reader.int32() as any;
+          break;
+        case 43:
+          message.style = reader.int32() as any;
+          break;
+        case 44:
+          message.settlementType = reader.int32() as any;
+          break;
+        case 101:
+          message.name = reader.string();
+          break;
+        case 111:
+          message.currency = reader.string();
+          break;
+        case 112:
+          message.settlementCurrency = reader.string();
+          break;
+        case 131:
+          message.assetType = reader.string();
+          break;
+        case 132:
+          message.basicAsset = reader.string();
+          break;
+        case 141:
+          message.exchange = reader.string();
+          break;
+        case 151:
+          message.countryOfRisk = reader.string();
+          break;
+        case 152:
+          message.countryOfRiskName = reader.string();
+          break;
+        case 161:
+          message.sector = reader.string();
+          break;
+        case 201:
+          message.lot = reader.int32();
+          break;
+        case 211:
+          message.basicAssetSize = Quotation.decode(reader, reader.uint32());
+          break;
+        case 221:
+          message.klong = Quotation.decode(reader, reader.uint32());
+          break;
+        case 222:
+          message.kshort = Quotation.decode(reader, reader.uint32());
+          break;
+        case 223:
+          message.dlong = Quotation.decode(reader, reader.uint32());
+          break;
+        case 224:
+          message.dshort = Quotation.decode(reader, reader.uint32());
+          break;
+        case 225:
+          message.dlongMin = Quotation.decode(reader, reader.uint32());
+          break;
+        case 226:
+          message.dshortMin = Quotation.decode(reader, reader.uint32());
+          break;
+        case 231:
+          message.minPriceIncrement = Quotation.decode(reader, reader.uint32());
+          break;
+        case 241:
+          message.strikePrice = MoneyValue.decode(reader, reader.uint32());
+          break;
+        case 301:
+          message.expirationDate = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
+        case 311:
+          message.firstTradeDate = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
+        case 312:
+          message.lastTradeDate = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
+        case 321:
+          message.first1minCandleDate = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
+        case 322:
+          message.first1dayCandleDate = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
+        case 401:
+          message.shortEnabledFlag = reader.bool();
+          break;
+        case 402:
+          message.forIisFlag = reader.bool();
+          break;
+        case 403:
+          message.otcFlag = reader.bool();
+          break;
+        case 404:
+          message.buyAvailableFlag = reader.bool();
+          break;
+        case 405:
+          message.sellAvailableFlag = reader.bool();
+          break;
+        case 406:
+          message.forQualInvestorFlag = reader.bool();
+          break;
+        case 407:
+          message.weekendFlag = reader.bool();
+          break;
+        case 408:
+          message.blockedTcaFlag = reader.bool();
+          break;
+        case 409:
+          message.apiTradeAvailableFlag = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Option {
+    return {
+      uid: isSet(object.uid) ? String(object.uid) : "",
+      positionUid: isSet(object.positionUid) ? String(object.positionUid) : "",
+      ticker: isSet(object.ticker) ? String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? String(object.classCode) : "",
+      basicAssetPositionUid: isSet(object.basicAssetPositionUid)
+        ? String(object.basicAssetPositionUid)
+        : "",
+      tradingStatus: isSet(object.tradingStatus)
+        ? securityTradingStatusFromJSON(object.tradingStatus)
+        : 0,
+      realExchange: isSet(object.realExchange)
+        ? realExchangeFromJSON(object.realExchange)
+        : 0,
+      direction: isSet(object.direction)
+        ? optionDirectionFromJSON(object.direction)
+        : 0,
+      paymentType: isSet(object.paymentType)
+        ? optionPaymentTypeFromJSON(object.paymentType)
+        : 0,
+      style: isSet(object.style) ? optionStyleFromJSON(object.style) : 0,
+      settlementType: isSet(object.settlementType)
+        ? optionSettlementTypeFromJSON(object.settlementType)
+        : 0,
+      name: isSet(object.name) ? String(object.name) : "",
+      currency: isSet(object.currency) ? String(object.currency) : "",
+      settlementCurrency: isSet(object.settlementCurrency)
+        ? String(object.settlementCurrency)
+        : "",
+      assetType: isSet(object.assetType) ? String(object.assetType) : "",
+      basicAsset: isSet(object.basicAsset) ? String(object.basicAsset) : "",
+      exchange: isSet(object.exchange) ? String(object.exchange) : "",
+      countryOfRisk: isSet(object.countryOfRisk)
+        ? String(object.countryOfRisk)
+        : "",
+      countryOfRiskName: isSet(object.countryOfRiskName)
+        ? String(object.countryOfRiskName)
+        : "",
+      sector: isSet(object.sector) ? String(object.sector) : "",
+      lot: isSet(object.lot) ? Number(object.lot) : 0,
+      basicAssetSize: isSet(object.basicAssetSize)
+        ? Quotation.fromJSON(object.basicAssetSize)
+        : undefined,
+      klong: isSet(object.klong) ? Quotation.fromJSON(object.klong) : undefined,
+      kshort: isSet(object.kshort)
+        ? Quotation.fromJSON(object.kshort)
+        : undefined,
+      dlong: isSet(object.dlong) ? Quotation.fromJSON(object.dlong) : undefined,
+      dshort: isSet(object.dshort)
+        ? Quotation.fromJSON(object.dshort)
+        : undefined,
+      dlongMin: isSet(object.dlongMin)
+        ? Quotation.fromJSON(object.dlongMin)
+        : undefined,
+      dshortMin: isSet(object.dshortMin)
+        ? Quotation.fromJSON(object.dshortMin)
+        : undefined,
+      minPriceIncrement: isSet(object.minPriceIncrement)
+        ? Quotation.fromJSON(object.minPriceIncrement)
+        : undefined,
+      strikePrice: isSet(object.strikePrice)
+        ? MoneyValue.fromJSON(object.strikePrice)
+        : undefined,
+      expirationDate: isSet(object.expirationDate)
+        ? fromJsonTimestamp(object.expirationDate)
+        : undefined,
+      firstTradeDate: isSet(object.firstTradeDate)
+        ? fromJsonTimestamp(object.firstTradeDate)
+        : undefined,
+      lastTradeDate: isSet(object.lastTradeDate)
+        ? fromJsonTimestamp(object.lastTradeDate)
+        : undefined,
+      first1minCandleDate: isSet(object.first1minCandleDate)
+        ? fromJsonTimestamp(object.first1minCandleDate)
+        : undefined,
+      first1dayCandleDate: isSet(object.first1dayCandleDate)
+        ? fromJsonTimestamp(object.first1dayCandleDate)
+        : undefined,
+      shortEnabledFlag: isSet(object.shortEnabledFlag)
+        ? Boolean(object.shortEnabledFlag)
+        : false,
+      forIisFlag: isSet(object.forIisFlag) ? Boolean(object.forIisFlag) : false,
+      otcFlag: isSet(object.otcFlag) ? Boolean(object.otcFlag) : false,
+      buyAvailableFlag: isSet(object.buyAvailableFlag)
+        ? Boolean(object.buyAvailableFlag)
+        : false,
+      sellAvailableFlag: isSet(object.sellAvailableFlag)
+        ? Boolean(object.sellAvailableFlag)
+        : false,
+      forQualInvestorFlag: isSet(object.forQualInvestorFlag)
+        ? Boolean(object.forQualInvestorFlag)
+        : false,
+      weekendFlag: isSet(object.weekendFlag)
+        ? Boolean(object.weekendFlag)
+        : false,
+      blockedTcaFlag: isSet(object.blockedTcaFlag)
+        ? Boolean(object.blockedTcaFlag)
+        : false,
+      apiTradeAvailableFlag: isSet(object.apiTradeAvailableFlag)
+        ? Boolean(object.apiTradeAvailableFlag)
+        : false,
+    };
+  },
+
+  toJSON(message: Option): unknown {
+    const obj: any = {};
+    message.uid !== undefined && (obj.uid = message.uid);
+    message.positionUid !== undefined &&
+      (obj.positionUid = message.positionUid);
+    message.ticker !== undefined && (obj.ticker = message.ticker);
+    message.classCode !== undefined && (obj.classCode = message.classCode);
+    message.basicAssetPositionUid !== undefined &&
+      (obj.basicAssetPositionUid = message.basicAssetPositionUid);
+    message.tradingStatus !== undefined &&
+      (obj.tradingStatus = securityTradingStatusToJSON(message.tradingStatus));
+    message.realExchange !== undefined &&
+      (obj.realExchange = realExchangeToJSON(message.realExchange));
+    message.direction !== undefined &&
+      (obj.direction = optionDirectionToJSON(message.direction));
+    message.paymentType !== undefined &&
+      (obj.paymentType = optionPaymentTypeToJSON(message.paymentType));
+    message.style !== undefined &&
+      (obj.style = optionStyleToJSON(message.style));
+    message.settlementType !== undefined &&
+      (obj.settlementType = optionSettlementTypeToJSON(message.settlementType));
+    message.name !== undefined && (obj.name = message.name);
+    message.currency !== undefined && (obj.currency = message.currency);
+    message.settlementCurrency !== undefined &&
+      (obj.settlementCurrency = message.settlementCurrency);
+    message.assetType !== undefined && (obj.assetType = message.assetType);
+    message.basicAsset !== undefined && (obj.basicAsset = message.basicAsset);
+    message.exchange !== undefined && (obj.exchange = message.exchange);
+    message.countryOfRisk !== undefined &&
+      (obj.countryOfRisk = message.countryOfRisk);
+    message.countryOfRiskName !== undefined &&
+      (obj.countryOfRiskName = message.countryOfRiskName);
+    message.sector !== undefined && (obj.sector = message.sector);
+    message.lot !== undefined && (obj.lot = Math.round(message.lot));
+    message.basicAssetSize !== undefined &&
+      (obj.basicAssetSize = message.basicAssetSize
+        ? Quotation.toJSON(message.basicAssetSize)
+        : undefined);
+    message.klong !== undefined &&
+      (obj.klong = message.klong ? Quotation.toJSON(message.klong) : undefined);
+    message.kshort !== undefined &&
+      (obj.kshort = message.kshort
+        ? Quotation.toJSON(message.kshort)
+        : undefined);
+    message.dlong !== undefined &&
+      (obj.dlong = message.dlong ? Quotation.toJSON(message.dlong) : undefined);
+    message.dshort !== undefined &&
+      (obj.dshort = message.dshort
+        ? Quotation.toJSON(message.dshort)
+        : undefined);
+    message.dlongMin !== undefined &&
+      (obj.dlongMin = message.dlongMin
+        ? Quotation.toJSON(message.dlongMin)
+        : undefined);
+    message.dshortMin !== undefined &&
+      (obj.dshortMin = message.dshortMin
+        ? Quotation.toJSON(message.dshortMin)
+        : undefined);
+    message.minPriceIncrement !== undefined &&
+      (obj.minPriceIncrement = message.minPriceIncrement
+        ? Quotation.toJSON(message.minPriceIncrement)
+        : undefined);
+    message.strikePrice !== undefined &&
+      (obj.strikePrice = message.strikePrice
+        ? MoneyValue.toJSON(message.strikePrice)
+        : undefined);
+    message.expirationDate !== undefined &&
+      (obj.expirationDate = message.expirationDate.toISOString());
+    message.firstTradeDate !== undefined &&
+      (obj.firstTradeDate = message.firstTradeDate.toISOString());
+    message.lastTradeDate !== undefined &&
+      (obj.lastTradeDate = message.lastTradeDate.toISOString());
+    message.first1minCandleDate !== undefined &&
+      (obj.first1minCandleDate = message.first1minCandleDate.toISOString());
+    message.first1dayCandleDate !== undefined &&
+      (obj.first1dayCandleDate = message.first1dayCandleDate.toISOString());
+    message.shortEnabledFlag !== undefined &&
+      (obj.shortEnabledFlag = message.shortEnabledFlag);
+    message.forIisFlag !== undefined && (obj.forIisFlag = message.forIisFlag);
+    message.otcFlag !== undefined && (obj.otcFlag = message.otcFlag);
+    message.buyAvailableFlag !== undefined &&
+      (obj.buyAvailableFlag = message.buyAvailableFlag);
+    message.sellAvailableFlag !== undefined &&
+      (obj.sellAvailableFlag = message.sellAvailableFlag);
+    message.forQualInvestorFlag !== undefined &&
+      (obj.forQualInvestorFlag = message.forQualInvestorFlag);
+    message.weekendFlag !== undefined &&
+      (obj.weekendFlag = message.weekendFlag);
+    message.blockedTcaFlag !== undefined &&
+      (obj.blockedTcaFlag = message.blockedTcaFlag);
+    message.apiTradeAvailableFlag !== undefined &&
+      (obj.apiTradeAvailableFlag = message.apiTradeAvailableFlag);
+    return obj;
+  },
+};
+
 function createBaseShareResponse(): ShareResponse {
   return { instrument: undefined };
 }
@@ -3028,6 +4219,7 @@ function createBaseBond(): Bond {
     couponQuantityPerYear: 0,
     maturityDate: undefined,
     nominal: undefined,
+    initialNominal: undefined,
     stateRegDate: undefined,
     placementDate: undefined,
     placementPrice: undefined,
@@ -3051,8 +4243,14 @@ function createBaseBond(): Bond {
     realExchange: 0,
     positionUid: "",
     forIisFlag: false,
+    forQualInvestorFlag: false,
+    weekendFlag: false,
+    blockedTcaFlag: false,
+    subordinatedFlag: false,
+    liquidityFlag: false,
     first1minCandleDate: undefined,
     first1dayCandleDate: undefined,
+    riskLevel: 0,
   };
 }
 
@@ -3114,6 +4312,12 @@ export const Bond = {
     }
     if (message.nominal !== undefined) {
       MoneyValue.encode(message.nominal, writer.uint32(154).fork()).ldelim();
+    }
+    if (message.initialNominal !== undefined) {
+      MoneyValue.encode(
+        message.initialNominal,
+        writer.uint32(162).fork()
+      ).ldelim();
     }
     if (message.stateRegDate !== undefined) {
       Timestamp.encode(
@@ -3196,6 +4400,21 @@ export const Bond = {
     if (message.forIisFlag === true) {
       writer.uint32(408).bool(message.forIisFlag);
     }
+    if (message.forQualInvestorFlag === true) {
+      writer.uint32(416).bool(message.forQualInvestorFlag);
+    }
+    if (message.weekendFlag === true) {
+      writer.uint32(424).bool(message.weekendFlag);
+    }
+    if (message.blockedTcaFlag === true) {
+      writer.uint32(432).bool(message.blockedTcaFlag);
+    }
+    if (message.subordinatedFlag === true) {
+      writer.uint32(440).bool(message.subordinatedFlag);
+    }
+    if (message.liquidityFlag === true) {
+      writer.uint32(448).bool(message.liquidityFlag);
+    }
     if (message.first1minCandleDate !== undefined) {
       Timestamp.encode(
         toTimestamp(message.first1minCandleDate),
@@ -3207,6 +4426,9 @@ export const Bond = {
         toTimestamp(message.first1dayCandleDate),
         writer.uint32(498).fork()
       ).ldelim();
+    }
+    if (message.riskLevel !== 0) {
+      writer.uint32(504).int32(message.riskLevel);
     }
     return writer;
   },
@@ -3273,6 +4495,9 @@ export const Bond = {
           break;
         case 19:
           message.nominal = MoneyValue.decode(reader, reader.uint32());
+          break;
+        case 20:
+          message.initialNominal = MoneyValue.decode(reader, reader.uint32());
           break;
         case 21:
           message.stateRegDate = fromTimestamp(
@@ -3347,6 +4572,21 @@ export const Bond = {
         case 51:
           message.forIisFlag = reader.bool();
           break;
+        case 52:
+          message.forQualInvestorFlag = reader.bool();
+          break;
+        case 53:
+          message.weekendFlag = reader.bool();
+          break;
+        case 54:
+          message.blockedTcaFlag = reader.bool();
+          break;
+        case 55:
+          message.subordinatedFlag = reader.bool();
+          break;
+        case 56:
+          message.liquidityFlag = reader.bool();
+          break;
         case 61:
           message.first1minCandleDate = fromTimestamp(
             Timestamp.decode(reader, reader.uint32())
@@ -3356,6 +4596,9 @@ export const Bond = {
           message.first1dayCandleDate = fromTimestamp(
             Timestamp.decode(reader, reader.uint32())
           );
+          break;
+        case 63:
+          message.riskLevel = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);
@@ -3400,6 +4643,9 @@ export const Bond = {
         : undefined,
       nominal: isSet(object.nominal)
         ? MoneyValue.fromJSON(object.nominal)
+        : undefined,
+      initialNominal: isSet(object.initialNominal)
+        ? MoneyValue.fromJSON(object.initialNominal)
         : undefined,
       stateRegDate: isSet(object.stateRegDate)
         ? fromJsonTimestamp(object.stateRegDate)
@@ -3456,12 +4702,30 @@ export const Bond = {
         : 0,
       positionUid: isSet(object.positionUid) ? String(object.positionUid) : "",
       forIisFlag: isSet(object.forIisFlag) ? Boolean(object.forIisFlag) : false,
+      forQualInvestorFlag: isSet(object.forQualInvestorFlag)
+        ? Boolean(object.forQualInvestorFlag)
+        : false,
+      weekendFlag: isSet(object.weekendFlag)
+        ? Boolean(object.weekendFlag)
+        : false,
+      blockedTcaFlag: isSet(object.blockedTcaFlag)
+        ? Boolean(object.blockedTcaFlag)
+        : false,
+      subordinatedFlag: isSet(object.subordinatedFlag)
+        ? Boolean(object.subordinatedFlag)
+        : false,
+      liquidityFlag: isSet(object.liquidityFlag)
+        ? Boolean(object.liquidityFlag)
+        : false,
       first1minCandleDate: isSet(object.first1minCandleDate)
         ? fromJsonTimestamp(object.first1minCandleDate)
         : undefined,
       first1dayCandleDate: isSet(object.first1dayCandleDate)
         ? fromJsonTimestamp(object.first1dayCandleDate)
         : undefined,
+      riskLevel: isSet(object.riskLevel)
+        ? riskLevelFromJSON(object.riskLevel)
+        : 0,
     };
   },
 
@@ -3504,6 +4768,10 @@ export const Bond = {
     message.nominal !== undefined &&
       (obj.nominal = message.nominal
         ? MoneyValue.toJSON(message.nominal)
+        : undefined);
+    message.initialNominal !== undefined &&
+      (obj.initialNominal = message.initialNominal
+        ? MoneyValue.toJSON(message.initialNominal)
         : undefined);
     message.stateRegDate !== undefined &&
       (obj.stateRegDate = message.stateRegDate.toISOString());
@@ -3552,10 +4820,22 @@ export const Bond = {
     message.positionUid !== undefined &&
       (obj.positionUid = message.positionUid);
     message.forIisFlag !== undefined && (obj.forIisFlag = message.forIisFlag);
+    message.forQualInvestorFlag !== undefined &&
+      (obj.forQualInvestorFlag = message.forQualInvestorFlag);
+    message.weekendFlag !== undefined &&
+      (obj.weekendFlag = message.weekendFlag);
+    message.blockedTcaFlag !== undefined &&
+      (obj.blockedTcaFlag = message.blockedTcaFlag);
+    message.subordinatedFlag !== undefined &&
+      (obj.subordinatedFlag = message.subordinatedFlag);
+    message.liquidityFlag !== undefined &&
+      (obj.liquidityFlag = message.liquidityFlag);
     message.first1minCandleDate !== undefined &&
       (obj.first1minCandleDate = message.first1minCandleDate.toISOString());
     message.first1dayCandleDate !== undefined &&
       (obj.first1dayCandleDate = message.first1dayCandleDate.toISOString());
+    message.riskLevel !== undefined &&
+      (obj.riskLevel = riskLevelToJSON(message.riskLevel));
     return obj;
   },
 };
@@ -3591,6 +4871,9 @@ function createBaseCurrency(): Currency {
     realExchange: 0,
     positionUid: "",
     forIisFlag: false,
+    forQualInvestorFlag: false,
+    weekendFlag: false,
+    blockedTcaFlag: false,
     first1minCandleDate: undefined,
     first1dayCandleDate: undefined,
   };
@@ -3690,6 +4973,15 @@ export const Currency = {
     }
     if (message.forIisFlag === true) {
       writer.uint32(328).bool(message.forIisFlag);
+    }
+    if (message.forQualInvestorFlag === true) {
+      writer.uint32(416).bool(message.forQualInvestorFlag);
+    }
+    if (message.weekendFlag === true) {
+      writer.uint32(424).bool(message.weekendFlag);
+    }
+    if (message.blockedTcaFlag === true) {
+      writer.uint32(432).bool(message.blockedTcaFlag);
     }
     if (message.first1minCandleDate !== undefined) {
       Timestamp.encode(
@@ -3800,6 +5092,15 @@ export const Currency = {
         case 41:
           message.forIisFlag = reader.bool();
           break;
+        case 52:
+          message.forQualInvestorFlag = reader.bool();
+          break;
+        case 53:
+          message.weekendFlag = reader.bool();
+          break;
+        case 54:
+          message.blockedTcaFlag = reader.bool();
+          break;
         case 56:
           message.first1minCandleDate = fromTimestamp(
             Timestamp.decode(reader, reader.uint32())
@@ -3879,6 +5180,15 @@ export const Currency = {
         : 0,
       positionUid: isSet(object.positionUid) ? String(object.positionUid) : "",
       forIisFlag: isSet(object.forIisFlag) ? Boolean(object.forIisFlag) : false,
+      forQualInvestorFlag: isSet(object.forQualInvestorFlag)
+        ? Boolean(object.forQualInvestorFlag)
+        : false,
+      weekendFlag: isSet(object.weekendFlag)
+        ? Boolean(object.weekendFlag)
+        : false,
+      blockedTcaFlag: isSet(object.blockedTcaFlag)
+        ? Boolean(object.blockedTcaFlag)
+        : false,
       first1minCandleDate: isSet(object.first1minCandleDate)
         ? fromJsonTimestamp(object.first1minCandleDate)
         : undefined,
@@ -3949,6 +5259,12 @@ export const Currency = {
     message.positionUid !== undefined &&
       (obj.positionUid = message.positionUid);
     message.forIisFlag !== undefined && (obj.forIisFlag = message.forIisFlag);
+    message.forQualInvestorFlag !== undefined &&
+      (obj.forQualInvestorFlag = message.forQualInvestorFlag);
+    message.weekendFlag !== undefined &&
+      (obj.weekendFlag = message.weekendFlag);
+    message.blockedTcaFlag !== undefined &&
+      (obj.blockedTcaFlag = message.blockedTcaFlag);
     message.first1minCandleDate !== undefined &&
       (obj.first1minCandleDate = message.first1minCandleDate.toISOString());
     message.first1dayCandleDate !== undefined &&
@@ -3992,6 +5308,10 @@ function createBaseEtf(): Etf {
     realExchange: 0,
     positionUid: "",
     forIisFlag: false,
+    forQualInvestorFlag: false,
+    weekendFlag: false,
+    blockedTcaFlag: false,
+    liquidityFlag: false,
     first1minCandleDate: undefined,
     first1dayCandleDate: undefined,
   };
@@ -4106,6 +5426,18 @@ export const Etf = {
     }
     if (message.forIisFlag === true) {
       writer.uint32(328).bool(message.forIisFlag);
+    }
+    if (message.forQualInvestorFlag === true) {
+      writer.uint32(336).bool(message.forQualInvestorFlag);
+    }
+    if (message.weekendFlag === true) {
+      writer.uint32(344).bool(message.weekendFlag);
+    }
+    if (message.blockedTcaFlag === true) {
+      writer.uint32(352).bool(message.blockedTcaFlag);
+    }
+    if (message.liquidityFlag === true) {
+      writer.uint32(360).bool(message.liquidityFlag);
     }
     if (message.first1minCandleDate !== undefined) {
       Timestamp.encode(
@@ -4230,6 +5562,18 @@ export const Etf = {
         case 41:
           message.forIisFlag = reader.bool();
           break;
+        case 42:
+          message.forQualInvestorFlag = reader.bool();
+          break;
+        case 43:
+          message.weekendFlag = reader.bool();
+          break;
+        case 44:
+          message.blockedTcaFlag = reader.bool();
+          break;
+        case 45:
+          message.liquidityFlag = reader.bool();
+          break;
         case 56:
           message.first1minCandleDate = fromTimestamp(
             Timestamp.decode(reader, reader.uint32())
@@ -4317,6 +5661,18 @@ export const Etf = {
         : 0,
       positionUid: isSet(object.positionUid) ? String(object.positionUid) : "",
       forIisFlag: isSet(object.forIisFlag) ? Boolean(object.forIisFlag) : false,
+      forQualInvestorFlag: isSet(object.forQualInvestorFlag)
+        ? Boolean(object.forQualInvestorFlag)
+        : false,
+      weekendFlag: isSet(object.weekendFlag)
+        ? Boolean(object.weekendFlag)
+        : false,
+      blockedTcaFlag: isSet(object.blockedTcaFlag)
+        ? Boolean(object.blockedTcaFlag)
+        : false,
+      liquidityFlag: isSet(object.liquidityFlag)
+        ? Boolean(object.liquidityFlag)
+        : false,
       first1minCandleDate: isSet(object.first1minCandleDate)
         ? fromJsonTimestamp(object.first1minCandleDate)
         : undefined,
@@ -4395,6 +5751,14 @@ export const Etf = {
     message.positionUid !== undefined &&
       (obj.positionUid = message.positionUid);
     message.forIisFlag !== undefined && (obj.forIisFlag = message.forIisFlag);
+    message.forQualInvestorFlag !== undefined &&
+      (obj.forQualInvestorFlag = message.forQualInvestorFlag);
+    message.weekendFlag !== undefined &&
+      (obj.weekendFlag = message.weekendFlag);
+    message.blockedTcaFlag !== undefined &&
+      (obj.blockedTcaFlag = message.blockedTcaFlag);
+    message.liquidityFlag !== undefined &&
+      (obj.liquidityFlag = message.liquidityFlag);
     message.first1minCandleDate !== undefined &&
       (obj.first1minCandleDate = message.first1minCandleDate.toISOString());
     message.first1dayCandleDate !== undefined &&
@@ -4440,6 +5804,9 @@ function createBaseFuture(): Future {
     positionUid: "",
     basicAssetPositionUid: "",
     forIisFlag: false,
+    forQualInvestorFlag: false,
+    weekendFlag: false,
+    blockedTcaFlag: false,
     first1minCandleDate: undefined,
     first1dayCandleDate: undefined,
   };
@@ -4569,6 +5936,15 @@ export const Future = {
     }
     if (message.forIisFlag === true) {
       writer.uint32(328).bool(message.forIisFlag);
+    }
+    if (message.forQualInvestorFlag === true) {
+      writer.uint32(336).bool(message.forQualInvestorFlag);
+    }
+    if (message.weekendFlag === true) {
+      writer.uint32(344).bool(message.weekendFlag);
+    }
+    if (message.blockedTcaFlag === true) {
+      writer.uint32(352).bool(message.blockedTcaFlag);
     }
     if (message.first1minCandleDate !== undefined) {
       Timestamp.encode(
@@ -4703,6 +6079,15 @@ export const Future = {
         case 41:
           message.forIisFlag = reader.bool();
           break;
+        case 42:
+          message.forQualInvestorFlag = reader.bool();
+          break;
+        case 43:
+          message.weekendFlag = reader.bool();
+          break;
+        case 44:
+          message.blockedTcaFlag = reader.bool();
+          break;
         case 56:
           message.first1minCandleDate = fromTimestamp(
             Timestamp.decode(reader, reader.uint32())
@@ -4794,6 +6179,15 @@ export const Future = {
         ? String(object.basicAssetPositionUid)
         : "",
       forIisFlag: isSet(object.forIisFlag) ? Boolean(object.forIisFlag) : false,
+      forQualInvestorFlag: isSet(object.forQualInvestorFlag)
+        ? Boolean(object.forQualInvestorFlag)
+        : false,
+      weekendFlag: isSet(object.weekendFlag)
+        ? Boolean(object.weekendFlag)
+        : false,
+      blockedTcaFlag: isSet(object.blockedTcaFlag)
+        ? Boolean(object.blockedTcaFlag)
+        : false,
       first1minCandleDate: isSet(object.first1minCandleDate)
         ? fromJsonTimestamp(object.first1minCandleDate)
         : undefined,
@@ -4874,6 +6268,12 @@ export const Future = {
     message.basicAssetPositionUid !== undefined &&
       (obj.basicAssetPositionUid = message.basicAssetPositionUid);
     message.forIisFlag !== undefined && (obj.forIisFlag = message.forIisFlag);
+    message.forQualInvestorFlag !== undefined &&
+      (obj.forQualInvestorFlag = message.forQualInvestorFlag);
+    message.weekendFlag !== undefined &&
+      (obj.weekendFlag = message.weekendFlag);
+    message.blockedTcaFlag !== undefined &&
+      (obj.blockedTcaFlag = message.blockedTcaFlag);
     message.first1minCandleDate !== undefined &&
       (obj.first1minCandleDate = message.first1minCandleDate.toISOString());
     message.first1dayCandleDate !== undefined &&
@@ -4918,6 +6318,10 @@ function createBaseShare(): Share {
     realExchange: 0,
     positionUid: "",
     forIisFlag: false,
+    forQualInvestorFlag: false,
+    weekendFlag: false,
+    blockedTcaFlag: false,
+    liquidityFlag: false,
     first1minCandleDate: undefined,
     first1dayCandleDate: undefined,
   };
@@ -5032,6 +6436,18 @@ export const Share = {
     }
     if (message.forIisFlag === true) {
       writer.uint32(368).bool(message.forIisFlag);
+    }
+    if (message.forQualInvestorFlag === true) {
+      writer.uint32(376).bool(message.forQualInvestorFlag);
+    }
+    if (message.weekendFlag === true) {
+      writer.uint32(384).bool(message.weekendFlag);
+    }
+    if (message.blockedTcaFlag === true) {
+      writer.uint32(392).bool(message.blockedTcaFlag);
+    }
+    if (message.liquidityFlag === true) {
+      writer.uint32(400).bool(message.liquidityFlag);
     }
     if (message.first1minCandleDate !== undefined) {
       Timestamp.encode(
@@ -5159,6 +6575,18 @@ export const Share = {
         case 46:
           message.forIisFlag = reader.bool();
           break;
+        case 47:
+          message.forQualInvestorFlag = reader.bool();
+          break;
+        case 48:
+          message.weekendFlag = reader.bool();
+          break;
+        case 49:
+          message.blockedTcaFlag = reader.bool();
+          break;
+        case 50:
+          message.liquidityFlag = reader.bool();
+          break;
         case 56:
           message.first1minCandleDate = fromTimestamp(
             Timestamp.decode(reader, reader.uint32())
@@ -5249,6 +6677,18 @@ export const Share = {
         : 0,
       positionUid: isSet(object.positionUid) ? String(object.positionUid) : "",
       forIisFlag: isSet(object.forIisFlag) ? Boolean(object.forIisFlag) : false,
+      forQualInvestorFlag: isSet(object.forQualInvestorFlag)
+        ? Boolean(object.forQualInvestorFlag)
+        : false,
+      weekendFlag: isSet(object.weekendFlag)
+        ? Boolean(object.weekendFlag)
+        : false,
+      blockedTcaFlag: isSet(object.blockedTcaFlag)
+        ? Boolean(object.blockedTcaFlag)
+        : false,
+      liquidityFlag: isSet(object.liquidityFlag)
+        ? Boolean(object.liquidityFlag)
+        : false,
       first1minCandleDate: isSet(object.first1minCandleDate)
         ? fromJsonTimestamp(object.first1minCandleDate)
         : undefined,
@@ -5328,6 +6768,14 @@ export const Share = {
     message.positionUid !== undefined &&
       (obj.positionUid = message.positionUid);
     message.forIisFlag !== undefined && (obj.forIisFlag = message.forIisFlag);
+    message.forQualInvestorFlag !== undefined &&
+      (obj.forQualInvestorFlag = message.forQualInvestorFlag);
+    message.weekendFlag !== undefined &&
+      (obj.weekendFlag = message.weekendFlag);
+    message.blockedTcaFlag !== undefined &&
+      (obj.blockedTcaFlag = message.blockedTcaFlag);
+    message.liquidityFlag !== undefined &&
+      (obj.liquidityFlag = message.liquidityFlag);
     message.first1minCandleDate !== undefined &&
       (obj.first1minCandleDate = message.first1minCandleDate.toISOString());
     message.first1dayCandleDate !== undefined &&
@@ -5808,6 +7256,10 @@ function createBaseInstrument(): Instrument {
     realExchange: 0,
     positionUid: "",
     forIisFlag: false,
+    forQualInvestorFlag: false,
+    weekendFlag: false,
+    blockedTcaFlag: false,
+    instrumentKind: 0,
     first1minCandleDate: undefined,
     first1dayCandleDate: undefined,
   };
@@ -5904,6 +7356,18 @@ export const Instrument = {
     }
     if (message.forIisFlag === true) {
       writer.uint32(288).bool(message.forIisFlag);
+    }
+    if (message.forQualInvestorFlag === true) {
+      writer.uint32(296).bool(message.forQualInvestorFlag);
+    }
+    if (message.weekendFlag === true) {
+      writer.uint32(304).bool(message.weekendFlag);
+    }
+    if (message.blockedTcaFlag === true) {
+      writer.uint32(312).bool(message.blockedTcaFlag);
+    }
+    if (message.instrumentKind !== 0) {
+      writer.uint32(320).int32(message.instrumentKind);
     }
     if (message.first1minCandleDate !== undefined) {
       Timestamp.encode(
@@ -6011,6 +7475,18 @@ export const Instrument = {
         case 36:
           message.forIisFlag = reader.bool();
           break;
+        case 37:
+          message.forQualInvestorFlag = reader.bool();
+          break;
+        case 38:
+          message.weekendFlag = reader.bool();
+          break;
+        case 39:
+          message.blockedTcaFlag = reader.bool();
+          break;
+        case 40:
+          message.instrumentKind = reader.int32() as any;
+          break;
         case 56:
           message.first1minCandleDate = fromTimestamp(
             Timestamp.decode(reader, reader.uint32())
@@ -6087,6 +7563,18 @@ export const Instrument = {
         : 0,
       positionUid: isSet(object.positionUid) ? String(object.positionUid) : "",
       forIisFlag: isSet(object.forIisFlag) ? Boolean(object.forIisFlag) : false,
+      forQualInvestorFlag: isSet(object.forQualInvestorFlag)
+        ? Boolean(object.forQualInvestorFlag)
+        : false,
+      weekendFlag: isSet(object.weekendFlag)
+        ? Boolean(object.weekendFlag)
+        : false,
+      blockedTcaFlag: isSet(object.blockedTcaFlag)
+        ? Boolean(object.blockedTcaFlag)
+        : false,
+      instrumentKind: isSet(object.instrumentKind)
+        ? instrumentTypeFromJSON(object.instrumentKind)
+        : 0,
       first1minCandleDate: isSet(object.first1minCandleDate)
         ? fromJsonTimestamp(object.first1minCandleDate)
         : undefined,
@@ -6153,6 +7641,14 @@ export const Instrument = {
     message.positionUid !== undefined &&
       (obj.positionUid = message.positionUid);
     message.forIisFlag !== undefined && (obj.forIisFlag = message.forIisFlag);
+    message.forQualInvestorFlag !== undefined &&
+      (obj.forQualInvestorFlag = message.forQualInvestorFlag);
+    message.weekendFlag !== undefined &&
+      (obj.weekendFlag = message.weekendFlag);
+    message.blockedTcaFlag !== undefined &&
+      (obj.blockedTcaFlag = message.blockedTcaFlag);
+    message.instrumentKind !== undefined &&
+      (obj.instrumentKind = instrumentTypeToJSON(message.instrumentKind));
     message.first1minCandleDate !== undefined &&
       (obj.first1minCandleDate = message.first1minCandleDate.toISOString());
     message.first1dayCandleDate !== undefined &&
@@ -6569,14 +8065,17 @@ export const AssetResponse = {
 };
 
 function createBaseAssetsRequest(): AssetsRequest {
-  return {};
+  return { instrumentType: 0 };
 }
 
 export const AssetsRequest = {
   encode(
-    _: AssetsRequest,
+    message: AssetsRequest,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
+    if (message.instrumentType !== 0) {
+      writer.uint32(8).int32(message.instrumentType);
+    }
     return writer;
   },
 
@@ -6587,6 +8086,9 @@ export const AssetsRequest = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1:
+          message.instrumentType = reader.int32() as any;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -6595,12 +8097,18 @@ export const AssetsRequest = {
     return message;
   },
 
-  fromJSON(_: any): AssetsRequest {
-    return {};
+  fromJSON(object: any): AssetsRequest {
+    return {
+      instrumentType: isSet(object.instrumentType)
+        ? instrumentTypeFromJSON(object.instrumentType)
+        : 0,
+    };
   },
 
-  toJSON(_: AssetsRequest): unknown {
+  toJSON(message: AssetsRequest): unknown {
     const obj: any = {};
+    message.instrumentType !== undefined &&
+      (obj.instrumentType = instrumentTypeToJSON(message.instrumentType));
     return obj;
   },
 };
@@ -7032,6 +8540,7 @@ function createBaseAssetSecurity(): AssetSecurity {
   return {
     isin: "",
     type: "",
+    instrumentKind: 0,
     share: undefined,
     bond: undefined,
     sp: undefined,
@@ -7050,6 +8559,9 @@ export const AssetSecurity = {
     }
     if (message.type !== "") {
       writer.uint32(18).string(message.type);
+    }
+    if (message.instrumentKind !== 0) {
+      writer.uint32(80).int32(message.instrumentKind);
     }
     if (message.share !== undefined) {
       AssetShare.encode(message.share, writer.uint32(26).fork()).ldelim();
@@ -7088,6 +8600,9 @@ export const AssetSecurity = {
         case 2:
           message.type = reader.string();
           break;
+        case 10:
+          message.instrumentKind = reader.int32() as any;
+          break;
         case 3:
           message.share = AssetShare.decode(reader, reader.uint32());
           break;
@@ -7118,6 +8633,9 @@ export const AssetSecurity = {
     return {
       isin: isSet(object.isin) ? String(object.isin) : "",
       type: isSet(object.type) ? String(object.type) : "",
+      instrumentKind: isSet(object.instrumentKind)
+        ? instrumentTypeFromJSON(object.instrumentKind)
+        : 0,
       share: isSet(object.share)
         ? AssetShare.fromJSON(object.share)
         : undefined,
@@ -7136,6 +8654,8 @@ export const AssetSecurity = {
     const obj: any = {};
     message.isin !== undefined && (obj.isin = message.isin);
     message.type !== undefined && (obj.type = message.type);
+    message.instrumentKind !== undefined &&
+      (obj.instrumentKind = instrumentTypeToJSON(message.instrumentKind));
     message.share !== undefined &&
       (obj.share = message.share
         ? AssetShare.toJSON(message.share)
@@ -8559,6 +10079,8 @@ function createBaseAssetInstrument(): AssetInstrument {
     ticker: "",
     classCode: "",
     links: [],
+    instrumentKind: 0,
+    positionUid: "",
   };
 }
 
@@ -8584,6 +10106,12 @@ export const AssetInstrument = {
     }
     for (const v of message.links) {
       InstrumentLink.encode(v!, writer.uint32(50).fork()).ldelim();
+    }
+    if (message.instrumentKind !== 0) {
+      writer.uint32(80).int32(message.instrumentKind);
+    }
+    if (message.positionUid !== "") {
+      writer.uint32(90).string(message.positionUid);
     }
     return writer;
   },
@@ -8613,6 +10141,12 @@ export const AssetInstrument = {
         case 6:
           message.links.push(InstrumentLink.decode(reader, reader.uint32()));
           break;
+        case 10:
+          message.instrumentKind = reader.int32() as any;
+          break;
+        case 11:
+          message.positionUid = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -8633,6 +10167,10 @@ export const AssetInstrument = {
       links: Array.isArray(object?.links)
         ? object.links.map((e: any) => InstrumentLink.fromJSON(e))
         : [],
+      instrumentKind: isSet(object.instrumentKind)
+        ? instrumentTypeFromJSON(object.instrumentKind)
+        : 0,
+      positionUid: isSet(object.positionUid) ? String(object.positionUid) : "",
     };
   },
 
@@ -8651,6 +10189,10 @@ export const AssetInstrument = {
     } else {
       obj.links = [];
     }
+    message.instrumentKind !== undefined &&
+      (obj.instrumentKind = instrumentTypeToJSON(message.instrumentKind));
+    message.positionUid !== undefined &&
+      (obj.positionUid = message.positionUid);
     return obj;
   },
 };
@@ -8819,6 +10361,7 @@ function createBaseFavoriteInstrument(): FavoriteInstrument {
     instrumentType: "",
     otcFlag: false,
     apiTradeAvailableFlag: false,
+    instrumentKind: 0,
   };
 }
 
@@ -8847,6 +10390,9 @@ export const FavoriteInstrument = {
     }
     if (message.apiTradeAvailableFlag === true) {
       writer.uint32(136).bool(message.apiTradeAvailableFlag);
+    }
+    if (message.instrumentKind !== 0) {
+      writer.uint32(144).int32(message.instrumentKind);
     }
     return writer;
   },
@@ -8879,6 +10425,9 @@ export const FavoriteInstrument = {
         case 17:
           message.apiTradeAvailableFlag = reader.bool();
           break;
+        case 18:
+          message.instrumentKind = reader.int32() as any;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -8900,6 +10449,9 @@ export const FavoriteInstrument = {
       apiTradeAvailableFlag: isSet(object.apiTradeAvailableFlag)
         ? Boolean(object.apiTradeAvailableFlag)
         : false,
+      instrumentKind: isSet(object.instrumentKind)
+        ? instrumentTypeFromJSON(object.instrumentKind)
+        : 0,
     };
   },
 
@@ -8914,6 +10466,8 @@ export const FavoriteInstrument = {
     message.otcFlag !== undefined && (obj.otcFlag = message.otcFlag);
     message.apiTradeAvailableFlag !== undefined &&
       (obj.apiTradeAvailableFlag = message.apiTradeAvailableFlag);
+    message.instrumentKind !== undefined &&
+      (obj.instrumentKind = instrumentTypeToJSON(message.instrumentKind));
     return obj;
   },
 };
@@ -9270,7 +10824,7 @@ export const CountryResponse = {
 };
 
 function createBaseFindInstrumentRequest(): FindInstrumentRequest {
-  return { query: "" };
+  return { query: "", instrumentKind: 0, apiTradeAvailableFlag: false };
 }
 
 export const FindInstrumentRequest = {
@@ -9280,6 +10834,12 @@ export const FindInstrumentRequest = {
   ): _m0.Writer {
     if (message.query !== "") {
       writer.uint32(10).string(message.query);
+    }
+    if (message.instrumentKind !== 0) {
+      writer.uint32(16).int32(message.instrumentKind);
+    }
+    if (message.apiTradeAvailableFlag === true) {
+      writer.uint32(24).bool(message.apiTradeAvailableFlag);
     }
     return writer;
   },
@@ -9297,6 +10857,12 @@ export const FindInstrumentRequest = {
         case 1:
           message.query = reader.string();
           break;
+        case 2:
+          message.instrumentKind = reader.int32() as any;
+          break;
+        case 3:
+          message.apiTradeAvailableFlag = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -9308,12 +10874,22 @@ export const FindInstrumentRequest = {
   fromJSON(object: any): FindInstrumentRequest {
     return {
       query: isSet(object.query) ? String(object.query) : "",
+      instrumentKind: isSet(object.instrumentKind)
+        ? instrumentTypeFromJSON(object.instrumentKind)
+        : 0,
+      apiTradeAvailableFlag: isSet(object.apiTradeAvailableFlag)
+        ? Boolean(object.apiTradeAvailableFlag)
+        : false,
     };
   },
 
   toJSON(message: FindInstrumentRequest): unknown {
     const obj: any = {};
     message.query !== undefined && (obj.query = message.query);
+    message.instrumentKind !== undefined &&
+      (obj.instrumentKind = instrumentTypeToJSON(message.instrumentKind));
+    message.apiTradeAvailableFlag !== undefined &&
+      (obj.apiTradeAvailableFlag = message.apiTradeAvailableFlag);
     return obj;
   },
 };
@@ -9387,10 +10963,14 @@ function createBaseInstrumentShort(): InstrumentShort {
     name: "",
     uid: "",
     positionUid: "",
+    instrumentKind: 0,
     apiTradeAvailableFlag: false,
     forIisFlag: false,
     first1minCandleDate: undefined,
     first1dayCandleDate: undefined,
+    forQualInvestorFlag: false,
+    weekendFlag: false,
+    blockedTcaFlag: false,
   };
 }
 
@@ -9423,6 +11003,9 @@ export const InstrumentShort = {
     if (message.positionUid !== "") {
       writer.uint32(66).string(message.positionUid);
     }
+    if (message.instrumentKind !== 0) {
+      writer.uint32(80).int32(message.instrumentKind);
+    }
     if (message.apiTradeAvailableFlag === true) {
       writer.uint32(88).bool(message.apiTradeAvailableFlag);
     }
@@ -9440,6 +11023,15 @@ export const InstrumentShort = {
         toTimestamp(message.first1dayCandleDate),
         writer.uint32(218).fork()
       ).ldelim();
+    }
+    if (message.forQualInvestorFlag === true) {
+      writer.uint32(224).bool(message.forQualInvestorFlag);
+    }
+    if (message.weekendFlag === true) {
+      writer.uint32(232).bool(message.weekendFlag);
+    }
+    if (message.blockedTcaFlag === true) {
+      writer.uint32(240).bool(message.blockedTcaFlag);
     }
     return writer;
   },
@@ -9475,6 +11067,9 @@ export const InstrumentShort = {
         case 8:
           message.positionUid = reader.string();
           break;
+        case 10:
+          message.instrumentKind = reader.int32() as any;
+          break;
         case 11:
           message.apiTradeAvailableFlag = reader.bool();
           break;
@@ -9490,6 +11085,15 @@ export const InstrumentShort = {
           message.first1dayCandleDate = fromTimestamp(
             Timestamp.decode(reader, reader.uint32())
           );
+          break;
+        case 28:
+          message.forQualInvestorFlag = reader.bool();
+          break;
+        case 29:
+          message.weekendFlag = reader.bool();
+          break;
+        case 30:
+          message.blockedTcaFlag = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -9511,6 +11115,9 @@ export const InstrumentShort = {
       name: isSet(object.name) ? String(object.name) : "",
       uid: isSet(object.uid) ? String(object.uid) : "",
       positionUid: isSet(object.positionUid) ? String(object.positionUid) : "",
+      instrumentKind: isSet(object.instrumentKind)
+        ? instrumentTypeFromJSON(object.instrumentKind)
+        : 0,
       apiTradeAvailableFlag: isSet(object.apiTradeAvailableFlag)
         ? Boolean(object.apiTradeAvailableFlag)
         : false,
@@ -9521,6 +11128,15 @@ export const InstrumentShort = {
       first1dayCandleDate: isSet(object.first1dayCandleDate)
         ? fromJsonTimestamp(object.first1dayCandleDate)
         : undefined,
+      forQualInvestorFlag: isSet(object.forQualInvestorFlag)
+        ? Boolean(object.forQualInvestorFlag)
+        : false,
+      weekendFlag: isSet(object.weekendFlag)
+        ? Boolean(object.weekendFlag)
+        : false,
+      blockedTcaFlag: isSet(object.blockedTcaFlag)
+        ? Boolean(object.blockedTcaFlag)
+        : false,
     };
   },
 
@@ -9536,6 +11152,8 @@ export const InstrumentShort = {
     message.uid !== undefined && (obj.uid = message.uid);
     message.positionUid !== undefined &&
       (obj.positionUid = message.positionUid);
+    message.instrumentKind !== undefined &&
+      (obj.instrumentKind = instrumentTypeToJSON(message.instrumentKind));
     message.apiTradeAvailableFlag !== undefined &&
       (obj.apiTradeAvailableFlag = message.apiTradeAvailableFlag);
     message.forIisFlag !== undefined && (obj.forIisFlag = message.forIisFlag);
@@ -9543,6 +11161,12 @@ export const InstrumentShort = {
       (obj.first1minCandleDate = message.first1minCandleDate.toISOString());
     message.first1dayCandleDate !== undefined &&
       (obj.first1dayCandleDate = message.first1dayCandleDate.toISOString());
+    message.forQualInvestorFlag !== undefined &&
+      (obj.forQualInvestorFlag = message.forQualInvestorFlag);
+    message.weekendFlag !== undefined &&
+      (obj.weekendFlag = message.weekendFlag);
+    message.blockedTcaFlag !== undefined &&
+      (obj.blockedTcaFlag = message.blockedTcaFlag);
     return obj;
   },
 };
@@ -9782,6 +11406,37 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
+    /** Метод получения опциона по его идентификатору. */
+    optionBy: {
+      name: "OptionBy",
+      requestType: InstrumentRequest,
+      requestStream: false,
+      responseType: OptionResponse,
+      responseStream: false,
+      options: {},
+    },
+    /**
+     * Deprecated Метод получения списка опционов.
+     *
+     * @deprecated
+     */
+    options: {
+      name: "Options",
+      requestType: InstrumentsRequest,
+      requestStream: false,
+      responseType: OptionsResponse,
+      responseStream: false,
+      options: {},
+    },
+    /** Метод получения списка опционов. */
+    optionsBy: {
+      name: "OptionsBy",
+      requestType: FilterOptionsRequest,
+      requestStream: false,
+      responseType: OptionsResponse,
+      responseStream: false,
+      options: {},
+    },
     /** Метод получения акции по её идентификатору. */
     shareBy: {
       name: "ShareBy",
@@ -9845,7 +11500,7 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Метод получения списка активов. */
+    /** Метод получения списка активов. Метод работает для всех инструментов, за исключением срочных - опционов и фьючерсов. */
     getAssets: {
       name: "GetAssets",
       requestType: AssetsRequest,
@@ -9962,6 +11617,25 @@ export interface InstrumentsServiceServiceImplementation<CallContextExt = {}> {
     request: InstrumentsRequest,
     context: CallContext & CallContextExt
   ): Promise<FuturesResponse>;
+  /** Метод получения опциона по его идентификатору. */
+  optionBy(
+    request: InstrumentRequest,
+    context: CallContext & CallContextExt
+  ): Promise<OptionResponse>;
+  /**
+   * Deprecated Метод получения списка опционов.
+   *
+   * @deprecated
+   */
+  options(
+    request: InstrumentsRequest,
+    context: CallContext & CallContextExt
+  ): Promise<OptionsResponse>;
+  /** Метод получения списка опционов. */
+  optionsBy(
+    request: FilterOptionsRequest,
+    context: CallContext & CallContextExt
+  ): Promise<OptionsResponse>;
   /** Метод получения акции по её идентификатору. */
   shareBy(
     request: InstrumentRequest,
@@ -9997,7 +11671,7 @@ export interface InstrumentsServiceServiceImplementation<CallContextExt = {}> {
     request: AssetRequest,
     context: CallContext & CallContextExt
   ): Promise<AssetResponse>;
-  /** Метод получения списка активов. */
+  /** Метод получения списка активов. Метод работает для всех инструментов, за исключением срочных - опционов и фьючерсов. */
   getAssets(
     request: AssetsRequest,
     context: CallContext & CallContextExt
@@ -10085,6 +11759,25 @@ export interface InstrumentsServiceClient<CallOptionsExt = {}> {
     request: InstrumentsRequest,
     options?: CallOptions & CallOptionsExt
   ): Promise<FuturesResponse>;
+  /** Метод получения опциона по его идентификатору. */
+  optionBy(
+    request: InstrumentRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<OptionResponse>;
+  /**
+   * Deprecated Метод получения списка опционов.
+   *
+   * @deprecated
+   */
+  options(
+    request: InstrumentsRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<OptionsResponse>;
+  /** Метод получения списка опционов. */
+  optionsBy(
+    request: FilterOptionsRequest,
+    options?: CallOptions & CallOptionsExt
+  ): Promise<OptionsResponse>;
   /** Метод получения акции по её идентификатору. */
   shareBy(
     request: InstrumentRequest,
@@ -10120,7 +11813,7 @@ export interface InstrumentsServiceClient<CallOptionsExt = {}> {
     request: AssetRequest,
     options?: CallOptions & CallOptionsExt
   ): Promise<AssetResponse>;
-  /** Метод получения списка активов. */
+  /** Метод получения списка активов. Метод работает для всех инструментов, за исключением срочных - опционов и фьючерсов. */
   getAssets(
     request: AssetsRequest,
     options?: CallOptions & CallOptionsExt

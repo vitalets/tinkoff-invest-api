@@ -1,8 +1,5 @@
 
 
- <!-- range HasServices -->
-
-
 
 
 
@@ -16,7 +13,8 @@
 
 
 #### GetOperations
-Метод получения списка операций по счёту.
+Метод получения списка операций по счёту.При работе с данным методом необходимо учитывать
+[особенности взаимодействия](/investAPI/operations_problems) с данным методом.
 
 - Тело запроса — [OperationsRequest](#operationsrequest)
 
@@ -64,7 +62,8 @@
 
 
 #### GetOperationsByCursor
-Метод получения списка операций по счёту с пагинацией.
+Метод получения списка операций по счёту с пагинацией. При работе с данным методом необходимо учитывать
+[особенности взаимодействия](/investAPI/operations_problems) с данным методом.
 
 - Тело запроса — [GetOperationsByCursorRequest](#getoperationsbycursorrequest)
 
@@ -85,6 +84,14 @@ Server-side stream обновлений портфеля
 - Тело запроса — [PortfolioStreamRequest](#portfoliostreamrequest)
 
 - Тело ответа — [PortfolioStreamResponse](#portfoliostreamresponse)
+
+
+#### PositionsStream
+Server-side stream обновлений информации по изменению позиций портфеля
+
+- Тело запроса — [PositionsStreamRequest](#positionsstreamrequest)
+
+- Тело ответа — [PositionsStreamResponse](#positionsstreamresponse)
 
  <!-- range .Methods -->
  <!-- range .Services -->
@@ -139,6 +146,9 @@ Server-side stream обновлений портфеля
 | type |  [string](#string) | Текстовое описание типа операции. |
 | operation_type |  [OperationType](#operationtype) | Тип операции. |
 | trades | Массив объектов [OperationTrade](#operationtrade) | Массив сделок. |
+| asset_uid |  [string](#string) | Идентификатор актива |
+| position_uid |  [string](#string) | position_uid-идентификатора инструмента. |
+| instrument_uid |  [string](#string) | Уникальный идентификатор инструмента. |
  <!-- end Fields -->
  <!-- end HasFields -->
 
@@ -164,6 +174,7 @@ Server-side stream обновлений портфеля
 | Field | Type | Description |
 | ----- | ---- | ----------- |
 | account_id |  [string](#string) | Идентификатор счёта пользователя. |
+| currency |  [PortfolioRequest.CurrencyRequest](#portfoliorequestcurrencyrequest) | Валюта, в которой требуется рассчитать портфель |
  <!-- end Fields -->
  <!-- end HasFields -->
 
@@ -174,13 +185,18 @@ Server-side stream обновлений портфеля
 
 | Field | Type | Description |
 | ----- | ---- | ----------- |
-| total_amount_shares |  [MoneyValue](#moneyvalue) | Общая стоимость акций в портфеле в рублях. |
-| total_amount_bonds |  [MoneyValue](#moneyvalue) | Общая стоимость облигаций в портфеле в рублях. |
-| total_amount_etf |  [MoneyValue](#moneyvalue) | Общая стоимость фондов в портфеле в рублях. |
-| total_amount_currencies |  [MoneyValue](#moneyvalue) | Общая стоимость валют в портфеле в рублях. |
-| total_amount_futures |  [MoneyValue](#moneyvalue) | Общая стоимость фьючерсов в портфеле в рублях. |
+| total_amount_shares |  [MoneyValue](#moneyvalue) | Общая стоимость акций в портфеле. |
+| total_amount_bonds |  [MoneyValue](#moneyvalue) | Общая стоимость облигаций в портфеле. |
+| total_amount_etf |  [MoneyValue](#moneyvalue) | Общая стоимость фондов в портфеле. |
+| total_amount_currencies |  [MoneyValue](#moneyvalue) | Общая стоимость валют в портфеле. |
+| total_amount_futures |  [MoneyValue](#moneyvalue) | Общая стоимость фьючерсов в портфеле. |
 | expected_yield |  [Quotation](#quotation) | Текущая относительная доходность портфеля, в %. |
 | positions | Массив объектов [PortfolioPosition](#portfolioposition) | Список позиций портфеля. |
+| account_id |  [string](#string) | Идентификатор счёта пользователя. |
+| total_amount_options |  [MoneyValue](#moneyvalue) | Общая стоимость опционов в портфеле. |
+| total_amount_sp |  [MoneyValue](#moneyvalue) | Общая стоимость структурных нот в портфеле. |
+| total_amount_portfolio |  [MoneyValue](#moneyvalue) | Общая стоимость портфеля. |
+| virtual_positions | Массив объектов [VirtualPortfolioPosition](#virtualportfolioposition) | Массив виртуальных позиций портфеля. |
  <!-- end Fields -->
  <!-- end HasFields -->
 
@@ -207,6 +223,7 @@ Server-side stream обновлений портфеля
 | securities | Массив объектов [PositionsSecurities](#positionssecurities) | Список ценно-бумажных позиций портфеля. |
 | limits_loading_in_progress |  [bool](#bool) | Признак идущей в данный момент выгрузки лимитов. |
 | futures | Массив объектов [PositionsFutures](#positionsfutures) | Список фьючерсов портфеля. |
+| options | Массив объектов [PositionsOptions](#positionsoptions) | Список опционов портфеля. |
  <!-- end Fields -->
  <!-- end HasFields -->
 
@@ -247,11 +264,37 @@ Server-side stream обновлений портфеля
 | average_position_price |  [MoneyValue](#moneyvalue) | Средневзвешенная цена позиции. **Возможна задержка до секунды для пересчёта**. |
 | expected_yield |  [Quotation](#quotation) | Текущая рассчитанная доходность позиции. |
 | current_nkd |  [MoneyValue](#moneyvalue) | Текущий НКД. |
-| average_position_price_pt |  [Quotation](#quotation) | Средняя цена позиции в пунктах (для фьючерсов). **Возможна задержка до секунды для пересчёта**. |
-| current_price |  [MoneyValue](#moneyvalue) | Текущая цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента.. |
+| average_position_price_pt |  [Quotation](#quotation) | Deprecated Средняя цена позиции в пунктах (для фьючерсов). **Возможна задержка до секунды для пересчёта**. |
+| current_price |  [MoneyValue](#moneyvalue) | Текущая цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. |
 | average_position_price_fifo |  [MoneyValue](#moneyvalue) | Средняя цена позиции по методу FIFO. **Возможна задержка до секунды для пересчёта**. |
-| quantity_lots |  [Quotation](#quotation) | Количество лотов в портфеле. |
-| blocked |  [bool](#bool) | Заблокировано. |
+| quantity_lots |  [Quotation](#quotation) | Deprecated Количество лотов в портфеле. |
+| blocked |  [bool](#bool) | Заблокировано на бирже. |
+| blocked_lots |  [Quotation](#quotation) | Количество бумаг, заблокированных выставленными заявками. |
+| position_uid |  [string](#string) | position_uid-идентификатора инструмента |
+| instrument_uid |  [string](#string) | instrument_uid-идентификатора инструмента |
+| var_margin |  [MoneyValue](#moneyvalue) | Вариационная маржа |
+| expected_yield_fifo |  [Quotation](#quotation) | Текущая рассчитанная доходность позиции. |
+ <!-- end Fields -->
+ <!-- end HasFields -->
+
+
+#### VirtualPortfolioPosition
+
+
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| position_uid |  [string](#string) | position_uid-идентификатора инструмента |
+| instrument_uid |  [string](#string) | instrument_uid-идентификатора инструмента |
+| figi |  [string](#string) | Figi-идентификатора инструмента. |
+| instrument_type |  [string](#string) | Тип инструмента. |
+| quantity |  [Quotation](#quotation) | Количество инструмента в портфеле в штуках. |
+| average_position_price |  [MoneyValue](#moneyvalue) | Средневзвешенная цена позиции. **Возможна задержка до секунды для пересчёта**. |
+| expected_yield |  [Quotation](#quotation) | Текущая рассчитанная доходность позиции. |
+| expected_yield_fifo |  [Quotation](#quotation) | Текущая рассчитанная доходность позиции. |
+| expire_date |  [google.protobuf.Timestamp](#googleprotobuftimestamp) | Дата до которой нужно продать виртуальные бумаги, после этой даты виртуальная позиция "сгорит" |
+| current_price |  [MoneyValue](#moneyvalue) | Текущая цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. |
+| average_position_price_fifo |  [MoneyValue](#moneyvalue) | Средняя цена позиции по методу FIFO. **Возможна задержка до секунды для пересчёта**. |
  <!-- end Fields -->
  <!-- end HasFields -->
 
@@ -263,8 +306,10 @@ Server-side stream обновлений портфеля
 | Field | Type | Description |
 | ----- | ---- | ----------- |
 | figi |  [string](#string) | Figi-идентификатор бумаги. |
-| blocked |  [int64](#int64) | Заблокировано. |
+| blocked |  [int64](#int64) | Количество бумаг заблокированных выставленными заявками. |
 | balance |  [int64](#int64) | Текущий незаблокированный баланс. |
+| position_uid |  [string](#string) | Уникальный идентификатор позиции. |
+| instrument_uid |  [string](#string) | Уникальный идентификатор  инструмента. |
 | exchange_blocked |  [bool](#bool) | Заблокировано на бирже. |
 | instrument_type |  [string](#string) | Тип инструмента. |
  <!-- end Fields -->
@@ -278,7 +323,23 @@ Server-side stream обновлений портфеля
 | Field | Type | Description |
 | ----- | ---- | ----------- |
 | figi |  [string](#string) | Figi-идентификатор фьючерса. |
-| blocked |  [int64](#int64) | Заблокировано. |
+| blocked |  [int64](#int64) | Количество бумаг заблокированных выставленными заявками. |
+| balance |  [int64](#int64) | Текущий незаблокированный баланс. |
+| position_uid |  [string](#string) | Уникальный идентификатор позиции. |
+| instrument_uid |  [string](#string) | Уникальный идентификатор  инструмента. |
+ <!-- end Fields -->
+ <!-- end HasFields -->
+
+
+#### PositionsOptions
+Баланс опциона.
+
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| position_uid |  [string](#string) | Уникальный идентификатор позиции опциона. |
+| instrument_uid |  [string](#string) | Уникальный идентификатор  инструмента. |
+| blocked |  [int64](#int64) | Количество бумаг заблокированных выставленными заявками. |
 | balance |  [int64](#int64) | Текущий незаблокированный баланс. |
  <!-- end Fields -->
  <!-- end HasFields -->
@@ -544,16 +605,16 @@ Server-side stream обновлений портфеля
 
 | Field | Type | Description |
 | ----- | ---- | ----------- |
-| account_id |  [string](#string) | Идентификатор счёта клиента. |
+| account_id |  [string](#string) | Идентификатор счёта клиента. Обязательный параметр для данного метода, остальные параметры опциональны. |
 | instrument_id |  [string](#string) | Идентификатор инструмента (Figi инструмента или uid инструмента) |
 | from |  [google.protobuf.Timestamp](#googleprotobuftimestamp) | Начало периода (по UTC). |
 | to |  [google.protobuf.Timestamp](#googleprotobuftimestamp) | Окончание периода (по UTC). |
 | cursor |  [string](#string) | Идентификатор элемента, с которого начать формировать ответ. |
-| limit |  [int32](#int32) | Лимит количества операций. |
+| limit |  [int32](#int32) | Лимит количества операций. По умолчанию устанавливается значение **100**, максимальное значение 1000. |
 | operation_types | Массив объектов [OperationType](#operationtype) | Тип операции. Принимает значение из списка OperationType. |
 | state |  [OperationState](#operationstate) | Статус запрашиваемых операций, возможные значения указаны в OperationState. |
 | without_commissions |  [bool](#bool) | Флаг возвращать ли комиссии, по умолчанию false |
-| without_trades |  [bool](#bool) | Флаг ответ без сделок. |
+| without_trades |  [bool](#bool) | Флаг получения ответа без массива сделок. |
 | without_overnights |  [bool](#bool) | Флаг не показывать overnight операций. |
  <!-- end Fields -->
  <!-- end HasFields -->
@@ -580,8 +641,8 @@ Server-side stream обновлений портфеля
 | ----- | ---- | ----------- |
 | cursor |  [string](#string) | Курсор. |
 | broker_account_id |  [string](#string) | Номер счета клиента. |
-| id |  [string](#string) | Номер поручения. |
-| parent_operation_id |  [string](#string) | Номер родительского поручения. |
+| id |  [string](#string) | Идентификатор операции, может меняться с течением времени. |
+| parent_operation_id |  [string](#string) | Идентификатор родительской операции, может измениться, если изменился id родительской операции. |
 | name |  [string](#string) | Название операции. |
 | date |  [google.protobuf.Timestamp](#googleprotobuftimestamp) | Дата поручения. |
 | type |  [OperationType](#operationtype) | Тип операции. |
@@ -591,6 +652,7 @@ Server-side stream обновлений портфеля
 | figi |  [string](#string) | Figi. |
 | instrument_type |  [string](#string) | Тип инструмента. |
 | instrument_kind |  [InstrumentType](#instrumenttype) | Тип инструмента. |
+| position_uid |  [string](#string) | position_uid-идентификатора инструмента. |
 | payment |  [MoneyValue](#moneyvalue) | Сумма операции. |
 | price |  [MoneyValue](#moneyvalue) | Цена операции за 1 инструмент. |
 | commission |  [MoneyValue](#moneyvalue) | Комиссия. |
@@ -603,6 +665,7 @@ Server-side stream обновлений портфеля
 | cancel_date_time |  [google.protobuf.Timestamp](#googleprotobuftimestamp) | Дата и время снятия заявки. |
 | cancel_reason |  [string](#string) | Причина отмены операции. |
 | trades_info |  [OperationItemTrades](#operationitemtrades) | Массив сделок. |
+| asset_uid |  [string](#string) | Идентификатор актива |
  <!-- end Fields -->
  <!-- end HasFields -->
 
@@ -613,7 +676,6 @@ Server-side stream обновлений портфеля
 
 | Field | Type | Description |
 | ----- | ---- | ----------- |
-| trades_size |  [int32](#int32) |  |
 | trades | Массив объектов [OperationItemTrade](#operationitemtrade) |  |
  <!-- end Fields -->
  <!-- end HasFields -->
@@ -631,6 +693,81 @@ Server-side stream обновлений портфеля
 | price |  [MoneyValue](#moneyvalue) | Цена. |
 | yield |  [MoneyValue](#moneyvalue) | Доходность. |
 | yield_relative |  [Quotation](#quotation) | Относительная доходность. |
+ <!-- end Fields -->
+ <!-- end HasFields -->
+
+
+#### PositionsStreamRequest
+Запрос установки stream-соединения позиций.
+
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| accounts | Массив объектов [string](#string) | Массив идентификаторов счётов пользователя |
+ <!-- end Fields -->
+ <!-- end HasFields -->
+
+
+#### PositionsStreamResponse
+Информация по изменению позиций портфеля.
+
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| subscriptions |  [PositionsSubscriptionResult](#positionssubscriptionresult) | Объект результата подписки. |
+| position |  [PositionData](#positiondata) | Объект стриминга позиций. |
+| ping |  [Ping](#ping) | Проверка активности стрима. |
+ <!-- end Fields -->
+ <!-- end HasFields -->
+
+
+#### PositionsSubscriptionResult
+Объект результата подписки.
+
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| accounts | Массив объектов [PositionsSubscriptionStatus](#positionssubscriptionstatus) | Массив счетов клиента. |
+ <!-- end Fields -->
+ <!-- end HasFields -->
+
+
+#### PositionsSubscriptionStatus
+Счет клиента.
+
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| account_id |  [string](#string) | Идентификатор счёта |
+| subscription_status |  [PositionsAccountSubscriptionStatus](#positionsaccountsubscriptionstatus) | Результат подписки. |
+ <!-- end Fields -->
+ <!-- end HasFields -->
+
+
+#### PositionData
+Данные о позиции портфеля.
+
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| account_id |  [string](#string) | Идентификатор счёта. |
+| money | Массив объектов [PositionsMoney](#positionsmoney) | Массив валютных позиций портфеля. |
+| securities | Массив объектов [PositionsSecurities](#positionssecurities) | Список ценно-бумажных позиций портфеля. |
+| futures | Массив объектов [PositionsFutures](#positionsfutures) | Список фьючерсов портфеля. |
+| options | Массив объектов [PositionsOptions](#positionsoptions) | Список опционов портфеля. |
+| date |  [google.protobuf.Timestamp](#googleprotobuftimestamp) | Дата и время операции в формате UTC. |
+ <!-- end Fields -->
+ <!-- end HasFields -->
+
+
+#### PositionsMoney
+Валютная позиция портфеля.
+
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| available_value |  [MoneyValue](#moneyvalue) | Доступное количество валютный позиций. |
+| blocked_value |  [MoneyValue](#moneyvalue) | Заблокированное количество валютный позиций. |
  <!-- end Fields -->
  <!-- end HasFields -->
  <!-- end messages -->
@@ -701,6 +838,23 @@ Server-side stream обновлений портфеля
 | OPERATION_TYPE_TAX_REPO_REFUND_PROGRESSIVE | 42 | Возврат налога по сделкам РЕПО по ставке 15%. |
 | OPERATION_TYPE_DIV_EXT | 43 | Выплата дивидендов на карту. |
 | OPERATION_TYPE_TAX_CORRECTION_COUPON | 44 | Корректировка налога по купонам. |
+| OPERATION_TYPE_CASH_FEE | 45 | Комиссия за валютный остаток. |
+| OPERATION_TYPE_OUT_FEE | 46 | Комиссия за вывод валюты с брокерского счета. |
+| OPERATION_TYPE_OUT_STAMP_DUTY | 47 | Гербовый сбор. |
+| OPERATION_TYPE_OUTPUT_SWIFT | 50 | SWIFT-перевод |
+| OPERATION_TYPE_INPUT_SWIFT | 51 | SWIFT-перевод |
+| OPERATION_TYPE_OUTPUT_ACQUIRING | 53 | Перевод на карту |
+| OPERATION_TYPE_INPUT_ACQUIRING | 54 | Перевод с карты |
+| OPERATION_TYPE_OUTPUT_PENALTY | 55 | Комиссия за вывод средств |
+| OPERATION_TYPE_ADVICE_FEE | 56 | Списание оплаты за сервис Советов |
+| OPERATION_TYPE_TRANS_IIS_BS | 57 | Перевод ценных бумаг с ИИС на Брокерский счет |
+| OPERATION_TYPE_TRANS_BS_BS | 58 | Перевод ценных бумаг с одного брокерского счета на другой |
+| OPERATION_TYPE_OUT_MULTI | 59 | Вывод денежных средств со счета |
+| OPERATION_TYPE_INP_MULTI | 60 | Пополнение денежных средств со счета |
+| OPERATION_TYPE_OVER_PLACEMENT | 61 | Размещение биржевого овернайта |
+| OPERATION_TYPE_OVER_COM | 62 | Списание комиссии |
+| OPERATION_TYPE_OVER_INCOME | 63 | Доход от оверанайта |
+| OPERATION_TYPE_OPTION_EXPIRATION | 64 | Экспирация |
 
 
 
@@ -718,19 +872,27 @@ Server-side stream обновлений портфеля
 
 
 
-#### InstrumentType
-Тип инструмента.
+#### PositionsAccountSubscriptionStatus
+Результат подписки.
 
 | Name | Number | Description |
 | ---- | ------ | ----------- |
-| INSTRUMENT_TYPE_UNSPECIFIED | 0 | none |
-| INSTRUMENT_TYPE_BOND | 1 | Облигация. |
-| INSTRUMENT_TYPE_SHARE | 2 | Акция. |
-| INSTRUMENT_TYPE_CURRENCY | 3 | Валюта. |
-| INSTRUMENT_TYPE_ETF | 4 | Exchange-traded fund. Фонд. |
-| INSTRUMENT_TYPE_FUTURES | 5 | Фьючерс. |
-| INSTRUMENT_TYPE_SP | 6 | Структурная нота. |
-| INSTRUMENT_TYPE_OPTION | 7 | Опцион. |
+| POSITIONS_SUBSCRIPTION_STATUS_UNSPECIFIED | 0 | Тип не определён. |
+| POSITIONS_SUBSCRIPTION_STATUS_SUCCESS | 1 | Успешно. |
+| POSITIONS_SUBSCRIPTION_STATUS_ACCOUNT_NOT_FOUND | 2 | Счёт не найден или недостаточно прав. |
+| POSITIONS_SUBSCRIPTION_STATUS_INTERNAL_ERROR | 3 | Произошла ошибка. |
+
+
+
+
+#### PortfolioRequest.CurrencyRequest
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| RUB | 0 | Рубли |
+| USD | 1 | Доллары |
+| EUR | 2 | Евро |
 
 
  <!-- range .Enums -->

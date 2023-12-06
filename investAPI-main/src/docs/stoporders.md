@@ -1,8 +1,5 @@
 
 
- <!-- range HasServices -->
-
-
 
 
 
@@ -44,25 +41,33 @@
 
 
 
-#### CancelStopOrderRequest
-Запрос отмены выставленной стоп-заявки.
+#### PostStopOrderRequest
+Запрос выставления стоп-заявки.
 
 
 | Field | Type | Description |
 | ----- | ---- | ----------- |
-| account_id |  [string](#string) | Идентификатор счёта клиента. |
-| stop_order_id |  [string](#string) | Уникальный идентификатор стоп-заявки. |
+| figi |  [string](#string) | Deprecated Figi-идентификатор инструмента. Необходимо использовать instrument_id. |
+| quantity |  [int64](#int64) | Количество лотов. |
+| price |  [Quotation](#quotation) | Цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. |
+| stop_price |  [Quotation](#quotation) | Стоп-цена заявки за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. |
+| direction |  [StopOrderDirection](#stoporderdirection) | Направление операции. |
+| account_id |  [string](#string) | Номер счёта. |
+| expiration_type |  [StopOrderExpirationType](#stoporderexpirationtype) | Тип экспирации заявки. |
+| stop_order_type |  [StopOrderType](#stopordertype) | Тип заявки. |
+| expire_date |  [google.protobuf.Timestamp](#googleprotobuftimestamp) | Дата и время окончания действия стоп-заявки в часовом поясе UTC. **Для ExpirationType = GoodTillDate заполнение обязательно**. |
+| instrument_id |  [string](#string) | Идентификатор инструмента, принимает значения Figi или instrument_uid. |
  <!-- end Fields -->
  <!-- end HasFields -->
 
 
-#### CancelStopOrderResponse
-Результат отмены выставленной стоп-заявки.
+#### PostStopOrderResponse
+Результат выставления стоп-заявки.
 
 
 | Field | Type | Description |
 | ----- | ---- | ----------- |
-| time |  [google.protobuf.Timestamp](#googleprotobuftimestamp) | Время отмены заявки в часовом поясе UTC. |
+| stop_order_id |  [string](#string) | Уникальный идентификатор стоп-заявки. |
  <!-- end Fields -->
  <!-- end HasFields -->
 
@@ -89,32 +94,25 @@
  <!-- end HasFields -->
 
 
-#### PostStopOrderRequest
-Запрос выставления стоп-заявки.
+#### CancelStopOrderRequest
+Запрос отмены выставленной стоп-заявки.
 
 
 | Field | Type | Description |
 | ----- | ---- | ----------- |
-| figi |  [string](#string) | Figi-идентификатор инструмента. |
-| quantity |  [int64](#int64) | Количество лотов. |
-| price |  [Quotation](#quotation) | Цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. |
-| stop_price |  [Quotation](#quotation) | Стоп-цена заявки за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. |
-| direction |  [StopOrderDirection](#stoporderdirection) | Направление операции. |
-| account_id |  [string](#string) | Номер счёта. |
-| expiration_type |  [StopOrderExpirationType](#stoporderexpirationtype) | Тип экспирации заявки. |
-| stop_order_type |  [StopOrderType](#stopordertype) | Тип заявки. |
-| expire_date |  [google.protobuf.Timestamp](#googleprotobuftimestamp) | Дата и время окончания действия стоп-заявки в часовом поясе UTC. **Для ExpirationType = GoodTillDate заполнение обязательно**. |
+| account_id |  [string](#string) | Идентификатор счёта клиента. |
+| stop_order_id |  [string](#string) | Уникальный идентификатор стоп-заявки. |
  <!-- end Fields -->
  <!-- end HasFields -->
 
 
-#### PostStopOrderResponse
-Результат выставления стоп-заявки.
+#### CancelStopOrderResponse
+Результат отмены выставленной стоп-заявки.
 
 
 | Field | Type | Description |
 | ----- | ---- | ----------- |
-| stop_order_id |  [string](#string) | Уникальный идентификатор стоп-заявки. |
+| time |  [google.protobuf.Timestamp](#googleprotobuftimestamp) | Время отмены заявки в часовом поясе UTC. |
  <!-- end Fields -->
  <!-- end HasFields -->
 
@@ -136,6 +134,7 @@
 | expiration_time |  [google.protobuf.Timestamp](#googleprotobuftimestamp) | Дата и время снятия заявки в часовом поясе UTC. |
 | price |  [MoneyValue](#moneyvalue) | Цена заявки за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. |
 | stop_price |  [MoneyValue](#moneyvalue) | Цена активации стоп-заявки за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. |
+| instrument_uid |  [string](#string) | instrument_uid идентификатор инструмента. |
  <!-- end Fields -->
  <!-- end HasFields -->
  <!-- end messages -->

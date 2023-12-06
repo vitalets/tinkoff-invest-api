@@ -17,6 +17,7 @@ describe('candles-loader', () => {
     const candlesLoader = new CandlesLoader(testApi, { cacheDir });
     const { candles } = await candlesLoader.getCandles({
       figi,
+      instrumentId: figi,
       interval: CandleInterval.CANDLE_INTERVAL_15_MIN,
       minCount: 33,
       to: new Date('2022-04-25T08:00:00.000Z')
@@ -36,6 +37,7 @@ describe('candles-loader', () => {
     const candlesLoader = new CandlesLoader(testApi, { cacheDir });
     const { candles } = await candlesLoader.getCandles({
       figi,
+      instrumentId: figi,
       interval: CandleInterval.CANDLE_INTERVAL_15_MIN,
       from: new Date('2022-04-25T10:00:00.000Z'),
       to: new Date('2022-04-26T08:00:00.000Z')
