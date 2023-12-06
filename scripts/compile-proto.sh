@@ -23,5 +23,5 @@ protoc \
 
 # Some magic to make it work with native ESM.
 # See: https://github.com/grpc/grpc-node/issues/2009
-sed -E -i '' 's|import \* as _m0 from "protobufjs/minimal";|import _m0 from "protobufjs/minimal\.js";|g' $OUT_DIR/*.ts $OUT_DIR/google/protobuf/timestamp.ts
+sed -E -i '' 's|import _m0 from "protobufjs/minimal";|import _m0 from "protobufjs/minimal\.js";|g' $OUT_DIR/*.ts $OUT_DIR/google/protobuf/timestamp.ts
 sed -E -i '' 's|from "\./([^"]+)";|from "\./\1\.js";|g' $OUT_DIR/*.ts

@@ -128,9 +128,7 @@ export enum SecurityTradingStatus {
   UNRECOGNIZED = -1,
 }
 
-export function securityTradingStatusFromJSON(
-  object: any
-): SecurityTradingStatus {
+export function securityTradingStatusFromJSON(object: any): SecurityTradingStatus {
   switch (object) {
     case 0:
     case "SECURITY_TRADING_STATUS_UNSPECIFIED":
@@ -190,9 +188,7 @@ export function securityTradingStatusFromJSON(
   }
 }
 
-export function securityTradingStatusToJSON(
-  object: SecurityTradingStatus
-): string {
+export function securityTradingStatusToJSON(object: SecurityTradingStatus): string {
   switch (object) {
     case SecurityTradingStatus.SECURITY_TRADING_STATUS_UNSPECIFIED:
       return "SECURITY_TRADING_STATUS_UNSPECIFIED";
@@ -255,7 +251,7 @@ export interface Quotation {
 /** Проверка активности стрима. */
 export interface Ping {
   /** Время проверки. */
-  time?: Date;
+  time?: Date | undefined;
 }
 
 function createBaseMoneyValue(): MoneyValue {
@@ -263,10 +259,7 @@ function createBaseMoneyValue(): MoneyValue {
 }
 
 export const MoneyValue = {
-  encode(
-    message: MoneyValue,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: MoneyValue, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.currency !== "") {
       writer.uint32(10).string(message.currency);
     }
@@ -280,42 +273,61 @@ export const MoneyValue = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MoneyValue {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMoneyValue();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.currency = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 16) {
+            break;
+          }
+
           message.units = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 3:
+          if (tag !== 24) {
+            break;
+          }
+
           message.nano = reader.int32();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): MoneyValue {
     return {
-      currency: isSet(object.currency) ? String(object.currency) : "",
-      units: isSet(object.units) ? Number(object.units) : 0,
-      nano: isSet(object.nano) ? Number(object.nano) : 0,
+      currency: isSet(object.currency) ? globalThis.String(object.currency) : "",
+      units: isSet(object.units) ? globalThis.Number(object.units) : 0,
+      nano: isSet(object.nano) ? globalThis.Number(object.nano) : 0,
     };
   },
 
   toJSON(message: MoneyValue): unknown {
     const obj: any = {};
-    message.currency !== undefined && (obj.currency = message.currency);
-    message.units !== undefined && (obj.units = Math.round(message.units));
-    message.nano !== undefined && (obj.nano = Math.round(message.nano));
+    if (message.currency !== "") {
+      obj.currency = message.currency;
+    }
+    if (message.units !== 0) {
+      obj.units = Math.round(message.units);
+    }
+    if (message.nano !== 0) {
+      obj.nano = Math.round(message.nano);
+    }
     return obj;
   },
 };
@@ -325,10 +337,7 @@ function createBaseQuotation(): Quotation {
 }
 
 export const Quotation = {
-  encode(
-    message: Quotation,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: Quotation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.units !== 0) {
       writer.uint32(8).int64(message.units);
     }
@@ -339,37 +348,50 @@ export const Quotation = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Quotation {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQuotation();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.units = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 2:
+          if (tag !== 16) {
+            break;
+          }
+
           message.nano = reader.int32();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): Quotation {
     return {
-      units: isSet(object.units) ? Number(object.units) : 0,
-      nano: isSet(object.nano) ? Number(object.nano) : 0,
+      units: isSet(object.units) ? globalThis.Number(object.units) : 0,
+      nano: isSet(object.nano) ? globalThis.Number(object.nano) : 0,
     };
   },
 
   toJSON(message: Quotation): unknown {
     const obj: any = {};
-    message.units !== undefined && (obj.units = Math.round(message.units));
-    message.nano !== undefined && (obj.nano = Math.round(message.nano));
+    if (message.units !== 0) {
+      obj.units = Math.round(message.units);
+    }
+    if (message.nano !== 0) {
+      obj.nano = Math.round(message.nano);
+    }
     return obj;
   },
 };
@@ -381,57 +403,46 @@ function createBasePing(): Ping {
 export const Ping = {
   encode(message: Ping, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.time !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.time),
-        writer.uint32(10).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.time), writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Ping {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePing();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.time = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          if (tag !== 10) {
+            break;
+          }
+
+          message.time = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): Ping {
-    return {
-      time: isSet(object.time) ? fromJsonTimestamp(object.time) : undefined,
-    };
+    return { time: isSet(object.time) ? fromJsonTimestamp(object.time) : undefined };
   },
 
   toJSON(message: Ping): unknown {
     const obj: any = {};
-    message.time !== undefined && (obj.time = message.time.toISOString());
+    if (message.time !== undefined) {
+      obj.time = message.time.toISOString();
+    }
     return obj;
   },
 };
-
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var globalThis: any = (() => {
-  if (typeof globalThis !== "undefined") return globalThis;
-  if (typeof self !== "undefined") return self;
-  if (typeof window !== "undefined") return window;
-  if (typeof global !== "undefined") return global;
-  throw "Unable to locate global object";
-})();
 
 function toTimestamp(date: Date): Timestamp {
   const seconds = date.getTime() / 1_000;
@@ -440,23 +451,23 @@ function toTimestamp(date: Date): Timestamp {
 }
 
 function fromTimestamp(t: Timestamp): Date {
-  let millis = t.seconds * 1_000;
-  millis += t.nanos / 1_000_000;
-  return new Date(millis);
+  let millis = (t.seconds || 0) * 1_000;
+  millis += (t.nanos || 0) / 1_000_000;
+  return new globalThis.Date(millis);
 }
 
 function fromJsonTimestamp(o: any): Date {
-  if (o instanceof Date) {
+  if (o instanceof globalThis.Date) {
     return o;
   } else if (typeof o === "string") {
-    return new Date(o);
+    return new globalThis.Date(o);
   } else {
     return fromTimestamp(Timestamp.fromJSON(o));
   }
 }
 
 function longToNumber(long: Long): number {
-  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+  if (long.gt(globalThis.Number.MAX_SAFE_INTEGER)) {
     throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
   }
   return long.toNumber();

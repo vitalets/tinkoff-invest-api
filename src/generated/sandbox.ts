@@ -1,37 +1,37 @@
 /* eslint-disable */
-import Long from "long";
+import type { CallContext, CallOptions } from "nice-grpc-common";
 import _m0 from "protobufjs/minimal.js";
 import { MoneyValue } from "./common.js";
-import { CallContext, CallOptions } from "nice-grpc-common";
-import { GetAccountsRequest, GetAccountsResponse } from "./users.js";
 import {
-  PostOrderRequest,
-  PostOrderResponse,
-  ReplaceOrderRequest,
-  GetOrdersRequest,
-  GetOrdersResponse,
-  CancelOrderRequest,
-  CancelOrderResponse,
-  GetOrderStateRequest,
-  OrderState,
-} from "./orders.js";
-import {
-  PositionsRequest,
-  PositionsResponse,
-  OperationsRequest,
-  OperationsResponse,
   GetOperationsByCursorRequest,
   GetOperationsByCursorResponse,
+  OperationsRequest,
+  OperationsResponse,
   PortfolioRequest,
   PortfolioResponse,
+  PositionsRequest,
+  PositionsResponse,
   WithdrawLimitsRequest,
   WithdrawLimitsResponse,
 } from "./operations.js";
+import {
+  CancelOrderRequest,
+  CancelOrderResponse,
+  GetOrdersRequest,
+  GetOrdersResponse,
+  GetOrderStateRequest,
+  OrderState,
+  PostOrderRequest,
+  PostOrderResponse,
+  ReplaceOrderRequest,
+} from "./orders.js";
+import { GetAccountsRequest, GetAccountsResponse } from "./users.js";
 
 export const protobufPackage = "tinkoff.public.invest.api.contract.v1";
 
 /** Запрос открытия счёта в песочнице. */
-export interface OpenSandboxAccountRequest {}
+export interface OpenSandboxAccountRequest {
+}
 
 /** Номер открытого счёта в песочнице. */
 export interface OpenSandboxAccountResponse {
@@ -46,20 +46,21 @@ export interface CloseSandboxAccountRequest {
 }
 
 /** Результат закрытия счёта в песочнице. */
-export interface CloseSandboxAccountResponse {}
+export interface CloseSandboxAccountResponse {
+}
 
 /** Запрос пополнения счёта в песочнице. */
 export interface SandboxPayInRequest {
   /** Номер счёта */
   accountId: string;
   /** Сумма пополнения счёта в рублях */
-  amount?: MoneyValue;
+  amount?: MoneyValue | undefined;
 }
 
 /** Результат пополнения счёта, текущий баланс. */
 export interface SandboxPayInResponse {
   /** Текущий баланс счёта */
-  balance?: MoneyValue;
+  balance?: MoneyValue | undefined;
 }
 
 function createBaseOpenSandboxAccountRequest(): OpenSandboxAccountRequest {
@@ -67,27 +68,22 @@ function createBaseOpenSandboxAccountRequest(): OpenSandboxAccountRequest {
 }
 
 export const OpenSandboxAccountRequest = {
-  encode(
-    _: OpenSandboxAccountRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(_: OpenSandboxAccountRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): OpenSandboxAccountRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): OpenSandboxAccountRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseOpenSandboxAccountRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -107,46 +103,45 @@ function createBaseOpenSandboxAccountResponse(): OpenSandboxAccountResponse {
 }
 
 export const OpenSandboxAccountResponse = {
-  encode(
-    message: OpenSandboxAccountResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: OpenSandboxAccountResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.accountId !== "") {
       writer.uint32(10).string(message.accountId);
     }
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): OpenSandboxAccountResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): OpenSandboxAccountResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseOpenSandboxAccountResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.accountId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): OpenSandboxAccountResponse {
-    return {
-      accountId: isSet(object.accountId) ? String(object.accountId) : "",
-    };
+    return { accountId: isSet(object.accountId) ? globalThis.String(object.accountId) : "" };
   },
 
   toJSON(message: OpenSandboxAccountResponse): unknown {
     const obj: any = {};
-    message.accountId !== undefined && (obj.accountId = message.accountId);
+    if (message.accountId !== "") {
+      obj.accountId = message.accountId;
+    }
     return obj;
   },
 };
@@ -156,46 +151,45 @@ function createBaseCloseSandboxAccountRequest(): CloseSandboxAccountRequest {
 }
 
 export const CloseSandboxAccountRequest = {
-  encode(
-    message: CloseSandboxAccountRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: CloseSandboxAccountRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.accountId !== "") {
       writer.uint32(10).string(message.accountId);
     }
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): CloseSandboxAccountRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): CloseSandboxAccountRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCloseSandboxAccountRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.accountId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): CloseSandboxAccountRequest {
-    return {
-      accountId: isSet(object.accountId) ? String(object.accountId) : "",
-    };
+    return { accountId: isSet(object.accountId) ? globalThis.String(object.accountId) : "" };
   },
 
   toJSON(message: CloseSandboxAccountRequest): unknown {
     const obj: any = {};
-    message.accountId !== undefined && (obj.accountId = message.accountId);
+    if (message.accountId !== "") {
+      obj.accountId = message.accountId;
+    }
     return obj;
   },
 };
@@ -205,27 +199,22 @@ function createBaseCloseSandboxAccountResponse(): CloseSandboxAccountResponse {
 }
 
 export const CloseSandboxAccountResponse = {
-  encode(
-    _: CloseSandboxAccountResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(_: CloseSandboxAccountResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): CloseSandboxAccountResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): CloseSandboxAccountResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCloseSandboxAccountResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -245,10 +234,7 @@ function createBaseSandboxPayInRequest(): SandboxPayInRequest {
 }
 
 export const SandboxPayInRequest = {
-  encode(
-    message: SandboxPayInRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: SandboxPayInRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.accountId !== "") {
       writer.uint32(10).string(message.accountId);
     }
@@ -259,42 +245,50 @@ export const SandboxPayInRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): SandboxPayInRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSandboxPayInRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.accountId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.amount = MoneyValue.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): SandboxPayInRequest {
     return {
-      accountId: isSet(object.accountId) ? String(object.accountId) : "",
-      amount: isSet(object.amount)
-        ? MoneyValue.fromJSON(object.amount)
-        : undefined,
+      accountId: isSet(object.accountId) ? globalThis.String(object.accountId) : "",
+      amount: isSet(object.amount) ? MoneyValue.fromJSON(object.amount) : undefined,
     };
   },
 
   toJSON(message: SandboxPayInRequest): unknown {
     const obj: any = {};
-    message.accountId !== undefined && (obj.accountId = message.accountId);
-    message.amount !== undefined &&
-      (obj.amount = message.amount
-        ? MoneyValue.toJSON(message.amount)
-        : undefined);
+    if (message.accountId !== "") {
+      obj.accountId = message.accountId;
+    }
+    if (message.amount !== undefined) {
+      obj.amount = MoneyValue.toJSON(message.amount);
+    }
     return obj;
   },
 };
@@ -304,51 +298,45 @@ function createBaseSandboxPayInResponse(): SandboxPayInResponse {
 }
 
 export const SandboxPayInResponse = {
-  encode(
-    message: SandboxPayInResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: SandboxPayInResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.balance !== undefined) {
       MoneyValue.encode(message.balance, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): SandboxPayInResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): SandboxPayInResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSandboxPayInResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.balance = MoneyValue.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): SandboxPayInResponse {
-    return {
-      balance: isSet(object.balance)
-        ? MoneyValue.fromJSON(object.balance)
-        : undefined,
-    };
+    return { balance: isSet(object.balance) ? MoneyValue.fromJSON(object.balance) : undefined };
   },
 
   toJSON(message: SandboxPayInResponse): unknown {
     const obj: any = {};
-    message.balance !== undefined &&
-      (obj.balance = message.balance
-        ? MoneyValue.toJSON(message.balance)
-        : undefined);
+    if (message.balance !== undefined) {
+      obj.balance = MoneyValue.toJSON(message.balance);
+    }
     return obj;
   },
 };
@@ -488,76 +476,46 @@ export const SandboxServiceDefinition = {
   },
 } as const;
 
-export interface SandboxServiceServiceImplementation<CallContextExt = {}> {
+export interface SandboxServiceImplementation<CallContextExt = {}> {
   /** Метод регистрации счёта в песочнице. */
   openSandboxAccount(
     request: OpenSandboxAccountRequest,
-    context: CallContext & CallContextExt
+    context: CallContext & CallContextExt,
   ): Promise<OpenSandboxAccountResponse>;
   /** Метод получения счетов в песочнице. */
-  getSandboxAccounts(
-    request: GetAccountsRequest,
-    context: CallContext & CallContextExt
-  ): Promise<GetAccountsResponse>;
+  getSandboxAccounts(request: GetAccountsRequest, context: CallContext & CallContextExt): Promise<GetAccountsResponse>;
   /** Метод закрытия счёта в песочнице. */
   closeSandboxAccount(
     request: CloseSandboxAccountRequest,
-    context: CallContext & CallContextExt
+    context: CallContext & CallContextExt,
   ): Promise<CloseSandboxAccountResponse>;
   /** Метод выставления торгового поручения в песочнице. */
-  postSandboxOrder(
-    request: PostOrderRequest,
-    context: CallContext & CallContextExt
-  ): Promise<PostOrderResponse>;
+  postSandboxOrder(request: PostOrderRequest, context: CallContext & CallContextExt): Promise<PostOrderResponse>;
   /** Метод изменения выставленной заявки. */
-  replaceSandboxOrder(
-    request: ReplaceOrderRequest,
-    context: CallContext & CallContextExt
-  ): Promise<PostOrderResponse>;
+  replaceSandboxOrder(request: ReplaceOrderRequest, context: CallContext & CallContextExt): Promise<PostOrderResponse>;
   /** Метод получения списка активных заявок по счёту в песочнице. */
-  getSandboxOrders(
-    request: GetOrdersRequest,
-    context: CallContext & CallContextExt
-  ): Promise<GetOrdersResponse>;
+  getSandboxOrders(request: GetOrdersRequest, context: CallContext & CallContextExt): Promise<GetOrdersResponse>;
   /** Метод отмены торгового поручения в песочнице. */
-  cancelSandboxOrder(
-    request: CancelOrderRequest,
-    context: CallContext & CallContextExt
-  ): Promise<CancelOrderResponse>;
+  cancelSandboxOrder(request: CancelOrderRequest, context: CallContext & CallContextExt): Promise<CancelOrderResponse>;
   /** Метод получения статуса заявки в песочнице. Заявки хранятся в таблице 7 дней. */
-  getSandboxOrderState(
-    request: GetOrderStateRequest,
-    context: CallContext & CallContextExt
-  ): Promise<OrderState>;
+  getSandboxOrderState(request: GetOrderStateRequest, context: CallContext & CallContextExt): Promise<OrderState>;
   /** Метод получения позиций по виртуальному счёту песочницы. */
-  getSandboxPositions(
-    request: PositionsRequest,
-    context: CallContext & CallContextExt
-  ): Promise<PositionsResponse>;
+  getSandboxPositions(request: PositionsRequest, context: CallContext & CallContextExt): Promise<PositionsResponse>;
   /** Метод получения операций в песочнице по номеру счёта. */
-  getSandboxOperations(
-    request: OperationsRequest,
-    context: CallContext & CallContextExt
-  ): Promise<OperationsResponse>;
+  getSandboxOperations(request: OperationsRequest, context: CallContext & CallContextExt): Promise<OperationsResponse>;
   /** Метод получения операций в песочнице по номеру счета с пагинацией. */
   getSandboxOperationsByCursor(
     request: GetOperationsByCursorRequest,
-    context: CallContext & CallContextExt
+    context: CallContext & CallContextExt,
   ): Promise<GetOperationsByCursorResponse>;
   /** Метод получения портфолио в песочнице. */
-  getSandboxPortfolio(
-    request: PortfolioRequest,
-    context: CallContext & CallContextExt
-  ): Promise<PortfolioResponse>;
+  getSandboxPortfolio(request: PortfolioRequest, context: CallContext & CallContextExt): Promise<PortfolioResponse>;
   /** Метод пополнения счёта в песочнице. */
-  sandboxPayIn(
-    request: SandboxPayInRequest,
-    context: CallContext & CallContextExt
-  ): Promise<SandboxPayInResponse>;
+  sandboxPayIn(request: SandboxPayInRequest, context: CallContext & CallContextExt): Promise<SandboxPayInResponse>;
   /** Метод получения доступного остатка для вывода средств в песочнице. */
   getSandboxWithdrawLimits(
     request: WithdrawLimitsRequest,
-    context: CallContext & CallContextExt
+    context: CallContext & CallContextExt,
   ): Promise<WithdrawLimitsResponse>;
 }
 
@@ -565,78 +523,43 @@ export interface SandboxServiceClient<CallOptionsExt = {}> {
   /** Метод регистрации счёта в песочнице. */
   openSandboxAccount(
     request: OpenSandboxAccountRequest,
-    options?: CallOptions & CallOptionsExt
+    options?: CallOptions & CallOptionsExt,
   ): Promise<OpenSandboxAccountResponse>;
   /** Метод получения счетов в песочнице. */
-  getSandboxAccounts(
-    request: GetAccountsRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<GetAccountsResponse>;
+  getSandboxAccounts(request: GetAccountsRequest, options?: CallOptions & CallOptionsExt): Promise<GetAccountsResponse>;
   /** Метод закрытия счёта в песочнице. */
   closeSandboxAccount(
     request: CloseSandboxAccountRequest,
-    options?: CallOptions & CallOptionsExt
+    options?: CallOptions & CallOptionsExt,
   ): Promise<CloseSandboxAccountResponse>;
   /** Метод выставления торгового поручения в песочнице. */
-  postSandboxOrder(
-    request: PostOrderRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<PostOrderResponse>;
+  postSandboxOrder(request: PostOrderRequest, options?: CallOptions & CallOptionsExt): Promise<PostOrderResponse>;
   /** Метод изменения выставленной заявки. */
-  replaceSandboxOrder(
-    request: ReplaceOrderRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<PostOrderResponse>;
+  replaceSandboxOrder(request: ReplaceOrderRequest, options?: CallOptions & CallOptionsExt): Promise<PostOrderResponse>;
   /** Метод получения списка активных заявок по счёту в песочнице. */
-  getSandboxOrders(
-    request: GetOrdersRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<GetOrdersResponse>;
+  getSandboxOrders(request: GetOrdersRequest, options?: CallOptions & CallOptionsExt): Promise<GetOrdersResponse>;
   /** Метод отмены торгового поручения в песочнице. */
-  cancelSandboxOrder(
-    request: CancelOrderRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<CancelOrderResponse>;
+  cancelSandboxOrder(request: CancelOrderRequest, options?: CallOptions & CallOptionsExt): Promise<CancelOrderResponse>;
   /** Метод получения статуса заявки в песочнице. Заявки хранятся в таблице 7 дней. */
-  getSandboxOrderState(
-    request: GetOrderStateRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<OrderState>;
+  getSandboxOrderState(request: GetOrderStateRequest, options?: CallOptions & CallOptionsExt): Promise<OrderState>;
   /** Метод получения позиций по виртуальному счёту песочницы. */
-  getSandboxPositions(
-    request: PositionsRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<PositionsResponse>;
+  getSandboxPositions(request: PositionsRequest, options?: CallOptions & CallOptionsExt): Promise<PositionsResponse>;
   /** Метод получения операций в песочнице по номеру счёта. */
-  getSandboxOperations(
-    request: OperationsRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<OperationsResponse>;
+  getSandboxOperations(request: OperationsRequest, options?: CallOptions & CallOptionsExt): Promise<OperationsResponse>;
   /** Метод получения операций в песочнице по номеру счета с пагинацией. */
   getSandboxOperationsByCursor(
     request: GetOperationsByCursorRequest,
-    options?: CallOptions & CallOptionsExt
+    options?: CallOptions & CallOptionsExt,
   ): Promise<GetOperationsByCursorResponse>;
   /** Метод получения портфолио в песочнице. */
-  getSandboxPortfolio(
-    request: PortfolioRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<PortfolioResponse>;
+  getSandboxPortfolio(request: PortfolioRequest, options?: CallOptions & CallOptionsExt): Promise<PortfolioResponse>;
   /** Метод пополнения счёта в песочнице. */
-  sandboxPayIn(
-    request: SandboxPayInRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<SandboxPayInResponse>;
+  sandboxPayIn(request: SandboxPayInRequest, options?: CallOptions & CallOptionsExt): Promise<SandboxPayInResponse>;
   /** Метод получения доступного остатка для вывода средств в песочнице. */
   getSandboxWithdrawLimits(
     request: WithdrawLimitsRequest,
-    options?: CallOptions & CallOptionsExt
+    options?: CallOptions & CallOptionsExt,
   ): Promise<WithdrawLimitsResponse>;
-}
-
-if (_m0.util.Long !== Long) {
-  _m0.util.Long = Long as any;
-  _m0.configure();
 }
 
 function isSet(value: any): boolean {

@@ -1,8 +1,8 @@
 /* eslint-disable */
 import Long from "long";
+import type { CallContext, CallOptions } from "nice-grpc-common";
 import _m0 from "protobufjs/minimal.js";
-import { Quotation, MoneyValue, Ping } from "./common.js";
-import { CallContext, CallOptions } from "nice-grpc-common";
+import { MoneyValue, Ping, Quotation } from "./common.js";
 import { Timestamp } from "./google/protobuf/timestamp.js";
 
 export const protobufPackage = "tinkoff.public.invest.api.contract.v1";
@@ -116,9 +116,7 @@ export enum OrderExecutionReportStatus {
   UNRECOGNIZED = -1,
 }
 
-export function orderExecutionReportStatusFromJSON(
-  object: any
-): OrderExecutionReportStatus {
+export function orderExecutionReportStatusFromJSON(object: any): OrderExecutionReportStatus {
   switch (object) {
     case 0:
     case "EXECUTION_REPORT_STATUS_UNSPECIFIED":
@@ -145,9 +143,7 @@ export function orderExecutionReportStatusFromJSON(
   }
 }
 
-export function orderExecutionReportStatusToJSON(
-  object: OrderExecutionReportStatus
-): string {
+export function orderExecutionReportStatusToJSON(object: OrderExecutionReportStatus): string {
   switch (object) {
     case OrderExecutionReportStatus.EXECUTION_REPORT_STATUS_UNSPECIFIED:
       return "EXECUTION_REPORT_STATUS_UNSPECIFIED";
@@ -219,7 +215,9 @@ export interface TradesStreamRequest {
 /** Информация о торговых поручениях. */
 export interface TradesStreamResponse {
   /** Информация об исполнении торгового поручения. */
-  orderTrades?: OrderTrades | undefined;
+  orderTrades?:
+    | OrderTrades
+    | undefined;
   /** Проверка активности стрима. */
   ping?: Ping | undefined;
 }
@@ -229,7 +227,9 @@ export interface OrderTrades {
   /** Идентификатор торгового поручения. */
   orderId: string;
   /** Дата и время создания сообщения в часовом поясе UTC. */
-  createdAt?: Date;
+  createdAt?:
+    | Date
+    | undefined;
   /** Направление сделки. */
   direction: OrderDirection;
   /** Figi-идентификатор инструмента. */
@@ -245,9 +245,13 @@ export interface OrderTrades {
 /** Информация о сделке. */
 export interface OrderTrade {
   /** Дата и время совершения сделки в часовом поясе UTC. */
-  dateTime?: Date;
+  dateTime?:
+    | Date
+    | undefined;
   /** Цена за 1 инструмент, по которой совершена сделка. */
-  price?: Quotation;
+  price?:
+    | Quotation
+    | undefined;
   /** Количество штук в сделке. */
   quantity: number;
   /** Идентификатор сделки. */
@@ -265,7 +269,9 @@ export interface PostOrderRequest {
   /** Количество лотов. */
   quantity: number;
   /** Цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. Игнорируется для рыночных поручений. */
-  price?: Quotation;
+  price?:
+    | Quotation
+    | undefined;
   /** Направление операции. */
   direction: OrderDirection;
   /** Номер счёта. */
@@ -289,29 +295,45 @@ export interface PostOrderResponse {
   /** Исполнено лотов. */
   lotsExecuted: number;
   /** Начальная цена заявки. Произведение количества запрошенных лотов на цену. */
-  initialOrderPrice?: MoneyValue;
+  initialOrderPrice?:
+    | MoneyValue
+    | undefined;
   /** Исполненная средняя цена одного инструмента в заявке. */
-  executedOrderPrice?: MoneyValue;
+  executedOrderPrice?:
+    | MoneyValue
+    | undefined;
   /** Итоговая стоимость заявки, включающая все комиссии. */
-  totalOrderAmount?: MoneyValue;
+  totalOrderAmount?:
+    | MoneyValue
+    | undefined;
   /** Начальная комиссия. Комиссия рассчитанная при выставлении заявки. */
-  initialCommission?: MoneyValue;
+  initialCommission?:
+    | MoneyValue
+    | undefined;
   /** Фактическая комиссия по итогам исполнения заявки. */
-  executedCommission?: MoneyValue;
+  executedCommission?:
+    | MoneyValue
+    | undefined;
   /** Значение НКД (накопленного купонного дохода) на дату. Подробнее: [НКД при выставлении торговых поручений](https://tinkoff.github.io/investAPI/head-orders#coupon) */
-  aciValue?: MoneyValue;
+  aciValue?:
+    | MoneyValue
+    | undefined;
   /** Figi-идентификатор инструмента. */
   figi: string;
   /** Направление сделки. */
   direction: OrderDirection;
   /** Начальная цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
-  initialSecurityPrice?: MoneyValue;
+  initialSecurityPrice?:
+    | MoneyValue
+    | undefined;
   /** Тип заявки. */
   orderType: OrderType;
   /** Дополнительные данные об исполнении заявки. */
   message: string;
   /** Начальная цена заявки в пунктах (для фьючерсов). */
-  initialOrderPricePt?: Quotation;
+  initialOrderPricePt?:
+    | Quotation
+    | undefined;
   /** UID идентификатор инструмента. */
   instrumentUid: string;
 }
@@ -327,7 +349,7 @@ export interface CancelOrderRequest {
 /** Результат отмены торгового поручения. */
 export interface CancelOrderResponse {
   /** Дата и время отмены заявки в часовом поясе UTC. */
-  time?: Date;
+  time?: Date | undefined;
 }
 
 /** Запрос получения статуса торгового поручения. */
@@ -361,33 +383,51 @@ export interface OrderState {
   /** Исполнено лотов. */
   lotsExecuted: number;
   /** Начальная цена заявки. Произведение количества запрошенных лотов на цену. */
-  initialOrderPrice?: MoneyValue;
+  initialOrderPrice?:
+    | MoneyValue
+    | undefined;
   /** Исполненная цена заявки. Произведение средней цены покупки на количество лотов. */
-  executedOrderPrice?: MoneyValue;
+  executedOrderPrice?:
+    | MoneyValue
+    | undefined;
   /** Итоговая стоимость заявки, включающая все комиссии. */
-  totalOrderAmount?: MoneyValue;
+  totalOrderAmount?:
+    | MoneyValue
+    | undefined;
   /** Средняя цена позиции по сделке. */
-  averagePositionPrice?: MoneyValue;
+  averagePositionPrice?:
+    | MoneyValue
+    | undefined;
   /** Начальная комиссия. Комиссия, рассчитанная на момент подачи заявки. */
-  initialCommission?: MoneyValue;
+  initialCommission?:
+    | MoneyValue
+    | undefined;
   /** Фактическая комиссия по итогам исполнения заявки. */
-  executedCommission?: MoneyValue;
+  executedCommission?:
+    | MoneyValue
+    | undefined;
   /** Figi-идентификатор инструмента. */
   figi: string;
   /** Направление заявки. */
   direction: OrderDirection;
   /** Начальная цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
-  initialSecurityPrice?: MoneyValue;
+  initialSecurityPrice?:
+    | MoneyValue
+    | undefined;
   /** Стадии выполнения заявки. */
   stages: OrderStage[];
   /** Сервисная комиссия. */
-  serviceCommission?: MoneyValue;
+  serviceCommission?:
+    | MoneyValue
+    | undefined;
   /** Валюта заявки. */
   currency: string;
   /** Тип заявки. */
   orderType: OrderType;
   /** Дата и время выставления заявки в часовом поясе UTC. */
-  orderDate?: Date;
+  orderDate?:
+    | Date
+    | undefined;
   /** UID идентификатор инструмента. */
   instrumentUid: string;
   /** Идентификатор ключа идемпотентности, переданный клиентом, в формате UID. Максимальная длина 36 символов. */
@@ -397,7 +437,9 @@ export interface OrderState {
 /** Сделки в рамках торгового поручения. */
 export interface OrderStage {
   /** Цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
-  price?: MoneyValue;
+  price?:
+    | MoneyValue
+    | undefined;
   /** Количество лотов. */
   quantity: number;
   /** Идентификатор сделки. */
@@ -415,7 +457,9 @@ export interface ReplaceOrderRequest {
   /** Количество лотов. */
   quantity: number;
   /** Цена за 1 инструмент. */
-  price?: Quotation;
+  price?:
+    | Quotation
+    | undefined;
   /** Тип цены. */
   priceType: PriceType;
 }
@@ -425,10 +469,7 @@ function createBaseTradesStreamRequest(): TradesStreamRequest {
 }
 
 export const TradesStreamRequest = {
-  encode(
-    message: TradesStreamRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: TradesStreamRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.accounts) {
       writer.uint32(10).string(v!);
     }
@@ -436,37 +477,38 @@ export const TradesStreamRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): TradesStreamRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseTradesStreamRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.accounts.push(reader.string());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): TradesStreamRequest {
     return {
-      accounts: Array.isArray(object?.accounts)
-        ? object.accounts.map((e: any) => String(e))
-        : [],
+      accounts: globalThis.Array.isArray(object?.accounts) ? object.accounts.map((e: any) => globalThis.String(e)) : [],
     };
   },
 
   toJSON(message: TradesStreamRequest): unknown {
     const obj: any = {};
-    if (message.accounts) {
-      obj.accounts = message.accounts.map((e) => e);
-    } else {
-      obj.accounts = [];
+    if (message.accounts?.length) {
+      obj.accounts = message.accounts;
     }
     return obj;
   },
@@ -477,15 +519,9 @@ function createBaseTradesStreamResponse(): TradesStreamResponse {
 }
 
 export const TradesStreamResponse = {
-  encode(
-    message: TradesStreamResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: TradesStreamResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.orderTrades !== undefined) {
-      OrderTrades.encode(
-        message.orderTrades,
-        writer.uint32(10).fork()
-      ).ldelim();
+      OrderTrades.encode(message.orderTrades, writer.uint32(10).fork()).ldelim();
     }
     if (message.ping !== undefined) {
       Ping.encode(message.ping, writer.uint32(18).fork()).ldelim();
@@ -493,76 +529,66 @@ export const TradesStreamResponse = {
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): TradesStreamResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): TradesStreamResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseTradesStreamResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.orderTrades = OrderTrades.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.ping = Ping.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): TradesStreamResponse {
     return {
-      orderTrades: isSet(object.orderTrades)
-        ? OrderTrades.fromJSON(object.orderTrades)
-        : undefined,
+      orderTrades: isSet(object.orderTrades) ? OrderTrades.fromJSON(object.orderTrades) : undefined,
       ping: isSet(object.ping) ? Ping.fromJSON(object.ping) : undefined,
     };
   },
 
   toJSON(message: TradesStreamResponse): unknown {
     const obj: any = {};
-    message.orderTrades !== undefined &&
-      (obj.orderTrades = message.orderTrades
-        ? OrderTrades.toJSON(message.orderTrades)
-        : undefined);
-    message.ping !== undefined &&
-      (obj.ping = message.ping ? Ping.toJSON(message.ping) : undefined);
+    if (message.orderTrades !== undefined) {
+      obj.orderTrades = OrderTrades.toJSON(message.orderTrades);
+    }
+    if (message.ping !== undefined) {
+      obj.ping = Ping.toJSON(message.ping);
+    }
     return obj;
   },
 };
 
 function createBaseOrderTrades(): OrderTrades {
-  return {
-    orderId: "",
-    createdAt: undefined,
-    direction: 0,
-    figi: "",
-    trades: [],
-    accountId: "",
-    instrumentUid: "",
-  };
+  return { orderId: "", createdAt: undefined, direction: 0, figi: "", trades: [], accountId: "", instrumentUid: "" };
 }
 
 export const OrderTrades = {
-  encode(
-    message: OrderTrades,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: OrderTrades, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.orderId !== "") {
       writer.uint32(10).string(message.orderId);
     }
     if (message.createdAt !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.createdAt),
-        writer.uint32(18).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.createdAt), writer.uint32(18).fork()).ldelim();
     }
     if (message.direction !== 0) {
       writer.uint32(24).int32(message.direction);
@@ -583,81 +609,105 @@ export const OrderTrades = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): OrderTrades {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseOrderTrades();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.orderId = reader.string();
-          break;
+          continue;
         case 2:
-          message.createdAt = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 18) {
+            break;
+          }
+
+          message.createdAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 3:
+          if (tag !== 24) {
+            break;
+          }
+
           message.direction = reader.int32() as any;
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.figi = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag !== 42) {
+            break;
+          }
+
           message.trades.push(OrderTrade.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 6:
+          if (tag !== 50) {
+            break;
+          }
+
           message.accountId = reader.string();
-          break;
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.instrumentUid = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): OrderTrades {
     return {
-      orderId: isSet(object.orderId) ? String(object.orderId) : "",
-      createdAt: isSet(object.createdAt)
-        ? fromJsonTimestamp(object.createdAt)
-        : undefined,
-      direction: isSet(object.direction)
-        ? orderDirectionFromJSON(object.direction)
-        : 0,
-      figi: isSet(object.figi) ? String(object.figi) : "",
-      trades: Array.isArray(object?.trades)
-        ? object.trades.map((e: any) => OrderTrade.fromJSON(e))
-        : [],
-      accountId: isSet(object.accountId) ? String(object.accountId) : "",
-      instrumentUid: isSet(object.instrumentUid)
-        ? String(object.instrumentUid)
-        : "",
+      orderId: isSet(object.orderId) ? globalThis.String(object.orderId) : "",
+      createdAt: isSet(object.createdAt) ? fromJsonTimestamp(object.createdAt) : undefined,
+      direction: isSet(object.direction) ? orderDirectionFromJSON(object.direction) : 0,
+      figi: isSet(object.figi) ? globalThis.String(object.figi) : "",
+      trades: globalThis.Array.isArray(object?.trades) ? object.trades.map((e: any) => OrderTrade.fromJSON(e)) : [],
+      accountId: isSet(object.accountId) ? globalThis.String(object.accountId) : "",
+      instrumentUid: isSet(object.instrumentUid) ? globalThis.String(object.instrumentUid) : "",
     };
   },
 
   toJSON(message: OrderTrades): unknown {
     const obj: any = {};
-    message.orderId !== undefined && (obj.orderId = message.orderId);
-    message.createdAt !== undefined &&
-      (obj.createdAt = message.createdAt.toISOString());
-    message.direction !== undefined &&
-      (obj.direction = orderDirectionToJSON(message.direction));
-    message.figi !== undefined && (obj.figi = message.figi);
-    if (message.trades) {
-      obj.trades = message.trades.map((e) =>
-        e ? OrderTrade.toJSON(e) : undefined
-      );
-    } else {
-      obj.trades = [];
+    if (message.orderId !== "") {
+      obj.orderId = message.orderId;
     }
-    message.accountId !== undefined && (obj.accountId = message.accountId);
-    message.instrumentUid !== undefined &&
-      (obj.instrumentUid = message.instrumentUid);
+    if (message.createdAt !== undefined) {
+      obj.createdAt = message.createdAt.toISOString();
+    }
+    if (message.direction !== 0) {
+      obj.direction = orderDirectionToJSON(message.direction);
+    }
+    if (message.figi !== "") {
+      obj.figi = message.figi;
+    }
+    if (message.trades?.length) {
+      obj.trades = message.trades.map((e) => OrderTrade.toJSON(e));
+    }
+    if (message.accountId !== "") {
+      obj.accountId = message.accountId;
+    }
+    if (message.instrumentUid !== "") {
+      obj.instrumentUid = message.instrumentUid;
+    }
     return obj;
   },
 };
@@ -667,15 +717,9 @@ function createBaseOrderTrade(): OrderTrade {
 }
 
 export const OrderTrade = {
-  encode(
-    message: OrderTrade,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: OrderTrade, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.dateTime !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.dateTime),
-        writer.uint32(10).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.dateTime), writer.uint32(10).fork()).ldelim();
     }
     if (message.price !== undefined) {
       Quotation.encode(message.price, writer.uint32(18).fork()).ldelim();
@@ -690,54 +734,72 @@ export const OrderTrade = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): OrderTrade {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseOrderTrade();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.dateTime = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 10) {
+            break;
+          }
+
+          message.dateTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.price = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 3:
+          if (tag !== 24) {
+            break;
+          }
+
           message.quantity = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.tradeId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): OrderTrade {
     return {
-      dateTime: isSet(object.dateTime)
-        ? fromJsonTimestamp(object.dateTime)
-        : undefined,
+      dateTime: isSet(object.dateTime) ? fromJsonTimestamp(object.dateTime) : undefined,
       price: isSet(object.price) ? Quotation.fromJSON(object.price) : undefined,
-      quantity: isSet(object.quantity) ? Number(object.quantity) : 0,
-      tradeId: isSet(object.tradeId) ? String(object.tradeId) : "",
+      quantity: isSet(object.quantity) ? globalThis.Number(object.quantity) : 0,
+      tradeId: isSet(object.tradeId) ? globalThis.String(object.tradeId) : "",
     };
   },
 
   toJSON(message: OrderTrade): unknown {
     const obj: any = {};
-    message.dateTime !== undefined &&
-      (obj.dateTime = message.dateTime.toISOString());
-    message.price !== undefined &&
-      (obj.price = message.price ? Quotation.toJSON(message.price) : undefined);
-    message.quantity !== undefined &&
-      (obj.quantity = Math.round(message.quantity));
-    message.tradeId !== undefined && (obj.tradeId = message.tradeId);
+    if (message.dateTime !== undefined) {
+      obj.dateTime = message.dateTime.toISOString();
+    }
+    if (message.price !== undefined) {
+      obj.price = Quotation.toJSON(message.price);
+    }
+    if (message.quantity !== 0) {
+      obj.quantity = Math.round(message.quantity);
+    }
+    if (message.tradeId !== "") {
+      obj.tradeId = message.tradeId;
+    }
     return obj;
   },
 };
@@ -756,10 +818,7 @@ function createBasePostOrderRequest(): PostOrderRequest {
 }
 
 export const PostOrderRequest = {
-  encode(
-    message: PostOrderRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: PostOrderRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.figi !== "") {
       writer.uint32(10).string(message.figi);
     }
@@ -788,78 +847,116 @@ export const PostOrderRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): PostOrderRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePostOrderRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.figi = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 16) {
+            break;
+          }
+
           message.quantity = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.price = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 4:
+          if (tag !== 32) {
+            break;
+          }
+
           message.direction = reader.int32() as any;
-          break;
+          continue;
         case 5:
+          if (tag !== 42) {
+            break;
+          }
+
           message.accountId = reader.string();
-          break;
+          continue;
         case 6:
+          if (tag !== 48) {
+            break;
+          }
+
           message.orderType = reader.int32() as any;
-          break;
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.orderId = reader.string();
-          break;
+          continue;
         case 8:
+          if (tag !== 66) {
+            break;
+          }
+
           message.instrumentId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): PostOrderRequest {
     return {
-      figi: isSet(object.figi) ? String(object.figi) : "",
-      quantity: isSet(object.quantity) ? Number(object.quantity) : 0,
+      figi: isSet(object.figi) ? globalThis.String(object.figi) : "",
+      quantity: isSet(object.quantity) ? globalThis.Number(object.quantity) : 0,
       price: isSet(object.price) ? Quotation.fromJSON(object.price) : undefined,
-      direction: isSet(object.direction)
-        ? orderDirectionFromJSON(object.direction)
-        : 0,
-      accountId: isSet(object.accountId) ? String(object.accountId) : "",
-      orderType: isSet(object.orderType)
-        ? orderTypeFromJSON(object.orderType)
-        : 0,
-      orderId: isSet(object.orderId) ? String(object.orderId) : "",
-      instrumentId: isSet(object.instrumentId)
-        ? String(object.instrumentId)
-        : "",
+      direction: isSet(object.direction) ? orderDirectionFromJSON(object.direction) : 0,
+      accountId: isSet(object.accountId) ? globalThis.String(object.accountId) : "",
+      orderType: isSet(object.orderType) ? orderTypeFromJSON(object.orderType) : 0,
+      orderId: isSet(object.orderId) ? globalThis.String(object.orderId) : "",
+      instrumentId: isSet(object.instrumentId) ? globalThis.String(object.instrumentId) : "",
     };
   },
 
   toJSON(message: PostOrderRequest): unknown {
     const obj: any = {};
-    message.figi !== undefined && (obj.figi = message.figi);
-    message.quantity !== undefined &&
-      (obj.quantity = Math.round(message.quantity));
-    message.price !== undefined &&
-      (obj.price = message.price ? Quotation.toJSON(message.price) : undefined);
-    message.direction !== undefined &&
-      (obj.direction = orderDirectionToJSON(message.direction));
-    message.accountId !== undefined && (obj.accountId = message.accountId);
-    message.orderType !== undefined &&
-      (obj.orderType = orderTypeToJSON(message.orderType));
-    message.orderId !== undefined && (obj.orderId = message.orderId);
-    message.instrumentId !== undefined &&
-      (obj.instrumentId = message.instrumentId);
+    if (message.figi !== "") {
+      obj.figi = message.figi;
+    }
+    if (message.quantity !== 0) {
+      obj.quantity = Math.round(message.quantity);
+    }
+    if (message.price !== undefined) {
+      obj.price = Quotation.toJSON(message.price);
+    }
+    if (message.direction !== 0) {
+      obj.direction = orderDirectionToJSON(message.direction);
+    }
+    if (message.accountId !== "") {
+      obj.accountId = message.accountId;
+    }
+    if (message.orderType !== 0) {
+      obj.orderType = orderTypeToJSON(message.orderType);
+    }
+    if (message.orderId !== "") {
+      obj.orderId = message.orderId;
+    }
+    if (message.instrumentId !== "") {
+      obj.instrumentId = message.instrumentId;
+    }
     return obj;
   },
 };
@@ -887,10 +984,7 @@ function createBasePostOrderResponse(): PostOrderResponse {
 }
 
 export const PostOrderResponse = {
-  encode(
-    message: PostOrderResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: PostOrderResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.orderId !== "") {
       writer.uint32(10).string(message.orderId);
     }
@@ -904,34 +998,19 @@ export const PostOrderResponse = {
       writer.uint32(32).int64(message.lotsExecuted);
     }
     if (message.initialOrderPrice !== undefined) {
-      MoneyValue.encode(
-        message.initialOrderPrice,
-        writer.uint32(42).fork()
-      ).ldelim();
+      MoneyValue.encode(message.initialOrderPrice, writer.uint32(42).fork()).ldelim();
     }
     if (message.executedOrderPrice !== undefined) {
-      MoneyValue.encode(
-        message.executedOrderPrice,
-        writer.uint32(50).fork()
-      ).ldelim();
+      MoneyValue.encode(message.executedOrderPrice, writer.uint32(50).fork()).ldelim();
     }
     if (message.totalOrderAmount !== undefined) {
-      MoneyValue.encode(
-        message.totalOrderAmount,
-        writer.uint32(58).fork()
-      ).ldelim();
+      MoneyValue.encode(message.totalOrderAmount, writer.uint32(58).fork()).ldelim();
     }
     if (message.initialCommission !== undefined) {
-      MoneyValue.encode(
-        message.initialCommission,
-        writer.uint32(66).fork()
-      ).ldelim();
+      MoneyValue.encode(message.initialCommission, writer.uint32(66).fork()).ldelim();
     }
     if (message.executedCommission !== undefined) {
-      MoneyValue.encode(
-        message.executedCommission,
-        writer.uint32(74).fork()
-      ).ldelim();
+      MoneyValue.encode(message.executedCommission, writer.uint32(74).fork()).ldelim();
     }
     if (message.aciValue !== undefined) {
       MoneyValue.encode(message.aciValue, writer.uint32(82).fork()).ldelim();
@@ -943,10 +1022,7 @@ export const PostOrderResponse = {
       writer.uint32(96).int32(message.direction);
     }
     if (message.initialSecurityPrice !== undefined) {
-      MoneyValue.encode(
-        message.initialSecurityPrice,
-        writer.uint32(106).fork()
-      ).ldelim();
+      MoneyValue.encode(message.initialSecurityPrice, writer.uint32(106).fork()).ldelim();
     }
     if (message.orderType !== 0) {
       writer.uint32(112).int32(message.orderType);
@@ -955,10 +1031,7 @@ export const PostOrderResponse = {
       writer.uint32(122).string(message.message);
     }
     if (message.initialOrderPricePt !== undefined) {
-      Quotation.encode(
-        message.initialOrderPricePt,
-        writer.uint32(130).fork()
-      ).ldelim();
+      Quotation.encode(message.initialOrderPricePt, writer.uint32(130).fork()).ldelim();
     }
     if (message.instrumentUid !== "") {
       writer.uint32(138).string(message.instrumentUid);
@@ -967,190 +1040,221 @@ export const PostOrderResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): PostOrderResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePostOrderResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.orderId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 16) {
+            break;
+          }
+
           message.executionReportStatus = reader.int32() as any;
-          break;
+          continue;
         case 3:
+          if (tag !== 24) {
+            break;
+          }
+
           message.lotsRequested = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 4:
+          if (tag !== 32) {
+            break;
+          }
+
           message.lotsExecuted = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 5:
-          message.initialOrderPrice = MoneyValue.decode(
-            reader,
-            reader.uint32()
-          );
-          break;
+          if (tag !== 42) {
+            break;
+          }
+
+          message.initialOrderPrice = MoneyValue.decode(reader, reader.uint32());
+          continue;
         case 6:
-          message.executedOrderPrice = MoneyValue.decode(
-            reader,
-            reader.uint32()
-          );
-          break;
+          if (tag !== 50) {
+            break;
+          }
+
+          message.executedOrderPrice = MoneyValue.decode(reader, reader.uint32());
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.totalOrderAmount = MoneyValue.decode(reader, reader.uint32());
-          break;
+          continue;
         case 8:
-          message.initialCommission = MoneyValue.decode(
-            reader,
-            reader.uint32()
-          );
-          break;
+          if (tag !== 66) {
+            break;
+          }
+
+          message.initialCommission = MoneyValue.decode(reader, reader.uint32());
+          continue;
         case 9:
-          message.executedCommission = MoneyValue.decode(
-            reader,
-            reader.uint32()
-          );
-          break;
+          if (tag !== 74) {
+            break;
+          }
+
+          message.executedCommission = MoneyValue.decode(reader, reader.uint32());
+          continue;
         case 10:
+          if (tag !== 82) {
+            break;
+          }
+
           message.aciValue = MoneyValue.decode(reader, reader.uint32());
-          break;
+          continue;
         case 11:
+          if (tag !== 90) {
+            break;
+          }
+
           message.figi = reader.string();
-          break;
+          continue;
         case 12:
+          if (tag !== 96) {
+            break;
+          }
+
           message.direction = reader.int32() as any;
-          break;
+          continue;
         case 13:
-          message.initialSecurityPrice = MoneyValue.decode(
-            reader,
-            reader.uint32()
-          );
-          break;
+          if (tag !== 106) {
+            break;
+          }
+
+          message.initialSecurityPrice = MoneyValue.decode(reader, reader.uint32());
+          continue;
         case 14:
+          if (tag !== 112) {
+            break;
+          }
+
           message.orderType = reader.int32() as any;
-          break;
+          continue;
         case 15:
+          if (tag !== 122) {
+            break;
+          }
+
           message.message = reader.string();
-          break;
+          continue;
         case 16:
-          message.initialOrderPricePt = Quotation.decode(
-            reader,
-            reader.uint32()
-          );
-          break;
+          if (tag !== 130) {
+            break;
+          }
+
+          message.initialOrderPricePt = Quotation.decode(reader, reader.uint32());
+          continue;
         case 17:
+          if (tag !== 138) {
+            break;
+          }
+
           message.instrumentUid = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): PostOrderResponse {
     return {
-      orderId: isSet(object.orderId) ? String(object.orderId) : "",
+      orderId: isSet(object.orderId) ? globalThis.String(object.orderId) : "",
       executionReportStatus: isSet(object.executionReportStatus)
         ? orderExecutionReportStatusFromJSON(object.executionReportStatus)
         : 0,
-      lotsRequested: isSet(object.lotsRequested)
-        ? Number(object.lotsRequested)
-        : 0,
-      lotsExecuted: isSet(object.lotsExecuted)
-        ? Number(object.lotsExecuted)
-        : 0,
-      initialOrderPrice: isSet(object.initialOrderPrice)
-        ? MoneyValue.fromJSON(object.initialOrderPrice)
-        : undefined,
-      executedOrderPrice: isSet(object.executedOrderPrice)
-        ? MoneyValue.fromJSON(object.executedOrderPrice)
-        : undefined,
-      totalOrderAmount: isSet(object.totalOrderAmount)
-        ? MoneyValue.fromJSON(object.totalOrderAmount)
-        : undefined,
-      initialCommission: isSet(object.initialCommission)
-        ? MoneyValue.fromJSON(object.initialCommission)
-        : undefined,
-      executedCommission: isSet(object.executedCommission)
-        ? MoneyValue.fromJSON(object.executedCommission)
-        : undefined,
-      aciValue: isSet(object.aciValue)
-        ? MoneyValue.fromJSON(object.aciValue)
-        : undefined,
-      figi: isSet(object.figi) ? String(object.figi) : "",
-      direction: isSet(object.direction)
-        ? orderDirectionFromJSON(object.direction)
-        : 0,
+      lotsRequested: isSet(object.lotsRequested) ? globalThis.Number(object.lotsRequested) : 0,
+      lotsExecuted: isSet(object.lotsExecuted) ? globalThis.Number(object.lotsExecuted) : 0,
+      initialOrderPrice: isSet(object.initialOrderPrice) ? MoneyValue.fromJSON(object.initialOrderPrice) : undefined,
+      executedOrderPrice: isSet(object.executedOrderPrice) ? MoneyValue.fromJSON(object.executedOrderPrice) : undefined,
+      totalOrderAmount: isSet(object.totalOrderAmount) ? MoneyValue.fromJSON(object.totalOrderAmount) : undefined,
+      initialCommission: isSet(object.initialCommission) ? MoneyValue.fromJSON(object.initialCommission) : undefined,
+      executedCommission: isSet(object.executedCommission) ? MoneyValue.fromJSON(object.executedCommission) : undefined,
+      aciValue: isSet(object.aciValue) ? MoneyValue.fromJSON(object.aciValue) : undefined,
+      figi: isSet(object.figi) ? globalThis.String(object.figi) : "",
+      direction: isSet(object.direction) ? orderDirectionFromJSON(object.direction) : 0,
       initialSecurityPrice: isSet(object.initialSecurityPrice)
         ? MoneyValue.fromJSON(object.initialSecurityPrice)
         : undefined,
-      orderType: isSet(object.orderType)
-        ? orderTypeFromJSON(object.orderType)
-        : 0,
-      message: isSet(object.message) ? String(object.message) : "",
+      orderType: isSet(object.orderType) ? orderTypeFromJSON(object.orderType) : 0,
+      message: isSet(object.message) ? globalThis.String(object.message) : "",
       initialOrderPricePt: isSet(object.initialOrderPricePt)
         ? Quotation.fromJSON(object.initialOrderPricePt)
         : undefined,
-      instrumentUid: isSet(object.instrumentUid)
-        ? String(object.instrumentUid)
-        : "",
+      instrumentUid: isSet(object.instrumentUid) ? globalThis.String(object.instrumentUid) : "",
     };
   },
 
   toJSON(message: PostOrderResponse): unknown {
     const obj: any = {};
-    message.orderId !== undefined && (obj.orderId = message.orderId);
-    message.executionReportStatus !== undefined &&
-      (obj.executionReportStatus = orderExecutionReportStatusToJSON(
-        message.executionReportStatus
-      ));
-    message.lotsRequested !== undefined &&
-      (obj.lotsRequested = Math.round(message.lotsRequested));
-    message.lotsExecuted !== undefined &&
-      (obj.lotsExecuted = Math.round(message.lotsExecuted));
-    message.initialOrderPrice !== undefined &&
-      (obj.initialOrderPrice = message.initialOrderPrice
-        ? MoneyValue.toJSON(message.initialOrderPrice)
-        : undefined);
-    message.executedOrderPrice !== undefined &&
-      (obj.executedOrderPrice = message.executedOrderPrice
-        ? MoneyValue.toJSON(message.executedOrderPrice)
-        : undefined);
-    message.totalOrderAmount !== undefined &&
-      (obj.totalOrderAmount = message.totalOrderAmount
-        ? MoneyValue.toJSON(message.totalOrderAmount)
-        : undefined);
-    message.initialCommission !== undefined &&
-      (obj.initialCommission = message.initialCommission
-        ? MoneyValue.toJSON(message.initialCommission)
-        : undefined);
-    message.executedCommission !== undefined &&
-      (obj.executedCommission = message.executedCommission
-        ? MoneyValue.toJSON(message.executedCommission)
-        : undefined);
-    message.aciValue !== undefined &&
-      (obj.aciValue = message.aciValue
-        ? MoneyValue.toJSON(message.aciValue)
-        : undefined);
-    message.figi !== undefined && (obj.figi = message.figi);
-    message.direction !== undefined &&
-      (obj.direction = orderDirectionToJSON(message.direction));
-    message.initialSecurityPrice !== undefined &&
-      (obj.initialSecurityPrice = message.initialSecurityPrice
-        ? MoneyValue.toJSON(message.initialSecurityPrice)
-        : undefined);
-    message.orderType !== undefined &&
-      (obj.orderType = orderTypeToJSON(message.orderType));
-    message.message !== undefined && (obj.message = message.message);
-    message.initialOrderPricePt !== undefined &&
-      (obj.initialOrderPricePt = message.initialOrderPricePt
-        ? Quotation.toJSON(message.initialOrderPricePt)
-        : undefined);
-    message.instrumentUid !== undefined &&
-      (obj.instrumentUid = message.instrumentUid);
+    if (message.orderId !== "") {
+      obj.orderId = message.orderId;
+    }
+    if (message.executionReportStatus !== 0) {
+      obj.executionReportStatus = orderExecutionReportStatusToJSON(message.executionReportStatus);
+    }
+    if (message.lotsRequested !== 0) {
+      obj.lotsRequested = Math.round(message.lotsRequested);
+    }
+    if (message.lotsExecuted !== 0) {
+      obj.lotsExecuted = Math.round(message.lotsExecuted);
+    }
+    if (message.initialOrderPrice !== undefined) {
+      obj.initialOrderPrice = MoneyValue.toJSON(message.initialOrderPrice);
+    }
+    if (message.executedOrderPrice !== undefined) {
+      obj.executedOrderPrice = MoneyValue.toJSON(message.executedOrderPrice);
+    }
+    if (message.totalOrderAmount !== undefined) {
+      obj.totalOrderAmount = MoneyValue.toJSON(message.totalOrderAmount);
+    }
+    if (message.initialCommission !== undefined) {
+      obj.initialCommission = MoneyValue.toJSON(message.initialCommission);
+    }
+    if (message.executedCommission !== undefined) {
+      obj.executedCommission = MoneyValue.toJSON(message.executedCommission);
+    }
+    if (message.aciValue !== undefined) {
+      obj.aciValue = MoneyValue.toJSON(message.aciValue);
+    }
+    if (message.figi !== "") {
+      obj.figi = message.figi;
+    }
+    if (message.direction !== 0) {
+      obj.direction = orderDirectionToJSON(message.direction);
+    }
+    if (message.initialSecurityPrice !== undefined) {
+      obj.initialSecurityPrice = MoneyValue.toJSON(message.initialSecurityPrice);
+    }
+    if (message.orderType !== 0) {
+      obj.orderType = orderTypeToJSON(message.orderType);
+    }
+    if (message.message !== "") {
+      obj.message = message.message;
+    }
+    if (message.initialOrderPricePt !== undefined) {
+      obj.initialOrderPricePt = Quotation.toJSON(message.initialOrderPricePt);
+    }
+    if (message.instrumentUid !== "") {
+      obj.instrumentUid = message.instrumentUid;
+    }
     return obj;
   },
 };
@@ -1160,10 +1264,7 @@ function createBaseCancelOrderRequest(): CancelOrderRequest {
 }
 
 export const CancelOrderRequest = {
-  encode(
-    message: CancelOrderRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: CancelOrderRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.accountId !== "") {
       writer.uint32(10).string(message.accountId);
     }
@@ -1174,37 +1275,50 @@ export const CancelOrderRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CancelOrderRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCancelOrderRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.accountId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.orderId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): CancelOrderRequest {
     return {
-      accountId: isSet(object.accountId) ? String(object.accountId) : "",
-      orderId: isSet(object.orderId) ? String(object.orderId) : "",
+      accountId: isSet(object.accountId) ? globalThis.String(object.accountId) : "",
+      orderId: isSet(object.orderId) ? globalThis.String(object.orderId) : "",
     };
   },
 
   toJSON(message: CancelOrderRequest): unknown {
     const obj: any = {};
-    message.accountId !== undefined && (obj.accountId = message.accountId);
-    message.orderId !== undefined && (obj.orderId = message.orderId);
+    if (message.accountId !== "") {
+      obj.accountId = message.accountId;
+    }
+    if (message.orderId !== "") {
+      obj.orderId = message.orderId;
+    }
     return obj;
   },
 };
@@ -1214,48 +1328,45 @@ function createBaseCancelOrderResponse(): CancelOrderResponse {
 }
 
 export const CancelOrderResponse = {
-  encode(
-    message: CancelOrderResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: CancelOrderResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.time !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.time),
-        writer.uint32(10).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.time), writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CancelOrderResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCancelOrderResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.time = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          if (tag !== 10) {
+            break;
+          }
+
+          message.time = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): CancelOrderResponse {
-    return {
-      time: isSet(object.time) ? fromJsonTimestamp(object.time) : undefined,
-    };
+    return { time: isSet(object.time) ? fromJsonTimestamp(object.time) : undefined };
   },
 
   toJSON(message: CancelOrderResponse): unknown {
     const obj: any = {};
-    message.time !== undefined && (obj.time = message.time.toISOString());
+    if (message.time !== undefined) {
+      obj.time = message.time.toISOString();
+    }
     return obj;
   },
 };
@@ -1265,10 +1376,7 @@ function createBaseGetOrderStateRequest(): GetOrderStateRequest {
 }
 
 export const GetOrderStateRequest = {
-  encode(
-    message: GetOrderStateRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: GetOrderStateRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.accountId !== "") {
       writer.uint32(10).string(message.accountId);
     }
@@ -1278,41 +1386,51 @@ export const GetOrderStateRequest = {
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): GetOrderStateRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetOrderStateRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetOrderStateRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.accountId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.orderId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): GetOrderStateRequest {
     return {
-      accountId: isSet(object.accountId) ? String(object.accountId) : "",
-      orderId: isSet(object.orderId) ? String(object.orderId) : "",
+      accountId: isSet(object.accountId) ? globalThis.String(object.accountId) : "",
+      orderId: isSet(object.orderId) ? globalThis.String(object.orderId) : "",
     };
   },
 
   toJSON(message: GetOrderStateRequest): unknown {
     const obj: any = {};
-    message.accountId !== undefined && (obj.accountId = message.accountId);
-    message.orderId !== undefined && (obj.orderId = message.orderId);
+    if (message.accountId !== "") {
+      obj.accountId = message.accountId;
+    }
+    if (message.orderId !== "") {
+      obj.orderId = message.orderId;
+    }
     return obj;
   },
 };
@@ -1322,10 +1440,7 @@ function createBaseGetOrdersRequest(): GetOrdersRequest {
 }
 
 export const GetOrdersRequest = {
-  encode(
-    message: GetOrdersRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: GetOrdersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.accountId !== "") {
       writer.uint32(10).string(message.accountId);
     }
@@ -1333,32 +1448,37 @@ export const GetOrdersRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetOrdersRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetOrdersRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.accountId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): GetOrdersRequest {
-    return {
-      accountId: isSet(object.accountId) ? String(object.accountId) : "",
-    };
+    return { accountId: isSet(object.accountId) ? globalThis.String(object.accountId) : "" };
   },
 
   toJSON(message: GetOrdersRequest): unknown {
     const obj: any = {};
-    message.accountId !== undefined && (obj.accountId = message.accountId);
+    if (message.accountId !== "") {
+      obj.accountId = message.accountId;
+    }
     return obj;
   },
 };
@@ -1368,10 +1488,7 @@ function createBaseGetOrdersResponse(): GetOrdersResponse {
 }
 
 export const GetOrdersResponse = {
-  encode(
-    message: GetOrdersResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: GetOrdersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.orders) {
       OrderState.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -1379,39 +1496,38 @@ export const GetOrdersResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetOrdersResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetOrdersResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.orders.push(OrderState.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): GetOrdersResponse {
     return {
-      orders: Array.isArray(object?.orders)
-        ? object.orders.map((e: any) => OrderState.fromJSON(e))
-        : [],
+      orders: globalThis.Array.isArray(object?.orders) ? object.orders.map((e: any) => OrderState.fromJSON(e)) : [],
     };
   },
 
   toJSON(message: GetOrdersResponse): unknown {
     const obj: any = {};
-    if (message.orders) {
-      obj.orders = message.orders.map((e) =>
-        e ? OrderState.toJSON(e) : undefined
-      );
-    } else {
-      obj.orders = [];
+    if (message.orders?.length) {
+      obj.orders = message.orders.map((e) => OrderState.toJSON(e));
     }
     return obj;
   },
@@ -1443,10 +1559,7 @@ function createBaseOrderState(): OrderState {
 }
 
 export const OrderState = {
-  encode(
-    message: OrderState,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: OrderState, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.orderId !== "") {
       writer.uint32(10).string(message.orderId);
     }
@@ -1460,40 +1573,22 @@ export const OrderState = {
       writer.uint32(32).int64(message.lotsExecuted);
     }
     if (message.initialOrderPrice !== undefined) {
-      MoneyValue.encode(
-        message.initialOrderPrice,
-        writer.uint32(42).fork()
-      ).ldelim();
+      MoneyValue.encode(message.initialOrderPrice, writer.uint32(42).fork()).ldelim();
     }
     if (message.executedOrderPrice !== undefined) {
-      MoneyValue.encode(
-        message.executedOrderPrice,
-        writer.uint32(50).fork()
-      ).ldelim();
+      MoneyValue.encode(message.executedOrderPrice, writer.uint32(50).fork()).ldelim();
     }
     if (message.totalOrderAmount !== undefined) {
-      MoneyValue.encode(
-        message.totalOrderAmount,
-        writer.uint32(58).fork()
-      ).ldelim();
+      MoneyValue.encode(message.totalOrderAmount, writer.uint32(58).fork()).ldelim();
     }
     if (message.averagePositionPrice !== undefined) {
-      MoneyValue.encode(
-        message.averagePositionPrice,
-        writer.uint32(66).fork()
-      ).ldelim();
+      MoneyValue.encode(message.averagePositionPrice, writer.uint32(66).fork()).ldelim();
     }
     if (message.initialCommission !== undefined) {
-      MoneyValue.encode(
-        message.initialCommission,
-        writer.uint32(74).fork()
-      ).ldelim();
+      MoneyValue.encode(message.initialCommission, writer.uint32(74).fork()).ldelim();
     }
     if (message.executedCommission !== undefined) {
-      MoneyValue.encode(
-        message.executedCommission,
-        writer.uint32(82).fork()
-      ).ldelim();
+      MoneyValue.encode(message.executedCommission, writer.uint32(82).fork()).ldelim();
     }
     if (message.figi !== "") {
       writer.uint32(90).string(message.figi);
@@ -1502,19 +1597,13 @@ export const OrderState = {
       writer.uint32(96).int32(message.direction);
     }
     if (message.initialSecurityPrice !== undefined) {
-      MoneyValue.encode(
-        message.initialSecurityPrice,
-        writer.uint32(106).fork()
-      ).ldelim();
+      MoneyValue.encode(message.initialSecurityPrice, writer.uint32(106).fork()).ldelim();
     }
     for (const v of message.stages) {
       OrderStage.encode(v!, writer.uint32(114).fork()).ldelim();
     }
     if (message.serviceCommission !== undefined) {
-      MoneyValue.encode(
-        message.serviceCommission,
-        writer.uint32(122).fork()
-      ).ldelim();
+      MoneyValue.encode(message.serviceCommission, writer.uint32(122).fork()).ldelim();
     }
     if (message.currency !== "") {
       writer.uint32(130).string(message.currency);
@@ -1523,10 +1612,7 @@ export const OrderState = {
       writer.uint32(136).int32(message.orderType);
     }
     if (message.orderDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.orderDate),
-        writer.uint32(146).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.orderDate), writer.uint32(146).fork()).ldelim();
     }
     if (message.instrumentUid !== "") {
       writer.uint32(154).string(message.instrumentUid);
@@ -1538,224 +1624,254 @@ export const OrderState = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): OrderState {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseOrderState();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.orderId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 16) {
+            break;
+          }
+
           message.executionReportStatus = reader.int32() as any;
-          break;
+          continue;
         case 3:
+          if (tag !== 24) {
+            break;
+          }
+
           message.lotsRequested = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 4:
+          if (tag !== 32) {
+            break;
+          }
+
           message.lotsExecuted = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 5:
-          message.initialOrderPrice = MoneyValue.decode(
-            reader,
-            reader.uint32()
-          );
-          break;
+          if (tag !== 42) {
+            break;
+          }
+
+          message.initialOrderPrice = MoneyValue.decode(reader, reader.uint32());
+          continue;
         case 6:
-          message.executedOrderPrice = MoneyValue.decode(
-            reader,
-            reader.uint32()
-          );
-          break;
+          if (tag !== 50) {
+            break;
+          }
+
+          message.executedOrderPrice = MoneyValue.decode(reader, reader.uint32());
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.totalOrderAmount = MoneyValue.decode(reader, reader.uint32());
-          break;
+          continue;
         case 8:
-          message.averagePositionPrice = MoneyValue.decode(
-            reader,
-            reader.uint32()
-          );
-          break;
+          if (tag !== 66) {
+            break;
+          }
+
+          message.averagePositionPrice = MoneyValue.decode(reader, reader.uint32());
+          continue;
         case 9:
-          message.initialCommission = MoneyValue.decode(
-            reader,
-            reader.uint32()
-          );
-          break;
+          if (tag !== 74) {
+            break;
+          }
+
+          message.initialCommission = MoneyValue.decode(reader, reader.uint32());
+          continue;
         case 10:
-          message.executedCommission = MoneyValue.decode(
-            reader,
-            reader.uint32()
-          );
-          break;
+          if (tag !== 82) {
+            break;
+          }
+
+          message.executedCommission = MoneyValue.decode(reader, reader.uint32());
+          continue;
         case 11:
+          if (tag !== 90) {
+            break;
+          }
+
           message.figi = reader.string();
-          break;
+          continue;
         case 12:
+          if (tag !== 96) {
+            break;
+          }
+
           message.direction = reader.int32() as any;
-          break;
+          continue;
         case 13:
-          message.initialSecurityPrice = MoneyValue.decode(
-            reader,
-            reader.uint32()
-          );
-          break;
+          if (tag !== 106) {
+            break;
+          }
+
+          message.initialSecurityPrice = MoneyValue.decode(reader, reader.uint32());
+          continue;
         case 14:
+          if (tag !== 114) {
+            break;
+          }
+
           message.stages.push(OrderStage.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 15:
-          message.serviceCommission = MoneyValue.decode(
-            reader,
-            reader.uint32()
-          );
-          break;
+          if (tag !== 122) {
+            break;
+          }
+
+          message.serviceCommission = MoneyValue.decode(reader, reader.uint32());
+          continue;
         case 16:
+          if (tag !== 130) {
+            break;
+          }
+
           message.currency = reader.string();
-          break;
+          continue;
         case 17:
+          if (tag !== 136) {
+            break;
+          }
+
           message.orderType = reader.int32() as any;
-          break;
+          continue;
         case 18:
-          message.orderDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 146) {
+            break;
+          }
+
+          message.orderDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 19:
+          if (tag !== 154) {
+            break;
+          }
+
           message.instrumentUid = reader.string();
-          break;
+          continue;
         case 20:
+          if (tag !== 162) {
+            break;
+          }
+
           message.orderRequestId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): OrderState {
     return {
-      orderId: isSet(object.orderId) ? String(object.orderId) : "",
+      orderId: isSet(object.orderId) ? globalThis.String(object.orderId) : "",
       executionReportStatus: isSet(object.executionReportStatus)
         ? orderExecutionReportStatusFromJSON(object.executionReportStatus)
         : 0,
-      lotsRequested: isSet(object.lotsRequested)
-        ? Number(object.lotsRequested)
-        : 0,
-      lotsExecuted: isSet(object.lotsExecuted)
-        ? Number(object.lotsExecuted)
-        : 0,
-      initialOrderPrice: isSet(object.initialOrderPrice)
-        ? MoneyValue.fromJSON(object.initialOrderPrice)
-        : undefined,
-      executedOrderPrice: isSet(object.executedOrderPrice)
-        ? MoneyValue.fromJSON(object.executedOrderPrice)
-        : undefined,
-      totalOrderAmount: isSet(object.totalOrderAmount)
-        ? MoneyValue.fromJSON(object.totalOrderAmount)
-        : undefined,
+      lotsRequested: isSet(object.lotsRequested) ? globalThis.Number(object.lotsRequested) : 0,
+      lotsExecuted: isSet(object.lotsExecuted) ? globalThis.Number(object.lotsExecuted) : 0,
+      initialOrderPrice: isSet(object.initialOrderPrice) ? MoneyValue.fromJSON(object.initialOrderPrice) : undefined,
+      executedOrderPrice: isSet(object.executedOrderPrice) ? MoneyValue.fromJSON(object.executedOrderPrice) : undefined,
+      totalOrderAmount: isSet(object.totalOrderAmount) ? MoneyValue.fromJSON(object.totalOrderAmount) : undefined,
       averagePositionPrice: isSet(object.averagePositionPrice)
         ? MoneyValue.fromJSON(object.averagePositionPrice)
         : undefined,
-      initialCommission: isSet(object.initialCommission)
-        ? MoneyValue.fromJSON(object.initialCommission)
-        : undefined,
-      executedCommission: isSet(object.executedCommission)
-        ? MoneyValue.fromJSON(object.executedCommission)
-        : undefined,
-      figi: isSet(object.figi) ? String(object.figi) : "",
-      direction: isSet(object.direction)
-        ? orderDirectionFromJSON(object.direction)
-        : 0,
+      initialCommission: isSet(object.initialCommission) ? MoneyValue.fromJSON(object.initialCommission) : undefined,
+      executedCommission: isSet(object.executedCommission) ? MoneyValue.fromJSON(object.executedCommission) : undefined,
+      figi: isSet(object.figi) ? globalThis.String(object.figi) : "",
+      direction: isSet(object.direction) ? orderDirectionFromJSON(object.direction) : 0,
       initialSecurityPrice: isSet(object.initialSecurityPrice)
         ? MoneyValue.fromJSON(object.initialSecurityPrice)
         : undefined,
-      stages: Array.isArray(object?.stages)
-        ? object.stages.map((e: any) => OrderStage.fromJSON(e))
-        : [],
-      serviceCommission: isSet(object.serviceCommission)
-        ? MoneyValue.fromJSON(object.serviceCommission)
-        : undefined,
-      currency: isSet(object.currency) ? String(object.currency) : "",
-      orderType: isSet(object.orderType)
-        ? orderTypeFromJSON(object.orderType)
-        : 0,
-      orderDate: isSet(object.orderDate)
-        ? fromJsonTimestamp(object.orderDate)
-        : undefined,
-      instrumentUid: isSet(object.instrumentUid)
-        ? String(object.instrumentUid)
-        : "",
-      orderRequestId: isSet(object.orderRequestId)
-        ? String(object.orderRequestId)
-        : "",
+      stages: globalThis.Array.isArray(object?.stages) ? object.stages.map((e: any) => OrderStage.fromJSON(e)) : [],
+      serviceCommission: isSet(object.serviceCommission) ? MoneyValue.fromJSON(object.serviceCommission) : undefined,
+      currency: isSet(object.currency) ? globalThis.String(object.currency) : "",
+      orderType: isSet(object.orderType) ? orderTypeFromJSON(object.orderType) : 0,
+      orderDate: isSet(object.orderDate) ? fromJsonTimestamp(object.orderDate) : undefined,
+      instrumentUid: isSet(object.instrumentUid) ? globalThis.String(object.instrumentUid) : "",
+      orderRequestId: isSet(object.orderRequestId) ? globalThis.String(object.orderRequestId) : "",
     };
   },
 
   toJSON(message: OrderState): unknown {
     const obj: any = {};
-    message.orderId !== undefined && (obj.orderId = message.orderId);
-    message.executionReportStatus !== undefined &&
-      (obj.executionReportStatus = orderExecutionReportStatusToJSON(
-        message.executionReportStatus
-      ));
-    message.lotsRequested !== undefined &&
-      (obj.lotsRequested = Math.round(message.lotsRequested));
-    message.lotsExecuted !== undefined &&
-      (obj.lotsExecuted = Math.round(message.lotsExecuted));
-    message.initialOrderPrice !== undefined &&
-      (obj.initialOrderPrice = message.initialOrderPrice
-        ? MoneyValue.toJSON(message.initialOrderPrice)
-        : undefined);
-    message.executedOrderPrice !== undefined &&
-      (obj.executedOrderPrice = message.executedOrderPrice
-        ? MoneyValue.toJSON(message.executedOrderPrice)
-        : undefined);
-    message.totalOrderAmount !== undefined &&
-      (obj.totalOrderAmount = message.totalOrderAmount
-        ? MoneyValue.toJSON(message.totalOrderAmount)
-        : undefined);
-    message.averagePositionPrice !== undefined &&
-      (obj.averagePositionPrice = message.averagePositionPrice
-        ? MoneyValue.toJSON(message.averagePositionPrice)
-        : undefined);
-    message.initialCommission !== undefined &&
-      (obj.initialCommission = message.initialCommission
-        ? MoneyValue.toJSON(message.initialCommission)
-        : undefined);
-    message.executedCommission !== undefined &&
-      (obj.executedCommission = message.executedCommission
-        ? MoneyValue.toJSON(message.executedCommission)
-        : undefined);
-    message.figi !== undefined && (obj.figi = message.figi);
-    message.direction !== undefined &&
-      (obj.direction = orderDirectionToJSON(message.direction));
-    message.initialSecurityPrice !== undefined &&
-      (obj.initialSecurityPrice = message.initialSecurityPrice
-        ? MoneyValue.toJSON(message.initialSecurityPrice)
-        : undefined);
-    if (message.stages) {
-      obj.stages = message.stages.map((e) =>
-        e ? OrderStage.toJSON(e) : undefined
-      );
-    } else {
-      obj.stages = [];
+    if (message.orderId !== "") {
+      obj.orderId = message.orderId;
     }
-    message.serviceCommission !== undefined &&
-      (obj.serviceCommission = message.serviceCommission
-        ? MoneyValue.toJSON(message.serviceCommission)
-        : undefined);
-    message.currency !== undefined && (obj.currency = message.currency);
-    message.orderType !== undefined &&
-      (obj.orderType = orderTypeToJSON(message.orderType));
-    message.orderDate !== undefined &&
-      (obj.orderDate = message.orderDate.toISOString());
-    message.instrumentUid !== undefined &&
-      (obj.instrumentUid = message.instrumentUid);
-    message.orderRequestId !== undefined &&
-      (obj.orderRequestId = message.orderRequestId);
+    if (message.executionReportStatus !== 0) {
+      obj.executionReportStatus = orderExecutionReportStatusToJSON(message.executionReportStatus);
+    }
+    if (message.lotsRequested !== 0) {
+      obj.lotsRequested = Math.round(message.lotsRequested);
+    }
+    if (message.lotsExecuted !== 0) {
+      obj.lotsExecuted = Math.round(message.lotsExecuted);
+    }
+    if (message.initialOrderPrice !== undefined) {
+      obj.initialOrderPrice = MoneyValue.toJSON(message.initialOrderPrice);
+    }
+    if (message.executedOrderPrice !== undefined) {
+      obj.executedOrderPrice = MoneyValue.toJSON(message.executedOrderPrice);
+    }
+    if (message.totalOrderAmount !== undefined) {
+      obj.totalOrderAmount = MoneyValue.toJSON(message.totalOrderAmount);
+    }
+    if (message.averagePositionPrice !== undefined) {
+      obj.averagePositionPrice = MoneyValue.toJSON(message.averagePositionPrice);
+    }
+    if (message.initialCommission !== undefined) {
+      obj.initialCommission = MoneyValue.toJSON(message.initialCommission);
+    }
+    if (message.executedCommission !== undefined) {
+      obj.executedCommission = MoneyValue.toJSON(message.executedCommission);
+    }
+    if (message.figi !== "") {
+      obj.figi = message.figi;
+    }
+    if (message.direction !== 0) {
+      obj.direction = orderDirectionToJSON(message.direction);
+    }
+    if (message.initialSecurityPrice !== undefined) {
+      obj.initialSecurityPrice = MoneyValue.toJSON(message.initialSecurityPrice);
+    }
+    if (message.stages?.length) {
+      obj.stages = message.stages.map((e) => OrderStage.toJSON(e));
+    }
+    if (message.serviceCommission !== undefined) {
+      obj.serviceCommission = MoneyValue.toJSON(message.serviceCommission);
+    }
+    if (message.currency !== "") {
+      obj.currency = message.currency;
+    }
+    if (message.orderType !== 0) {
+      obj.orderType = orderTypeToJSON(message.orderType);
+    }
+    if (message.orderDate !== undefined) {
+      obj.orderDate = message.orderDate.toISOString();
+    }
+    if (message.instrumentUid !== "") {
+      obj.instrumentUid = message.instrumentUid;
+    }
+    if (message.orderRequestId !== "") {
+      obj.orderRequestId = message.orderRequestId;
+    }
     return obj;
   },
 };
@@ -1765,10 +1881,7 @@ function createBaseOrderStage(): OrderStage {
 }
 
 export const OrderStage = {
-  encode(
-    message: OrderStage,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: OrderStage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.price !== undefined) {
       MoneyValue.encode(message.price, writer.uint32(10).fork()).ldelim();
     }
@@ -1782,68 +1895,71 @@ export const OrderStage = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): OrderStage {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseOrderStage();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.price = MoneyValue.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag !== 16) {
+            break;
+          }
+
           message.quantity = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.tradeId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): OrderStage {
     return {
-      price: isSet(object.price)
-        ? MoneyValue.fromJSON(object.price)
-        : undefined,
-      quantity: isSet(object.quantity) ? Number(object.quantity) : 0,
-      tradeId: isSet(object.tradeId) ? String(object.tradeId) : "",
+      price: isSet(object.price) ? MoneyValue.fromJSON(object.price) : undefined,
+      quantity: isSet(object.quantity) ? globalThis.Number(object.quantity) : 0,
+      tradeId: isSet(object.tradeId) ? globalThis.String(object.tradeId) : "",
     };
   },
 
   toJSON(message: OrderStage): unknown {
     const obj: any = {};
-    message.price !== undefined &&
-      (obj.price = message.price
-        ? MoneyValue.toJSON(message.price)
-        : undefined);
-    message.quantity !== undefined &&
-      (obj.quantity = Math.round(message.quantity));
-    message.tradeId !== undefined && (obj.tradeId = message.tradeId);
+    if (message.price !== undefined) {
+      obj.price = MoneyValue.toJSON(message.price);
+    }
+    if (message.quantity !== 0) {
+      obj.quantity = Math.round(message.quantity);
+    }
+    if (message.tradeId !== "") {
+      obj.tradeId = message.tradeId;
+    }
     return obj;
   },
 };
 
 function createBaseReplaceOrderRequest(): ReplaceOrderRequest {
-  return {
-    accountId: "",
-    orderId: "",
-    idempotencyKey: "",
-    quantity: 0,
-    price: undefined,
-    priceType: 0,
-  };
+  return { accountId: "", orderId: "", idempotencyKey: "", quantity: 0, price: undefined, priceType: 0 };
 }
 
 export const ReplaceOrderRequest = {
-  encode(
-    message: ReplaceOrderRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: ReplaceOrderRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.accountId !== "") {
       writer.uint32(10).string(message.accountId);
     }
@@ -1866,71 +1982,99 @@ export const ReplaceOrderRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ReplaceOrderRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseReplaceOrderRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.accountId = reader.string();
-          break;
+          continue;
         case 6:
+          if (tag !== 50) {
+            break;
+          }
+
           message.orderId = reader.string();
-          break;
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.idempotencyKey = reader.string();
-          break;
+          continue;
         case 11:
+          if (tag !== 88) {
+            break;
+          }
+
           message.quantity = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 12:
+          if (tag !== 98) {
+            break;
+          }
+
           message.price = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 13:
+          if (tag !== 104) {
+            break;
+          }
+
           message.priceType = reader.int32() as any;
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): ReplaceOrderRequest {
     return {
-      accountId: isSet(object.accountId) ? String(object.accountId) : "",
-      orderId: isSet(object.orderId) ? String(object.orderId) : "",
-      idempotencyKey: isSet(object.idempotencyKey)
-        ? String(object.idempotencyKey)
-        : "",
-      quantity: isSet(object.quantity) ? Number(object.quantity) : 0,
+      accountId: isSet(object.accountId) ? globalThis.String(object.accountId) : "",
+      orderId: isSet(object.orderId) ? globalThis.String(object.orderId) : "",
+      idempotencyKey: isSet(object.idempotencyKey) ? globalThis.String(object.idempotencyKey) : "",
+      quantity: isSet(object.quantity) ? globalThis.Number(object.quantity) : 0,
       price: isSet(object.price) ? Quotation.fromJSON(object.price) : undefined,
-      priceType: isSet(object.priceType)
-        ? priceTypeFromJSON(object.priceType)
-        : 0,
+      priceType: isSet(object.priceType) ? priceTypeFromJSON(object.priceType) : 0,
     };
   },
 
   toJSON(message: ReplaceOrderRequest): unknown {
     const obj: any = {};
-    message.accountId !== undefined && (obj.accountId = message.accountId);
-    message.orderId !== undefined && (obj.orderId = message.orderId);
-    message.idempotencyKey !== undefined &&
-      (obj.idempotencyKey = message.idempotencyKey);
-    message.quantity !== undefined &&
-      (obj.quantity = Math.round(message.quantity));
-    message.price !== undefined &&
-      (obj.price = message.price ? Quotation.toJSON(message.price) : undefined);
-    message.priceType !== undefined &&
-      (obj.priceType = priceTypeToJSON(message.priceType));
+    if (message.accountId !== "") {
+      obj.accountId = message.accountId;
+    }
+    if (message.orderId !== "") {
+      obj.orderId = message.orderId;
+    }
+    if (message.idempotencyKey !== "") {
+      obj.idempotencyKey = message.idempotencyKey;
+    }
+    if (message.quantity !== 0) {
+      obj.quantity = Math.round(message.quantity);
+    }
+    if (message.price !== undefined) {
+      obj.price = Quotation.toJSON(message.price);
+    }
+    if (message.priceType !== 0) {
+      obj.priceType = priceTypeToJSON(message.priceType);
+    }
     return obj;
   },
 };
 
-export type OrdersStreamServiceDefinition =
-  typeof OrdersStreamServiceDefinition;
+export type OrdersStreamServiceDefinition = typeof OrdersStreamServiceDefinition;
 export const OrdersStreamServiceDefinition = {
   name: "OrdersStreamService",
   fullName: "tinkoff.public.invest.api.contract.v1.OrdersStreamService",
@@ -1947,11 +2091,11 @@ export const OrdersStreamServiceDefinition = {
   },
 } as const;
 
-export interface OrdersStreamServiceServiceImplementation<CallContextExt = {}> {
+export interface OrdersStreamServiceImplementation<CallContextExt = {}> {
   /** Stream сделок пользователя */
   tradesStream(
     request: TradesStreamRequest,
-    context: CallContext & CallContextExt
+    context: CallContext & CallContextExt,
   ): ServerStreamingMethodResult<TradesStreamResponse>;
 }
 
@@ -1959,7 +2103,7 @@ export interface OrdersStreamServiceClient<CallOptionsExt = {}> {
   /** Stream сделок пользователя */
   tradesStream(
     request: TradesStreamRequest,
-    options?: CallOptions & CallOptionsExt
+    options?: CallOptions & CallOptionsExt,
   ): AsyncIterable<TradesStreamResponse>;
 }
 
@@ -2021,72 +2165,31 @@ export const OrdersServiceDefinition = {
   },
 } as const;
 
-export interface OrdersServiceServiceImplementation<CallContextExt = {}> {
+export interface OrdersServiceImplementation<CallContextExt = {}> {
   /** Метод выставления заявки. */
-  postOrder(
-    request: PostOrderRequest,
-    context: CallContext & CallContextExt
-  ): Promise<PostOrderResponse>;
+  postOrder(request: PostOrderRequest, context: CallContext & CallContextExt): Promise<PostOrderResponse>;
   /** Метод отмены биржевой заявки. */
-  cancelOrder(
-    request: CancelOrderRequest,
-    context: CallContext & CallContextExt
-  ): Promise<CancelOrderResponse>;
+  cancelOrder(request: CancelOrderRequest, context: CallContext & CallContextExt): Promise<CancelOrderResponse>;
   /** Метод получения статуса торгового поручения. */
-  getOrderState(
-    request: GetOrderStateRequest,
-    context: CallContext & CallContextExt
-  ): Promise<OrderState>;
+  getOrderState(request: GetOrderStateRequest, context: CallContext & CallContextExt): Promise<OrderState>;
   /** Метод получения списка активных заявок по счёту. */
-  getOrders(
-    request: GetOrdersRequest,
-    context: CallContext & CallContextExt
-  ): Promise<GetOrdersResponse>;
+  getOrders(request: GetOrdersRequest, context: CallContext & CallContextExt): Promise<GetOrdersResponse>;
   /** Метод изменения выставленной заявки. */
-  replaceOrder(
-    request: ReplaceOrderRequest,
-    context: CallContext & CallContextExt
-  ): Promise<PostOrderResponse>;
+  replaceOrder(request: ReplaceOrderRequest, context: CallContext & CallContextExt): Promise<PostOrderResponse>;
 }
 
 export interface OrdersServiceClient<CallOptionsExt = {}> {
   /** Метод выставления заявки. */
-  postOrder(
-    request: PostOrderRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<PostOrderResponse>;
+  postOrder(request: PostOrderRequest, options?: CallOptions & CallOptionsExt): Promise<PostOrderResponse>;
   /** Метод отмены биржевой заявки. */
-  cancelOrder(
-    request: CancelOrderRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<CancelOrderResponse>;
+  cancelOrder(request: CancelOrderRequest, options?: CallOptions & CallOptionsExt): Promise<CancelOrderResponse>;
   /** Метод получения статуса торгового поручения. */
-  getOrderState(
-    request: GetOrderStateRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<OrderState>;
+  getOrderState(request: GetOrderStateRequest, options?: CallOptions & CallOptionsExt): Promise<OrderState>;
   /** Метод получения списка активных заявок по счёту. */
-  getOrders(
-    request: GetOrdersRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<GetOrdersResponse>;
+  getOrders(request: GetOrdersRequest, options?: CallOptions & CallOptionsExt): Promise<GetOrdersResponse>;
   /** Метод изменения выставленной заявки. */
-  replaceOrder(
-    request: ReplaceOrderRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<PostOrderResponse>;
+  replaceOrder(request: ReplaceOrderRequest, options?: CallOptions & CallOptionsExt): Promise<PostOrderResponse>;
 }
-
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var globalThis: any = (() => {
-  if (typeof globalThis !== "undefined") return globalThis;
-  if (typeof self !== "undefined") return self;
-  if (typeof window !== "undefined") return window;
-  if (typeof global !== "undefined") return global;
-  throw "Unable to locate global object";
-})();
 
 function toTimestamp(date: Date): Timestamp {
   const seconds = date.getTime() / 1_000;
@@ -2095,23 +2198,23 @@ function toTimestamp(date: Date): Timestamp {
 }
 
 function fromTimestamp(t: Timestamp): Date {
-  let millis = t.seconds * 1_000;
-  millis += t.nanos / 1_000_000;
-  return new Date(millis);
+  let millis = (t.seconds || 0) * 1_000;
+  millis += (t.nanos || 0) / 1_000_000;
+  return new globalThis.Date(millis);
 }
 
 function fromJsonTimestamp(o: any): Date {
-  if (o instanceof Date) {
+  if (o instanceof globalThis.Date) {
     return o;
   } else if (typeof o === "string") {
-    return new Date(o);
+    return new globalThis.Date(o);
   } else {
     return fromTimestamp(Timestamp.fromJSON(o));
   }
 }
 
 function longToNumber(long: Long): number {
-  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+  if (long.gt(globalThis.Number.MAX_SAFE_INTEGER)) {
     throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
   }
   return long.toNumber();
@@ -2126,6 +2229,4 @@ function isSet(value: any): boolean {
   return value !== null && value !== undefined;
 }
 
-export type ServerStreamingMethodResult<Response> = {
-  [Symbol.asyncIterator](): AsyncIterator<Response, void>;
-};
+export type ServerStreamingMethodResult<Response> = { [Symbol.asyncIterator](): AsyncIterator<Response, void> };

@@ -1,8 +1,7 @@
 /* eslint-disable */
-import Long from "long";
+import type { CallContext, CallOptions } from "nice-grpc-common";
 import _m0 from "protobufjs/minimal.js";
 import { MoneyValue, Quotation } from "./common.js";
-import { CallContext, CallOptions } from "nice-grpc-common";
 import { Timestamp } from "./google/protobuf/timestamp.js";
 
 export const protobufPackage = "tinkoff.public.invest.api.contract.v1";
@@ -158,7 +157,8 @@ export function accessLevelToJSON(object: AccessLevel): string {
 }
 
 /** Запрос получения счетов пользователя. */
-export interface GetAccountsRequest {}
+export interface GetAccountsRequest {
+}
 
 /** Список счетов пользователя. */
 export interface GetAccountsResponse {
@@ -177,9 +177,13 @@ export interface Account {
   /** Статус счёта. */
   status: AccountStatus;
   /** Дата открытия счёта в часовом поясе UTC. */
-  openedDate?: Date;
+  openedDate?:
+    | Date
+    | undefined;
   /** Дата закрытия счёта в часовом поясе UTC. */
-  closedDate?: Date;
+  closedDate?:
+    | Date
+    | undefined;
   /** Уровень доступа к текущему счёту (определяется токеном). */
   accessLevel: AccessLevel;
 }
@@ -193,21 +197,32 @@ export interface GetMarginAttributesRequest {
 /** Маржинальные показатели по счёту. */
 export interface GetMarginAttributesResponse {
   /** Ликвидная стоимость портфеля. Подробнее: [что такое ликвидный портфель?](https://help.tinkoff.ru/margin-trade/short/liquid-portfolio/). */
-  liquidPortfolio?: MoneyValue;
+  liquidPortfolio?:
+    | MoneyValue
+    | undefined;
   /** Начальная маржа — начальное обеспечение для совершения новой сделки. Подробнее: [начальная и минимальная маржа](https://help.tinkoff.ru/margin-trade/short/initial-and-maintenance-margin/). */
-  startingMargin?: MoneyValue;
+  startingMargin?:
+    | MoneyValue
+    | undefined;
   /** Минимальная маржа — это минимальное обеспечение для поддержания позиции, которую вы уже открыли. Подробнее: [начальная и минимальная маржа](https://help.tinkoff.ru/margin-trade/short/initial-and-maintenance-margin/). */
-  minimalMargin?: MoneyValue;
+  minimalMargin?:
+    | MoneyValue
+    | undefined;
   /** Уровень достаточности средств. Соотношение стоимости ликвидного портфеля к начальной марже. */
-  fundsSufficiencyLevel?: Quotation;
+  fundsSufficiencyLevel?:
+    | Quotation
+    | undefined;
   /** Объем недостающих средств. Разница между стартовой маржой и ликвидной стоимости портфеля. */
-  amountOfMissingFunds?: MoneyValue;
+  amountOfMissingFunds?:
+    | MoneyValue
+    | undefined;
   /** Скорректированная маржа.Начальная маржа, в которой плановые позиции рассчитываются с учётом активных заявок на покупку позиций лонг или продажу позиций шорт. */
-  correctedMargin?: MoneyValue;
+  correctedMargin?: MoneyValue | undefined;
 }
 
 /** Запрос текущих лимитов пользователя. */
-export interface GetUserTariffRequest {}
+export interface GetUserTariffRequest {
+}
 
 /** Текущие лимиты пользователя. */
 export interface GetUserTariffResponse {
@@ -236,7 +251,8 @@ export interface StreamLimit {
 }
 
 /** Запрос информации о пользователе. */
-export interface GetInfoRequest {}
+export interface GetInfoRequest {
+}
 
 /** Информация о пользователе. */
 export interface GetInfoResponse {
@@ -255,24 +271,22 @@ function createBaseGetAccountsRequest(): GetAccountsRequest {
 }
 
 export const GetAccountsRequest = {
-  encode(
-    _: GetAccountsRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(_: GetAccountsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetAccountsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetAccountsRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -292,10 +306,7 @@ function createBaseGetAccountsResponse(): GetAccountsResponse {
 }
 
 export const GetAccountsResponse = {
-  encode(
-    message: GetAccountsResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: GetAccountsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.accounts) {
       Account.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -303,61 +314,49 @@ export const GetAccountsResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetAccountsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetAccountsResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.accounts.push(Account.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): GetAccountsResponse {
     return {
-      accounts: Array.isArray(object?.accounts)
-        ? object.accounts.map((e: any) => Account.fromJSON(e))
-        : [],
+      accounts: globalThis.Array.isArray(object?.accounts) ? object.accounts.map((e: any) => Account.fromJSON(e)) : [],
     };
   },
 
   toJSON(message: GetAccountsResponse): unknown {
     const obj: any = {};
-    if (message.accounts) {
-      obj.accounts = message.accounts.map((e) =>
-        e ? Account.toJSON(e) : undefined
-      );
-    } else {
-      obj.accounts = [];
+    if (message.accounts?.length) {
+      obj.accounts = message.accounts.map((e) => Account.toJSON(e));
     }
     return obj;
   },
 };
 
 function createBaseAccount(): Account {
-  return {
-    id: "",
-    type: 0,
-    name: "",
-    status: 0,
-    openedDate: undefined,
-    closedDate: undefined,
-    accessLevel: 0,
-  };
+  return { id: "", type: 0, name: "", status: 0, openedDate: undefined, closedDate: undefined, accessLevel: 0 };
 }
 
 export const Account = {
-  encode(
-    message: Account,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: Account, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
     }
@@ -371,16 +370,10 @@ export const Account = {
       writer.uint32(32).int32(message.status);
     }
     if (message.openedDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.openedDate),
-        writer.uint32(42).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.openedDate), writer.uint32(42).fork()).ldelim();
     }
     if (message.closedDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.closedDate),
-        writer.uint32(50).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.closedDate), writer.uint32(50).fork()).ldelim();
     }
     if (message.accessLevel !== 0) {
       writer.uint32(56).int32(message.accessLevel);
@@ -389,76 +382,105 @@ export const Account = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Account {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAccount();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.id = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 16) {
+            break;
+          }
+
           message.type = reader.int32() as any;
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.name = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag !== 32) {
+            break;
+          }
+
           message.status = reader.int32() as any;
-          break;
+          continue;
         case 5:
-          message.openedDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 42) {
+            break;
+          }
+
+          message.openedDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 6:
-          message.closedDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 50) {
+            break;
+          }
+
+          message.closedDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 7:
+          if (tag !== 56) {
+            break;
+          }
+
           message.accessLevel = reader.int32() as any;
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): Account {
     return {
-      id: isSet(object.id) ? String(object.id) : "",
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
       type: isSet(object.type) ? accountTypeFromJSON(object.type) : 0,
-      name: isSet(object.name) ? String(object.name) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
       status: isSet(object.status) ? accountStatusFromJSON(object.status) : 0,
-      openedDate: isSet(object.openedDate)
-        ? fromJsonTimestamp(object.openedDate)
-        : undefined,
-      closedDate: isSet(object.closedDate)
-        ? fromJsonTimestamp(object.closedDate)
-        : undefined,
-      accessLevel: isSet(object.accessLevel)
-        ? accessLevelFromJSON(object.accessLevel)
-        : 0,
+      openedDate: isSet(object.openedDate) ? fromJsonTimestamp(object.openedDate) : undefined,
+      closedDate: isSet(object.closedDate) ? fromJsonTimestamp(object.closedDate) : undefined,
+      accessLevel: isSet(object.accessLevel) ? accessLevelFromJSON(object.accessLevel) : 0,
     };
   },
 
   toJSON(message: Account): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = message.id);
-    message.type !== undefined && (obj.type = accountTypeToJSON(message.type));
-    message.name !== undefined && (obj.name = message.name);
-    message.status !== undefined &&
-      (obj.status = accountStatusToJSON(message.status));
-    message.openedDate !== undefined &&
-      (obj.openedDate = message.openedDate.toISOString());
-    message.closedDate !== undefined &&
-      (obj.closedDate = message.closedDate.toISOString());
-    message.accessLevel !== undefined &&
-      (obj.accessLevel = accessLevelToJSON(message.accessLevel));
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.type !== 0) {
+      obj.type = accountTypeToJSON(message.type);
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.status !== 0) {
+      obj.status = accountStatusToJSON(message.status);
+    }
+    if (message.openedDate !== undefined) {
+      obj.openedDate = message.openedDate.toISOString();
+    }
+    if (message.closedDate !== undefined) {
+      obj.closedDate = message.closedDate.toISOString();
+    }
+    if (message.accessLevel !== 0) {
+      obj.accessLevel = accessLevelToJSON(message.accessLevel);
+    }
     return obj;
   },
 };
@@ -468,46 +490,45 @@ function createBaseGetMarginAttributesRequest(): GetMarginAttributesRequest {
 }
 
 export const GetMarginAttributesRequest = {
-  encode(
-    message: GetMarginAttributesRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: GetMarginAttributesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.accountId !== "") {
       writer.uint32(10).string(message.accountId);
     }
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): GetMarginAttributesRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetMarginAttributesRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetMarginAttributesRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.accountId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): GetMarginAttributesRequest {
-    return {
-      accountId: isSet(object.accountId) ? String(object.accountId) : "",
-    };
+    return { accountId: isSet(object.accountId) ? globalThis.String(object.accountId) : "" };
   },
 
   toJSON(message: GetMarginAttributesRequest): unknown {
     const obj: any = {};
-    message.accountId !== undefined && (obj.accountId = message.accountId);
+    if (message.accountId !== "") {
+      obj.accountId = message.accountId;
+    }
     return obj;
   },
 };
@@ -524,140 +545,121 @@ function createBaseGetMarginAttributesResponse(): GetMarginAttributesResponse {
 }
 
 export const GetMarginAttributesResponse = {
-  encode(
-    message: GetMarginAttributesResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: GetMarginAttributesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.liquidPortfolio !== undefined) {
-      MoneyValue.encode(
-        message.liquidPortfolio,
-        writer.uint32(10).fork()
-      ).ldelim();
+      MoneyValue.encode(message.liquidPortfolio, writer.uint32(10).fork()).ldelim();
     }
     if (message.startingMargin !== undefined) {
-      MoneyValue.encode(
-        message.startingMargin,
-        writer.uint32(18).fork()
-      ).ldelim();
+      MoneyValue.encode(message.startingMargin, writer.uint32(18).fork()).ldelim();
     }
     if (message.minimalMargin !== undefined) {
-      MoneyValue.encode(
-        message.minimalMargin,
-        writer.uint32(26).fork()
-      ).ldelim();
+      MoneyValue.encode(message.minimalMargin, writer.uint32(26).fork()).ldelim();
     }
     if (message.fundsSufficiencyLevel !== undefined) {
-      Quotation.encode(
-        message.fundsSufficiencyLevel,
-        writer.uint32(34).fork()
-      ).ldelim();
+      Quotation.encode(message.fundsSufficiencyLevel, writer.uint32(34).fork()).ldelim();
     }
     if (message.amountOfMissingFunds !== undefined) {
-      MoneyValue.encode(
-        message.amountOfMissingFunds,
-        writer.uint32(42).fork()
-      ).ldelim();
+      MoneyValue.encode(message.amountOfMissingFunds, writer.uint32(42).fork()).ldelim();
     }
     if (message.correctedMargin !== undefined) {
-      MoneyValue.encode(
-        message.correctedMargin,
-        writer.uint32(50).fork()
-      ).ldelim();
+      MoneyValue.encode(message.correctedMargin, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): GetMarginAttributesResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetMarginAttributesResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetMarginAttributesResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.liquidPortfolio = MoneyValue.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.startingMargin = MoneyValue.decode(reader, reader.uint32());
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.minimalMargin = MoneyValue.decode(reader, reader.uint32());
-          break;
+          continue;
         case 4:
-          message.fundsSufficiencyLevel = Quotation.decode(
-            reader,
-            reader.uint32()
-          );
-          break;
+          if (tag !== 34) {
+            break;
+          }
+
+          message.fundsSufficiencyLevel = Quotation.decode(reader, reader.uint32());
+          continue;
         case 5:
-          message.amountOfMissingFunds = MoneyValue.decode(
-            reader,
-            reader.uint32()
-          );
-          break;
+          if (tag !== 42) {
+            break;
+          }
+
+          message.amountOfMissingFunds = MoneyValue.decode(reader, reader.uint32());
+          continue;
         case 6:
+          if (tag !== 50) {
+            break;
+          }
+
           message.correctedMargin = MoneyValue.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): GetMarginAttributesResponse {
     return {
-      liquidPortfolio: isSet(object.liquidPortfolio)
-        ? MoneyValue.fromJSON(object.liquidPortfolio)
-        : undefined,
-      startingMargin: isSet(object.startingMargin)
-        ? MoneyValue.fromJSON(object.startingMargin)
-        : undefined,
-      minimalMargin: isSet(object.minimalMargin)
-        ? MoneyValue.fromJSON(object.minimalMargin)
-        : undefined,
+      liquidPortfolio: isSet(object.liquidPortfolio) ? MoneyValue.fromJSON(object.liquidPortfolio) : undefined,
+      startingMargin: isSet(object.startingMargin) ? MoneyValue.fromJSON(object.startingMargin) : undefined,
+      minimalMargin: isSet(object.minimalMargin) ? MoneyValue.fromJSON(object.minimalMargin) : undefined,
       fundsSufficiencyLevel: isSet(object.fundsSufficiencyLevel)
         ? Quotation.fromJSON(object.fundsSufficiencyLevel)
         : undefined,
       amountOfMissingFunds: isSet(object.amountOfMissingFunds)
         ? MoneyValue.fromJSON(object.amountOfMissingFunds)
         : undefined,
-      correctedMargin: isSet(object.correctedMargin)
-        ? MoneyValue.fromJSON(object.correctedMargin)
-        : undefined,
+      correctedMargin: isSet(object.correctedMargin) ? MoneyValue.fromJSON(object.correctedMargin) : undefined,
     };
   },
 
   toJSON(message: GetMarginAttributesResponse): unknown {
     const obj: any = {};
-    message.liquidPortfolio !== undefined &&
-      (obj.liquidPortfolio = message.liquidPortfolio
-        ? MoneyValue.toJSON(message.liquidPortfolio)
-        : undefined);
-    message.startingMargin !== undefined &&
-      (obj.startingMargin = message.startingMargin
-        ? MoneyValue.toJSON(message.startingMargin)
-        : undefined);
-    message.minimalMargin !== undefined &&
-      (obj.minimalMargin = message.minimalMargin
-        ? MoneyValue.toJSON(message.minimalMargin)
-        : undefined);
-    message.fundsSufficiencyLevel !== undefined &&
-      (obj.fundsSufficiencyLevel = message.fundsSufficiencyLevel
-        ? Quotation.toJSON(message.fundsSufficiencyLevel)
-        : undefined);
-    message.amountOfMissingFunds !== undefined &&
-      (obj.amountOfMissingFunds = message.amountOfMissingFunds
-        ? MoneyValue.toJSON(message.amountOfMissingFunds)
-        : undefined);
-    message.correctedMargin !== undefined &&
-      (obj.correctedMargin = message.correctedMargin
-        ? MoneyValue.toJSON(message.correctedMargin)
-        : undefined);
+    if (message.liquidPortfolio !== undefined) {
+      obj.liquidPortfolio = MoneyValue.toJSON(message.liquidPortfolio);
+    }
+    if (message.startingMargin !== undefined) {
+      obj.startingMargin = MoneyValue.toJSON(message.startingMargin);
+    }
+    if (message.minimalMargin !== undefined) {
+      obj.minimalMargin = MoneyValue.toJSON(message.minimalMargin);
+    }
+    if (message.fundsSufficiencyLevel !== undefined) {
+      obj.fundsSufficiencyLevel = Quotation.toJSON(message.fundsSufficiencyLevel);
+    }
+    if (message.amountOfMissingFunds !== undefined) {
+      obj.amountOfMissingFunds = MoneyValue.toJSON(message.amountOfMissingFunds);
+    }
+    if (message.correctedMargin !== undefined) {
+      obj.correctedMargin = MoneyValue.toJSON(message.correctedMargin);
+    }
     return obj;
   },
 };
@@ -667,27 +669,22 @@ function createBaseGetUserTariffRequest(): GetUserTariffRequest {
 }
 
 export const GetUserTariffRequest = {
-  encode(
-    _: GetUserTariffRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(_: GetUserTariffRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): GetUserTariffRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetUserTariffRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetUserTariffRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -707,10 +704,7 @@ function createBaseGetUserTariffResponse(): GetUserTariffResponse {
 }
 
 export const GetUserTariffResponse = {
-  encode(
-    message: GetUserTariffResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: GetUserTariffResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.unaryLimits) {
       UnaryLimit.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -720,38 +714,42 @@ export const GetUserTariffResponse = {
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): GetUserTariffResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetUserTariffResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetUserTariffResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.unaryLimits.push(UnaryLimit.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 2:
-          message.streamLimits.push(
-            StreamLimit.decode(reader, reader.uint32())
-          );
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          if (tag !== 18) {
+            break;
+          }
+
+          message.streamLimits.push(StreamLimit.decode(reader, reader.uint32()));
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): GetUserTariffResponse {
     return {
-      unaryLimits: Array.isArray(object?.unaryLimits)
+      unaryLimits: globalThis.Array.isArray(object?.unaryLimits)
         ? object.unaryLimits.map((e: any) => UnaryLimit.fromJSON(e))
         : [],
-      streamLimits: Array.isArray(object?.streamLimits)
+      streamLimits: globalThis.Array.isArray(object?.streamLimits)
         ? object.streamLimits.map((e: any) => StreamLimit.fromJSON(e))
         : [],
     };
@@ -759,19 +757,11 @@ export const GetUserTariffResponse = {
 
   toJSON(message: GetUserTariffResponse): unknown {
     const obj: any = {};
-    if (message.unaryLimits) {
-      obj.unaryLimits = message.unaryLimits.map((e) =>
-        e ? UnaryLimit.toJSON(e) : undefined
-      );
-    } else {
-      obj.unaryLimits = [];
+    if (message.unaryLimits?.length) {
+      obj.unaryLimits = message.unaryLimits.map((e) => UnaryLimit.toJSON(e));
     }
-    if (message.streamLimits) {
-      obj.streamLimits = message.streamLimits.map((e) =>
-        e ? StreamLimit.toJSON(e) : undefined
-      );
-    } else {
-      obj.streamLimits = [];
+    if (message.streamLimits?.length) {
+      obj.streamLimits = message.streamLimits.map((e) => StreamLimit.toJSON(e));
     }
     return obj;
   },
@@ -782,10 +772,7 @@ function createBaseUnaryLimit(): UnaryLimit {
 }
 
 export const UnaryLimit = {
-  encode(
-    message: UnaryLimit,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: UnaryLimit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.limitPerMinute !== 0) {
       writer.uint32(8).int32(message.limitPerMinute);
     }
@@ -796,45 +783,49 @@ export const UnaryLimit = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): UnaryLimit {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseUnaryLimit();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.limitPerMinute = reader.int32();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.methods.push(reader.string());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): UnaryLimit {
     return {
-      limitPerMinute: isSet(object.limitPerMinute)
-        ? Number(object.limitPerMinute)
-        : 0,
-      methods: Array.isArray(object?.methods)
-        ? object.methods.map((e: any) => String(e))
-        : [],
+      limitPerMinute: isSet(object.limitPerMinute) ? globalThis.Number(object.limitPerMinute) : 0,
+      methods: globalThis.Array.isArray(object?.methods) ? object.methods.map((e: any) => globalThis.String(e)) : [],
     };
   },
 
   toJSON(message: UnaryLimit): unknown {
     const obj: any = {};
-    message.limitPerMinute !== undefined &&
-      (obj.limitPerMinute = Math.round(message.limitPerMinute));
-    if (message.methods) {
-      obj.methods = message.methods.map((e) => e);
-    } else {
-      obj.methods = [];
+    if (message.limitPerMinute !== 0) {
+      obj.limitPerMinute = Math.round(message.limitPerMinute);
+    }
+    if (message.methods?.length) {
+      obj.methods = message.methods;
     }
     return obj;
   },
@@ -845,10 +836,7 @@ function createBaseStreamLimit(): StreamLimit {
 }
 
 export const StreamLimit = {
-  encode(
-    message: StreamLimit,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: StreamLimit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.limit !== 0) {
       writer.uint32(8).int32(message.limit);
     }
@@ -862,48 +850,61 @@ export const StreamLimit = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): StreamLimit {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseStreamLimit();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.limit = reader.int32();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.streams.push(reader.string());
-          break;
+          continue;
         case 3:
+          if (tag !== 24) {
+            break;
+          }
+
           message.open = reader.int32();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): StreamLimit {
     return {
-      limit: isSet(object.limit) ? Number(object.limit) : 0,
-      streams: Array.isArray(object?.streams)
-        ? object.streams.map((e: any) => String(e))
-        : [],
-      open: isSet(object.open) ? Number(object.open) : 0,
+      limit: isSet(object.limit) ? globalThis.Number(object.limit) : 0,
+      streams: globalThis.Array.isArray(object?.streams) ? object.streams.map((e: any) => globalThis.String(e)) : [],
+      open: isSet(object.open) ? globalThis.Number(object.open) : 0,
     };
   },
 
   toJSON(message: StreamLimit): unknown {
     const obj: any = {};
-    message.limit !== undefined && (obj.limit = Math.round(message.limit));
-    if (message.streams) {
-      obj.streams = message.streams.map((e) => e);
-    } else {
-      obj.streams = [];
+    if (message.limit !== 0) {
+      obj.limit = Math.round(message.limit);
     }
-    message.open !== undefined && (obj.open = Math.round(message.open));
+    if (message.streams?.length) {
+      obj.streams = message.streams;
+    }
+    if (message.open !== 0) {
+      obj.open = Math.round(message.open);
+    }
     return obj;
   },
 };
@@ -913,24 +914,22 @@ function createBaseGetInfoRequest(): GetInfoRequest {
 }
 
 export const GetInfoRequest = {
-  encode(
-    _: GetInfoRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(_: GetInfoRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetInfoRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetInfoRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -946,19 +945,11 @@ export const GetInfoRequest = {
 };
 
 function createBaseGetInfoResponse(): GetInfoResponse {
-  return {
-    premStatus: false,
-    qualStatus: false,
-    qualifiedForWorkWith: [],
-    tariff: "",
-  };
+  return { premStatus: false, qualStatus: false, qualifiedForWorkWith: [], tariff: "" };
 }
 
 export const GetInfoResponse = {
-  encode(
-    message: GetInfoResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: GetInfoResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.premStatus === true) {
       writer.uint32(8).bool(message.premStatus);
     }
@@ -975,53 +966,74 @@ export const GetInfoResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetInfoResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetInfoResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.premStatus = reader.bool();
-          break;
+          continue;
         case 2:
+          if (tag !== 16) {
+            break;
+          }
+
           message.qualStatus = reader.bool();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.qualifiedForWorkWith.push(reader.string());
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.tariff = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): GetInfoResponse {
     return {
-      premStatus: isSet(object.premStatus) ? Boolean(object.premStatus) : false,
-      qualStatus: isSet(object.qualStatus) ? Boolean(object.qualStatus) : false,
-      qualifiedForWorkWith: Array.isArray(object?.qualifiedForWorkWith)
-        ? object.qualifiedForWorkWith.map((e: any) => String(e))
+      premStatus: isSet(object.premStatus) ? globalThis.Boolean(object.premStatus) : false,
+      qualStatus: isSet(object.qualStatus) ? globalThis.Boolean(object.qualStatus) : false,
+      qualifiedForWorkWith: globalThis.Array.isArray(object?.qualifiedForWorkWith)
+        ? object.qualifiedForWorkWith.map((e: any) => globalThis.String(e))
         : [],
-      tariff: isSet(object.tariff) ? String(object.tariff) : "",
+      tariff: isSet(object.tariff) ? globalThis.String(object.tariff) : "",
     };
   },
 
   toJSON(message: GetInfoResponse): unknown {
     const obj: any = {};
-    message.premStatus !== undefined && (obj.premStatus = message.premStatus);
-    message.qualStatus !== undefined && (obj.qualStatus = message.qualStatus);
-    if (message.qualifiedForWorkWith) {
-      obj.qualifiedForWorkWith = message.qualifiedForWorkWith.map((e) => e);
-    } else {
-      obj.qualifiedForWorkWith = [];
+    if (message.premStatus === true) {
+      obj.premStatus = message.premStatus;
     }
-    message.tariff !== undefined && (obj.tariff = message.tariff);
+    if (message.qualStatus === true) {
+      obj.qualStatus = message.qualStatus;
+    }
+    if (message.qualifiedForWorkWith?.length) {
+      obj.qualifiedForWorkWith = message.qualifiedForWorkWith;
+    }
+    if (message.tariff !== "") {
+      obj.tariff = message.tariff;
+    }
     return obj;
   },
 };
@@ -1074,50 +1086,32 @@ export const UsersServiceDefinition = {
   },
 } as const;
 
-export interface UsersServiceServiceImplementation<CallContextExt = {}> {
+export interface UsersServiceImplementation<CallContextExt = {}> {
   /** Метод получения счетов пользователя. */
-  getAccounts(
-    request: GetAccountsRequest,
-    context: CallContext & CallContextExt
-  ): Promise<GetAccountsResponse>;
+  getAccounts(request: GetAccountsRequest, context: CallContext & CallContextExt): Promise<GetAccountsResponse>;
   /** Расчёт маржинальных показателей по счёту. */
   getMarginAttributes(
     request: GetMarginAttributesRequest,
-    context: CallContext & CallContextExt
+    context: CallContext & CallContextExt,
   ): Promise<GetMarginAttributesResponse>;
   /** Запрос тарифа пользователя. */
-  getUserTariff(
-    request: GetUserTariffRequest,
-    context: CallContext & CallContextExt
-  ): Promise<GetUserTariffResponse>;
+  getUserTariff(request: GetUserTariffRequest, context: CallContext & CallContextExt): Promise<GetUserTariffResponse>;
   /** Метод получения информации о пользователе. */
-  getInfo(
-    request: GetInfoRequest,
-    context: CallContext & CallContextExt
-  ): Promise<GetInfoResponse>;
+  getInfo(request: GetInfoRequest, context: CallContext & CallContextExt): Promise<GetInfoResponse>;
 }
 
 export interface UsersServiceClient<CallOptionsExt = {}> {
   /** Метод получения счетов пользователя. */
-  getAccounts(
-    request: GetAccountsRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<GetAccountsResponse>;
+  getAccounts(request: GetAccountsRequest, options?: CallOptions & CallOptionsExt): Promise<GetAccountsResponse>;
   /** Расчёт маржинальных показателей по счёту. */
   getMarginAttributes(
     request: GetMarginAttributesRequest,
-    options?: CallOptions & CallOptionsExt
+    options?: CallOptions & CallOptionsExt,
   ): Promise<GetMarginAttributesResponse>;
   /** Запрос тарифа пользователя. */
-  getUserTariff(
-    request: GetUserTariffRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<GetUserTariffResponse>;
+  getUserTariff(request: GetUserTariffRequest, options?: CallOptions & CallOptionsExt): Promise<GetUserTariffResponse>;
   /** Метод получения информации о пользователе. */
-  getInfo(
-    request: GetInfoRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<GetInfoResponse>;
+  getInfo(request: GetInfoRequest, options?: CallOptions & CallOptionsExt): Promise<GetInfoResponse>;
 }
 
 function toTimestamp(date: Date): Timestamp {
@@ -1127,24 +1121,19 @@ function toTimestamp(date: Date): Timestamp {
 }
 
 function fromTimestamp(t: Timestamp): Date {
-  let millis = t.seconds * 1_000;
-  millis += t.nanos / 1_000_000;
-  return new Date(millis);
+  let millis = (t.seconds || 0) * 1_000;
+  millis += (t.nanos || 0) / 1_000_000;
+  return new globalThis.Date(millis);
 }
 
 function fromJsonTimestamp(o: any): Date {
-  if (o instanceof Date) {
+  if (o instanceof globalThis.Date) {
     return o;
   } else if (typeof o === "string") {
-    return new Date(o);
+    return new globalThis.Date(o);
   } else {
     return fromTimestamp(Timestamp.fromJSON(o));
   }
-}
-
-if (_m0.util.Long !== Long) {
-  _m0.util.Long = Long as any;
-  _m0.configure();
 }
 
 function isSet(value: any): boolean {

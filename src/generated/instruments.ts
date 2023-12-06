@@ -1,17 +1,17 @@
 /* eslint-disable */
 import Long from "long";
+import type { CallContext, CallOptions } from "nice-grpc-common";
 import _m0 from "protobufjs/minimal.js";
 import {
-  MoneyValue,
-  SecurityTradingStatus,
-  Quotation,
   InstrumentType,
-  securityTradingStatusFromJSON,
-  securityTradingStatusToJSON,
   instrumentTypeFromJSON,
   instrumentTypeToJSON,
+  MoneyValue,
+  Quotation,
+  SecurityTradingStatus,
+  securityTradingStatusFromJSON,
+  securityTradingStatusToJSON,
 } from "./common.js";
-import { CallContext, CallOptions } from "nice-grpc-common";
 import { Timestamp } from "./google/protobuf/timestamp.js";
 
 export const protobufPackage = "tinkoff.public.invest.api.contract.v1";
@@ -234,9 +234,7 @@ export enum OptionSettlementType {
   UNRECOGNIZED = -1,
 }
 
-export function optionSettlementTypeFromJSON(
-  object: any
-): OptionSettlementType {
+export function optionSettlementTypeFromJSON(object: any): OptionSettlementType {
   switch (object) {
     case 0:
     case "OPTION_EXECUTION_TYPE_UNSPECIFIED":
@@ -254,9 +252,7 @@ export function optionSettlementTypeFromJSON(
   }
 }
 
-export function optionSettlementTypeToJSON(
-  object: OptionSettlementType
-): string {
+export function optionSettlementTypeToJSON(object: OptionSettlementType): string {
   switch (object) {
     case OptionSettlementType.OPTION_EXECUTION_TYPE_UNSPECIFIED:
       return "OPTION_EXECUTION_TYPE_UNSPECIFIED";
@@ -523,9 +519,7 @@ export enum StructuredProductType {
   UNRECOGNIZED = -1,
 }
 
-export function structuredProductTypeFromJSON(
-  object: any
-): StructuredProductType {
+export function structuredProductTypeFromJSON(object: any): StructuredProductType {
   switch (object) {
     case 0:
     case "SP_TYPE_UNSPECIFIED":
@@ -543,9 +537,7 @@ export function structuredProductTypeFromJSON(
   }
 }
 
-export function structuredProductTypeToJSON(
-  object: StructuredProductType
-): string {
+export function structuredProductTypeToJSON(object: StructuredProductType): string {
   switch (object) {
     case StructuredProductType.SP_TYPE_UNSPECIFIED:
       return "SP_TYPE_UNSPECIFIED";
@@ -570,9 +562,7 @@ export enum EditFavoritesActionType {
   UNRECOGNIZED = -1,
 }
 
-export function editFavoritesActionTypeFromJSON(
-  object: any
-): EditFavoritesActionType {
+export function editFavoritesActionTypeFromJSON(object: any): EditFavoritesActionType {
   switch (object) {
     case 0:
     case "EDIT_FAVORITES_ACTION_TYPE_UNSPECIFIED":
@@ -590,9 +580,7 @@ export function editFavoritesActionTypeFromJSON(
   }
 }
 
-export function editFavoritesActionTypeToJSON(
-  object: EditFavoritesActionType
-): string {
+export function editFavoritesActionTypeToJSON(object: EditFavoritesActionType): string {
   switch (object) {
     case EditFavoritesActionType.EDIT_FAVORITES_ACTION_TYPE_UNSPECIFIED:
       return "EDIT_FAVORITES_ACTION_TYPE_UNSPECIFIED";
@@ -704,9 +692,11 @@ export interface TradingSchedulesRequest {
   /** Наименование биржи или расчетного календаря. </br>Если не передаётся, возвращается информация по всем доступным торговым площадкам. */
   exchange: string;
   /** Начало периода по часовому поясу UTC. */
-  from?: Date;
+  from?:
+    | Date
+    | undefined;
   /** Окончание периода по часовому поясу UTC. */
-  to?: Date;
+  to?: Date | undefined;
 }
 
 /** Список торговых площадок. */
@@ -726,35 +716,61 @@ export interface TradingSchedule {
 /** Информация о времени торгов. */
 export interface TradingDay {
   /** Дата. */
-  date?: Date;
+  date?:
+    | Date
+    | undefined;
   /** Признак торгового дня на бирже. */
   isTradingDay: boolean;
   /** Время начала торгов по часовому поясу UTC. */
-  startTime?: Date;
+  startTime?:
+    | Date
+    | undefined;
   /** Время окончания торгов по часовому поясу UTC. */
-  endTime?: Date;
+  endTime?:
+    | Date
+    | undefined;
   /** Время начала аукциона открытия в часовом поясе UTC. */
-  openingAuctionStartTime?: Date;
+  openingAuctionStartTime?:
+    | Date
+    | undefined;
   /** Время окончания аукциона закрытия в часовом поясе UTC. */
-  closingAuctionEndTime?: Date;
+  closingAuctionEndTime?:
+    | Date
+    | undefined;
   /** Время начала аукциона открытия вечерней сессии в часовом поясе UTC. */
-  eveningOpeningAuctionStartTime?: Date;
+  eveningOpeningAuctionStartTime?:
+    | Date
+    | undefined;
   /** Время начала вечерней сессии в часовом поясе UTC. */
-  eveningStartTime?: Date;
+  eveningStartTime?:
+    | Date
+    | undefined;
   /** Время окончания вечерней сессии в часовом поясе UTC. */
-  eveningEndTime?: Date;
+  eveningEndTime?:
+    | Date
+    | undefined;
   /** Время начала основного клиринга в часовом поясе UTC. */
-  clearingStartTime?: Date;
+  clearingStartTime?:
+    | Date
+    | undefined;
   /** Время окончания основного клиринга в часовом поясе UTC. */
-  clearingEndTime?: Date;
+  clearingEndTime?:
+    | Date
+    | undefined;
   /** Время начала премаркета в часовом поясе UTC. */
-  premarketStartTime?: Date;
+  premarketStartTime?:
+    | Date
+    | undefined;
   /** Время окончания премаркета в часовом поясе UTC. */
-  premarketEndTime?: Date;
+  premarketEndTime?:
+    | Date
+    | undefined;
   /** Время начала аукциона закрытия в часовом поясе UTC. */
-  closingAuctionStartTime?: Date;
+  closingAuctionStartTime?:
+    | Date
+    | undefined;
   /** Время окончания аукциона открытия в часовом поясе UTC. */
-  openingAuctionEndTime?: Date;
+  openingAuctionEndTime?: Date | undefined;
 }
 
 /** Запрос получения инструмента по идентификатору. */
@@ -784,7 +800,7 @@ export interface FilterOptionsRequest {
 /** Информация об облигации. */
 export interface BondResponse {
   /** Информация об облигации. */
-  instrument?: Bond;
+  instrument?: Bond | undefined;
 }
 
 /** Список облигаций. */
@@ -798,9 +814,11 @@ export interface GetBondCouponsRequest {
   /** Figi-идентификатор инструмента. */
   figi: string;
   /** Начало запрашиваемого периода в часовом поясе UTC. Фильтрация по coupon_date (дата выплаты купона) */
-  from?: Date;
+  from?:
+    | Date
+    | undefined;
   /** Окончание запрашиваемого периода в часовом поясе UTC. Фильтрация по coupon_date (дата выплаты купона) */
-  to?: Date;
+  to?: Date | undefined;
 }
 
 /** Купоны по облигации. */
@@ -813,19 +831,29 @@ export interface Coupon {
   /** Figi-идентификатор инструмента. */
   figi: string;
   /** Дата выплаты купона. */
-  couponDate?: Date;
+  couponDate?:
+    | Date
+    | undefined;
   /** Номер купона. */
   couponNumber: number;
   /** (Опционально) Дата фиксации реестра для выплаты купона. */
-  fixDate?: Date;
+  fixDate?:
+    | Date
+    | undefined;
   /** Выплата на одну облигацию. */
-  payOneBond?: MoneyValue;
+  payOneBond?:
+    | MoneyValue
+    | undefined;
   /** Тип купона. */
   couponType: CouponType;
   /** Начало купонного периода. */
-  couponStartDate?: Date;
+  couponStartDate?:
+    | Date
+    | undefined;
   /** Окончание купонного периода. */
-  couponEndDate?: Date;
+  couponEndDate?:
+    | Date
+    | undefined;
   /** Купонный период в днях. */
   couponPeriod: number;
 }
@@ -833,7 +861,7 @@ export interface Coupon {
 /** Данные по валюте. */
 export interface CurrencyResponse {
   /** Информация о валюте. */
-  instrument?: Currency;
+  instrument?: Currency | undefined;
 }
 
 /** Данные по валютам. */
@@ -845,7 +873,7 @@ export interface CurrenciesResponse {
 /** Данные по фонду. */
 export interface EtfResponse {
   /** Информация о фонде. */
-  instrument?: Etf;
+  instrument?: Etf | undefined;
 }
 
 /** Данные по фондам. */
@@ -857,7 +885,7 @@ export interface EtfsResponse {
 /** Данные по фьючерсу. */
 export interface FutureResponse {
   /** Информация о фьючерсу. */
-  instrument?: Future;
+  instrument?: Future | undefined;
 }
 
 /** Данные по фьючерсам. */
@@ -869,7 +897,7 @@ export interface FuturesResponse {
 /** Данные по опциону. */
 export interface OptionResponse {
   /** Информация по опциону. */
-  instrument?: Option;
+  instrument?: Option | undefined;
 }
 
 /** Данные по опционам. */
@@ -923,33 +951,61 @@ export interface Option {
   /** Количество бумаг в лоте. */
   lot: number;
   /** Размер основного актива. */
-  basicAssetSize?: Quotation;
+  basicAssetSize?:
+    | Quotation
+    | undefined;
   /** Коэффициент ставки риска длинной позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР). 1 – клиент с повышенным уровнем риска (КПУР) */
-  klong?: Quotation;
+  klong?:
+    | Quotation
+    | undefined;
   /** Коэффициент ставки риска короткой позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР). 1 – клиент с повышенным уровнем риска (КПУР) */
-  kshort?: Quotation;
+  kshort?:
+    | Quotation
+    | undefined;
   /** Ставка риска начальной маржи для КСУР лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
-  dlong?: Quotation;
+  dlong?:
+    | Quotation
+    | undefined;
   /** Ставка риска начальной маржи для КСУР шорт.  Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
-  dshort?: Quotation;
+  dshort?:
+    | Quotation
+    | undefined;
   /** Ставка риска начальной маржи для КПУР лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
-  dlongMin?: Quotation;
+  dlongMin?:
+    | Quotation
+    | undefined;
   /** Ставка риска начальной маржи для КПУР шорт.  Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
-  dshortMin?: Quotation;
+  dshortMin?:
+    | Quotation
+    | undefined;
   /** Минимальный шаг цены. */
-  minPriceIncrement?: Quotation;
+  minPriceIncrement?:
+    | Quotation
+    | undefined;
   /** Цена страйка. */
-  strikePrice?: MoneyValue;
+  strikePrice?:
+    | MoneyValue
+    | undefined;
   /** Дата истечения срока в формате UTC. */
-  expirationDate?: Date;
+  expirationDate?:
+    | Date
+    | undefined;
   /** Дата начала обращения контракта в формате UTC. */
-  firstTradeDate?: Date;
+  firstTradeDate?:
+    | Date
+    | undefined;
   /** Дата исполнения в формате UTC. */
-  lastTradeDate?: Date;
+  lastTradeDate?:
+    | Date
+    | undefined;
   /** Дата первой минутной свечи в формате UTC. */
-  first1minCandleDate?: Date;
+  first1minCandleDate?:
+    | Date
+    | undefined;
   /** Дата первой дневной свечи в формате UTC. */
-  first1dayCandleDate?: Date;
+  first1dayCandleDate?:
+    | Date
+    | undefined;
   /** Признак доступности для операций шорт. */
   shortEnabledFlag: boolean;
   /** Возможность покупки/продажи на ИИС. */
@@ -973,7 +1029,7 @@ export interface Option {
 /** Данные по акции. */
 export interface ShareResponse {
   /** Информация об акции. */
-  instrument?: Share;
+  instrument?: Share | undefined;
 }
 
 /** Данные по акциям. */
@@ -997,17 +1053,29 @@ export interface Bond {
   /** Валюта расчётов. */
   currency: string;
   /** Коэффициент ставки риска длинной позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР). 1 – клиент с повышенным уровнем риска (КПУР) */
-  klong?: Quotation;
+  klong?:
+    | Quotation
+    | undefined;
   /** Коэффициент ставки риска короткой позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР). 1 – клиент с повышенным уровнем риска (КПУР) */
-  kshort?: Quotation;
+  kshort?:
+    | Quotation
+    | undefined;
   /** Ставка риска начальной маржи для КСУР лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
-  dlong?: Quotation;
+  dlong?:
+    | Quotation
+    | undefined;
   /** Ставка риска начальной маржи для КСУР шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
-  dshort?: Quotation;
+  dshort?:
+    | Quotation
+    | undefined;
   /** Ставка риска начальной маржи для КПУР лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
-  dlongMin?: Quotation;
+  dlongMin?:
+    | Quotation
+    | undefined;
   /** Ставка риска начальной маржи для КПУР шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
-  dshortMin?: Quotation;
+  dshortMin?:
+    | Quotation
+    | undefined;
   /** Признак доступности для операций в шорт. */
   shortEnabledFlag: boolean;
   /** Название инструмента. */
@@ -1017,19 +1085,33 @@ export interface Bond {
   /** Количество выплат по купонам в год. */
   couponQuantityPerYear: number;
   /** Дата погашения облигации в часовом поясе UTC. */
-  maturityDate?: Date;
+  maturityDate?:
+    | Date
+    | undefined;
   /** Номинал облигации. */
-  nominal?: MoneyValue;
+  nominal?:
+    | MoneyValue
+    | undefined;
   /** Первоначальный номинал облигации. */
-  initialNominal?: MoneyValue;
+  initialNominal?:
+    | MoneyValue
+    | undefined;
   /** Дата выпуска облигации в часовом поясе UTC. */
-  stateRegDate?: Date;
+  stateRegDate?:
+    | Date
+    | undefined;
   /** Дата размещения в часовом поясе UTC. */
-  placementDate?: Date;
+  placementDate?:
+    | Date
+    | undefined;
   /** Цена размещения. */
-  placementPrice?: MoneyValue;
+  placementPrice?:
+    | MoneyValue
+    | undefined;
   /** Значение НКД (накопленного купонного дохода) на дату. */
-  aciValue?: MoneyValue;
+  aciValue?:
+    | MoneyValue
+    | undefined;
   /** Код страны риска, т.е. страны, в которой компания ведёт основной бизнес. */
   countryOfRisk: string;
   /** Наименование страны риска, т.е. страны, в которой компания ведёт основной бизнес. */
@@ -1057,7 +1139,9 @@ export interface Bond {
   /** Признак облигации с амортизацией долга. */
   amortizationFlag: boolean;
   /** Шаг цены. */
-  minPriceIncrement?: Quotation;
+  minPriceIncrement?:
+    | Quotation
+    | undefined;
   /** Параметр указывает на возможность торговать инструментом через API. */
   apiTradeAvailableFlag: boolean;
   /** Уникальный идентификатор инструмента. */
@@ -1079,9 +1163,13 @@ export interface Bond {
   /** Флаг достаточной ликвидности */
   liquidityFlag: boolean;
   /** Дата первой минутной свечи. */
-  first1minCandleDate?: Date;
+  first1minCandleDate?:
+    | Date
+    | undefined;
   /** Дата первой дневной свечи. */
-  first1dayCandleDate?: Date;
+  first1dayCandleDate?:
+    | Date
+    | undefined;
   /** Уровень риска. */
   riskLevel: RiskLevel;
 }
@@ -1101,17 +1189,29 @@ export interface Currency {
   /** Валюта расчётов. */
   currency: string;
   /** Коэффициент ставки риска длинной позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР). 1 – клиент с повышенным уровнем риска (КПУР) */
-  klong?: Quotation;
+  klong?:
+    | Quotation
+    | undefined;
   /** Коэффициент ставки риска короткой позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР). 1 – клиент с повышенным уровнем риска (КПУР) */
-  kshort?: Quotation;
+  kshort?:
+    | Quotation
+    | undefined;
   /** Ставка риска начальной маржи для КСУР лонг.Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
-  dlong?: Quotation;
+  dlong?:
+    | Quotation
+    | undefined;
   /** Ставка риска начальной маржи для КСУР шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
-  dshort?: Quotation;
+  dshort?:
+    | Quotation
+    | undefined;
   /** Ставка риска начальной маржи для КПУР лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
-  dlongMin?: Quotation;
+  dlongMin?:
+    | Quotation
+    | undefined;
   /** Ставка риска начальной маржи для КПУР шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
-  dshortMin?: Quotation;
+  dshortMin?:
+    | Quotation
+    | undefined;
   /** Признак доступности для операций в шорт. */
   shortEnabledFlag: boolean;
   /** Название инструмента. */
@@ -1119,7 +1219,9 @@ export interface Currency {
   /** Tорговая площадка (секция биржи) */
   exchange: string;
   /** Номинал. */
-  nominal?: MoneyValue;
+  nominal?:
+    | MoneyValue
+    | undefined;
   /** Код страны риска, т.е. страны, в которой компания ведёт основной бизнес. */
   countryOfRisk: string;
   /** Наименование страны риска, т.е. страны, в которой компания ведёт основной бизнес. */
@@ -1135,7 +1237,9 @@ export interface Currency {
   /** Строковый ISO-код валюты. */
   isoCurrencyName: string;
   /** Шаг цены. */
-  minPriceIncrement?: Quotation;
+  minPriceIncrement?:
+    | Quotation
+    | undefined;
   /** Параметр указывает на возможность торговать инструментом через API. */
   apiTradeAvailableFlag: boolean;
   /** Уникальный идентификатор инструмента. */
@@ -1153,9 +1257,11 @@ export interface Currency {
   /** Флаг заблокированного ТКС. */
   blockedTcaFlag: boolean;
   /** Дата первой минутной свечи. */
-  first1minCandleDate?: Date;
+  first1minCandleDate?:
+    | Date
+    | undefined;
   /** Дата первой дневной свечи. */
-  first1dayCandleDate?: Date;
+  first1dayCandleDate?: Date | undefined;
 }
 
 /** Объект передачи информации об инвестиционном фонде. */
@@ -1173,17 +1279,29 @@ export interface Etf {
   /** Валюта расчётов. */
   currency: string;
   /** Коэффициент ставки риска длинной позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР). 1 – клиент с повышенным уровнем риска (КПУР) */
-  klong?: Quotation;
+  klong?:
+    | Quotation
+    | undefined;
   /** Коэффициент ставки риска короткой позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР). 1 – клиент с повышенным уровнем риска (КПУР) */
-  kshort?: Quotation;
+  kshort?:
+    | Quotation
+    | undefined;
   /** Ставка риска начальной маржи для КСУР лонг.Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
-  dlong?: Quotation;
+  dlong?:
+    | Quotation
+    | undefined;
   /** Ставка риска начальной маржи для КСУР шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
-  dshort?: Quotation;
+  dshort?:
+    | Quotation
+    | undefined;
   /** Ставка риска начальной маржи для КПУР лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
-  dlongMin?: Quotation;
+  dlongMin?:
+    | Quotation
+    | undefined;
   /** Ставка риска начальной маржи для КПУР шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
-  dshortMin?: Quotation;
+  dshortMin?:
+    | Quotation
+    | undefined;
   /** Признак доступности для операций в шорт. */
   shortEnabledFlag: boolean;
   /** Название инструмента. */
@@ -1191,13 +1309,19 @@ export interface Etf {
   /** Tорговая площадка (секция биржи). */
   exchange: string;
   /** Размер фиксированной комиссии фонда. */
-  fixedCommission?: Quotation;
+  fixedCommission?:
+    | Quotation
+    | undefined;
   /** Возможные значения: </br>**equity** — акции;</br>**fixed_income** — облигации;</br>**mixed_allocation** — смешанный;</br>**money_market** — денежный рынок;</br>**real_estate** — недвижимость;</br>**commodity** — товары;</br>**specialty** — специальный;</br>**private_equity** — private equity;</br>**alternative_investment** — альтернативные инвестиции. */
   focusType: string;
   /** Дата выпуска в часовом поясе UTC. */
-  releasedDate?: Date;
+  releasedDate?:
+    | Date
+    | undefined;
   /** Количество акций фонда в обращении. */
-  numShares?: Quotation;
+  numShares?:
+    | Quotation
+    | undefined;
   /** Код страны риска, т.е. страны, в которой компания ведёт основной бизнес. */
   countryOfRisk: string;
   /** Наименование страны риска, т.е. страны, в которой компания ведёт основной бизнес. */
@@ -1215,7 +1339,9 @@ export interface Etf {
   /** Признак доступности для продажи. */
   sellAvailableFlag: boolean;
   /** Шаг цены. */
-  minPriceIncrement?: Quotation;
+  minPriceIncrement?:
+    | Quotation
+    | undefined;
   /** Параметр указывает на возможность торговать инструментом через API. */
   apiTradeAvailableFlag: boolean;
   /** Уникальный идентификатор инструмента. */
@@ -1235,9 +1361,11 @@ export interface Etf {
   /** Флаг достаточной ликвидности */
   liquidityFlag: boolean;
   /** Дата первой минутной свечи. */
-  first1minCandleDate?: Date;
+  first1minCandleDate?:
+    | Date
+    | undefined;
   /** Дата первой дневной свечи. */
-  first1dayCandleDate?: Date;
+  first1dayCandleDate?: Date | undefined;
 }
 
 /** Объект передачи информации о фьючерсе. */
@@ -1253,17 +1381,29 @@ export interface Future {
   /** Валюта расчётов. */
   currency: string;
   /** Коэффициент ставки риска длинной позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР). 1 – клиент с повышенным уровнем риска (КПУР) */
-  klong?: Quotation;
+  klong?:
+    | Quotation
+    | undefined;
   /** Коэффициент ставки риска короткой позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР). 1 – клиент с повышенным уровнем риска (КПУР) */
-  kshort?: Quotation;
+  kshort?:
+    | Quotation
+    | undefined;
   /** Ставка риска начальной маржи для КСУР лонг.Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
-  dlong?: Quotation;
+  dlong?:
+    | Quotation
+    | undefined;
   /** Ставка риска начальной маржи для КСУР шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
-  dshort?: Quotation;
+  dshort?:
+    | Quotation
+    | undefined;
   /** Ставка риска начальной маржи для КПУР лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
-  dlongMin?: Quotation;
+  dlongMin?:
+    | Quotation
+    | undefined;
   /** Ставка риска начальной маржи для КПУР шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
-  dshortMin?: Quotation;
+  dshortMin?:
+    | Quotation
+    | undefined;
   /** Признак доступности для операций шорт. */
   shortEnabledFlag: boolean;
   /** Название инструмента. */
@@ -1271,9 +1411,13 @@ export interface Future {
   /** Tорговая площадка (секция биржи). */
   exchange: string;
   /** Дата начала обращения контракта в часовом поясе UTC. */
-  firstTradeDate?: Date;
+  firstTradeDate?:
+    | Date
+    | undefined;
   /** Дата в часовом поясе UTC, до которой возможно проведение операций с фьючерсом. */
-  lastTradeDate?: Date;
+  lastTradeDate?:
+    | Date
+    | undefined;
   /** Тип фьючерса. Возможные значения: </br>**physical_delivery** — физические поставки; </br>**cash_settlement** — денежный эквивалент. */
   futuresType: string;
   /** Тип актива. Возможные значения: </br>**commodity** — товар; </br>**currency** — валюта; </br>**security** — ценная бумага; </br>**index** — индекс. */
@@ -1281,7 +1425,9 @@ export interface Future {
   /** Основной актив. */
   basicAsset: string;
   /** Размер основного актива. */
-  basicAssetSize?: Quotation;
+  basicAssetSize?:
+    | Quotation
+    | undefined;
   /** Код страны риска, т.е. страны, в которой компания ведёт основной бизнес. */
   countryOfRisk: string;
   /** Наименование страны риска, т.е. страны, в которой компания ведёт основной бизнес. */
@@ -1289,7 +1435,9 @@ export interface Future {
   /** Сектор экономики. */
   sector: string;
   /** Дата истечения срока в часов поясе UTC. */
-  expirationDate?: Date;
+  expirationDate?:
+    | Date
+    | undefined;
   /** Текущий режим торгов инструмента. */
   tradingStatus: SecurityTradingStatus;
   /** Признак внебиржевой ценной бумаги. */
@@ -1299,7 +1447,9 @@ export interface Future {
   /** Признак доступности для продажи. */
   sellAvailableFlag: boolean;
   /** Шаг цены. */
-  minPriceIncrement?: Quotation;
+  minPriceIncrement?:
+    | Quotation
+    | undefined;
   /** Параметр указывает на возможность торговать инструментом через API. */
   apiTradeAvailableFlag: boolean;
   /** Уникальный идентификатор инструмента. */
@@ -1319,9 +1469,11 @@ export interface Future {
   /** Флаг заблокированного ТКС. */
   blockedTcaFlag: boolean;
   /** Дата первой минутной свечи. */
-  first1minCandleDate?: Date;
+  first1minCandleDate?:
+    | Date
+    | undefined;
   /** Дата первой дневной свечи. */
-  first1dayCandleDate?: Date;
+  first1dayCandleDate?: Date | undefined;
 }
 
 /** Объект передачи информации об акции. */
@@ -1339,17 +1491,29 @@ export interface Share {
   /** Валюта расчётов. */
   currency: string;
   /** Коэффициент ставки риска длинной позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР). 1 – клиент с повышенным уровнем риска (КПУР) */
-  klong?: Quotation;
+  klong?:
+    | Quotation
+    | undefined;
   /** Коэффициент ставки риска короткой позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР). 1 – клиент с повышенным уровнем риска (КПУР) */
-  kshort?: Quotation;
+  kshort?:
+    | Quotation
+    | undefined;
   /** Ставка риска начальной маржи для КСУР лонг.Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
-  dlong?: Quotation;
+  dlong?:
+    | Quotation
+    | undefined;
   /** Ставка риска начальной маржи для КСУР шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
-  dshort?: Quotation;
+  dshort?:
+    | Quotation
+    | undefined;
   /** Ставка риска начальной маржи для КПУР лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
-  dlongMin?: Quotation;
+  dlongMin?:
+    | Quotation
+    | undefined;
   /** Ставка риска начальной маржи для КПУР шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
-  dshortMin?: Quotation;
+  dshortMin?:
+    | Quotation
+    | undefined;
   /** Признак доступности для операций в шорт. */
   shortEnabledFlag: boolean;
   /** Название инструмента. */
@@ -1357,7 +1521,9 @@ export interface Share {
   /** Tорговая площадка (секция биржи). */
   exchange: string;
   /** Дата IPO акции в часовом поясе UTC. */
-  ipoDate?: Date;
+  ipoDate?:
+    | Date
+    | undefined;
   /** Размер выпуска. */
   issueSize: number;
   /** Код страны риска, т.е. страны, в которой компания ведёт основной бизнес. */
@@ -1369,7 +1535,9 @@ export interface Share {
   /** Плановый размер выпуска. */
   issueSizePlan: number;
   /** Номинал. */
-  nominal?: MoneyValue;
+  nominal?:
+    | MoneyValue
+    | undefined;
   /** Текущий режим торгов инструмента. */
   tradingStatus: SecurityTradingStatus;
   /** Признак внебиржевой ценной бумаги. */
@@ -1383,7 +1551,9 @@ export interface Share {
   /** Тип акции. Возможные значения: [ShareType](https://tinkoff.github.io/investAPI/instruments#sharetype) */
   shareType: ShareType;
   /** Шаг цены. */
-  minPriceIncrement?: Quotation;
+  minPriceIncrement?:
+    | Quotation
+    | undefined;
   /** Параметр указывает на возможность торговать инструментом через API. */
   apiTradeAvailableFlag: boolean;
   /** Уникальный идентификатор инструмента. */
@@ -1403,9 +1573,11 @@ export interface Share {
   /** Флаг достаточной ликвидности */
   liquidityFlag: boolean;
   /** Дата первой минутной свечи. */
-  first1minCandleDate?: Date;
+  first1minCandleDate?:
+    | Date
+    | undefined;
   /** Дата первой дневной свечи. */
-  first1dayCandleDate?: Date;
+  first1dayCandleDate?: Date | undefined;
 }
 
 /** Запрос НКД по облигации */
@@ -1413,9 +1585,11 @@ export interface GetAccruedInterestsRequest {
   /** Figi-идентификатор инструмента. */
   figi: string;
   /** Начало запрашиваемого периода в часовом поясе UTC. */
-  from?: Date;
+  from?:
+    | Date
+    | undefined;
   /** Окончание запрашиваемого периода в часовом поясе UTC. */
-  to?: Date;
+  to?: Date | undefined;
 }
 
 /** НКД облигации */
@@ -1427,13 +1601,19 @@ export interface GetAccruedInterestsResponse {
 /** Операция начисления купонов. */
 export interface AccruedInterest {
   /** Дата и время выплаты в часовом поясе UTC. */
-  date?: Date;
+  date?:
+    | Date
+    | undefined;
   /** Величина выплаты. */
-  value?: Quotation;
+  value?:
+    | Quotation
+    | undefined;
   /** Величина выплаты в процентах от номинала. */
-  valuePercent?: Quotation;
+  valuePercent?:
+    | Quotation
+    | undefined;
   /** Номинал облигации. */
-  nominal?: Quotation;
+  nominal?: Quotation | undefined;
 }
 
 /** Запрос информации о фьючерсе */
@@ -1445,19 +1625,25 @@ export interface GetFuturesMarginRequest {
 /** Данные по фьючерсу */
 export interface GetFuturesMarginResponse {
   /** Гарантийное обеспечение при покупке. */
-  initialMarginOnBuy?: MoneyValue;
+  initialMarginOnBuy?:
+    | MoneyValue
+    | undefined;
   /** Гарантийное обеспечение при продаже. */
-  initialMarginOnSell?: MoneyValue;
+  initialMarginOnSell?:
+    | MoneyValue
+    | undefined;
   /** Шаг цены. */
-  minPriceIncrement?: Quotation;
+  minPriceIncrement?:
+    | Quotation
+    | undefined;
   /** Стоимость шага цены. */
-  minPriceIncrementAmount?: Quotation;
+  minPriceIncrementAmount?: Quotation | undefined;
 }
 
 /** Данные по инструменту. */
 export interface InstrumentResponse {
   /** Основная информация об инструменте. */
-  instrument?: Instrument;
+  instrument?: Instrument | undefined;
 }
 
 /** Объект передачи основной информации об инструменте. */
@@ -1475,17 +1661,29 @@ export interface Instrument {
   /** Валюта расчётов. */
   currency: string;
   /** Коэффициент ставки риска длинной позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР). 1 – клиент с повышенным уровнем риска (КПУР) */
-  klong?: Quotation;
+  klong?:
+    | Quotation
+    | undefined;
   /** Коэффициент ставки риска короткой позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР). 1 – клиент с повышенным уровнем риска (КПУР) */
-  kshort?: Quotation;
+  kshort?:
+    | Quotation
+    | undefined;
   /** ССтавка риска начальной маржи для КСУР лонг.Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
-  dlong?: Quotation;
+  dlong?:
+    | Quotation
+    | undefined;
   /** Ставка риска начальной маржи для КСУР шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
-  dshort?: Quotation;
+  dshort?:
+    | Quotation
+    | undefined;
   /** Ставка риска начальной маржи для КПУР лонг. Подробнее: [ставка риска в лонг](https://help.tinkoff.ru/margin-trade/long/risk-rate/) */
-  dlongMin?: Quotation;
+  dlongMin?:
+    | Quotation
+    | undefined;
   /** Ставка риска начальной маржи для КПУР шорт. Подробнее: [ставка риска в шорт](https://help.tinkoff.ru/margin-trade/short/risk-rate/) */
-  dshortMin?: Quotation;
+  dshortMin?:
+    | Quotation
+    | undefined;
   /** Признак доступности для операций в шорт. */
   shortEnabledFlag: boolean;
   /** Название инструмента. */
@@ -1507,7 +1705,9 @@ export interface Instrument {
   /** Признак доступности для продажи. */
   sellAvailableFlag: boolean;
   /** Шаг цены. */
-  minPriceIncrement?: Quotation;
+  minPriceIncrement?:
+    | Quotation
+    | undefined;
   /** Параметр указывает на возможность торговать инструментом через API. */
   apiTradeAvailableFlag: boolean;
   /** Уникальный идентификатор инструмента. */
@@ -1527,9 +1727,11 @@ export interface Instrument {
   /** Тип инструмента. */
   instrumentKind: InstrumentType;
   /** Дата первой минутной свечи. */
-  first1minCandleDate?: Date;
+  first1minCandleDate?:
+    | Date
+    | undefined;
   /** Дата первой дневной свечи. */
-  first1dayCandleDate?: Date;
+  first1dayCandleDate?: Date | undefined;
 }
 
 /** Запрос дивидендов. */
@@ -1537,9 +1739,11 @@ export interface GetDividendsRequest {
   /** Figi-идентификатор инструмента. */
   figi: string;
   /** Начало запрашиваемого периода в часовом поясе UTC. Фильтрация происходит по параметру *record_date* (дата фиксации реестра). */
-  from?: Date;
+  from?:
+    | Date
+    | undefined;
   /** Окончание запрашиваемого периода в часовом поясе UTC. Фильтрация происходит по параметру *record_date* (дата фиксации реестра). */
-  to?: Date;
+  to?: Date | undefined;
 }
 
 /** Дивиденды. */
@@ -1550,25 +1754,39 @@ export interface GetDividendsResponse {
 /** Информация о выплате. */
 export interface Dividend {
   /** Величина дивиденда на 1 ценную бумагу (включая валюту). */
-  dividendNet?: MoneyValue;
+  dividendNet?:
+    | MoneyValue
+    | undefined;
   /** Дата фактических выплат в часовом поясе UTC. */
-  paymentDate?: Date;
+  paymentDate?:
+    | Date
+    | undefined;
   /** Дата объявления дивидендов в часовом поясе UTC. */
-  declaredDate?: Date;
+  declaredDate?:
+    | Date
+    | undefined;
   /** Последний день (включительно) покупки для получения выплаты в часовом поясе UTC. */
-  lastBuyDate?: Date;
+  lastBuyDate?:
+    | Date
+    | undefined;
   /** Тип выплаты. Возможные значения: Regular Cash – регулярные выплаты, Cancelled – выплата отменена, Daily Accrual – ежедневное начисление, Return of Capital – возврат капитала, прочие типы выплат. */
   dividendType: string;
   /** Дата фиксации реестра в часовом поясе UTC. */
-  recordDate?: Date;
+  recordDate?:
+    | Date
+    | undefined;
   /** Регулярность выплаты. Возможные значения: Annual – ежегодная, Semi-Anl – каждые полгода, прочие типы выплат. */
   regularity: string;
   /** Цена закрытия инструмента на момент ex_dividend_date. */
-  closePrice?: MoneyValue;
+  closePrice?:
+    | MoneyValue
+    | undefined;
   /** Величина доходности. */
-  yieldValue?: Quotation;
+  yieldValue?:
+    | Quotation
+    | undefined;
   /** Дата и время создания записи в часовом поясе UTC. */
-  createdAt?: Date;
+  createdAt?: Date | undefined;
 }
 
 /** Запрос актива по идентификатору. */
@@ -1580,7 +1798,7 @@ export interface AssetRequest {
 /** Данные по активу. */
 export interface AssetResponse {
   /** Актив. */
-  asset?: AssetFull;
+  asset?: AssetFull | undefined;
 }
 
 /** Запрос списка активов. */
@@ -1606,13 +1824,19 @@ export interface AssetFull {
   /** Описание актива. */
   description: string;
   /** Дата и время удаления актива. */
-  deletedAt?: Date;
+  deletedAt?:
+    | Date
+    | undefined;
   /** Тестирование клиентов. */
   requiredTests: string[];
   /** Валюта. Обязательно и заполняется только для type = "ASSET_TYPE_CURRENCY". */
-  currency?: AssetCurrency | undefined;
+  currency?:
+    | AssetCurrency
+    | undefined;
   /** Ценная бумага. Обязательно и заполняется только для type = "ASSET_TYPE_SECURITY". */
-  security?: AssetSecurity | undefined;
+  security?:
+    | AssetSecurity
+    | undefined;
   /** Номер государственной регистрации. */
   gosRegCode: string;
   /** Код CFI. */
@@ -1622,9 +1846,13 @@ export interface AssetFull {
   /** Статус актива. */
   status: string;
   /** Бренд. */
-  brand?: Brand;
+  brand?:
+    | Brand
+    | undefined;
   /** Дата и время последнего обновления записи. */
-  updatedAt?: Date;
+  updatedAt?:
+    | Date
+    | undefined;
   /** Код типа ц.б. по классификации Банка России. */
   brCode: string;
   /** Наименование кода типа ц.б. по классификации Банка России. */
@@ -1660,13 +1888,21 @@ export interface AssetSecurity {
   /** Тип инструмента. */
   instrumentKind: InstrumentType;
   /** Акция. Заполняется только для акций (тип актива asset.type = "ASSET_TYPE_SECURITY" и security.type = share). */
-  share?: AssetShare | undefined;
+  share?:
+    | AssetShare
+    | undefined;
   /** Облигация. Заполняется только для облигаций (тип актива asset.type = "ASSET_TYPE_SECURITY" и security.type = bond). */
-  bond?: AssetBond | undefined;
+  bond?:
+    | AssetBond
+    | undefined;
   /** Структурная нота. Заполняется только для структурных продуктов (тип актива asset.type = "ASSET_TYPE_SECURITY" и security.type = sp). */
-  sp?: AssetStructuredProduct | undefined;
+  sp?:
+    | AssetStructuredProduct
+    | undefined;
   /** Фонд. Заполняется только для фондов (тип актива asset.type = "ASSET_TYPE_SECURITY" и security.type = etf). */
-  etf?: AssetEtf | undefined;
+  etf?:
+    | AssetEtf
+    | undefined;
   /** Клиринговый сертификат участия. Заполняется только для клиринговых сертификатов (тип актива asset.type = "ASSET_TYPE_SECURITY" и security.type = clearing_certificate). */
   clearingCertificate?: AssetClearingCertificate | undefined;
 }
@@ -1676,45 +1912,65 @@ export interface AssetShare {
   /** Тип акции. */
   type: ShareType;
   /** Объем выпуска (шт.). */
-  issueSize?: Quotation;
+  issueSize?:
+    | Quotation
+    | undefined;
   /** Номинал. */
-  nominal?: Quotation;
+  nominal?:
+    | Quotation
+    | undefined;
   /** Валюта номинала. */
   nominalCurrency: string;
   /** Индекс (Bloomberg). */
   primaryIndex: string;
   /** Ставка дивиденда (для привилегированных акций). */
-  dividendRate?: Quotation;
+  dividendRate?:
+    | Quotation
+    | undefined;
   /** Тип привилегированных акций. */
   preferredShareType: string;
   /** Дата IPO. */
-  ipoDate?: Date;
+  ipoDate?:
+    | Date
+    | undefined;
   /** Дата регистрации. */
-  registryDate?: Date;
+  registryDate?:
+    | Date
+    | undefined;
   /** Признак наличия дивидендной доходности. */
   divYieldFlag: boolean;
   /** Форма выпуска ФИ. */
   issueKind: string;
   /** Дата размещения акции. */
-  placementDate?: Date;
+  placementDate?:
+    | Date
+    | undefined;
   /** ISIN базового актива. */
   represIsin: string;
   /** Объявленное количество шт. */
-  issueSizePlan?: Quotation;
+  issueSizePlan?:
+    | Quotation
+    | undefined;
   /** Количество акций в свободном обращении. */
-  totalFloat?: Quotation;
+  totalFloat?: Quotation | undefined;
 }
 
 /** Облигация. */
 export interface AssetBond {
   /** Текущий номинал. */
-  currentNominal?: Quotation;
+  currentNominal?:
+    | Quotation
+    | undefined;
   /** Наименование заемщика. */
   borrowName: string;
   /** Объем эмиссии облигации (стоимость). */
-  issueSize?: Quotation;
+  issueSize?:
+    | Quotation
+    | undefined;
   /** Номинал облигации. */
-  nominal?: Quotation;
+  nominal?:
+    | Quotation
+    | undefined;
   /** Валюта номинала. */
   nominalCurrency: string;
   /** Форма выпуска облигации. */
@@ -1738,17 +1994,25 @@ export interface AssetBond {
   /** Признак бессрочной облигации. */
   perpetualFlag: boolean;
   /** Дата погашения облигации. */
-  maturityDate?: Date;
+  maturityDate?:
+    | Date
+    | undefined;
   /** Описание и условия получения дополнительного дохода. */
   returnCondition: string;
   /** Дата выпуска облигации. */
-  stateRegDate?: Date;
+  stateRegDate?:
+    | Date
+    | undefined;
   /** Дата размещения облигации. */
-  placementDate?: Date;
+  placementDate?:
+    | Date
+    | undefined;
   /** Цена размещения облигации. */
-  placementPrice?: Quotation;
+  placementPrice?:
+    | Quotation
+    | undefined;
   /** Объявленное количество шт. */
-  issueSizePlan?: Quotation;
+  issueSizePlan?: Quotation | undefined;
 }
 
 /** Структурная нота. */
@@ -1756,7 +2020,9 @@ export interface AssetStructuredProduct {
   /** Наименование заемщика. */
   borrowName: string;
   /** Номинал. */
-  nominal?: Quotation;
+  nominal?:
+    | Quotation
+    | undefined;
   /** Валюта номинала. */
   nominalCurrency: string;
   /** Тип структурной ноты. */
@@ -1768,15 +2034,25 @@ export interface AssetStructuredProduct {
   /** Вид базового актива в зависимости от типа базового актива. */
   basicAsset: string;
   /** Барьер сохранности (в процентах). */
-  safetyBarrier?: Quotation;
+  safetyBarrier?:
+    | Quotation
+    | undefined;
   /** Дата погашения. */
-  maturityDate?: Date;
+  maturityDate?:
+    | Date
+    | undefined;
   /** Объявленное количество шт. */
-  issueSizePlan?: Quotation;
+  issueSizePlan?:
+    | Quotation
+    | undefined;
   /** Объем размещения. */
-  issueSize?: Quotation;
+  issueSize?:
+    | Quotation
+    | undefined;
   /** Дата размещения ноты. */
-  placementDate?: Date;
+  placementDate?:
+    | Date
+    | undefined;
   /** Форма выпуска. */
   issueKind: string;
 }
@@ -1784,21 +2060,33 @@ export interface AssetStructuredProduct {
 /** Фонд. */
 export interface AssetEtf {
   /** Суммарные расходы фонда (в %). */
-  totalExpense?: Quotation;
+  totalExpense?:
+    | Quotation
+    | undefined;
   /** Барьерная ставка доходности после которой фонд имеет право на perfomance fee (в процентах). */
-  hurdleRate?: Quotation;
+  hurdleRate?:
+    | Quotation
+    | undefined;
   /** Комиссия за успешные результаты фонда (в процентах). */
-  performanceFee?: Quotation;
+  performanceFee?:
+    | Quotation
+    | undefined;
   /** Фиксированная комиссия за управление (в процентах). */
-  fixedCommission?: Quotation;
+  fixedCommission?:
+    | Quotation
+    | undefined;
   /** Тип распределения доходов от выплат по бумагам. */
   paymentType: string;
   /** Признак необходимости выхода фонда в плюс для получения комиссии. */
   watermarkFlag: boolean;
   /** Премия (надбавка к цене) при покупке доли в фонде (в процентах). */
-  buyPremium?: Quotation;
+  buyPremium?:
+    | Quotation
+    | undefined;
   /** Ставка дисконта (вычет из цены) при продаже доли в фонде (в процентах). */
-  sellDiscount?: Quotation;
+  sellDiscount?:
+    | Quotation
+    | undefined;
   /** Признак ребалансируемости портфеля фонда. */
   rebalancingFlag: boolean;
   /** Периодичность ребалансировки. */
@@ -1812,11 +2100,15 @@ export interface AssetEtf {
   /** Признак использования заемных активов (плечо). */
   leveragedFlag: boolean;
   /** Количество акций в обращении. */
-  numShare?: Quotation;
+  numShare?:
+    | Quotation
+    | undefined;
   /** Признак обязательства по отчетности перед регулятором. */
   ucitsFlag: boolean;
   /** Дата выпуска. */
-  releasedDate?: Date;
+  releasedDate?:
+    | Date
+    | undefined;
   /** Описание фонда. */
   description: string;
   /** Описание индекса, за которым следует фонд. */
@@ -1824,15 +2116,21 @@ export interface AssetEtf {
   /** Основные компании, в которые вкладывается фонд. */
   primaryIndexCompany: string;
   /** Срок восстановления индекса (после просадки). */
-  indexRecoveryPeriod?: Quotation;
+  indexRecoveryPeriod?:
+    | Quotation
+    | undefined;
   /** IVAV-код. */
   inavCode: string;
   /** Признак наличия дивидендной доходности. */
   divYieldFlag: boolean;
   /** Комиссия на покрытие расходов фонда (в процентах). */
-  expenseCommission?: Quotation;
+  expenseCommission?:
+    | Quotation
+    | undefined;
   /** Ошибка следования за индексом (в процентах). */
-  primaryIndexTrackingError?: Quotation;
+  primaryIndexTrackingError?:
+    | Quotation
+    | undefined;
   /** Плановая ребалансировка портфеля. */
   rebalancingPlan: string;
   /** Ставки налогообложения дивидендов и купонов. */
@@ -1842,7 +2140,9 @@ export interface AssetEtf {
   /** Форма выпуска. */
   issueKind: string;
   /** Номинал. */
-  nominal?: Quotation;
+  nominal?:
+    | Quotation
+    | undefined;
   /** Валюта номинала. */
   nominalCurrency: string;
 }
@@ -1850,7 +2150,9 @@ export interface AssetEtf {
 /** Клиринговый сертификат участия. */
 export interface AssetClearingCertificate {
   /** Номинал. */
-  nominal?: Quotation;
+  nominal?:
+    | Quotation
+    | undefined;
   /** Валюта номинала. */
   nominalCurrency: string;
 }
@@ -1904,7 +2206,8 @@ export interface InstrumentLink {
 }
 
 /** Запрос списка избранных инструментов, входные параметры не требуются. */
-export interface GetFavoritesRequest {}
+export interface GetFavoritesRequest {
+}
 
 /** В ответ передаётся список избранных инструментов в качестве массива. */
 export interface GetFavoritesResponse {
@@ -1953,7 +2256,8 @@ export interface EditFavoritesResponse {
 }
 
 /** Запрос справочника стран. */
-export interface GetCountriesRequest {}
+export interface GetCountriesRequest {
+}
 
 /** Справочник стран. */
 export interface GetCountriesResponse {
@@ -2014,9 +2318,13 @@ export interface InstrumentShort {
   /** Признак доступности для ИИС. */
   forIisFlag: boolean;
   /** Дата первой минутной свечи. */
-  first1minCandleDate?: Date;
+  first1minCandleDate?:
+    | Date
+    | undefined;
   /** Дата первой дневной свечи. */
-  first1dayCandleDate?: Date;
+  first1dayCandleDate?:
+    | Date
+    | undefined;
   /** Флаг отображающий доступность торговли инструментом только для квалифицированных инвесторов. */
   forQualInvestorFlag: boolean;
   /** Флаг отображающий доступность торговли инструментом по выходным */
@@ -2026,7 +2334,8 @@ export interface InstrumentShort {
 }
 
 /** Запрос списка брендов. */
-export interface GetBrandsRequest {}
+export interface GetBrandsRequest {
+}
 
 /** Запрос бренда. */
 export interface GetBrandRequest {
@@ -2045,60 +2354,59 @@ function createBaseTradingSchedulesRequest(): TradingSchedulesRequest {
 }
 
 export const TradingSchedulesRequest = {
-  encode(
-    message: TradingSchedulesRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: TradingSchedulesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.exchange !== "") {
       writer.uint32(10).string(message.exchange);
     }
     if (message.from !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.from),
-        writer.uint32(18).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.from), writer.uint32(18).fork()).ldelim();
     }
     if (message.to !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.to),
-        writer.uint32(26).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.to), writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): TradingSchedulesRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): TradingSchedulesRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseTradingSchedulesRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.exchange = reader.string();
-          break;
+          continue;
         case 2:
-          message.from = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 18) {
+            break;
+          }
+
+          message.from = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.to = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): TradingSchedulesRequest {
     return {
-      exchange: isSet(object.exchange) ? String(object.exchange) : "",
+      exchange: isSet(object.exchange) ? globalThis.String(object.exchange) : "",
       from: isSet(object.from) ? fromJsonTimestamp(object.from) : undefined,
       to: isSet(object.to) ? fromJsonTimestamp(object.to) : undefined,
     };
@@ -2106,9 +2414,15 @@ export const TradingSchedulesRequest = {
 
   toJSON(message: TradingSchedulesRequest): unknown {
     const obj: any = {};
-    message.exchange !== undefined && (obj.exchange = message.exchange);
-    message.from !== undefined && (obj.from = message.from.toISOString());
-    message.to !== undefined && (obj.to = message.to.toISOString());
+    if (message.exchange !== "") {
+      obj.exchange = message.exchange;
+    }
+    if (message.from !== undefined) {
+      obj.from = message.from.toISOString();
+    }
+    if (message.to !== undefined) {
+      obj.to = message.to.toISOString();
+    }
     return obj;
   },
 };
@@ -2118,42 +2432,39 @@ function createBaseTradingSchedulesResponse(): TradingSchedulesResponse {
 }
 
 export const TradingSchedulesResponse = {
-  encode(
-    message: TradingSchedulesResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: TradingSchedulesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.exchanges) {
       TradingSchedule.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): TradingSchedulesResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): TradingSchedulesResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseTradingSchedulesResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.exchanges.push(
-            TradingSchedule.decode(reader, reader.uint32())
-          );
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          if (tag !== 10) {
+            break;
+          }
+
+          message.exchanges.push(TradingSchedule.decode(reader, reader.uint32()));
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): TradingSchedulesResponse {
     return {
-      exchanges: Array.isArray(object?.exchanges)
+      exchanges: globalThis.Array.isArray(object?.exchanges)
         ? object.exchanges.map((e: any) => TradingSchedule.fromJSON(e))
         : [],
     };
@@ -2161,12 +2472,8 @@ export const TradingSchedulesResponse = {
 
   toJSON(message: TradingSchedulesResponse): unknown {
     const obj: any = {};
-    if (message.exchanges) {
-      obj.exchanges = message.exchanges.map((e) =>
-        e ? TradingSchedule.toJSON(e) : undefined
-      );
-    } else {
-      obj.exchanges = [];
+    if (message.exchanges?.length) {
+      obj.exchanges = message.exchanges.map((e) => TradingSchedule.toJSON(e));
     }
     return obj;
   },
@@ -2177,10 +2484,7 @@ function createBaseTradingSchedule(): TradingSchedule {
 }
 
 export const TradingSchedule = {
-  encode(
-    message: TradingSchedule,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: TradingSchedule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.exchange !== "") {
       writer.uint32(10).string(message.exchange);
     }
@@ -2191,44 +2495,49 @@ export const TradingSchedule = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): TradingSchedule {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseTradingSchedule();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.exchange = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.days.push(TradingDay.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): TradingSchedule {
     return {
-      exchange: isSet(object.exchange) ? String(object.exchange) : "",
-      days: Array.isArray(object?.days)
-        ? object.days.map((e: any) => TradingDay.fromJSON(e))
-        : [],
+      exchange: isSet(object.exchange) ? globalThis.String(object.exchange) : "",
+      days: globalThis.Array.isArray(object?.days) ? object.days.map((e: any) => TradingDay.fromJSON(e)) : [],
     };
   },
 
   toJSON(message: TradingSchedule): unknown {
     const obj: any = {};
-    message.exchange !== undefined && (obj.exchange = message.exchange);
-    if (message.days) {
-      obj.days = message.days.map((e) =>
-        e ? TradingDay.toJSON(e) : undefined
-      );
-    } else {
-      obj.days = [];
+    if (message.exchange !== "") {
+      obj.exchange = message.exchange;
+    }
+    if (message.days?.length) {
+      obj.days = message.days.map((e) => TradingDay.toJSON(e));
     }
     return obj;
   },
@@ -2255,184 +2564,172 @@ function createBaseTradingDay(): TradingDay {
 }
 
 export const TradingDay = {
-  encode(
-    message: TradingDay,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: TradingDay, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.date !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.date),
-        writer.uint32(10).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.date), writer.uint32(10).fork()).ldelim();
     }
     if (message.isTradingDay === true) {
       writer.uint32(16).bool(message.isTradingDay);
     }
     if (message.startTime !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.startTime),
-        writer.uint32(26).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.startTime), writer.uint32(26).fork()).ldelim();
     }
     if (message.endTime !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.endTime),
-        writer.uint32(34).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.endTime), writer.uint32(34).fork()).ldelim();
     }
     if (message.openingAuctionStartTime !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.openingAuctionStartTime),
-        writer.uint32(58).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.openingAuctionStartTime), writer.uint32(58).fork()).ldelim();
     }
     if (message.closingAuctionEndTime !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.closingAuctionEndTime),
-        writer.uint32(66).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.closingAuctionEndTime), writer.uint32(66).fork()).ldelim();
     }
     if (message.eveningOpeningAuctionStartTime !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.eveningOpeningAuctionStartTime),
-        writer.uint32(74).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.eveningOpeningAuctionStartTime), writer.uint32(74).fork()).ldelim();
     }
     if (message.eveningStartTime !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.eveningStartTime),
-        writer.uint32(82).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.eveningStartTime), writer.uint32(82).fork()).ldelim();
     }
     if (message.eveningEndTime !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.eveningEndTime),
-        writer.uint32(90).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.eveningEndTime), writer.uint32(90).fork()).ldelim();
     }
     if (message.clearingStartTime !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.clearingStartTime),
-        writer.uint32(98).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.clearingStartTime), writer.uint32(98).fork()).ldelim();
     }
     if (message.clearingEndTime !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.clearingEndTime),
-        writer.uint32(106).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.clearingEndTime), writer.uint32(106).fork()).ldelim();
     }
     if (message.premarketStartTime !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.premarketStartTime),
-        writer.uint32(114).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.premarketStartTime), writer.uint32(114).fork()).ldelim();
     }
     if (message.premarketEndTime !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.premarketEndTime),
-        writer.uint32(122).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.premarketEndTime), writer.uint32(122).fork()).ldelim();
     }
     if (message.closingAuctionStartTime !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.closingAuctionStartTime),
-        writer.uint32(130).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.closingAuctionStartTime), writer.uint32(130).fork()).ldelim();
     }
     if (message.openingAuctionEndTime !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.openingAuctionEndTime),
-        writer.uint32(138).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.openingAuctionEndTime), writer.uint32(138).fork()).ldelim();
     }
     return writer;
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): TradingDay {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseTradingDay();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.date = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 10) {
+            break;
+          }
+
+          message.date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 2:
+          if (tag !== 16) {
+            break;
+          }
+
           message.isTradingDay = reader.bool();
-          break;
+          continue;
         case 3:
-          message.startTime = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 26) {
+            break;
+          }
+
+          message.startTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 4:
-          message.endTime = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 34) {
+            break;
+          }
+
+          message.endTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 7:
-          message.openingAuctionStartTime = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 58) {
+            break;
+          }
+
+          message.openingAuctionStartTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 8:
-          message.closingAuctionEndTime = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 66) {
+            break;
+          }
+
+          message.closingAuctionEndTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 9:
-          message.eveningOpeningAuctionStartTime = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 74) {
+            break;
+          }
+
+          message.eveningOpeningAuctionStartTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 10:
-          message.eveningStartTime = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 82) {
+            break;
+          }
+
+          message.eveningStartTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 11:
-          message.eveningEndTime = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 90) {
+            break;
+          }
+
+          message.eveningEndTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 12:
-          message.clearingStartTime = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 98) {
+            break;
+          }
+
+          message.clearingStartTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 13:
-          message.clearingEndTime = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 106) {
+            break;
+          }
+
+          message.clearingEndTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 14:
-          message.premarketStartTime = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 114) {
+            break;
+          }
+
+          message.premarketStartTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 15:
-          message.premarketEndTime = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 122) {
+            break;
+          }
+
+          message.premarketEndTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 16:
-          message.closingAuctionStartTime = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 130) {
+            break;
+          }
+
+          message.closingAuctionStartTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 17:
-          message.openingAuctionEndTime = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          if (tag !== 138) {
+            break;
+          }
+
+          message.openingAuctionEndTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -2440,44 +2737,24 @@ export const TradingDay = {
   fromJSON(object: any): TradingDay {
     return {
       date: isSet(object.date) ? fromJsonTimestamp(object.date) : undefined,
-      isTradingDay: isSet(object.isTradingDay)
-        ? Boolean(object.isTradingDay)
-        : false,
-      startTime: isSet(object.startTime)
-        ? fromJsonTimestamp(object.startTime)
-        : undefined,
-      endTime: isSet(object.endTime)
-        ? fromJsonTimestamp(object.endTime)
-        : undefined,
+      isTradingDay: isSet(object.isTradingDay) ? globalThis.Boolean(object.isTradingDay) : false,
+      startTime: isSet(object.startTime) ? fromJsonTimestamp(object.startTime) : undefined,
+      endTime: isSet(object.endTime) ? fromJsonTimestamp(object.endTime) : undefined,
       openingAuctionStartTime: isSet(object.openingAuctionStartTime)
         ? fromJsonTimestamp(object.openingAuctionStartTime)
         : undefined,
       closingAuctionEndTime: isSet(object.closingAuctionEndTime)
         ? fromJsonTimestamp(object.closingAuctionEndTime)
         : undefined,
-      eveningOpeningAuctionStartTime: isSet(
-        object.eveningOpeningAuctionStartTime
-      )
+      eveningOpeningAuctionStartTime: isSet(object.eveningOpeningAuctionStartTime)
         ? fromJsonTimestamp(object.eveningOpeningAuctionStartTime)
         : undefined,
-      eveningStartTime: isSet(object.eveningStartTime)
-        ? fromJsonTimestamp(object.eveningStartTime)
-        : undefined,
-      eveningEndTime: isSet(object.eveningEndTime)
-        ? fromJsonTimestamp(object.eveningEndTime)
-        : undefined,
-      clearingStartTime: isSet(object.clearingStartTime)
-        ? fromJsonTimestamp(object.clearingStartTime)
-        : undefined,
-      clearingEndTime: isSet(object.clearingEndTime)
-        ? fromJsonTimestamp(object.clearingEndTime)
-        : undefined,
-      premarketStartTime: isSet(object.premarketStartTime)
-        ? fromJsonTimestamp(object.premarketStartTime)
-        : undefined,
-      premarketEndTime: isSet(object.premarketEndTime)
-        ? fromJsonTimestamp(object.premarketEndTime)
-        : undefined,
+      eveningStartTime: isSet(object.eveningStartTime) ? fromJsonTimestamp(object.eveningStartTime) : undefined,
+      eveningEndTime: isSet(object.eveningEndTime) ? fromJsonTimestamp(object.eveningEndTime) : undefined,
+      clearingStartTime: isSet(object.clearingStartTime) ? fromJsonTimestamp(object.clearingStartTime) : undefined,
+      clearingEndTime: isSet(object.clearingEndTime) ? fromJsonTimestamp(object.clearingEndTime) : undefined,
+      premarketStartTime: isSet(object.premarketStartTime) ? fromJsonTimestamp(object.premarketStartTime) : undefined,
+      premarketEndTime: isSet(object.premarketEndTime) ? fromJsonTimestamp(object.premarketEndTime) : undefined,
       closingAuctionStartTime: isSet(object.closingAuctionStartTime)
         ? fromJsonTimestamp(object.closingAuctionStartTime)
         : undefined,
@@ -2489,38 +2766,51 @@ export const TradingDay = {
 
   toJSON(message: TradingDay): unknown {
     const obj: any = {};
-    message.date !== undefined && (obj.date = message.date.toISOString());
-    message.isTradingDay !== undefined &&
-      (obj.isTradingDay = message.isTradingDay);
-    message.startTime !== undefined &&
-      (obj.startTime = message.startTime.toISOString());
-    message.endTime !== undefined &&
-      (obj.endTime = message.endTime.toISOString());
-    message.openingAuctionStartTime !== undefined &&
-      (obj.openingAuctionStartTime =
-        message.openingAuctionStartTime.toISOString());
-    message.closingAuctionEndTime !== undefined &&
-      (obj.closingAuctionEndTime = message.closingAuctionEndTime.toISOString());
-    message.eveningOpeningAuctionStartTime !== undefined &&
-      (obj.eveningOpeningAuctionStartTime =
-        message.eveningOpeningAuctionStartTime.toISOString());
-    message.eveningStartTime !== undefined &&
-      (obj.eveningStartTime = message.eveningStartTime.toISOString());
-    message.eveningEndTime !== undefined &&
-      (obj.eveningEndTime = message.eveningEndTime.toISOString());
-    message.clearingStartTime !== undefined &&
-      (obj.clearingStartTime = message.clearingStartTime.toISOString());
-    message.clearingEndTime !== undefined &&
-      (obj.clearingEndTime = message.clearingEndTime.toISOString());
-    message.premarketStartTime !== undefined &&
-      (obj.premarketStartTime = message.premarketStartTime.toISOString());
-    message.premarketEndTime !== undefined &&
-      (obj.premarketEndTime = message.premarketEndTime.toISOString());
-    message.closingAuctionStartTime !== undefined &&
-      (obj.closingAuctionStartTime =
-        message.closingAuctionStartTime.toISOString());
-    message.openingAuctionEndTime !== undefined &&
-      (obj.openingAuctionEndTime = message.openingAuctionEndTime.toISOString());
+    if (message.date !== undefined) {
+      obj.date = message.date.toISOString();
+    }
+    if (message.isTradingDay === true) {
+      obj.isTradingDay = message.isTradingDay;
+    }
+    if (message.startTime !== undefined) {
+      obj.startTime = message.startTime.toISOString();
+    }
+    if (message.endTime !== undefined) {
+      obj.endTime = message.endTime.toISOString();
+    }
+    if (message.openingAuctionStartTime !== undefined) {
+      obj.openingAuctionStartTime = message.openingAuctionStartTime.toISOString();
+    }
+    if (message.closingAuctionEndTime !== undefined) {
+      obj.closingAuctionEndTime = message.closingAuctionEndTime.toISOString();
+    }
+    if (message.eveningOpeningAuctionStartTime !== undefined) {
+      obj.eveningOpeningAuctionStartTime = message.eveningOpeningAuctionStartTime.toISOString();
+    }
+    if (message.eveningStartTime !== undefined) {
+      obj.eveningStartTime = message.eveningStartTime.toISOString();
+    }
+    if (message.eveningEndTime !== undefined) {
+      obj.eveningEndTime = message.eveningEndTime.toISOString();
+    }
+    if (message.clearingStartTime !== undefined) {
+      obj.clearingStartTime = message.clearingStartTime.toISOString();
+    }
+    if (message.clearingEndTime !== undefined) {
+      obj.clearingEndTime = message.clearingEndTime.toISOString();
+    }
+    if (message.premarketStartTime !== undefined) {
+      obj.premarketStartTime = message.premarketStartTime.toISOString();
+    }
+    if (message.premarketEndTime !== undefined) {
+      obj.premarketEndTime = message.premarketEndTime.toISOString();
+    }
+    if (message.closingAuctionStartTime !== undefined) {
+      obj.closingAuctionStartTime = message.closingAuctionStartTime.toISOString();
+    }
+    if (message.openingAuctionEndTime !== undefined) {
+      obj.openingAuctionEndTime = message.openingAuctionEndTime.toISOString();
+    }
     return obj;
   },
 };
@@ -2530,10 +2820,7 @@ function createBaseInstrumentRequest(): InstrumentRequest {
 }
 
 export const InstrumentRequest = {
-  encode(
-    message: InstrumentRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: InstrumentRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.idType !== 0) {
       writer.uint32(8).int32(message.idType);
     }
@@ -2547,45 +2834,61 @@ export const InstrumentRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): InstrumentRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseInstrumentRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.idType = reader.int32() as any;
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.classCode = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.id = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): InstrumentRequest {
     return {
-      idType: isSet(object.idType)
-        ? instrumentIdTypeFromJSON(object.idType)
-        : 0,
-      classCode: isSet(object.classCode) ? String(object.classCode) : "",
-      id: isSet(object.id) ? String(object.id) : "",
+      idType: isSet(object.idType) ? instrumentIdTypeFromJSON(object.idType) : 0,
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
     };
   },
 
   toJSON(message: InstrumentRequest): unknown {
     const obj: any = {};
-    message.idType !== undefined &&
-      (obj.idType = instrumentIdTypeToJSON(message.idType));
-    message.classCode !== undefined && (obj.classCode = message.classCode);
-    message.id !== undefined && (obj.id = message.id);
+    if (message.idType !== 0) {
+      obj.idType = instrumentIdTypeToJSON(message.idType);
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
+    }
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
     return obj;
   },
 };
@@ -2595,10 +2898,7 @@ function createBaseInstrumentsRequest(): InstrumentsRequest {
 }
 
 export const InstrumentsRequest = {
-  encode(
-    message: InstrumentsRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: InstrumentsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.instrumentStatus !== 0) {
       writer.uint32(8).int32(message.instrumentStatus);
     }
@@ -2606,35 +2906,37 @@ export const InstrumentsRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): InstrumentsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseInstrumentsRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.instrumentStatus = reader.int32() as any;
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): InstrumentsRequest {
-    return {
-      instrumentStatus: isSet(object.instrumentStatus)
-        ? instrumentStatusFromJSON(object.instrumentStatus)
-        : 0,
-    };
+    return { instrumentStatus: isSet(object.instrumentStatus) ? instrumentStatusFromJSON(object.instrumentStatus) : 0 };
   },
 
   toJSON(message: InstrumentsRequest): unknown {
     const obj: any = {};
-    message.instrumentStatus !== undefined &&
-      (obj.instrumentStatus = instrumentStatusToJSON(message.instrumentStatus));
+    if (message.instrumentStatus !== 0) {
+      obj.instrumentStatus = instrumentStatusToJSON(message.instrumentStatus);
+    }
     return obj;
   },
 };
@@ -2644,10 +2946,7 @@ function createBaseFilterOptionsRequest(): FilterOptionsRequest {
 }
 
 export const FilterOptionsRequest = {
-  encode(
-    message: FilterOptionsRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: FilterOptionsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.basicAssetUid !== "") {
       writer.uint32(10).string(message.basicAssetUid);
     }
@@ -2657,47 +2956,51 @@ export const FilterOptionsRequest = {
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): FilterOptionsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): FilterOptionsRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseFilterOptionsRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.basicAssetUid = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.basicAssetPositionUid = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): FilterOptionsRequest {
     return {
-      basicAssetUid: isSet(object.basicAssetUid)
-        ? String(object.basicAssetUid)
-        : "",
-      basicAssetPositionUid: isSet(object.basicAssetPositionUid)
-        ? String(object.basicAssetPositionUid)
-        : "",
+      basicAssetUid: isSet(object.basicAssetUid) ? globalThis.String(object.basicAssetUid) : "",
+      basicAssetPositionUid: isSet(object.basicAssetPositionUid) ? globalThis.String(object.basicAssetPositionUid) : "",
     };
   },
 
   toJSON(message: FilterOptionsRequest): unknown {
     const obj: any = {};
-    message.basicAssetUid !== undefined &&
-      (obj.basicAssetUid = message.basicAssetUid);
-    message.basicAssetPositionUid !== undefined &&
-      (obj.basicAssetPositionUid = message.basicAssetPositionUid);
+    if (message.basicAssetUid !== "") {
+      obj.basicAssetUid = message.basicAssetUid;
+    }
+    if (message.basicAssetPositionUid !== "") {
+      obj.basicAssetPositionUid = message.basicAssetPositionUid;
+    }
     return obj;
   },
 };
@@ -2707,10 +3010,7 @@ function createBaseBondResponse(): BondResponse {
 }
 
 export const BondResponse = {
-  encode(
-    message: BondResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: BondResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.instrument !== undefined) {
       Bond.encode(message.instrument, writer.uint32(10).fork()).ldelim();
     }
@@ -2718,37 +3018,37 @@ export const BondResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): BondResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseBondResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.instrument = Bond.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): BondResponse {
-    return {
-      instrument: isSet(object.instrument)
-        ? Bond.fromJSON(object.instrument)
-        : undefined,
-    };
+    return { instrument: isSet(object.instrument) ? Bond.fromJSON(object.instrument) : undefined };
   },
 
   toJSON(message: BondResponse): unknown {
     const obj: any = {};
-    message.instrument !== undefined &&
-      (obj.instrument = message.instrument
-        ? Bond.toJSON(message.instrument)
-        : undefined);
+    if (message.instrument !== undefined) {
+      obj.instrument = Bond.toJSON(message.instrument);
+    }
     return obj;
   },
 };
@@ -2758,10 +3058,7 @@ function createBaseBondsResponse(): BondsResponse {
 }
 
 export const BondsResponse = {
-  encode(
-    message: BondsResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: BondsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.instruments) {
       Bond.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -2769,26 +3066,31 @@ export const BondsResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): BondsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseBondsResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.instruments.push(Bond.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): BondsResponse {
     return {
-      instruments: Array.isArray(object?.instruments)
+      instruments: globalThis.Array.isArray(object?.instruments)
         ? object.instruments.map((e: any) => Bond.fromJSON(e))
         : [],
     };
@@ -2796,12 +3098,8 @@ export const BondsResponse = {
 
   toJSON(message: BondsResponse): unknown {
     const obj: any = {};
-    if (message.instruments) {
-      obj.instruments = message.instruments.map((e) =>
-        e ? Bond.toJSON(e) : undefined
-      );
-    } else {
-      obj.instruments = [];
+    if (message.instruments?.length) {
+      obj.instruments = message.instruments.map((e) => Bond.toJSON(e));
     }
     return obj;
   },
@@ -2812,60 +3110,59 @@ function createBaseGetBondCouponsRequest(): GetBondCouponsRequest {
 }
 
 export const GetBondCouponsRequest = {
-  encode(
-    message: GetBondCouponsRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: GetBondCouponsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.figi !== "") {
       writer.uint32(10).string(message.figi);
     }
     if (message.from !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.from),
-        writer.uint32(18).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.from), writer.uint32(18).fork()).ldelim();
     }
     if (message.to !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.to),
-        writer.uint32(26).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.to), writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): GetBondCouponsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetBondCouponsRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetBondCouponsRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.figi = reader.string();
-          break;
+          continue;
         case 2:
-          message.from = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 18) {
+            break;
+          }
+
+          message.from = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.to = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): GetBondCouponsRequest {
     return {
-      figi: isSet(object.figi) ? String(object.figi) : "",
+      figi: isSet(object.figi) ? globalThis.String(object.figi) : "",
       from: isSet(object.from) ? fromJsonTimestamp(object.from) : undefined,
       to: isSet(object.to) ? fromJsonTimestamp(object.to) : undefined,
     };
@@ -2873,9 +3170,15 @@ export const GetBondCouponsRequest = {
 
   toJSON(message: GetBondCouponsRequest): unknown {
     const obj: any = {};
-    message.figi !== undefined && (obj.figi = message.figi);
-    message.from !== undefined && (obj.from = message.from.toISOString());
-    message.to !== undefined && (obj.to = message.to.toISOString());
+    if (message.figi !== "") {
+      obj.figi = message.figi;
+    }
+    if (message.from !== undefined) {
+      obj.from = message.from.toISOString();
+    }
+    if (message.to !== undefined) {
+      obj.to = message.to.toISOString();
+    }
     return obj;
   },
 };
@@ -2885,53 +3188,46 @@ function createBaseGetBondCouponsResponse(): GetBondCouponsResponse {
 }
 
 export const GetBondCouponsResponse = {
-  encode(
-    message: GetBondCouponsResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: GetBondCouponsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.events) {
       Coupon.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): GetBondCouponsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetBondCouponsResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetBondCouponsResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.events.push(Coupon.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): GetBondCouponsResponse {
     return {
-      events: Array.isArray(object?.events)
-        ? object.events.map((e: any) => Coupon.fromJSON(e))
-        : [],
+      events: globalThis.Array.isArray(object?.events) ? object.events.map((e: any) => Coupon.fromJSON(e)) : [],
     };
   },
 
   toJSON(message: GetBondCouponsResponse): unknown {
     const obj: any = {};
-    if (message.events) {
-      obj.events = message.events.map((e) =>
-        e ? Coupon.toJSON(e) : undefined
-      );
-    } else {
-      obj.events = [];
+    if (message.events?.length) {
+      obj.events = message.events.map((e) => Coupon.toJSON(e));
     }
     return obj;
   },
@@ -2952,27 +3248,18 @@ function createBaseCoupon(): Coupon {
 }
 
 export const Coupon = {
-  encode(
-    message: Coupon,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: Coupon, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.figi !== "") {
       writer.uint32(10).string(message.figi);
     }
     if (message.couponDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.couponDate),
-        writer.uint32(18).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.couponDate), writer.uint32(18).fork()).ldelim();
     }
     if (message.couponNumber !== 0) {
       writer.uint32(24).int64(message.couponNumber);
     }
     if (message.fixDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.fixDate),
-        writer.uint32(34).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.fixDate), writer.uint32(34).fork()).ldelim();
     }
     if (message.payOneBond !== undefined) {
       MoneyValue.encode(message.payOneBond, writer.uint32(42).fork()).ldelim();
@@ -2981,16 +3268,10 @@ export const Coupon = {
       writer.uint32(48).int32(message.couponType);
     }
     if (message.couponStartDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.couponStartDate),
-        writer.uint32(58).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.couponStartDate), writer.uint32(58).fork()).ldelim();
     }
     if (message.couponEndDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.couponEndDate),
-        writer.uint32(66).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.couponEndDate), writer.uint32(66).fork()).ldelim();
     }
     if (message.couponPeriod !== 0) {
       writer.uint32(72).int32(message.couponPeriod);
@@ -2999,106 +3280,127 @@ export const Coupon = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Coupon {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCoupon();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.figi = reader.string();
-          break;
+          continue;
         case 2:
-          message.couponDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 18) {
+            break;
+          }
+
+          message.couponDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 3:
+          if (tag !== 24) {
+            break;
+          }
+
           message.couponNumber = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 4:
-          message.fixDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 34) {
+            break;
+          }
+
+          message.fixDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 5:
+          if (tag !== 42) {
+            break;
+          }
+
           message.payOneBond = MoneyValue.decode(reader, reader.uint32());
-          break;
+          continue;
         case 6:
+          if (tag !== 48) {
+            break;
+          }
+
           message.couponType = reader.int32() as any;
-          break;
+          continue;
         case 7:
-          message.couponStartDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 58) {
+            break;
+          }
+
+          message.couponStartDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 8:
-          message.couponEndDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 66) {
+            break;
+          }
+
+          message.couponEndDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 9:
+          if (tag !== 72) {
+            break;
+          }
+
           message.couponPeriod = reader.int32();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): Coupon {
     return {
-      figi: isSet(object.figi) ? String(object.figi) : "",
-      couponDate: isSet(object.couponDate)
-        ? fromJsonTimestamp(object.couponDate)
-        : undefined,
-      couponNumber: isSet(object.couponNumber)
-        ? Number(object.couponNumber)
-        : 0,
-      fixDate: isSet(object.fixDate)
-        ? fromJsonTimestamp(object.fixDate)
-        : undefined,
-      payOneBond: isSet(object.payOneBond)
-        ? MoneyValue.fromJSON(object.payOneBond)
-        : undefined,
-      couponType: isSet(object.couponType)
-        ? couponTypeFromJSON(object.couponType)
-        : 0,
-      couponStartDate: isSet(object.couponStartDate)
-        ? fromJsonTimestamp(object.couponStartDate)
-        : undefined,
-      couponEndDate: isSet(object.couponEndDate)
-        ? fromJsonTimestamp(object.couponEndDate)
-        : undefined,
-      couponPeriod: isSet(object.couponPeriod)
-        ? Number(object.couponPeriod)
-        : 0,
+      figi: isSet(object.figi) ? globalThis.String(object.figi) : "",
+      couponDate: isSet(object.couponDate) ? fromJsonTimestamp(object.couponDate) : undefined,
+      couponNumber: isSet(object.couponNumber) ? globalThis.Number(object.couponNumber) : 0,
+      fixDate: isSet(object.fixDate) ? fromJsonTimestamp(object.fixDate) : undefined,
+      payOneBond: isSet(object.payOneBond) ? MoneyValue.fromJSON(object.payOneBond) : undefined,
+      couponType: isSet(object.couponType) ? couponTypeFromJSON(object.couponType) : 0,
+      couponStartDate: isSet(object.couponStartDate) ? fromJsonTimestamp(object.couponStartDate) : undefined,
+      couponEndDate: isSet(object.couponEndDate) ? fromJsonTimestamp(object.couponEndDate) : undefined,
+      couponPeriod: isSet(object.couponPeriod) ? globalThis.Number(object.couponPeriod) : 0,
     };
   },
 
   toJSON(message: Coupon): unknown {
     const obj: any = {};
-    message.figi !== undefined && (obj.figi = message.figi);
-    message.couponDate !== undefined &&
-      (obj.couponDate = message.couponDate.toISOString());
-    message.couponNumber !== undefined &&
-      (obj.couponNumber = Math.round(message.couponNumber));
-    message.fixDate !== undefined &&
-      (obj.fixDate = message.fixDate.toISOString());
-    message.payOneBond !== undefined &&
-      (obj.payOneBond = message.payOneBond
-        ? MoneyValue.toJSON(message.payOneBond)
-        : undefined);
-    message.couponType !== undefined &&
-      (obj.couponType = couponTypeToJSON(message.couponType));
-    message.couponStartDate !== undefined &&
-      (obj.couponStartDate = message.couponStartDate.toISOString());
-    message.couponEndDate !== undefined &&
-      (obj.couponEndDate = message.couponEndDate.toISOString());
-    message.couponPeriod !== undefined &&
-      (obj.couponPeriod = Math.round(message.couponPeriod));
+    if (message.figi !== "") {
+      obj.figi = message.figi;
+    }
+    if (message.couponDate !== undefined) {
+      obj.couponDate = message.couponDate.toISOString();
+    }
+    if (message.couponNumber !== 0) {
+      obj.couponNumber = Math.round(message.couponNumber);
+    }
+    if (message.fixDate !== undefined) {
+      obj.fixDate = message.fixDate.toISOString();
+    }
+    if (message.payOneBond !== undefined) {
+      obj.payOneBond = MoneyValue.toJSON(message.payOneBond);
+    }
+    if (message.couponType !== 0) {
+      obj.couponType = couponTypeToJSON(message.couponType);
+    }
+    if (message.couponStartDate !== undefined) {
+      obj.couponStartDate = message.couponStartDate.toISOString();
+    }
+    if (message.couponEndDate !== undefined) {
+      obj.couponEndDate = message.couponEndDate.toISOString();
+    }
+    if (message.couponPeriod !== 0) {
+      obj.couponPeriod = Math.round(message.couponPeriod);
+    }
     return obj;
   },
 };
@@ -3108,10 +3410,7 @@ function createBaseCurrencyResponse(): CurrencyResponse {
 }
 
 export const CurrencyResponse = {
-  encode(
-    message: CurrencyResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: CurrencyResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.instrument !== undefined) {
       Currency.encode(message.instrument, writer.uint32(10).fork()).ldelim();
     }
@@ -3119,37 +3418,37 @@ export const CurrencyResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CurrencyResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCurrencyResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.instrument = Currency.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): CurrencyResponse {
-    return {
-      instrument: isSet(object.instrument)
-        ? Currency.fromJSON(object.instrument)
-        : undefined,
-    };
+    return { instrument: isSet(object.instrument) ? Currency.fromJSON(object.instrument) : undefined };
   },
 
   toJSON(message: CurrencyResponse): unknown {
     const obj: any = {};
-    message.instrument !== undefined &&
-      (obj.instrument = message.instrument
-        ? Currency.toJSON(message.instrument)
-        : undefined);
+    if (message.instrument !== undefined) {
+      obj.instrument = Currency.toJSON(message.instrument);
+    }
     return obj;
   },
 };
@@ -3159,10 +3458,7 @@ function createBaseCurrenciesResponse(): CurrenciesResponse {
 }
 
 export const CurrenciesResponse = {
-  encode(
-    message: CurrenciesResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: CurrenciesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.instruments) {
       Currency.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -3170,26 +3466,31 @@ export const CurrenciesResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CurrenciesResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCurrenciesResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.instruments.push(Currency.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): CurrenciesResponse {
     return {
-      instruments: Array.isArray(object?.instruments)
+      instruments: globalThis.Array.isArray(object?.instruments)
         ? object.instruments.map((e: any) => Currency.fromJSON(e))
         : [],
     };
@@ -3197,12 +3498,8 @@ export const CurrenciesResponse = {
 
   toJSON(message: CurrenciesResponse): unknown {
     const obj: any = {};
-    if (message.instruments) {
-      obj.instruments = message.instruments.map((e) =>
-        e ? Currency.toJSON(e) : undefined
-      );
-    } else {
-      obj.instruments = [];
+    if (message.instruments?.length) {
+      obj.instruments = message.instruments.map((e) => Currency.toJSON(e));
     }
     return obj;
   },
@@ -3213,10 +3510,7 @@ function createBaseEtfResponse(): EtfResponse {
 }
 
 export const EtfResponse = {
-  encode(
-    message: EtfResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: EtfResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.instrument !== undefined) {
       Etf.encode(message.instrument, writer.uint32(10).fork()).ldelim();
     }
@@ -3224,37 +3518,37 @@ export const EtfResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): EtfResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEtfResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.instrument = Etf.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): EtfResponse {
-    return {
-      instrument: isSet(object.instrument)
-        ? Etf.fromJSON(object.instrument)
-        : undefined,
-    };
+    return { instrument: isSet(object.instrument) ? Etf.fromJSON(object.instrument) : undefined };
   },
 
   toJSON(message: EtfResponse): unknown {
     const obj: any = {};
-    message.instrument !== undefined &&
-      (obj.instrument = message.instrument
-        ? Etf.toJSON(message.instrument)
-        : undefined);
+    if (message.instrument !== undefined) {
+      obj.instrument = Etf.toJSON(message.instrument);
+    }
     return obj;
   },
 };
@@ -3264,10 +3558,7 @@ function createBaseEtfsResponse(): EtfsResponse {
 }
 
 export const EtfsResponse = {
-  encode(
-    message: EtfsResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: EtfsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.instruments) {
       Etf.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -3275,26 +3566,31 @@ export const EtfsResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): EtfsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEtfsResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.instruments.push(Etf.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): EtfsResponse {
     return {
-      instruments: Array.isArray(object?.instruments)
+      instruments: globalThis.Array.isArray(object?.instruments)
         ? object.instruments.map((e: any) => Etf.fromJSON(e))
         : [],
     };
@@ -3302,12 +3598,8 @@ export const EtfsResponse = {
 
   toJSON(message: EtfsResponse): unknown {
     const obj: any = {};
-    if (message.instruments) {
-      obj.instruments = message.instruments.map((e) =>
-        e ? Etf.toJSON(e) : undefined
-      );
-    } else {
-      obj.instruments = [];
+    if (message.instruments?.length) {
+      obj.instruments = message.instruments.map((e) => Etf.toJSON(e));
     }
     return obj;
   },
@@ -3318,10 +3610,7 @@ function createBaseFutureResponse(): FutureResponse {
 }
 
 export const FutureResponse = {
-  encode(
-    message: FutureResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: FutureResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.instrument !== undefined) {
       Future.encode(message.instrument, writer.uint32(10).fork()).ldelim();
     }
@@ -3329,37 +3618,37 @@ export const FutureResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): FutureResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseFutureResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.instrument = Future.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): FutureResponse {
-    return {
-      instrument: isSet(object.instrument)
-        ? Future.fromJSON(object.instrument)
-        : undefined,
-    };
+    return { instrument: isSet(object.instrument) ? Future.fromJSON(object.instrument) : undefined };
   },
 
   toJSON(message: FutureResponse): unknown {
     const obj: any = {};
-    message.instrument !== undefined &&
-      (obj.instrument = message.instrument
-        ? Future.toJSON(message.instrument)
-        : undefined);
+    if (message.instrument !== undefined) {
+      obj.instrument = Future.toJSON(message.instrument);
+    }
     return obj;
   },
 };
@@ -3369,10 +3658,7 @@ function createBaseFuturesResponse(): FuturesResponse {
 }
 
 export const FuturesResponse = {
-  encode(
-    message: FuturesResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: FuturesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.instruments) {
       Future.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -3380,26 +3666,31 @@ export const FuturesResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): FuturesResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseFuturesResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.instruments.push(Future.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): FuturesResponse {
     return {
-      instruments: Array.isArray(object?.instruments)
+      instruments: globalThis.Array.isArray(object?.instruments)
         ? object.instruments.map((e: any) => Future.fromJSON(e))
         : [],
     };
@@ -3407,12 +3698,8 @@ export const FuturesResponse = {
 
   toJSON(message: FuturesResponse): unknown {
     const obj: any = {};
-    if (message.instruments) {
-      obj.instruments = message.instruments.map((e) =>
-        e ? Future.toJSON(e) : undefined
-      );
-    } else {
-      obj.instruments = [];
+    if (message.instruments?.length) {
+      obj.instruments = message.instruments.map((e) => Future.toJSON(e));
     }
     return obj;
   },
@@ -3423,10 +3710,7 @@ function createBaseOptionResponse(): OptionResponse {
 }
 
 export const OptionResponse = {
-  encode(
-    message: OptionResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: OptionResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.instrument !== undefined) {
       Option.encode(message.instrument, writer.uint32(10).fork()).ldelim();
     }
@@ -3434,37 +3718,37 @@ export const OptionResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): OptionResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseOptionResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.instrument = Option.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): OptionResponse {
-    return {
-      instrument: isSet(object.instrument)
-        ? Option.fromJSON(object.instrument)
-        : undefined,
-    };
+    return { instrument: isSet(object.instrument) ? Option.fromJSON(object.instrument) : undefined };
   },
 
   toJSON(message: OptionResponse): unknown {
     const obj: any = {};
-    message.instrument !== undefined &&
-      (obj.instrument = message.instrument
-        ? Option.toJSON(message.instrument)
-        : undefined);
+    if (message.instrument !== undefined) {
+      obj.instrument = Option.toJSON(message.instrument);
+    }
     return obj;
   },
 };
@@ -3474,10 +3758,7 @@ function createBaseOptionsResponse(): OptionsResponse {
 }
 
 export const OptionsResponse = {
-  encode(
-    message: OptionsResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: OptionsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.instruments) {
       Option.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -3485,26 +3766,31 @@ export const OptionsResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): OptionsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseOptionsResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.instruments.push(Option.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): OptionsResponse {
     return {
-      instruments: Array.isArray(object?.instruments)
+      instruments: globalThis.Array.isArray(object?.instruments)
         ? object.instruments.map((e: any) => Option.fromJSON(e))
         : [],
     };
@@ -3512,12 +3798,8 @@ export const OptionsResponse = {
 
   toJSON(message: OptionsResponse): unknown {
     const obj: any = {};
-    if (message.instruments) {
-      obj.instruments = message.instruments.map((e) =>
-        e ? Option.toJSON(e) : undefined
-      );
-    } else {
-      obj.instruments = [];
+    if (message.instruments?.length) {
+      obj.instruments = message.instruments.map((e) => Option.toJSON(e));
     }
     return obj;
   },
@@ -3573,10 +3855,7 @@ function createBaseOption(): Option {
 }
 
 export const Option = {
-  encode(
-    message: Option,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: Option, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.uid !== "") {
       writer.uint32(10).string(message.uid);
     }
@@ -3641,10 +3920,7 @@ export const Option = {
       writer.uint32(1608).int32(message.lot);
     }
     if (message.basicAssetSize !== undefined) {
-      Quotation.encode(
-        message.basicAssetSize,
-        writer.uint32(1690).fork()
-      ).ldelim();
+      Quotation.encode(message.basicAssetSize, writer.uint32(1690).fork()).ldelim();
     }
     if (message.klong !== undefined) {
       Quotation.encode(message.klong, writer.uint32(1770).fork()).ldelim();
@@ -3665,46 +3941,25 @@ export const Option = {
       Quotation.encode(message.dshortMin, writer.uint32(1810).fork()).ldelim();
     }
     if (message.minPriceIncrement !== undefined) {
-      Quotation.encode(
-        message.minPriceIncrement,
-        writer.uint32(1850).fork()
-      ).ldelim();
+      Quotation.encode(message.minPriceIncrement, writer.uint32(1850).fork()).ldelim();
     }
     if (message.strikePrice !== undefined) {
-      MoneyValue.encode(
-        message.strikePrice,
-        writer.uint32(1930).fork()
-      ).ldelim();
+      MoneyValue.encode(message.strikePrice, writer.uint32(1930).fork()).ldelim();
     }
     if (message.expirationDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.expirationDate),
-        writer.uint32(2410).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.expirationDate), writer.uint32(2410).fork()).ldelim();
     }
     if (message.firstTradeDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.firstTradeDate),
-        writer.uint32(2490).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.firstTradeDate), writer.uint32(2490).fork()).ldelim();
     }
     if (message.lastTradeDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.lastTradeDate),
-        writer.uint32(2498).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.lastTradeDate), writer.uint32(2498).fork()).ldelim();
     }
     if (message.first1minCandleDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.first1minCandleDate),
-        writer.uint32(2570).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.first1minCandleDate), writer.uint32(2570).fork()).ldelim();
     }
     if (message.first1dayCandleDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.first1dayCandleDate),
-        writer.uint32(2578).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.first1dayCandleDate), writer.uint32(2578).fork()).ldelim();
     }
     if (message.shortEnabledFlag === true) {
       writer.uint32(3208).bool(message.shortEnabledFlag);
@@ -3737,359 +3992,518 @@ export const Option = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Option {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseOption();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.uid = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.positionUid = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.ticker = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.classCode = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag !== 42) {
+            break;
+          }
+
           message.basicAssetPositionUid = reader.string();
-          break;
+          continue;
         case 21:
+          if (tag !== 168) {
+            break;
+          }
+
           message.tradingStatus = reader.int32() as any;
-          break;
+          continue;
         case 31:
+          if (tag !== 248) {
+            break;
+          }
+
           message.realExchange = reader.int32() as any;
-          break;
+          continue;
         case 41:
+          if (tag !== 328) {
+            break;
+          }
+
           message.direction = reader.int32() as any;
-          break;
+          continue;
         case 42:
+          if (tag !== 336) {
+            break;
+          }
+
           message.paymentType = reader.int32() as any;
-          break;
+          continue;
         case 43:
+          if (tag !== 344) {
+            break;
+          }
+
           message.style = reader.int32() as any;
-          break;
+          continue;
         case 44:
+          if (tag !== 352) {
+            break;
+          }
+
           message.settlementType = reader.int32() as any;
-          break;
+          continue;
         case 101:
+          if (tag !== 810) {
+            break;
+          }
+
           message.name = reader.string();
-          break;
+          continue;
         case 111:
+          if (tag !== 890) {
+            break;
+          }
+
           message.currency = reader.string();
-          break;
+          continue;
         case 112:
+          if (tag !== 898) {
+            break;
+          }
+
           message.settlementCurrency = reader.string();
-          break;
+          continue;
         case 131:
+          if (tag !== 1050) {
+            break;
+          }
+
           message.assetType = reader.string();
-          break;
+          continue;
         case 132:
+          if (tag !== 1058) {
+            break;
+          }
+
           message.basicAsset = reader.string();
-          break;
+          continue;
         case 141:
+          if (tag !== 1130) {
+            break;
+          }
+
           message.exchange = reader.string();
-          break;
+          continue;
         case 151:
+          if (tag !== 1210) {
+            break;
+          }
+
           message.countryOfRisk = reader.string();
-          break;
+          continue;
         case 152:
+          if (tag !== 1218) {
+            break;
+          }
+
           message.countryOfRiskName = reader.string();
-          break;
+          continue;
         case 161:
+          if (tag !== 1290) {
+            break;
+          }
+
           message.sector = reader.string();
-          break;
+          continue;
         case 201:
+          if (tag !== 1608) {
+            break;
+          }
+
           message.lot = reader.int32();
-          break;
+          continue;
         case 211:
+          if (tag !== 1690) {
+            break;
+          }
+
           message.basicAssetSize = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 221:
+          if (tag !== 1770) {
+            break;
+          }
+
           message.klong = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 222:
+          if (tag !== 1778) {
+            break;
+          }
+
           message.kshort = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 223:
+          if (tag !== 1786) {
+            break;
+          }
+
           message.dlong = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 224:
+          if (tag !== 1794) {
+            break;
+          }
+
           message.dshort = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 225:
+          if (tag !== 1802) {
+            break;
+          }
+
           message.dlongMin = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 226:
+          if (tag !== 1810) {
+            break;
+          }
+
           message.dshortMin = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 231:
+          if (tag !== 1850) {
+            break;
+          }
+
           message.minPriceIncrement = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 241:
+          if (tag !== 1930) {
+            break;
+          }
+
           message.strikePrice = MoneyValue.decode(reader, reader.uint32());
-          break;
+          continue;
         case 301:
-          message.expirationDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 2410) {
+            break;
+          }
+
+          message.expirationDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 311:
-          message.firstTradeDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 2490) {
+            break;
+          }
+
+          message.firstTradeDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 312:
-          message.lastTradeDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 2498) {
+            break;
+          }
+
+          message.lastTradeDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 321:
-          message.first1minCandleDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 2570) {
+            break;
+          }
+
+          message.first1minCandleDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 322:
-          message.first1dayCandleDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 2578) {
+            break;
+          }
+
+          message.first1dayCandleDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 401:
+          if (tag !== 3208) {
+            break;
+          }
+
           message.shortEnabledFlag = reader.bool();
-          break;
+          continue;
         case 402:
+          if (tag !== 3216) {
+            break;
+          }
+
           message.forIisFlag = reader.bool();
-          break;
+          continue;
         case 403:
+          if (tag !== 3224) {
+            break;
+          }
+
           message.otcFlag = reader.bool();
-          break;
+          continue;
         case 404:
+          if (tag !== 3232) {
+            break;
+          }
+
           message.buyAvailableFlag = reader.bool();
-          break;
+          continue;
         case 405:
+          if (tag !== 3240) {
+            break;
+          }
+
           message.sellAvailableFlag = reader.bool();
-          break;
+          continue;
         case 406:
+          if (tag !== 3248) {
+            break;
+          }
+
           message.forQualInvestorFlag = reader.bool();
-          break;
+          continue;
         case 407:
+          if (tag !== 3256) {
+            break;
+          }
+
           message.weekendFlag = reader.bool();
-          break;
+          continue;
         case 408:
+          if (tag !== 3264) {
+            break;
+          }
+
           message.blockedTcaFlag = reader.bool();
-          break;
+          continue;
         case 409:
+          if (tag !== 3272) {
+            break;
+          }
+
           message.apiTradeAvailableFlag = reader.bool();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): Option {
     return {
-      uid: isSet(object.uid) ? String(object.uid) : "",
-      positionUid: isSet(object.positionUid) ? String(object.positionUid) : "",
-      ticker: isSet(object.ticker) ? String(object.ticker) : "",
-      classCode: isSet(object.classCode) ? String(object.classCode) : "",
-      basicAssetPositionUid: isSet(object.basicAssetPositionUid)
-        ? String(object.basicAssetPositionUid)
-        : "",
-      tradingStatus: isSet(object.tradingStatus)
-        ? securityTradingStatusFromJSON(object.tradingStatus)
-        : 0,
-      realExchange: isSet(object.realExchange)
-        ? realExchangeFromJSON(object.realExchange)
-        : 0,
-      direction: isSet(object.direction)
-        ? optionDirectionFromJSON(object.direction)
-        : 0,
-      paymentType: isSet(object.paymentType)
-        ? optionPaymentTypeFromJSON(object.paymentType)
-        : 0,
+      uid: isSet(object.uid) ? globalThis.String(object.uid) : "",
+      positionUid: isSet(object.positionUid) ? globalThis.String(object.positionUid) : "",
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
+      basicAssetPositionUid: isSet(object.basicAssetPositionUid) ? globalThis.String(object.basicAssetPositionUid) : "",
+      tradingStatus: isSet(object.tradingStatus) ? securityTradingStatusFromJSON(object.tradingStatus) : 0,
+      realExchange: isSet(object.realExchange) ? realExchangeFromJSON(object.realExchange) : 0,
+      direction: isSet(object.direction) ? optionDirectionFromJSON(object.direction) : 0,
+      paymentType: isSet(object.paymentType) ? optionPaymentTypeFromJSON(object.paymentType) : 0,
       style: isSet(object.style) ? optionStyleFromJSON(object.style) : 0,
-      settlementType: isSet(object.settlementType)
-        ? optionSettlementTypeFromJSON(object.settlementType)
-        : 0,
-      name: isSet(object.name) ? String(object.name) : "",
-      currency: isSet(object.currency) ? String(object.currency) : "",
-      settlementCurrency: isSet(object.settlementCurrency)
-        ? String(object.settlementCurrency)
-        : "",
-      assetType: isSet(object.assetType) ? String(object.assetType) : "",
-      basicAsset: isSet(object.basicAsset) ? String(object.basicAsset) : "",
-      exchange: isSet(object.exchange) ? String(object.exchange) : "",
-      countryOfRisk: isSet(object.countryOfRisk)
-        ? String(object.countryOfRisk)
-        : "",
-      countryOfRiskName: isSet(object.countryOfRiskName)
-        ? String(object.countryOfRiskName)
-        : "",
-      sector: isSet(object.sector) ? String(object.sector) : "",
-      lot: isSet(object.lot) ? Number(object.lot) : 0,
-      basicAssetSize: isSet(object.basicAssetSize)
-        ? Quotation.fromJSON(object.basicAssetSize)
-        : undefined,
+      settlementType: isSet(object.settlementType) ? optionSettlementTypeFromJSON(object.settlementType) : 0,
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      currency: isSet(object.currency) ? globalThis.String(object.currency) : "",
+      settlementCurrency: isSet(object.settlementCurrency) ? globalThis.String(object.settlementCurrency) : "",
+      assetType: isSet(object.assetType) ? globalThis.String(object.assetType) : "",
+      basicAsset: isSet(object.basicAsset) ? globalThis.String(object.basicAsset) : "",
+      exchange: isSet(object.exchange) ? globalThis.String(object.exchange) : "",
+      countryOfRisk: isSet(object.countryOfRisk) ? globalThis.String(object.countryOfRisk) : "",
+      countryOfRiskName: isSet(object.countryOfRiskName) ? globalThis.String(object.countryOfRiskName) : "",
+      sector: isSet(object.sector) ? globalThis.String(object.sector) : "",
+      lot: isSet(object.lot) ? globalThis.Number(object.lot) : 0,
+      basicAssetSize: isSet(object.basicAssetSize) ? Quotation.fromJSON(object.basicAssetSize) : undefined,
       klong: isSet(object.klong) ? Quotation.fromJSON(object.klong) : undefined,
-      kshort: isSet(object.kshort)
-        ? Quotation.fromJSON(object.kshort)
-        : undefined,
+      kshort: isSet(object.kshort) ? Quotation.fromJSON(object.kshort) : undefined,
       dlong: isSet(object.dlong) ? Quotation.fromJSON(object.dlong) : undefined,
-      dshort: isSet(object.dshort)
-        ? Quotation.fromJSON(object.dshort)
-        : undefined,
-      dlongMin: isSet(object.dlongMin)
-        ? Quotation.fromJSON(object.dlongMin)
-        : undefined,
-      dshortMin: isSet(object.dshortMin)
-        ? Quotation.fromJSON(object.dshortMin)
-        : undefined,
-      minPriceIncrement: isSet(object.minPriceIncrement)
-        ? Quotation.fromJSON(object.minPriceIncrement)
-        : undefined,
-      strikePrice: isSet(object.strikePrice)
-        ? MoneyValue.fromJSON(object.strikePrice)
-        : undefined,
-      expirationDate: isSet(object.expirationDate)
-        ? fromJsonTimestamp(object.expirationDate)
-        : undefined,
-      firstTradeDate: isSet(object.firstTradeDate)
-        ? fromJsonTimestamp(object.firstTradeDate)
-        : undefined,
-      lastTradeDate: isSet(object.lastTradeDate)
-        ? fromJsonTimestamp(object.lastTradeDate)
-        : undefined,
+      dshort: isSet(object.dshort) ? Quotation.fromJSON(object.dshort) : undefined,
+      dlongMin: isSet(object.dlongMin) ? Quotation.fromJSON(object.dlongMin) : undefined,
+      dshortMin: isSet(object.dshortMin) ? Quotation.fromJSON(object.dshortMin) : undefined,
+      minPriceIncrement: isSet(object.minPriceIncrement) ? Quotation.fromJSON(object.minPriceIncrement) : undefined,
+      strikePrice: isSet(object.strikePrice) ? MoneyValue.fromJSON(object.strikePrice) : undefined,
+      expirationDate: isSet(object.expirationDate) ? fromJsonTimestamp(object.expirationDate) : undefined,
+      firstTradeDate: isSet(object.firstTradeDate) ? fromJsonTimestamp(object.firstTradeDate) : undefined,
+      lastTradeDate: isSet(object.lastTradeDate) ? fromJsonTimestamp(object.lastTradeDate) : undefined,
       first1minCandleDate: isSet(object.first1minCandleDate)
         ? fromJsonTimestamp(object.first1minCandleDate)
         : undefined,
       first1dayCandleDate: isSet(object.first1dayCandleDate)
         ? fromJsonTimestamp(object.first1dayCandleDate)
         : undefined,
-      shortEnabledFlag: isSet(object.shortEnabledFlag)
-        ? Boolean(object.shortEnabledFlag)
-        : false,
-      forIisFlag: isSet(object.forIisFlag) ? Boolean(object.forIisFlag) : false,
-      otcFlag: isSet(object.otcFlag) ? Boolean(object.otcFlag) : false,
-      buyAvailableFlag: isSet(object.buyAvailableFlag)
-        ? Boolean(object.buyAvailableFlag)
-        : false,
-      sellAvailableFlag: isSet(object.sellAvailableFlag)
-        ? Boolean(object.sellAvailableFlag)
-        : false,
-      forQualInvestorFlag: isSet(object.forQualInvestorFlag)
-        ? Boolean(object.forQualInvestorFlag)
-        : false,
-      weekendFlag: isSet(object.weekendFlag)
-        ? Boolean(object.weekendFlag)
-        : false,
-      blockedTcaFlag: isSet(object.blockedTcaFlag)
-        ? Boolean(object.blockedTcaFlag)
-        : false,
+      shortEnabledFlag: isSet(object.shortEnabledFlag) ? globalThis.Boolean(object.shortEnabledFlag) : false,
+      forIisFlag: isSet(object.forIisFlag) ? globalThis.Boolean(object.forIisFlag) : false,
+      otcFlag: isSet(object.otcFlag) ? globalThis.Boolean(object.otcFlag) : false,
+      buyAvailableFlag: isSet(object.buyAvailableFlag) ? globalThis.Boolean(object.buyAvailableFlag) : false,
+      sellAvailableFlag: isSet(object.sellAvailableFlag) ? globalThis.Boolean(object.sellAvailableFlag) : false,
+      forQualInvestorFlag: isSet(object.forQualInvestorFlag) ? globalThis.Boolean(object.forQualInvestorFlag) : false,
+      weekendFlag: isSet(object.weekendFlag) ? globalThis.Boolean(object.weekendFlag) : false,
+      blockedTcaFlag: isSet(object.blockedTcaFlag) ? globalThis.Boolean(object.blockedTcaFlag) : false,
       apiTradeAvailableFlag: isSet(object.apiTradeAvailableFlag)
-        ? Boolean(object.apiTradeAvailableFlag)
+        ? globalThis.Boolean(object.apiTradeAvailableFlag)
         : false,
     };
   },
 
   toJSON(message: Option): unknown {
     const obj: any = {};
-    message.uid !== undefined && (obj.uid = message.uid);
-    message.positionUid !== undefined &&
-      (obj.positionUid = message.positionUid);
-    message.ticker !== undefined && (obj.ticker = message.ticker);
-    message.classCode !== undefined && (obj.classCode = message.classCode);
-    message.basicAssetPositionUid !== undefined &&
-      (obj.basicAssetPositionUid = message.basicAssetPositionUid);
-    message.tradingStatus !== undefined &&
-      (obj.tradingStatus = securityTradingStatusToJSON(message.tradingStatus));
-    message.realExchange !== undefined &&
-      (obj.realExchange = realExchangeToJSON(message.realExchange));
-    message.direction !== undefined &&
-      (obj.direction = optionDirectionToJSON(message.direction));
-    message.paymentType !== undefined &&
-      (obj.paymentType = optionPaymentTypeToJSON(message.paymentType));
-    message.style !== undefined &&
-      (obj.style = optionStyleToJSON(message.style));
-    message.settlementType !== undefined &&
-      (obj.settlementType = optionSettlementTypeToJSON(message.settlementType));
-    message.name !== undefined && (obj.name = message.name);
-    message.currency !== undefined && (obj.currency = message.currency);
-    message.settlementCurrency !== undefined &&
-      (obj.settlementCurrency = message.settlementCurrency);
-    message.assetType !== undefined && (obj.assetType = message.assetType);
-    message.basicAsset !== undefined && (obj.basicAsset = message.basicAsset);
-    message.exchange !== undefined && (obj.exchange = message.exchange);
-    message.countryOfRisk !== undefined &&
-      (obj.countryOfRisk = message.countryOfRisk);
-    message.countryOfRiskName !== undefined &&
-      (obj.countryOfRiskName = message.countryOfRiskName);
-    message.sector !== undefined && (obj.sector = message.sector);
-    message.lot !== undefined && (obj.lot = Math.round(message.lot));
-    message.basicAssetSize !== undefined &&
-      (obj.basicAssetSize = message.basicAssetSize
-        ? Quotation.toJSON(message.basicAssetSize)
-        : undefined);
-    message.klong !== undefined &&
-      (obj.klong = message.klong ? Quotation.toJSON(message.klong) : undefined);
-    message.kshort !== undefined &&
-      (obj.kshort = message.kshort
-        ? Quotation.toJSON(message.kshort)
-        : undefined);
-    message.dlong !== undefined &&
-      (obj.dlong = message.dlong ? Quotation.toJSON(message.dlong) : undefined);
-    message.dshort !== undefined &&
-      (obj.dshort = message.dshort
-        ? Quotation.toJSON(message.dshort)
-        : undefined);
-    message.dlongMin !== undefined &&
-      (obj.dlongMin = message.dlongMin
-        ? Quotation.toJSON(message.dlongMin)
-        : undefined);
-    message.dshortMin !== undefined &&
-      (obj.dshortMin = message.dshortMin
-        ? Quotation.toJSON(message.dshortMin)
-        : undefined);
-    message.minPriceIncrement !== undefined &&
-      (obj.minPriceIncrement = message.minPriceIncrement
-        ? Quotation.toJSON(message.minPriceIncrement)
-        : undefined);
-    message.strikePrice !== undefined &&
-      (obj.strikePrice = message.strikePrice
-        ? MoneyValue.toJSON(message.strikePrice)
-        : undefined);
-    message.expirationDate !== undefined &&
-      (obj.expirationDate = message.expirationDate.toISOString());
-    message.firstTradeDate !== undefined &&
-      (obj.firstTradeDate = message.firstTradeDate.toISOString());
-    message.lastTradeDate !== undefined &&
-      (obj.lastTradeDate = message.lastTradeDate.toISOString());
-    message.first1minCandleDate !== undefined &&
-      (obj.first1minCandleDate = message.first1minCandleDate.toISOString());
-    message.first1dayCandleDate !== undefined &&
-      (obj.first1dayCandleDate = message.first1dayCandleDate.toISOString());
-    message.shortEnabledFlag !== undefined &&
-      (obj.shortEnabledFlag = message.shortEnabledFlag);
-    message.forIisFlag !== undefined && (obj.forIisFlag = message.forIisFlag);
-    message.otcFlag !== undefined && (obj.otcFlag = message.otcFlag);
-    message.buyAvailableFlag !== undefined &&
-      (obj.buyAvailableFlag = message.buyAvailableFlag);
-    message.sellAvailableFlag !== undefined &&
-      (obj.sellAvailableFlag = message.sellAvailableFlag);
-    message.forQualInvestorFlag !== undefined &&
-      (obj.forQualInvestorFlag = message.forQualInvestorFlag);
-    message.weekendFlag !== undefined &&
-      (obj.weekendFlag = message.weekendFlag);
-    message.blockedTcaFlag !== undefined &&
-      (obj.blockedTcaFlag = message.blockedTcaFlag);
-    message.apiTradeAvailableFlag !== undefined &&
-      (obj.apiTradeAvailableFlag = message.apiTradeAvailableFlag);
+    if (message.uid !== "") {
+      obj.uid = message.uid;
+    }
+    if (message.positionUid !== "") {
+      obj.positionUid = message.positionUid;
+    }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
+    }
+    if (message.basicAssetPositionUid !== "") {
+      obj.basicAssetPositionUid = message.basicAssetPositionUid;
+    }
+    if (message.tradingStatus !== 0) {
+      obj.tradingStatus = securityTradingStatusToJSON(message.tradingStatus);
+    }
+    if (message.realExchange !== 0) {
+      obj.realExchange = realExchangeToJSON(message.realExchange);
+    }
+    if (message.direction !== 0) {
+      obj.direction = optionDirectionToJSON(message.direction);
+    }
+    if (message.paymentType !== 0) {
+      obj.paymentType = optionPaymentTypeToJSON(message.paymentType);
+    }
+    if (message.style !== 0) {
+      obj.style = optionStyleToJSON(message.style);
+    }
+    if (message.settlementType !== 0) {
+      obj.settlementType = optionSettlementTypeToJSON(message.settlementType);
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.currency !== "") {
+      obj.currency = message.currency;
+    }
+    if (message.settlementCurrency !== "") {
+      obj.settlementCurrency = message.settlementCurrency;
+    }
+    if (message.assetType !== "") {
+      obj.assetType = message.assetType;
+    }
+    if (message.basicAsset !== "") {
+      obj.basicAsset = message.basicAsset;
+    }
+    if (message.exchange !== "") {
+      obj.exchange = message.exchange;
+    }
+    if (message.countryOfRisk !== "") {
+      obj.countryOfRisk = message.countryOfRisk;
+    }
+    if (message.countryOfRiskName !== "") {
+      obj.countryOfRiskName = message.countryOfRiskName;
+    }
+    if (message.sector !== "") {
+      obj.sector = message.sector;
+    }
+    if (message.lot !== 0) {
+      obj.lot = Math.round(message.lot);
+    }
+    if (message.basicAssetSize !== undefined) {
+      obj.basicAssetSize = Quotation.toJSON(message.basicAssetSize);
+    }
+    if (message.klong !== undefined) {
+      obj.klong = Quotation.toJSON(message.klong);
+    }
+    if (message.kshort !== undefined) {
+      obj.kshort = Quotation.toJSON(message.kshort);
+    }
+    if (message.dlong !== undefined) {
+      obj.dlong = Quotation.toJSON(message.dlong);
+    }
+    if (message.dshort !== undefined) {
+      obj.dshort = Quotation.toJSON(message.dshort);
+    }
+    if (message.dlongMin !== undefined) {
+      obj.dlongMin = Quotation.toJSON(message.dlongMin);
+    }
+    if (message.dshortMin !== undefined) {
+      obj.dshortMin = Quotation.toJSON(message.dshortMin);
+    }
+    if (message.minPriceIncrement !== undefined) {
+      obj.minPriceIncrement = Quotation.toJSON(message.minPriceIncrement);
+    }
+    if (message.strikePrice !== undefined) {
+      obj.strikePrice = MoneyValue.toJSON(message.strikePrice);
+    }
+    if (message.expirationDate !== undefined) {
+      obj.expirationDate = message.expirationDate.toISOString();
+    }
+    if (message.firstTradeDate !== undefined) {
+      obj.firstTradeDate = message.firstTradeDate.toISOString();
+    }
+    if (message.lastTradeDate !== undefined) {
+      obj.lastTradeDate = message.lastTradeDate.toISOString();
+    }
+    if (message.first1minCandleDate !== undefined) {
+      obj.first1minCandleDate = message.first1minCandleDate.toISOString();
+    }
+    if (message.first1dayCandleDate !== undefined) {
+      obj.first1dayCandleDate = message.first1dayCandleDate.toISOString();
+    }
+    if (message.shortEnabledFlag === true) {
+      obj.shortEnabledFlag = message.shortEnabledFlag;
+    }
+    if (message.forIisFlag === true) {
+      obj.forIisFlag = message.forIisFlag;
+    }
+    if (message.otcFlag === true) {
+      obj.otcFlag = message.otcFlag;
+    }
+    if (message.buyAvailableFlag === true) {
+      obj.buyAvailableFlag = message.buyAvailableFlag;
+    }
+    if (message.sellAvailableFlag === true) {
+      obj.sellAvailableFlag = message.sellAvailableFlag;
+    }
+    if (message.forQualInvestorFlag === true) {
+      obj.forQualInvestorFlag = message.forQualInvestorFlag;
+    }
+    if (message.weekendFlag === true) {
+      obj.weekendFlag = message.weekendFlag;
+    }
+    if (message.blockedTcaFlag === true) {
+      obj.blockedTcaFlag = message.blockedTcaFlag;
+    }
+    if (message.apiTradeAvailableFlag === true) {
+      obj.apiTradeAvailableFlag = message.apiTradeAvailableFlag;
+    }
     return obj;
   },
 };
@@ -4099,10 +4513,7 @@ function createBaseShareResponse(): ShareResponse {
 }
 
 export const ShareResponse = {
-  encode(
-    message: ShareResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: ShareResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.instrument !== undefined) {
       Share.encode(message.instrument, writer.uint32(10).fork()).ldelim();
     }
@@ -4110,37 +4521,37 @@ export const ShareResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ShareResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseShareResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.instrument = Share.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): ShareResponse {
-    return {
-      instrument: isSet(object.instrument)
-        ? Share.fromJSON(object.instrument)
-        : undefined,
-    };
+    return { instrument: isSet(object.instrument) ? Share.fromJSON(object.instrument) : undefined };
   },
 
   toJSON(message: ShareResponse): unknown {
     const obj: any = {};
-    message.instrument !== undefined &&
-      (obj.instrument = message.instrument
-        ? Share.toJSON(message.instrument)
-        : undefined);
+    if (message.instrument !== undefined) {
+      obj.instrument = Share.toJSON(message.instrument);
+    }
     return obj;
   },
 };
@@ -4150,10 +4561,7 @@ function createBaseSharesResponse(): SharesResponse {
 }
 
 export const SharesResponse = {
-  encode(
-    message: SharesResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: SharesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.instruments) {
       Share.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -4161,26 +4569,31 @@ export const SharesResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): SharesResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSharesResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.instruments.push(Share.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): SharesResponse {
     return {
-      instruments: Array.isArray(object?.instruments)
+      instruments: globalThis.Array.isArray(object?.instruments)
         ? object.instruments.map((e: any) => Share.fromJSON(e))
         : [],
     };
@@ -4188,12 +4601,8 @@ export const SharesResponse = {
 
   toJSON(message: SharesResponse): unknown {
     const obj: any = {};
-    if (message.instruments) {
-      obj.instruments = message.instruments.map((e) =>
-        e ? Share.toJSON(e) : undefined
-      );
-    } else {
-      obj.instruments = [];
+    if (message.instruments?.length) {
+      obj.instruments = message.instruments.map((e) => Share.toJSON(e));
     }
     return obj;
   },
@@ -4305,37 +4714,22 @@ export const Bond = {
       writer.uint32(136).int32(message.couponQuantityPerYear);
     }
     if (message.maturityDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.maturityDate),
-        writer.uint32(146).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.maturityDate), writer.uint32(146).fork()).ldelim();
     }
     if (message.nominal !== undefined) {
       MoneyValue.encode(message.nominal, writer.uint32(154).fork()).ldelim();
     }
     if (message.initialNominal !== undefined) {
-      MoneyValue.encode(
-        message.initialNominal,
-        writer.uint32(162).fork()
-      ).ldelim();
+      MoneyValue.encode(message.initialNominal, writer.uint32(162).fork()).ldelim();
     }
     if (message.stateRegDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.stateRegDate),
-        writer.uint32(170).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.stateRegDate), writer.uint32(170).fork()).ldelim();
     }
     if (message.placementDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.placementDate),
-        writer.uint32(178).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.placementDate), writer.uint32(178).fork()).ldelim();
     }
     if (message.placementPrice !== undefined) {
-      MoneyValue.encode(
-        message.placementPrice,
-        writer.uint32(186).fork()
-      ).ldelim();
+      MoneyValue.encode(message.placementPrice, writer.uint32(186).fork()).ldelim();
     }
     if (message.aciValue !== undefined) {
       MoneyValue.encode(message.aciValue, writer.uint32(194).fork()).ldelim();
@@ -4380,10 +4774,7 @@ export const Bond = {
       writer.uint32(296).bool(message.amortizationFlag);
     }
     if (message.minPriceIncrement !== undefined) {
-      Quotation.encode(
-        message.minPriceIncrement,
-        writer.uint32(306).fork()
-      ).ldelim();
+      Quotation.encode(message.minPriceIncrement, writer.uint32(306).fork()).ldelim();
     }
     if (message.apiTradeAvailableFlag === true) {
       writer.uint32(312).bool(message.apiTradeAvailableFlag);
@@ -4416,16 +4807,10 @@ export const Bond = {
       writer.uint32(448).bool(message.liquidityFlag);
     }
     if (message.first1minCandleDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.first1minCandleDate),
-        writer.uint32(490).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.first1minCandleDate), writer.uint32(490).fork()).ldelim();
     }
     if (message.first1dayCandleDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.first1dayCandleDate),
-        writer.uint32(498).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.first1dayCandleDate), writer.uint32(498).fork()).ldelim();
     }
     if (message.riskLevel !== 0) {
       writer.uint32(504).int32(message.riskLevel);
@@ -4434,408 +4819,584 @@ export const Bond = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Bond {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseBond();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.figi = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.ticker = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.classCode = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.isin = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag !== 40) {
+            break;
+          }
+
           message.lot = reader.int32();
-          break;
+          continue;
         case 6:
+          if (tag !== 50) {
+            break;
+          }
+
           message.currency = reader.string();
-          break;
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.klong = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 8:
+          if (tag !== 66) {
+            break;
+          }
+
           message.kshort = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 9:
+          if (tag !== 74) {
+            break;
+          }
+
           message.dlong = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 10:
+          if (tag !== 82) {
+            break;
+          }
+
           message.dshort = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 11:
+          if (tag !== 90) {
+            break;
+          }
+
           message.dlongMin = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 12:
+          if (tag !== 98) {
+            break;
+          }
+
           message.dshortMin = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 13:
+          if (tag !== 104) {
+            break;
+          }
+
           message.shortEnabledFlag = reader.bool();
-          break;
+          continue;
         case 15:
+          if (tag !== 122) {
+            break;
+          }
+
           message.name = reader.string();
-          break;
+          continue;
         case 16:
+          if (tag !== 130) {
+            break;
+          }
+
           message.exchange = reader.string();
-          break;
+          continue;
         case 17:
+          if (tag !== 136) {
+            break;
+          }
+
           message.couponQuantityPerYear = reader.int32();
-          break;
+          continue;
         case 18:
-          message.maturityDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 146) {
+            break;
+          }
+
+          message.maturityDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 19:
+          if (tag !== 154) {
+            break;
+          }
+
           message.nominal = MoneyValue.decode(reader, reader.uint32());
-          break;
+          continue;
         case 20:
+          if (tag !== 162) {
+            break;
+          }
+
           message.initialNominal = MoneyValue.decode(reader, reader.uint32());
-          break;
+          continue;
         case 21:
-          message.stateRegDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 170) {
+            break;
+          }
+
+          message.stateRegDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 22:
-          message.placementDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 178) {
+            break;
+          }
+
+          message.placementDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 23:
+          if (tag !== 186) {
+            break;
+          }
+
           message.placementPrice = MoneyValue.decode(reader, reader.uint32());
-          break;
+          continue;
         case 24:
+          if (tag !== 194) {
+            break;
+          }
+
           message.aciValue = MoneyValue.decode(reader, reader.uint32());
-          break;
+          continue;
         case 25:
+          if (tag !== 202) {
+            break;
+          }
+
           message.countryOfRisk = reader.string();
-          break;
+          continue;
         case 26:
+          if (tag !== 210) {
+            break;
+          }
+
           message.countryOfRiskName = reader.string();
-          break;
+          continue;
         case 27:
+          if (tag !== 218) {
+            break;
+          }
+
           message.sector = reader.string();
-          break;
+          continue;
         case 28:
+          if (tag !== 226) {
+            break;
+          }
+
           message.issueKind = reader.string();
-          break;
+          continue;
         case 29:
+          if (tag !== 232) {
+            break;
+          }
+
           message.issueSize = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 30:
+          if (tag !== 240) {
+            break;
+          }
+
           message.issueSizePlan = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 31:
+          if (tag !== 248) {
+            break;
+          }
+
           message.tradingStatus = reader.int32() as any;
-          break;
+          continue;
         case 32:
+          if (tag !== 256) {
+            break;
+          }
+
           message.otcFlag = reader.bool();
-          break;
+          continue;
         case 33:
+          if (tag !== 264) {
+            break;
+          }
+
           message.buyAvailableFlag = reader.bool();
-          break;
+          continue;
         case 34:
+          if (tag !== 272) {
+            break;
+          }
+
           message.sellAvailableFlag = reader.bool();
-          break;
+          continue;
         case 35:
+          if (tag !== 280) {
+            break;
+          }
+
           message.floatingCouponFlag = reader.bool();
-          break;
+          continue;
         case 36:
+          if (tag !== 288) {
+            break;
+          }
+
           message.perpetualFlag = reader.bool();
-          break;
+          continue;
         case 37:
+          if (tag !== 296) {
+            break;
+          }
+
           message.amortizationFlag = reader.bool();
-          break;
+          continue;
         case 38:
+          if (tag !== 306) {
+            break;
+          }
+
           message.minPriceIncrement = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 39:
+          if (tag !== 312) {
+            break;
+          }
+
           message.apiTradeAvailableFlag = reader.bool();
-          break;
+          continue;
         case 40:
+          if (tag !== 322) {
+            break;
+          }
+
           message.uid = reader.string();
-          break;
+          continue;
         case 41:
+          if (tag !== 328) {
+            break;
+          }
+
           message.realExchange = reader.int32() as any;
-          break;
+          continue;
         case 42:
+          if (tag !== 338) {
+            break;
+          }
+
           message.positionUid = reader.string();
-          break;
+          continue;
         case 51:
+          if (tag !== 408) {
+            break;
+          }
+
           message.forIisFlag = reader.bool();
-          break;
+          continue;
         case 52:
+          if (tag !== 416) {
+            break;
+          }
+
           message.forQualInvestorFlag = reader.bool();
-          break;
+          continue;
         case 53:
+          if (tag !== 424) {
+            break;
+          }
+
           message.weekendFlag = reader.bool();
-          break;
+          continue;
         case 54:
+          if (tag !== 432) {
+            break;
+          }
+
           message.blockedTcaFlag = reader.bool();
-          break;
+          continue;
         case 55:
+          if (tag !== 440) {
+            break;
+          }
+
           message.subordinatedFlag = reader.bool();
-          break;
+          continue;
         case 56:
+          if (tag !== 448) {
+            break;
+          }
+
           message.liquidityFlag = reader.bool();
-          break;
+          continue;
         case 61:
-          message.first1minCandleDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 490) {
+            break;
+          }
+
+          message.first1minCandleDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 62:
-          message.first1dayCandleDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 498) {
+            break;
+          }
+
+          message.first1dayCandleDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 63:
+          if (tag !== 504) {
+            break;
+          }
+
           message.riskLevel = reader.int32() as any;
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): Bond {
     return {
-      figi: isSet(object.figi) ? String(object.figi) : "",
-      ticker: isSet(object.ticker) ? String(object.ticker) : "",
-      classCode: isSet(object.classCode) ? String(object.classCode) : "",
-      isin: isSet(object.isin) ? String(object.isin) : "",
-      lot: isSet(object.lot) ? Number(object.lot) : 0,
-      currency: isSet(object.currency) ? String(object.currency) : "",
+      figi: isSet(object.figi) ? globalThis.String(object.figi) : "",
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
+      isin: isSet(object.isin) ? globalThis.String(object.isin) : "",
+      lot: isSet(object.lot) ? globalThis.Number(object.lot) : 0,
+      currency: isSet(object.currency) ? globalThis.String(object.currency) : "",
       klong: isSet(object.klong) ? Quotation.fromJSON(object.klong) : undefined,
-      kshort: isSet(object.kshort)
-        ? Quotation.fromJSON(object.kshort)
-        : undefined,
+      kshort: isSet(object.kshort) ? Quotation.fromJSON(object.kshort) : undefined,
       dlong: isSet(object.dlong) ? Quotation.fromJSON(object.dlong) : undefined,
-      dshort: isSet(object.dshort)
-        ? Quotation.fromJSON(object.dshort)
-        : undefined,
-      dlongMin: isSet(object.dlongMin)
-        ? Quotation.fromJSON(object.dlongMin)
-        : undefined,
-      dshortMin: isSet(object.dshortMin)
-        ? Quotation.fromJSON(object.dshortMin)
-        : undefined,
-      shortEnabledFlag: isSet(object.shortEnabledFlag)
-        ? Boolean(object.shortEnabledFlag)
-        : false,
-      name: isSet(object.name) ? String(object.name) : "",
-      exchange: isSet(object.exchange) ? String(object.exchange) : "",
-      couponQuantityPerYear: isSet(object.couponQuantityPerYear)
-        ? Number(object.couponQuantityPerYear)
-        : 0,
-      maturityDate: isSet(object.maturityDate)
-        ? fromJsonTimestamp(object.maturityDate)
-        : undefined,
-      nominal: isSet(object.nominal)
-        ? MoneyValue.fromJSON(object.nominal)
-        : undefined,
-      initialNominal: isSet(object.initialNominal)
-        ? MoneyValue.fromJSON(object.initialNominal)
-        : undefined,
-      stateRegDate: isSet(object.stateRegDate)
-        ? fromJsonTimestamp(object.stateRegDate)
-        : undefined,
-      placementDate: isSet(object.placementDate)
-        ? fromJsonTimestamp(object.placementDate)
-        : undefined,
-      placementPrice: isSet(object.placementPrice)
-        ? MoneyValue.fromJSON(object.placementPrice)
-        : undefined,
-      aciValue: isSet(object.aciValue)
-        ? MoneyValue.fromJSON(object.aciValue)
-        : undefined,
-      countryOfRisk: isSet(object.countryOfRisk)
-        ? String(object.countryOfRisk)
-        : "",
-      countryOfRiskName: isSet(object.countryOfRiskName)
-        ? String(object.countryOfRiskName)
-        : "",
-      sector: isSet(object.sector) ? String(object.sector) : "",
-      issueKind: isSet(object.issueKind) ? String(object.issueKind) : "",
-      issueSize: isSet(object.issueSize) ? Number(object.issueSize) : 0,
-      issueSizePlan: isSet(object.issueSizePlan)
-        ? Number(object.issueSizePlan)
-        : 0,
-      tradingStatus: isSet(object.tradingStatus)
-        ? securityTradingStatusFromJSON(object.tradingStatus)
-        : 0,
-      otcFlag: isSet(object.otcFlag) ? Boolean(object.otcFlag) : false,
-      buyAvailableFlag: isSet(object.buyAvailableFlag)
-        ? Boolean(object.buyAvailableFlag)
-        : false,
-      sellAvailableFlag: isSet(object.sellAvailableFlag)
-        ? Boolean(object.sellAvailableFlag)
-        : false,
-      floatingCouponFlag: isSet(object.floatingCouponFlag)
-        ? Boolean(object.floatingCouponFlag)
-        : false,
-      perpetualFlag: isSet(object.perpetualFlag)
-        ? Boolean(object.perpetualFlag)
-        : false,
-      amortizationFlag: isSet(object.amortizationFlag)
-        ? Boolean(object.amortizationFlag)
-        : false,
-      minPriceIncrement: isSet(object.minPriceIncrement)
-        ? Quotation.fromJSON(object.minPriceIncrement)
-        : undefined,
+      dshort: isSet(object.dshort) ? Quotation.fromJSON(object.dshort) : undefined,
+      dlongMin: isSet(object.dlongMin) ? Quotation.fromJSON(object.dlongMin) : undefined,
+      dshortMin: isSet(object.dshortMin) ? Quotation.fromJSON(object.dshortMin) : undefined,
+      shortEnabledFlag: isSet(object.shortEnabledFlag) ? globalThis.Boolean(object.shortEnabledFlag) : false,
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      exchange: isSet(object.exchange) ? globalThis.String(object.exchange) : "",
+      couponQuantityPerYear: isSet(object.couponQuantityPerYear) ? globalThis.Number(object.couponQuantityPerYear) : 0,
+      maturityDate: isSet(object.maturityDate) ? fromJsonTimestamp(object.maturityDate) : undefined,
+      nominal: isSet(object.nominal) ? MoneyValue.fromJSON(object.nominal) : undefined,
+      initialNominal: isSet(object.initialNominal) ? MoneyValue.fromJSON(object.initialNominal) : undefined,
+      stateRegDate: isSet(object.stateRegDate) ? fromJsonTimestamp(object.stateRegDate) : undefined,
+      placementDate: isSet(object.placementDate) ? fromJsonTimestamp(object.placementDate) : undefined,
+      placementPrice: isSet(object.placementPrice) ? MoneyValue.fromJSON(object.placementPrice) : undefined,
+      aciValue: isSet(object.aciValue) ? MoneyValue.fromJSON(object.aciValue) : undefined,
+      countryOfRisk: isSet(object.countryOfRisk) ? globalThis.String(object.countryOfRisk) : "",
+      countryOfRiskName: isSet(object.countryOfRiskName) ? globalThis.String(object.countryOfRiskName) : "",
+      sector: isSet(object.sector) ? globalThis.String(object.sector) : "",
+      issueKind: isSet(object.issueKind) ? globalThis.String(object.issueKind) : "",
+      issueSize: isSet(object.issueSize) ? globalThis.Number(object.issueSize) : 0,
+      issueSizePlan: isSet(object.issueSizePlan) ? globalThis.Number(object.issueSizePlan) : 0,
+      tradingStatus: isSet(object.tradingStatus) ? securityTradingStatusFromJSON(object.tradingStatus) : 0,
+      otcFlag: isSet(object.otcFlag) ? globalThis.Boolean(object.otcFlag) : false,
+      buyAvailableFlag: isSet(object.buyAvailableFlag) ? globalThis.Boolean(object.buyAvailableFlag) : false,
+      sellAvailableFlag: isSet(object.sellAvailableFlag) ? globalThis.Boolean(object.sellAvailableFlag) : false,
+      floatingCouponFlag: isSet(object.floatingCouponFlag) ? globalThis.Boolean(object.floatingCouponFlag) : false,
+      perpetualFlag: isSet(object.perpetualFlag) ? globalThis.Boolean(object.perpetualFlag) : false,
+      amortizationFlag: isSet(object.amortizationFlag) ? globalThis.Boolean(object.amortizationFlag) : false,
+      minPriceIncrement: isSet(object.minPriceIncrement) ? Quotation.fromJSON(object.minPriceIncrement) : undefined,
       apiTradeAvailableFlag: isSet(object.apiTradeAvailableFlag)
-        ? Boolean(object.apiTradeAvailableFlag)
+        ? globalThis.Boolean(object.apiTradeAvailableFlag)
         : false,
-      uid: isSet(object.uid) ? String(object.uid) : "",
-      realExchange: isSet(object.realExchange)
-        ? realExchangeFromJSON(object.realExchange)
-        : 0,
-      positionUid: isSet(object.positionUid) ? String(object.positionUid) : "",
-      forIisFlag: isSet(object.forIisFlag) ? Boolean(object.forIisFlag) : false,
-      forQualInvestorFlag: isSet(object.forQualInvestorFlag)
-        ? Boolean(object.forQualInvestorFlag)
-        : false,
-      weekendFlag: isSet(object.weekendFlag)
-        ? Boolean(object.weekendFlag)
-        : false,
-      blockedTcaFlag: isSet(object.blockedTcaFlag)
-        ? Boolean(object.blockedTcaFlag)
-        : false,
-      subordinatedFlag: isSet(object.subordinatedFlag)
-        ? Boolean(object.subordinatedFlag)
-        : false,
-      liquidityFlag: isSet(object.liquidityFlag)
-        ? Boolean(object.liquidityFlag)
-        : false,
+      uid: isSet(object.uid) ? globalThis.String(object.uid) : "",
+      realExchange: isSet(object.realExchange) ? realExchangeFromJSON(object.realExchange) : 0,
+      positionUid: isSet(object.positionUid) ? globalThis.String(object.positionUid) : "",
+      forIisFlag: isSet(object.forIisFlag) ? globalThis.Boolean(object.forIisFlag) : false,
+      forQualInvestorFlag: isSet(object.forQualInvestorFlag) ? globalThis.Boolean(object.forQualInvestorFlag) : false,
+      weekendFlag: isSet(object.weekendFlag) ? globalThis.Boolean(object.weekendFlag) : false,
+      blockedTcaFlag: isSet(object.blockedTcaFlag) ? globalThis.Boolean(object.blockedTcaFlag) : false,
+      subordinatedFlag: isSet(object.subordinatedFlag) ? globalThis.Boolean(object.subordinatedFlag) : false,
+      liquidityFlag: isSet(object.liquidityFlag) ? globalThis.Boolean(object.liquidityFlag) : false,
       first1minCandleDate: isSet(object.first1minCandleDate)
         ? fromJsonTimestamp(object.first1minCandleDate)
         : undefined,
       first1dayCandleDate: isSet(object.first1dayCandleDate)
         ? fromJsonTimestamp(object.first1dayCandleDate)
         : undefined,
-      riskLevel: isSet(object.riskLevel)
-        ? riskLevelFromJSON(object.riskLevel)
-        : 0,
+      riskLevel: isSet(object.riskLevel) ? riskLevelFromJSON(object.riskLevel) : 0,
     };
   },
 
   toJSON(message: Bond): unknown {
     const obj: any = {};
-    message.figi !== undefined && (obj.figi = message.figi);
-    message.ticker !== undefined && (obj.ticker = message.ticker);
-    message.classCode !== undefined && (obj.classCode = message.classCode);
-    message.isin !== undefined && (obj.isin = message.isin);
-    message.lot !== undefined && (obj.lot = Math.round(message.lot));
-    message.currency !== undefined && (obj.currency = message.currency);
-    message.klong !== undefined &&
-      (obj.klong = message.klong ? Quotation.toJSON(message.klong) : undefined);
-    message.kshort !== undefined &&
-      (obj.kshort = message.kshort
-        ? Quotation.toJSON(message.kshort)
-        : undefined);
-    message.dlong !== undefined &&
-      (obj.dlong = message.dlong ? Quotation.toJSON(message.dlong) : undefined);
-    message.dshort !== undefined &&
-      (obj.dshort = message.dshort
-        ? Quotation.toJSON(message.dshort)
-        : undefined);
-    message.dlongMin !== undefined &&
-      (obj.dlongMin = message.dlongMin
-        ? Quotation.toJSON(message.dlongMin)
-        : undefined);
-    message.dshortMin !== undefined &&
-      (obj.dshortMin = message.dshortMin
-        ? Quotation.toJSON(message.dshortMin)
-        : undefined);
-    message.shortEnabledFlag !== undefined &&
-      (obj.shortEnabledFlag = message.shortEnabledFlag);
-    message.name !== undefined && (obj.name = message.name);
-    message.exchange !== undefined && (obj.exchange = message.exchange);
-    message.couponQuantityPerYear !== undefined &&
-      (obj.couponQuantityPerYear = Math.round(message.couponQuantityPerYear));
-    message.maturityDate !== undefined &&
-      (obj.maturityDate = message.maturityDate.toISOString());
-    message.nominal !== undefined &&
-      (obj.nominal = message.nominal
-        ? MoneyValue.toJSON(message.nominal)
-        : undefined);
-    message.initialNominal !== undefined &&
-      (obj.initialNominal = message.initialNominal
-        ? MoneyValue.toJSON(message.initialNominal)
-        : undefined);
-    message.stateRegDate !== undefined &&
-      (obj.stateRegDate = message.stateRegDate.toISOString());
-    message.placementDate !== undefined &&
-      (obj.placementDate = message.placementDate.toISOString());
-    message.placementPrice !== undefined &&
-      (obj.placementPrice = message.placementPrice
-        ? MoneyValue.toJSON(message.placementPrice)
-        : undefined);
-    message.aciValue !== undefined &&
-      (obj.aciValue = message.aciValue
-        ? MoneyValue.toJSON(message.aciValue)
-        : undefined);
-    message.countryOfRisk !== undefined &&
-      (obj.countryOfRisk = message.countryOfRisk);
-    message.countryOfRiskName !== undefined &&
-      (obj.countryOfRiskName = message.countryOfRiskName);
-    message.sector !== undefined && (obj.sector = message.sector);
-    message.issueKind !== undefined && (obj.issueKind = message.issueKind);
-    message.issueSize !== undefined &&
-      (obj.issueSize = Math.round(message.issueSize));
-    message.issueSizePlan !== undefined &&
-      (obj.issueSizePlan = Math.round(message.issueSizePlan));
-    message.tradingStatus !== undefined &&
-      (obj.tradingStatus = securityTradingStatusToJSON(message.tradingStatus));
-    message.otcFlag !== undefined && (obj.otcFlag = message.otcFlag);
-    message.buyAvailableFlag !== undefined &&
-      (obj.buyAvailableFlag = message.buyAvailableFlag);
-    message.sellAvailableFlag !== undefined &&
-      (obj.sellAvailableFlag = message.sellAvailableFlag);
-    message.floatingCouponFlag !== undefined &&
-      (obj.floatingCouponFlag = message.floatingCouponFlag);
-    message.perpetualFlag !== undefined &&
-      (obj.perpetualFlag = message.perpetualFlag);
-    message.amortizationFlag !== undefined &&
-      (obj.amortizationFlag = message.amortizationFlag);
-    message.minPriceIncrement !== undefined &&
-      (obj.minPriceIncrement = message.minPriceIncrement
-        ? Quotation.toJSON(message.minPriceIncrement)
-        : undefined);
-    message.apiTradeAvailableFlag !== undefined &&
-      (obj.apiTradeAvailableFlag = message.apiTradeAvailableFlag);
-    message.uid !== undefined && (obj.uid = message.uid);
-    message.realExchange !== undefined &&
-      (obj.realExchange = realExchangeToJSON(message.realExchange));
-    message.positionUid !== undefined &&
-      (obj.positionUid = message.positionUid);
-    message.forIisFlag !== undefined && (obj.forIisFlag = message.forIisFlag);
-    message.forQualInvestorFlag !== undefined &&
-      (obj.forQualInvestorFlag = message.forQualInvestorFlag);
-    message.weekendFlag !== undefined &&
-      (obj.weekendFlag = message.weekendFlag);
-    message.blockedTcaFlag !== undefined &&
-      (obj.blockedTcaFlag = message.blockedTcaFlag);
-    message.subordinatedFlag !== undefined &&
-      (obj.subordinatedFlag = message.subordinatedFlag);
-    message.liquidityFlag !== undefined &&
-      (obj.liquidityFlag = message.liquidityFlag);
-    message.first1minCandleDate !== undefined &&
-      (obj.first1minCandleDate = message.first1minCandleDate.toISOString());
-    message.first1dayCandleDate !== undefined &&
-      (obj.first1dayCandleDate = message.first1dayCandleDate.toISOString());
-    message.riskLevel !== undefined &&
-      (obj.riskLevel = riskLevelToJSON(message.riskLevel));
+    if (message.figi !== "") {
+      obj.figi = message.figi;
+    }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
+    }
+    if (message.isin !== "") {
+      obj.isin = message.isin;
+    }
+    if (message.lot !== 0) {
+      obj.lot = Math.round(message.lot);
+    }
+    if (message.currency !== "") {
+      obj.currency = message.currency;
+    }
+    if (message.klong !== undefined) {
+      obj.klong = Quotation.toJSON(message.klong);
+    }
+    if (message.kshort !== undefined) {
+      obj.kshort = Quotation.toJSON(message.kshort);
+    }
+    if (message.dlong !== undefined) {
+      obj.dlong = Quotation.toJSON(message.dlong);
+    }
+    if (message.dshort !== undefined) {
+      obj.dshort = Quotation.toJSON(message.dshort);
+    }
+    if (message.dlongMin !== undefined) {
+      obj.dlongMin = Quotation.toJSON(message.dlongMin);
+    }
+    if (message.dshortMin !== undefined) {
+      obj.dshortMin = Quotation.toJSON(message.dshortMin);
+    }
+    if (message.shortEnabledFlag === true) {
+      obj.shortEnabledFlag = message.shortEnabledFlag;
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.exchange !== "") {
+      obj.exchange = message.exchange;
+    }
+    if (message.couponQuantityPerYear !== 0) {
+      obj.couponQuantityPerYear = Math.round(message.couponQuantityPerYear);
+    }
+    if (message.maturityDate !== undefined) {
+      obj.maturityDate = message.maturityDate.toISOString();
+    }
+    if (message.nominal !== undefined) {
+      obj.nominal = MoneyValue.toJSON(message.nominal);
+    }
+    if (message.initialNominal !== undefined) {
+      obj.initialNominal = MoneyValue.toJSON(message.initialNominal);
+    }
+    if (message.stateRegDate !== undefined) {
+      obj.stateRegDate = message.stateRegDate.toISOString();
+    }
+    if (message.placementDate !== undefined) {
+      obj.placementDate = message.placementDate.toISOString();
+    }
+    if (message.placementPrice !== undefined) {
+      obj.placementPrice = MoneyValue.toJSON(message.placementPrice);
+    }
+    if (message.aciValue !== undefined) {
+      obj.aciValue = MoneyValue.toJSON(message.aciValue);
+    }
+    if (message.countryOfRisk !== "") {
+      obj.countryOfRisk = message.countryOfRisk;
+    }
+    if (message.countryOfRiskName !== "") {
+      obj.countryOfRiskName = message.countryOfRiskName;
+    }
+    if (message.sector !== "") {
+      obj.sector = message.sector;
+    }
+    if (message.issueKind !== "") {
+      obj.issueKind = message.issueKind;
+    }
+    if (message.issueSize !== 0) {
+      obj.issueSize = Math.round(message.issueSize);
+    }
+    if (message.issueSizePlan !== 0) {
+      obj.issueSizePlan = Math.round(message.issueSizePlan);
+    }
+    if (message.tradingStatus !== 0) {
+      obj.tradingStatus = securityTradingStatusToJSON(message.tradingStatus);
+    }
+    if (message.otcFlag === true) {
+      obj.otcFlag = message.otcFlag;
+    }
+    if (message.buyAvailableFlag === true) {
+      obj.buyAvailableFlag = message.buyAvailableFlag;
+    }
+    if (message.sellAvailableFlag === true) {
+      obj.sellAvailableFlag = message.sellAvailableFlag;
+    }
+    if (message.floatingCouponFlag === true) {
+      obj.floatingCouponFlag = message.floatingCouponFlag;
+    }
+    if (message.perpetualFlag === true) {
+      obj.perpetualFlag = message.perpetualFlag;
+    }
+    if (message.amortizationFlag === true) {
+      obj.amortizationFlag = message.amortizationFlag;
+    }
+    if (message.minPriceIncrement !== undefined) {
+      obj.minPriceIncrement = Quotation.toJSON(message.minPriceIncrement);
+    }
+    if (message.apiTradeAvailableFlag === true) {
+      obj.apiTradeAvailableFlag = message.apiTradeAvailableFlag;
+    }
+    if (message.uid !== "") {
+      obj.uid = message.uid;
+    }
+    if (message.realExchange !== 0) {
+      obj.realExchange = realExchangeToJSON(message.realExchange);
+    }
+    if (message.positionUid !== "") {
+      obj.positionUid = message.positionUid;
+    }
+    if (message.forIisFlag === true) {
+      obj.forIisFlag = message.forIisFlag;
+    }
+    if (message.forQualInvestorFlag === true) {
+      obj.forQualInvestorFlag = message.forQualInvestorFlag;
+    }
+    if (message.weekendFlag === true) {
+      obj.weekendFlag = message.weekendFlag;
+    }
+    if (message.blockedTcaFlag === true) {
+      obj.blockedTcaFlag = message.blockedTcaFlag;
+    }
+    if (message.subordinatedFlag === true) {
+      obj.subordinatedFlag = message.subordinatedFlag;
+    }
+    if (message.liquidityFlag === true) {
+      obj.liquidityFlag = message.liquidityFlag;
+    }
+    if (message.first1minCandleDate !== undefined) {
+      obj.first1minCandleDate = message.first1minCandleDate.toISOString();
+    }
+    if (message.first1dayCandleDate !== undefined) {
+      obj.first1dayCandleDate = message.first1dayCandleDate.toISOString();
+    }
+    if (message.riskLevel !== 0) {
+      obj.riskLevel = riskLevelToJSON(message.riskLevel);
+    }
     return obj;
   },
 };
@@ -4880,10 +5441,7 @@ function createBaseCurrency(): Currency {
 }
 
 export const Currency = {
-  encode(
-    message: Currency,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: Currency, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.figi !== "") {
       writer.uint32(10).string(message.figi);
     }
@@ -4954,10 +5512,7 @@ export const Currency = {
       writer.uint32(194).string(message.isoCurrencyName);
     }
     if (message.minPriceIncrement !== undefined) {
-      Quotation.encode(
-        message.minPriceIncrement,
-        writer.uint32(202).fork()
-      ).ldelim();
+      Quotation.encode(message.minPriceIncrement, writer.uint32(202).fork()).ldelim();
     }
     if (message.apiTradeAvailableFlag === true) {
       writer.uint32(208).bool(message.apiTradeAvailableFlag);
@@ -4984,211 +5539,304 @@ export const Currency = {
       writer.uint32(432).bool(message.blockedTcaFlag);
     }
     if (message.first1minCandleDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.first1minCandleDate),
-        writer.uint32(450).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.first1minCandleDate), writer.uint32(450).fork()).ldelim();
     }
     if (message.first1dayCandleDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.first1dayCandleDate),
-        writer.uint32(458).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.first1dayCandleDate), writer.uint32(458).fork()).ldelim();
     }
     return writer;
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Currency {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCurrency();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.figi = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.ticker = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.classCode = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.isin = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag !== 40) {
+            break;
+          }
+
           message.lot = reader.int32();
-          break;
+          continue;
         case 6:
+          if (tag !== 50) {
+            break;
+          }
+
           message.currency = reader.string();
-          break;
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.klong = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 8:
+          if (tag !== 66) {
+            break;
+          }
+
           message.kshort = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 9:
+          if (tag !== 74) {
+            break;
+          }
+
           message.dlong = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 10:
+          if (tag !== 82) {
+            break;
+          }
+
           message.dshort = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 11:
+          if (tag !== 90) {
+            break;
+          }
+
           message.dlongMin = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 12:
+          if (tag !== 98) {
+            break;
+          }
+
           message.dshortMin = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 13:
+          if (tag !== 104) {
+            break;
+          }
+
           message.shortEnabledFlag = reader.bool();
-          break;
+          continue;
         case 15:
+          if (tag !== 122) {
+            break;
+          }
+
           message.name = reader.string();
-          break;
+          continue;
         case 16:
+          if (tag !== 130) {
+            break;
+          }
+
           message.exchange = reader.string();
-          break;
+          continue;
         case 17:
+          if (tag !== 138) {
+            break;
+          }
+
           message.nominal = MoneyValue.decode(reader, reader.uint32());
-          break;
+          continue;
         case 18:
+          if (tag !== 146) {
+            break;
+          }
+
           message.countryOfRisk = reader.string();
-          break;
+          continue;
         case 19:
+          if (tag !== 154) {
+            break;
+          }
+
           message.countryOfRiskName = reader.string();
-          break;
+          continue;
         case 20:
+          if (tag !== 160) {
+            break;
+          }
+
           message.tradingStatus = reader.int32() as any;
-          break;
+          continue;
         case 21:
+          if (tag !== 168) {
+            break;
+          }
+
           message.otcFlag = reader.bool();
-          break;
+          continue;
         case 22:
+          if (tag !== 176) {
+            break;
+          }
+
           message.buyAvailableFlag = reader.bool();
-          break;
+          continue;
         case 23:
+          if (tag !== 184) {
+            break;
+          }
+
           message.sellAvailableFlag = reader.bool();
-          break;
+          continue;
         case 24:
+          if (tag !== 194) {
+            break;
+          }
+
           message.isoCurrencyName = reader.string();
-          break;
+          continue;
         case 25:
+          if (tag !== 202) {
+            break;
+          }
+
           message.minPriceIncrement = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 26:
+          if (tag !== 208) {
+            break;
+          }
+
           message.apiTradeAvailableFlag = reader.bool();
-          break;
+          continue;
         case 27:
+          if (tag !== 218) {
+            break;
+          }
+
           message.uid = reader.string();
-          break;
+          continue;
         case 28:
+          if (tag !== 224) {
+            break;
+          }
+
           message.realExchange = reader.int32() as any;
-          break;
+          continue;
         case 29:
+          if (tag !== 234) {
+            break;
+          }
+
           message.positionUid = reader.string();
-          break;
+          continue;
         case 41:
+          if (tag !== 328) {
+            break;
+          }
+
           message.forIisFlag = reader.bool();
-          break;
+          continue;
         case 52:
+          if (tag !== 416) {
+            break;
+          }
+
           message.forQualInvestorFlag = reader.bool();
-          break;
+          continue;
         case 53:
+          if (tag !== 424) {
+            break;
+          }
+
           message.weekendFlag = reader.bool();
-          break;
+          continue;
         case 54:
+          if (tag !== 432) {
+            break;
+          }
+
           message.blockedTcaFlag = reader.bool();
-          break;
+          continue;
         case 56:
-          message.first1minCandleDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 450) {
+            break;
+          }
+
+          message.first1minCandleDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 57:
-          message.first1dayCandleDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          if (tag !== 458) {
+            break;
+          }
+
+          message.first1dayCandleDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): Currency {
     return {
-      figi: isSet(object.figi) ? String(object.figi) : "",
-      ticker: isSet(object.ticker) ? String(object.ticker) : "",
-      classCode: isSet(object.classCode) ? String(object.classCode) : "",
-      isin: isSet(object.isin) ? String(object.isin) : "",
-      lot: isSet(object.lot) ? Number(object.lot) : 0,
-      currency: isSet(object.currency) ? String(object.currency) : "",
+      figi: isSet(object.figi) ? globalThis.String(object.figi) : "",
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
+      isin: isSet(object.isin) ? globalThis.String(object.isin) : "",
+      lot: isSet(object.lot) ? globalThis.Number(object.lot) : 0,
+      currency: isSet(object.currency) ? globalThis.String(object.currency) : "",
       klong: isSet(object.klong) ? Quotation.fromJSON(object.klong) : undefined,
-      kshort: isSet(object.kshort)
-        ? Quotation.fromJSON(object.kshort)
-        : undefined,
+      kshort: isSet(object.kshort) ? Quotation.fromJSON(object.kshort) : undefined,
       dlong: isSet(object.dlong) ? Quotation.fromJSON(object.dlong) : undefined,
-      dshort: isSet(object.dshort)
-        ? Quotation.fromJSON(object.dshort)
-        : undefined,
-      dlongMin: isSet(object.dlongMin)
-        ? Quotation.fromJSON(object.dlongMin)
-        : undefined,
-      dshortMin: isSet(object.dshortMin)
-        ? Quotation.fromJSON(object.dshortMin)
-        : undefined,
-      shortEnabledFlag: isSet(object.shortEnabledFlag)
-        ? Boolean(object.shortEnabledFlag)
-        : false,
-      name: isSet(object.name) ? String(object.name) : "",
-      exchange: isSet(object.exchange) ? String(object.exchange) : "",
-      nominal: isSet(object.nominal)
-        ? MoneyValue.fromJSON(object.nominal)
-        : undefined,
-      countryOfRisk: isSet(object.countryOfRisk)
-        ? String(object.countryOfRisk)
-        : "",
-      countryOfRiskName: isSet(object.countryOfRiskName)
-        ? String(object.countryOfRiskName)
-        : "",
-      tradingStatus: isSet(object.tradingStatus)
-        ? securityTradingStatusFromJSON(object.tradingStatus)
-        : 0,
-      otcFlag: isSet(object.otcFlag) ? Boolean(object.otcFlag) : false,
-      buyAvailableFlag: isSet(object.buyAvailableFlag)
-        ? Boolean(object.buyAvailableFlag)
-        : false,
-      sellAvailableFlag: isSet(object.sellAvailableFlag)
-        ? Boolean(object.sellAvailableFlag)
-        : false,
-      isoCurrencyName: isSet(object.isoCurrencyName)
-        ? String(object.isoCurrencyName)
-        : "",
-      minPriceIncrement: isSet(object.minPriceIncrement)
-        ? Quotation.fromJSON(object.minPriceIncrement)
-        : undefined,
+      dshort: isSet(object.dshort) ? Quotation.fromJSON(object.dshort) : undefined,
+      dlongMin: isSet(object.dlongMin) ? Quotation.fromJSON(object.dlongMin) : undefined,
+      dshortMin: isSet(object.dshortMin) ? Quotation.fromJSON(object.dshortMin) : undefined,
+      shortEnabledFlag: isSet(object.shortEnabledFlag) ? globalThis.Boolean(object.shortEnabledFlag) : false,
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      exchange: isSet(object.exchange) ? globalThis.String(object.exchange) : "",
+      nominal: isSet(object.nominal) ? MoneyValue.fromJSON(object.nominal) : undefined,
+      countryOfRisk: isSet(object.countryOfRisk) ? globalThis.String(object.countryOfRisk) : "",
+      countryOfRiskName: isSet(object.countryOfRiskName) ? globalThis.String(object.countryOfRiskName) : "",
+      tradingStatus: isSet(object.tradingStatus) ? securityTradingStatusFromJSON(object.tradingStatus) : 0,
+      otcFlag: isSet(object.otcFlag) ? globalThis.Boolean(object.otcFlag) : false,
+      buyAvailableFlag: isSet(object.buyAvailableFlag) ? globalThis.Boolean(object.buyAvailableFlag) : false,
+      sellAvailableFlag: isSet(object.sellAvailableFlag) ? globalThis.Boolean(object.sellAvailableFlag) : false,
+      isoCurrencyName: isSet(object.isoCurrencyName) ? globalThis.String(object.isoCurrencyName) : "",
+      minPriceIncrement: isSet(object.minPriceIncrement) ? Quotation.fromJSON(object.minPriceIncrement) : undefined,
       apiTradeAvailableFlag: isSet(object.apiTradeAvailableFlag)
-        ? Boolean(object.apiTradeAvailableFlag)
+        ? globalThis.Boolean(object.apiTradeAvailableFlag)
         : false,
-      uid: isSet(object.uid) ? String(object.uid) : "",
-      realExchange: isSet(object.realExchange)
-        ? realExchangeFromJSON(object.realExchange)
-        : 0,
-      positionUid: isSet(object.positionUid) ? String(object.positionUid) : "",
-      forIisFlag: isSet(object.forIisFlag) ? Boolean(object.forIisFlag) : false,
-      forQualInvestorFlag: isSet(object.forQualInvestorFlag)
-        ? Boolean(object.forQualInvestorFlag)
-        : false,
-      weekendFlag: isSet(object.weekendFlag)
-        ? Boolean(object.weekendFlag)
-        : false,
-      blockedTcaFlag: isSet(object.blockedTcaFlag)
-        ? Boolean(object.blockedTcaFlag)
-        : false,
+      uid: isSet(object.uid) ? globalThis.String(object.uid) : "",
+      realExchange: isSet(object.realExchange) ? realExchangeFromJSON(object.realExchange) : 0,
+      positionUid: isSet(object.positionUid) ? globalThis.String(object.positionUid) : "",
+      forIisFlag: isSet(object.forIisFlag) ? globalThis.Boolean(object.forIisFlag) : false,
+      forQualInvestorFlag: isSet(object.forQualInvestorFlag) ? globalThis.Boolean(object.forQualInvestorFlag) : false,
+      weekendFlag: isSet(object.weekendFlag) ? globalThis.Boolean(object.weekendFlag) : false,
+      blockedTcaFlag: isSet(object.blockedTcaFlag) ? globalThis.Boolean(object.blockedTcaFlag) : false,
       first1minCandleDate: isSet(object.first1minCandleDate)
         ? fromJsonTimestamp(object.first1minCandleDate)
         : undefined,
@@ -5200,75 +5848,108 @@ export const Currency = {
 
   toJSON(message: Currency): unknown {
     const obj: any = {};
-    message.figi !== undefined && (obj.figi = message.figi);
-    message.ticker !== undefined && (obj.ticker = message.ticker);
-    message.classCode !== undefined && (obj.classCode = message.classCode);
-    message.isin !== undefined && (obj.isin = message.isin);
-    message.lot !== undefined && (obj.lot = Math.round(message.lot));
-    message.currency !== undefined && (obj.currency = message.currency);
-    message.klong !== undefined &&
-      (obj.klong = message.klong ? Quotation.toJSON(message.klong) : undefined);
-    message.kshort !== undefined &&
-      (obj.kshort = message.kshort
-        ? Quotation.toJSON(message.kshort)
-        : undefined);
-    message.dlong !== undefined &&
-      (obj.dlong = message.dlong ? Quotation.toJSON(message.dlong) : undefined);
-    message.dshort !== undefined &&
-      (obj.dshort = message.dshort
-        ? Quotation.toJSON(message.dshort)
-        : undefined);
-    message.dlongMin !== undefined &&
-      (obj.dlongMin = message.dlongMin
-        ? Quotation.toJSON(message.dlongMin)
-        : undefined);
-    message.dshortMin !== undefined &&
-      (obj.dshortMin = message.dshortMin
-        ? Quotation.toJSON(message.dshortMin)
-        : undefined);
-    message.shortEnabledFlag !== undefined &&
-      (obj.shortEnabledFlag = message.shortEnabledFlag);
-    message.name !== undefined && (obj.name = message.name);
-    message.exchange !== undefined && (obj.exchange = message.exchange);
-    message.nominal !== undefined &&
-      (obj.nominal = message.nominal
-        ? MoneyValue.toJSON(message.nominal)
-        : undefined);
-    message.countryOfRisk !== undefined &&
-      (obj.countryOfRisk = message.countryOfRisk);
-    message.countryOfRiskName !== undefined &&
-      (obj.countryOfRiskName = message.countryOfRiskName);
-    message.tradingStatus !== undefined &&
-      (obj.tradingStatus = securityTradingStatusToJSON(message.tradingStatus));
-    message.otcFlag !== undefined && (obj.otcFlag = message.otcFlag);
-    message.buyAvailableFlag !== undefined &&
-      (obj.buyAvailableFlag = message.buyAvailableFlag);
-    message.sellAvailableFlag !== undefined &&
-      (obj.sellAvailableFlag = message.sellAvailableFlag);
-    message.isoCurrencyName !== undefined &&
-      (obj.isoCurrencyName = message.isoCurrencyName);
-    message.minPriceIncrement !== undefined &&
-      (obj.minPriceIncrement = message.minPriceIncrement
-        ? Quotation.toJSON(message.minPriceIncrement)
-        : undefined);
-    message.apiTradeAvailableFlag !== undefined &&
-      (obj.apiTradeAvailableFlag = message.apiTradeAvailableFlag);
-    message.uid !== undefined && (obj.uid = message.uid);
-    message.realExchange !== undefined &&
-      (obj.realExchange = realExchangeToJSON(message.realExchange));
-    message.positionUid !== undefined &&
-      (obj.positionUid = message.positionUid);
-    message.forIisFlag !== undefined && (obj.forIisFlag = message.forIisFlag);
-    message.forQualInvestorFlag !== undefined &&
-      (obj.forQualInvestorFlag = message.forQualInvestorFlag);
-    message.weekendFlag !== undefined &&
-      (obj.weekendFlag = message.weekendFlag);
-    message.blockedTcaFlag !== undefined &&
-      (obj.blockedTcaFlag = message.blockedTcaFlag);
-    message.first1minCandleDate !== undefined &&
-      (obj.first1minCandleDate = message.first1minCandleDate.toISOString());
-    message.first1dayCandleDate !== undefined &&
-      (obj.first1dayCandleDate = message.first1dayCandleDate.toISOString());
+    if (message.figi !== "") {
+      obj.figi = message.figi;
+    }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
+    }
+    if (message.isin !== "") {
+      obj.isin = message.isin;
+    }
+    if (message.lot !== 0) {
+      obj.lot = Math.round(message.lot);
+    }
+    if (message.currency !== "") {
+      obj.currency = message.currency;
+    }
+    if (message.klong !== undefined) {
+      obj.klong = Quotation.toJSON(message.klong);
+    }
+    if (message.kshort !== undefined) {
+      obj.kshort = Quotation.toJSON(message.kshort);
+    }
+    if (message.dlong !== undefined) {
+      obj.dlong = Quotation.toJSON(message.dlong);
+    }
+    if (message.dshort !== undefined) {
+      obj.dshort = Quotation.toJSON(message.dshort);
+    }
+    if (message.dlongMin !== undefined) {
+      obj.dlongMin = Quotation.toJSON(message.dlongMin);
+    }
+    if (message.dshortMin !== undefined) {
+      obj.dshortMin = Quotation.toJSON(message.dshortMin);
+    }
+    if (message.shortEnabledFlag === true) {
+      obj.shortEnabledFlag = message.shortEnabledFlag;
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.exchange !== "") {
+      obj.exchange = message.exchange;
+    }
+    if (message.nominal !== undefined) {
+      obj.nominal = MoneyValue.toJSON(message.nominal);
+    }
+    if (message.countryOfRisk !== "") {
+      obj.countryOfRisk = message.countryOfRisk;
+    }
+    if (message.countryOfRiskName !== "") {
+      obj.countryOfRiskName = message.countryOfRiskName;
+    }
+    if (message.tradingStatus !== 0) {
+      obj.tradingStatus = securityTradingStatusToJSON(message.tradingStatus);
+    }
+    if (message.otcFlag === true) {
+      obj.otcFlag = message.otcFlag;
+    }
+    if (message.buyAvailableFlag === true) {
+      obj.buyAvailableFlag = message.buyAvailableFlag;
+    }
+    if (message.sellAvailableFlag === true) {
+      obj.sellAvailableFlag = message.sellAvailableFlag;
+    }
+    if (message.isoCurrencyName !== "") {
+      obj.isoCurrencyName = message.isoCurrencyName;
+    }
+    if (message.minPriceIncrement !== undefined) {
+      obj.minPriceIncrement = Quotation.toJSON(message.minPriceIncrement);
+    }
+    if (message.apiTradeAvailableFlag === true) {
+      obj.apiTradeAvailableFlag = message.apiTradeAvailableFlag;
+    }
+    if (message.uid !== "") {
+      obj.uid = message.uid;
+    }
+    if (message.realExchange !== 0) {
+      obj.realExchange = realExchangeToJSON(message.realExchange);
+    }
+    if (message.positionUid !== "") {
+      obj.positionUid = message.positionUid;
+    }
+    if (message.forIisFlag === true) {
+      obj.forIisFlag = message.forIisFlag;
+    }
+    if (message.forQualInvestorFlag === true) {
+      obj.forQualInvestorFlag = message.forQualInvestorFlag;
+    }
+    if (message.weekendFlag === true) {
+      obj.weekendFlag = message.weekendFlag;
+    }
+    if (message.blockedTcaFlag === true) {
+      obj.blockedTcaFlag = message.blockedTcaFlag;
+    }
+    if (message.first1minCandleDate !== undefined) {
+      obj.first1minCandleDate = message.first1minCandleDate.toISOString();
+    }
+    if (message.first1dayCandleDate !== undefined) {
+      obj.first1dayCandleDate = message.first1dayCandleDate.toISOString();
+    }
     return obj;
   },
 };
@@ -5365,19 +6046,13 @@ export const Etf = {
       writer.uint32(130).string(message.exchange);
     }
     if (message.fixedCommission !== undefined) {
-      Quotation.encode(
-        message.fixedCommission,
-        writer.uint32(138).fork()
-      ).ldelim();
+      Quotation.encode(message.fixedCommission, writer.uint32(138).fork()).ldelim();
     }
     if (message.focusType !== "") {
       writer.uint32(146).string(message.focusType);
     }
     if (message.releasedDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.releasedDate),
-        writer.uint32(154).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.releasedDate), writer.uint32(154).fork()).ldelim();
     }
     if (message.numShares !== undefined) {
       Quotation.encode(message.numShares, writer.uint32(162).fork()).ldelim();
@@ -5407,10 +6082,7 @@ export const Etf = {
       writer.uint32(224).bool(message.sellAvailableFlag);
     }
     if (message.minPriceIncrement !== undefined) {
-      Quotation.encode(
-        message.minPriceIncrement,
-        writer.uint32(234).fork()
-      ).ldelim();
+      Quotation.encode(message.minPriceIncrement, writer.uint32(234).fork()).ldelim();
     }
     if (message.apiTradeAvailableFlag === true) {
       writer.uint32(240).bool(message.apiTradeAvailableFlag);
@@ -5440,239 +6112,344 @@ export const Etf = {
       writer.uint32(360).bool(message.liquidityFlag);
     }
     if (message.first1minCandleDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.first1minCandleDate),
-        writer.uint32(450).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.first1minCandleDate), writer.uint32(450).fork()).ldelim();
     }
     if (message.first1dayCandleDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.first1dayCandleDate),
-        writer.uint32(458).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.first1dayCandleDate), writer.uint32(458).fork()).ldelim();
     }
     return writer;
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Etf {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEtf();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.figi = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.ticker = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.classCode = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.isin = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag !== 40) {
+            break;
+          }
+
           message.lot = reader.int32();
-          break;
+          continue;
         case 6:
+          if (tag !== 50) {
+            break;
+          }
+
           message.currency = reader.string();
-          break;
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.klong = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 8:
+          if (tag !== 66) {
+            break;
+          }
+
           message.kshort = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 9:
+          if (tag !== 74) {
+            break;
+          }
+
           message.dlong = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 10:
+          if (tag !== 82) {
+            break;
+          }
+
           message.dshort = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 11:
+          if (tag !== 90) {
+            break;
+          }
+
           message.dlongMin = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 12:
+          if (tag !== 98) {
+            break;
+          }
+
           message.dshortMin = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 13:
+          if (tag !== 104) {
+            break;
+          }
+
           message.shortEnabledFlag = reader.bool();
-          break;
+          continue;
         case 15:
+          if (tag !== 122) {
+            break;
+          }
+
           message.name = reader.string();
-          break;
+          continue;
         case 16:
+          if (tag !== 130) {
+            break;
+          }
+
           message.exchange = reader.string();
-          break;
+          continue;
         case 17:
+          if (tag !== 138) {
+            break;
+          }
+
           message.fixedCommission = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 18:
+          if (tag !== 146) {
+            break;
+          }
+
           message.focusType = reader.string();
-          break;
+          continue;
         case 19:
-          message.releasedDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 154) {
+            break;
+          }
+
+          message.releasedDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 20:
+          if (tag !== 162) {
+            break;
+          }
+
           message.numShares = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 21:
+          if (tag !== 170) {
+            break;
+          }
+
           message.countryOfRisk = reader.string();
-          break;
+          continue;
         case 22:
+          if (tag !== 178) {
+            break;
+          }
+
           message.countryOfRiskName = reader.string();
-          break;
+          continue;
         case 23:
+          if (tag !== 186) {
+            break;
+          }
+
           message.sector = reader.string();
-          break;
+          continue;
         case 24:
+          if (tag !== 194) {
+            break;
+          }
+
           message.rebalancingFreq = reader.string();
-          break;
+          continue;
         case 25:
+          if (tag !== 200) {
+            break;
+          }
+
           message.tradingStatus = reader.int32() as any;
-          break;
+          continue;
         case 26:
+          if (tag !== 208) {
+            break;
+          }
+
           message.otcFlag = reader.bool();
-          break;
+          continue;
         case 27:
+          if (tag !== 216) {
+            break;
+          }
+
           message.buyAvailableFlag = reader.bool();
-          break;
+          continue;
         case 28:
+          if (tag !== 224) {
+            break;
+          }
+
           message.sellAvailableFlag = reader.bool();
-          break;
+          continue;
         case 29:
+          if (tag !== 234) {
+            break;
+          }
+
           message.minPriceIncrement = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 30:
+          if (tag !== 240) {
+            break;
+          }
+
           message.apiTradeAvailableFlag = reader.bool();
-          break;
+          continue;
         case 31:
+          if (tag !== 250) {
+            break;
+          }
+
           message.uid = reader.string();
-          break;
+          continue;
         case 32:
+          if (tag !== 256) {
+            break;
+          }
+
           message.realExchange = reader.int32() as any;
-          break;
+          continue;
         case 33:
+          if (tag !== 266) {
+            break;
+          }
+
           message.positionUid = reader.string();
-          break;
+          continue;
         case 41:
+          if (tag !== 328) {
+            break;
+          }
+
           message.forIisFlag = reader.bool();
-          break;
+          continue;
         case 42:
+          if (tag !== 336) {
+            break;
+          }
+
           message.forQualInvestorFlag = reader.bool();
-          break;
+          continue;
         case 43:
+          if (tag !== 344) {
+            break;
+          }
+
           message.weekendFlag = reader.bool();
-          break;
+          continue;
         case 44:
+          if (tag !== 352) {
+            break;
+          }
+
           message.blockedTcaFlag = reader.bool();
-          break;
+          continue;
         case 45:
+          if (tag !== 360) {
+            break;
+          }
+
           message.liquidityFlag = reader.bool();
-          break;
+          continue;
         case 56:
-          message.first1minCandleDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 450) {
+            break;
+          }
+
+          message.first1minCandleDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 57:
-          message.first1dayCandleDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          if (tag !== 458) {
+            break;
+          }
+
+          message.first1dayCandleDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): Etf {
     return {
-      figi: isSet(object.figi) ? String(object.figi) : "",
-      ticker: isSet(object.ticker) ? String(object.ticker) : "",
-      classCode: isSet(object.classCode) ? String(object.classCode) : "",
-      isin: isSet(object.isin) ? String(object.isin) : "",
-      lot: isSet(object.lot) ? Number(object.lot) : 0,
-      currency: isSet(object.currency) ? String(object.currency) : "",
+      figi: isSet(object.figi) ? globalThis.String(object.figi) : "",
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
+      isin: isSet(object.isin) ? globalThis.String(object.isin) : "",
+      lot: isSet(object.lot) ? globalThis.Number(object.lot) : 0,
+      currency: isSet(object.currency) ? globalThis.String(object.currency) : "",
       klong: isSet(object.klong) ? Quotation.fromJSON(object.klong) : undefined,
-      kshort: isSet(object.kshort)
-        ? Quotation.fromJSON(object.kshort)
-        : undefined,
+      kshort: isSet(object.kshort) ? Quotation.fromJSON(object.kshort) : undefined,
       dlong: isSet(object.dlong) ? Quotation.fromJSON(object.dlong) : undefined,
-      dshort: isSet(object.dshort)
-        ? Quotation.fromJSON(object.dshort)
-        : undefined,
-      dlongMin: isSet(object.dlongMin)
-        ? Quotation.fromJSON(object.dlongMin)
-        : undefined,
-      dshortMin: isSet(object.dshortMin)
-        ? Quotation.fromJSON(object.dshortMin)
-        : undefined,
-      shortEnabledFlag: isSet(object.shortEnabledFlag)
-        ? Boolean(object.shortEnabledFlag)
-        : false,
-      name: isSet(object.name) ? String(object.name) : "",
-      exchange: isSet(object.exchange) ? String(object.exchange) : "",
-      fixedCommission: isSet(object.fixedCommission)
-        ? Quotation.fromJSON(object.fixedCommission)
-        : undefined,
-      focusType: isSet(object.focusType) ? String(object.focusType) : "",
-      releasedDate: isSet(object.releasedDate)
-        ? fromJsonTimestamp(object.releasedDate)
-        : undefined,
-      numShares: isSet(object.numShares)
-        ? Quotation.fromJSON(object.numShares)
-        : undefined,
-      countryOfRisk: isSet(object.countryOfRisk)
-        ? String(object.countryOfRisk)
-        : "",
-      countryOfRiskName: isSet(object.countryOfRiskName)
-        ? String(object.countryOfRiskName)
-        : "",
-      sector: isSet(object.sector) ? String(object.sector) : "",
-      rebalancingFreq: isSet(object.rebalancingFreq)
-        ? String(object.rebalancingFreq)
-        : "",
-      tradingStatus: isSet(object.tradingStatus)
-        ? securityTradingStatusFromJSON(object.tradingStatus)
-        : 0,
-      otcFlag: isSet(object.otcFlag) ? Boolean(object.otcFlag) : false,
-      buyAvailableFlag: isSet(object.buyAvailableFlag)
-        ? Boolean(object.buyAvailableFlag)
-        : false,
-      sellAvailableFlag: isSet(object.sellAvailableFlag)
-        ? Boolean(object.sellAvailableFlag)
-        : false,
-      minPriceIncrement: isSet(object.minPriceIncrement)
-        ? Quotation.fromJSON(object.minPriceIncrement)
-        : undefined,
+      dshort: isSet(object.dshort) ? Quotation.fromJSON(object.dshort) : undefined,
+      dlongMin: isSet(object.dlongMin) ? Quotation.fromJSON(object.dlongMin) : undefined,
+      dshortMin: isSet(object.dshortMin) ? Quotation.fromJSON(object.dshortMin) : undefined,
+      shortEnabledFlag: isSet(object.shortEnabledFlag) ? globalThis.Boolean(object.shortEnabledFlag) : false,
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      exchange: isSet(object.exchange) ? globalThis.String(object.exchange) : "",
+      fixedCommission: isSet(object.fixedCommission) ? Quotation.fromJSON(object.fixedCommission) : undefined,
+      focusType: isSet(object.focusType) ? globalThis.String(object.focusType) : "",
+      releasedDate: isSet(object.releasedDate) ? fromJsonTimestamp(object.releasedDate) : undefined,
+      numShares: isSet(object.numShares) ? Quotation.fromJSON(object.numShares) : undefined,
+      countryOfRisk: isSet(object.countryOfRisk) ? globalThis.String(object.countryOfRisk) : "",
+      countryOfRiskName: isSet(object.countryOfRiskName) ? globalThis.String(object.countryOfRiskName) : "",
+      sector: isSet(object.sector) ? globalThis.String(object.sector) : "",
+      rebalancingFreq: isSet(object.rebalancingFreq) ? globalThis.String(object.rebalancingFreq) : "",
+      tradingStatus: isSet(object.tradingStatus) ? securityTradingStatusFromJSON(object.tradingStatus) : 0,
+      otcFlag: isSet(object.otcFlag) ? globalThis.Boolean(object.otcFlag) : false,
+      buyAvailableFlag: isSet(object.buyAvailableFlag) ? globalThis.Boolean(object.buyAvailableFlag) : false,
+      sellAvailableFlag: isSet(object.sellAvailableFlag) ? globalThis.Boolean(object.sellAvailableFlag) : false,
+      minPriceIncrement: isSet(object.minPriceIncrement) ? Quotation.fromJSON(object.minPriceIncrement) : undefined,
       apiTradeAvailableFlag: isSet(object.apiTradeAvailableFlag)
-        ? Boolean(object.apiTradeAvailableFlag)
+        ? globalThis.Boolean(object.apiTradeAvailableFlag)
         : false,
-      uid: isSet(object.uid) ? String(object.uid) : "",
-      realExchange: isSet(object.realExchange)
-        ? realExchangeFromJSON(object.realExchange)
-        : 0,
-      positionUid: isSet(object.positionUid) ? String(object.positionUid) : "",
-      forIisFlag: isSet(object.forIisFlag) ? Boolean(object.forIisFlag) : false,
-      forQualInvestorFlag: isSet(object.forQualInvestorFlag)
-        ? Boolean(object.forQualInvestorFlag)
-        : false,
-      weekendFlag: isSet(object.weekendFlag)
-        ? Boolean(object.weekendFlag)
-        : false,
-      blockedTcaFlag: isSet(object.blockedTcaFlag)
-        ? Boolean(object.blockedTcaFlag)
-        : false,
-      liquidityFlag: isSet(object.liquidityFlag)
-        ? Boolean(object.liquidityFlag)
-        : false,
+      uid: isSet(object.uid) ? globalThis.String(object.uid) : "",
+      realExchange: isSet(object.realExchange) ? realExchangeFromJSON(object.realExchange) : 0,
+      positionUid: isSet(object.positionUid) ? globalThis.String(object.positionUid) : "",
+      forIisFlag: isSet(object.forIisFlag) ? globalThis.Boolean(object.forIisFlag) : false,
+      forQualInvestorFlag: isSet(object.forQualInvestorFlag) ? globalThis.Boolean(object.forQualInvestorFlag) : false,
+      weekendFlag: isSet(object.weekendFlag) ? globalThis.Boolean(object.weekendFlag) : false,
+      blockedTcaFlag: isSet(object.blockedTcaFlag) ? globalThis.Boolean(object.blockedTcaFlag) : false,
+      liquidityFlag: isSet(object.liquidityFlag) ? globalThis.Boolean(object.liquidityFlag) : false,
       first1minCandleDate: isSet(object.first1minCandleDate)
         ? fromJsonTimestamp(object.first1minCandleDate)
         : undefined,
@@ -5684,85 +6461,123 @@ export const Etf = {
 
   toJSON(message: Etf): unknown {
     const obj: any = {};
-    message.figi !== undefined && (obj.figi = message.figi);
-    message.ticker !== undefined && (obj.ticker = message.ticker);
-    message.classCode !== undefined && (obj.classCode = message.classCode);
-    message.isin !== undefined && (obj.isin = message.isin);
-    message.lot !== undefined && (obj.lot = Math.round(message.lot));
-    message.currency !== undefined && (obj.currency = message.currency);
-    message.klong !== undefined &&
-      (obj.klong = message.klong ? Quotation.toJSON(message.klong) : undefined);
-    message.kshort !== undefined &&
-      (obj.kshort = message.kshort
-        ? Quotation.toJSON(message.kshort)
-        : undefined);
-    message.dlong !== undefined &&
-      (obj.dlong = message.dlong ? Quotation.toJSON(message.dlong) : undefined);
-    message.dshort !== undefined &&
-      (obj.dshort = message.dshort
-        ? Quotation.toJSON(message.dshort)
-        : undefined);
-    message.dlongMin !== undefined &&
-      (obj.dlongMin = message.dlongMin
-        ? Quotation.toJSON(message.dlongMin)
-        : undefined);
-    message.dshortMin !== undefined &&
-      (obj.dshortMin = message.dshortMin
-        ? Quotation.toJSON(message.dshortMin)
-        : undefined);
-    message.shortEnabledFlag !== undefined &&
-      (obj.shortEnabledFlag = message.shortEnabledFlag);
-    message.name !== undefined && (obj.name = message.name);
-    message.exchange !== undefined && (obj.exchange = message.exchange);
-    message.fixedCommission !== undefined &&
-      (obj.fixedCommission = message.fixedCommission
-        ? Quotation.toJSON(message.fixedCommission)
-        : undefined);
-    message.focusType !== undefined && (obj.focusType = message.focusType);
-    message.releasedDate !== undefined &&
-      (obj.releasedDate = message.releasedDate.toISOString());
-    message.numShares !== undefined &&
-      (obj.numShares = message.numShares
-        ? Quotation.toJSON(message.numShares)
-        : undefined);
-    message.countryOfRisk !== undefined &&
-      (obj.countryOfRisk = message.countryOfRisk);
-    message.countryOfRiskName !== undefined &&
-      (obj.countryOfRiskName = message.countryOfRiskName);
-    message.sector !== undefined && (obj.sector = message.sector);
-    message.rebalancingFreq !== undefined &&
-      (obj.rebalancingFreq = message.rebalancingFreq);
-    message.tradingStatus !== undefined &&
-      (obj.tradingStatus = securityTradingStatusToJSON(message.tradingStatus));
-    message.otcFlag !== undefined && (obj.otcFlag = message.otcFlag);
-    message.buyAvailableFlag !== undefined &&
-      (obj.buyAvailableFlag = message.buyAvailableFlag);
-    message.sellAvailableFlag !== undefined &&
-      (obj.sellAvailableFlag = message.sellAvailableFlag);
-    message.minPriceIncrement !== undefined &&
-      (obj.minPriceIncrement = message.minPriceIncrement
-        ? Quotation.toJSON(message.minPriceIncrement)
-        : undefined);
-    message.apiTradeAvailableFlag !== undefined &&
-      (obj.apiTradeAvailableFlag = message.apiTradeAvailableFlag);
-    message.uid !== undefined && (obj.uid = message.uid);
-    message.realExchange !== undefined &&
-      (obj.realExchange = realExchangeToJSON(message.realExchange));
-    message.positionUid !== undefined &&
-      (obj.positionUid = message.positionUid);
-    message.forIisFlag !== undefined && (obj.forIisFlag = message.forIisFlag);
-    message.forQualInvestorFlag !== undefined &&
-      (obj.forQualInvestorFlag = message.forQualInvestorFlag);
-    message.weekendFlag !== undefined &&
-      (obj.weekendFlag = message.weekendFlag);
-    message.blockedTcaFlag !== undefined &&
-      (obj.blockedTcaFlag = message.blockedTcaFlag);
-    message.liquidityFlag !== undefined &&
-      (obj.liquidityFlag = message.liquidityFlag);
-    message.first1minCandleDate !== undefined &&
-      (obj.first1minCandleDate = message.first1minCandleDate.toISOString());
-    message.first1dayCandleDate !== undefined &&
-      (obj.first1dayCandleDate = message.first1dayCandleDate.toISOString());
+    if (message.figi !== "") {
+      obj.figi = message.figi;
+    }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
+    }
+    if (message.isin !== "") {
+      obj.isin = message.isin;
+    }
+    if (message.lot !== 0) {
+      obj.lot = Math.round(message.lot);
+    }
+    if (message.currency !== "") {
+      obj.currency = message.currency;
+    }
+    if (message.klong !== undefined) {
+      obj.klong = Quotation.toJSON(message.klong);
+    }
+    if (message.kshort !== undefined) {
+      obj.kshort = Quotation.toJSON(message.kshort);
+    }
+    if (message.dlong !== undefined) {
+      obj.dlong = Quotation.toJSON(message.dlong);
+    }
+    if (message.dshort !== undefined) {
+      obj.dshort = Quotation.toJSON(message.dshort);
+    }
+    if (message.dlongMin !== undefined) {
+      obj.dlongMin = Quotation.toJSON(message.dlongMin);
+    }
+    if (message.dshortMin !== undefined) {
+      obj.dshortMin = Quotation.toJSON(message.dshortMin);
+    }
+    if (message.shortEnabledFlag === true) {
+      obj.shortEnabledFlag = message.shortEnabledFlag;
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.exchange !== "") {
+      obj.exchange = message.exchange;
+    }
+    if (message.fixedCommission !== undefined) {
+      obj.fixedCommission = Quotation.toJSON(message.fixedCommission);
+    }
+    if (message.focusType !== "") {
+      obj.focusType = message.focusType;
+    }
+    if (message.releasedDate !== undefined) {
+      obj.releasedDate = message.releasedDate.toISOString();
+    }
+    if (message.numShares !== undefined) {
+      obj.numShares = Quotation.toJSON(message.numShares);
+    }
+    if (message.countryOfRisk !== "") {
+      obj.countryOfRisk = message.countryOfRisk;
+    }
+    if (message.countryOfRiskName !== "") {
+      obj.countryOfRiskName = message.countryOfRiskName;
+    }
+    if (message.sector !== "") {
+      obj.sector = message.sector;
+    }
+    if (message.rebalancingFreq !== "") {
+      obj.rebalancingFreq = message.rebalancingFreq;
+    }
+    if (message.tradingStatus !== 0) {
+      obj.tradingStatus = securityTradingStatusToJSON(message.tradingStatus);
+    }
+    if (message.otcFlag === true) {
+      obj.otcFlag = message.otcFlag;
+    }
+    if (message.buyAvailableFlag === true) {
+      obj.buyAvailableFlag = message.buyAvailableFlag;
+    }
+    if (message.sellAvailableFlag === true) {
+      obj.sellAvailableFlag = message.sellAvailableFlag;
+    }
+    if (message.minPriceIncrement !== undefined) {
+      obj.minPriceIncrement = Quotation.toJSON(message.minPriceIncrement);
+    }
+    if (message.apiTradeAvailableFlag === true) {
+      obj.apiTradeAvailableFlag = message.apiTradeAvailableFlag;
+    }
+    if (message.uid !== "") {
+      obj.uid = message.uid;
+    }
+    if (message.realExchange !== 0) {
+      obj.realExchange = realExchangeToJSON(message.realExchange);
+    }
+    if (message.positionUid !== "") {
+      obj.positionUid = message.positionUid;
+    }
+    if (message.forIisFlag === true) {
+      obj.forIisFlag = message.forIisFlag;
+    }
+    if (message.forQualInvestorFlag === true) {
+      obj.forQualInvestorFlag = message.forQualInvestorFlag;
+    }
+    if (message.weekendFlag === true) {
+      obj.weekendFlag = message.weekendFlag;
+    }
+    if (message.blockedTcaFlag === true) {
+      obj.blockedTcaFlag = message.blockedTcaFlag;
+    }
+    if (message.liquidityFlag === true) {
+      obj.liquidityFlag = message.liquidityFlag;
+    }
+    if (message.first1minCandleDate !== undefined) {
+      obj.first1minCandleDate = message.first1minCandleDate.toISOString();
+    }
+    if (message.first1dayCandleDate !== undefined) {
+      obj.first1dayCandleDate = message.first1dayCandleDate.toISOString();
+    }
     return obj;
   },
 };
@@ -5813,10 +6628,7 @@ function createBaseFuture(): Future {
 }
 
 export const Future = {
-  encode(
-    message: Future,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: Future, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.figi !== "") {
       writer.uint32(10).string(message.figi);
     }
@@ -5860,16 +6672,10 @@ export const Future = {
       writer.uint32(114).string(message.exchange);
     }
     if (message.firstTradeDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.firstTradeDate),
-        writer.uint32(122).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.firstTradeDate), writer.uint32(122).fork()).ldelim();
     }
     if (message.lastTradeDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.lastTradeDate),
-        writer.uint32(130).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.lastTradeDate), writer.uint32(130).fork()).ldelim();
     }
     if (message.futuresType !== "") {
       writer.uint32(138).string(message.futuresType);
@@ -5881,10 +6687,7 @@ export const Future = {
       writer.uint32(154).string(message.basicAsset);
     }
     if (message.basicAssetSize !== undefined) {
-      Quotation.encode(
-        message.basicAssetSize,
-        writer.uint32(162).fork()
-      ).ldelim();
+      Quotation.encode(message.basicAssetSize, writer.uint32(162).fork()).ldelim();
     }
     if (message.countryOfRisk !== "") {
       writer.uint32(170).string(message.countryOfRisk);
@@ -5896,10 +6699,7 @@ export const Future = {
       writer.uint32(186).string(message.sector);
     }
     if (message.expirationDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.expirationDate),
-        writer.uint32(194).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.expirationDate), writer.uint32(194).fork()).ldelim();
     }
     if (message.tradingStatus !== 0) {
       writer.uint32(200).int32(message.tradingStatus);
@@ -5914,10 +6714,7 @@ export const Future = {
       writer.uint32(224).bool(message.sellAvailableFlag);
     }
     if (message.minPriceIncrement !== undefined) {
-      Quotation.encode(
-        message.minPriceIncrement,
-        writer.uint32(234).fork()
-      ).ldelim();
+      Quotation.encode(message.minPriceIncrement, writer.uint32(234).fork()).ldelim();
     }
     if (message.apiTradeAvailableFlag === true) {
       writer.uint32(240).bool(message.apiTradeAvailableFlag);
@@ -5947,247 +6744,352 @@ export const Future = {
       writer.uint32(352).bool(message.blockedTcaFlag);
     }
     if (message.first1minCandleDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.first1minCandleDate),
-        writer.uint32(450).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.first1minCandleDate), writer.uint32(450).fork()).ldelim();
     }
     if (message.first1dayCandleDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.first1dayCandleDate),
-        writer.uint32(458).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.first1dayCandleDate), writer.uint32(458).fork()).ldelim();
     }
     return writer;
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Future {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseFuture();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.figi = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.ticker = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.classCode = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag !== 32) {
+            break;
+          }
+
           message.lot = reader.int32();
-          break;
+          continue;
         case 5:
+          if (tag !== 42) {
+            break;
+          }
+
           message.currency = reader.string();
-          break;
+          continue;
         case 6:
+          if (tag !== 50) {
+            break;
+          }
+
           message.klong = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.kshort = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 8:
+          if (tag !== 66) {
+            break;
+          }
+
           message.dlong = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 9:
+          if (tag !== 74) {
+            break;
+          }
+
           message.dshort = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 10:
+          if (tag !== 82) {
+            break;
+          }
+
           message.dlongMin = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 11:
+          if (tag !== 90) {
+            break;
+          }
+
           message.dshortMin = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 12:
+          if (tag !== 96) {
+            break;
+          }
+
           message.shortEnabledFlag = reader.bool();
-          break;
+          continue;
         case 13:
+          if (tag !== 106) {
+            break;
+          }
+
           message.name = reader.string();
-          break;
+          continue;
         case 14:
+          if (tag !== 114) {
+            break;
+          }
+
           message.exchange = reader.string();
-          break;
+          continue;
         case 15:
-          message.firstTradeDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 122) {
+            break;
+          }
+
+          message.firstTradeDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 16:
-          message.lastTradeDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 130) {
+            break;
+          }
+
+          message.lastTradeDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 17:
+          if (tag !== 138) {
+            break;
+          }
+
           message.futuresType = reader.string();
-          break;
+          continue;
         case 18:
+          if (tag !== 146) {
+            break;
+          }
+
           message.assetType = reader.string();
-          break;
+          continue;
         case 19:
+          if (tag !== 154) {
+            break;
+          }
+
           message.basicAsset = reader.string();
-          break;
+          continue;
         case 20:
+          if (tag !== 162) {
+            break;
+          }
+
           message.basicAssetSize = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 21:
+          if (tag !== 170) {
+            break;
+          }
+
           message.countryOfRisk = reader.string();
-          break;
+          continue;
         case 22:
+          if (tag !== 178) {
+            break;
+          }
+
           message.countryOfRiskName = reader.string();
-          break;
+          continue;
         case 23:
+          if (tag !== 186) {
+            break;
+          }
+
           message.sector = reader.string();
-          break;
+          continue;
         case 24:
-          message.expirationDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 194) {
+            break;
+          }
+
+          message.expirationDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 25:
+          if (tag !== 200) {
+            break;
+          }
+
           message.tradingStatus = reader.int32() as any;
-          break;
+          continue;
         case 26:
+          if (tag !== 208) {
+            break;
+          }
+
           message.otcFlag = reader.bool();
-          break;
+          continue;
         case 27:
+          if (tag !== 216) {
+            break;
+          }
+
           message.buyAvailableFlag = reader.bool();
-          break;
+          continue;
         case 28:
+          if (tag !== 224) {
+            break;
+          }
+
           message.sellAvailableFlag = reader.bool();
-          break;
+          continue;
         case 29:
+          if (tag !== 234) {
+            break;
+          }
+
           message.minPriceIncrement = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 30:
+          if (tag !== 240) {
+            break;
+          }
+
           message.apiTradeAvailableFlag = reader.bool();
-          break;
+          continue;
         case 31:
+          if (tag !== 250) {
+            break;
+          }
+
           message.uid = reader.string();
-          break;
+          continue;
         case 32:
+          if (tag !== 256) {
+            break;
+          }
+
           message.realExchange = reader.int32() as any;
-          break;
+          continue;
         case 33:
+          if (tag !== 266) {
+            break;
+          }
+
           message.positionUid = reader.string();
-          break;
+          continue;
         case 34:
+          if (tag !== 274) {
+            break;
+          }
+
           message.basicAssetPositionUid = reader.string();
-          break;
+          continue;
         case 41:
+          if (tag !== 328) {
+            break;
+          }
+
           message.forIisFlag = reader.bool();
-          break;
+          continue;
         case 42:
+          if (tag !== 336) {
+            break;
+          }
+
           message.forQualInvestorFlag = reader.bool();
-          break;
+          continue;
         case 43:
+          if (tag !== 344) {
+            break;
+          }
+
           message.weekendFlag = reader.bool();
-          break;
+          continue;
         case 44:
+          if (tag !== 352) {
+            break;
+          }
+
           message.blockedTcaFlag = reader.bool();
-          break;
+          continue;
         case 56:
-          message.first1minCandleDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 450) {
+            break;
+          }
+
+          message.first1minCandleDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 57:
-          message.first1dayCandleDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          if (tag !== 458) {
+            break;
+          }
+
+          message.first1dayCandleDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): Future {
     return {
-      figi: isSet(object.figi) ? String(object.figi) : "",
-      ticker: isSet(object.ticker) ? String(object.ticker) : "",
-      classCode: isSet(object.classCode) ? String(object.classCode) : "",
-      lot: isSet(object.lot) ? Number(object.lot) : 0,
-      currency: isSet(object.currency) ? String(object.currency) : "",
+      figi: isSet(object.figi) ? globalThis.String(object.figi) : "",
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
+      lot: isSet(object.lot) ? globalThis.Number(object.lot) : 0,
+      currency: isSet(object.currency) ? globalThis.String(object.currency) : "",
       klong: isSet(object.klong) ? Quotation.fromJSON(object.klong) : undefined,
-      kshort: isSet(object.kshort)
-        ? Quotation.fromJSON(object.kshort)
-        : undefined,
+      kshort: isSet(object.kshort) ? Quotation.fromJSON(object.kshort) : undefined,
       dlong: isSet(object.dlong) ? Quotation.fromJSON(object.dlong) : undefined,
-      dshort: isSet(object.dshort)
-        ? Quotation.fromJSON(object.dshort)
-        : undefined,
-      dlongMin: isSet(object.dlongMin)
-        ? Quotation.fromJSON(object.dlongMin)
-        : undefined,
-      dshortMin: isSet(object.dshortMin)
-        ? Quotation.fromJSON(object.dshortMin)
-        : undefined,
-      shortEnabledFlag: isSet(object.shortEnabledFlag)
-        ? Boolean(object.shortEnabledFlag)
-        : false,
-      name: isSet(object.name) ? String(object.name) : "",
-      exchange: isSet(object.exchange) ? String(object.exchange) : "",
-      firstTradeDate: isSet(object.firstTradeDate)
-        ? fromJsonTimestamp(object.firstTradeDate)
-        : undefined,
-      lastTradeDate: isSet(object.lastTradeDate)
-        ? fromJsonTimestamp(object.lastTradeDate)
-        : undefined,
-      futuresType: isSet(object.futuresType) ? String(object.futuresType) : "",
-      assetType: isSet(object.assetType) ? String(object.assetType) : "",
-      basicAsset: isSet(object.basicAsset) ? String(object.basicAsset) : "",
-      basicAssetSize: isSet(object.basicAssetSize)
-        ? Quotation.fromJSON(object.basicAssetSize)
-        : undefined,
-      countryOfRisk: isSet(object.countryOfRisk)
-        ? String(object.countryOfRisk)
-        : "",
-      countryOfRiskName: isSet(object.countryOfRiskName)
-        ? String(object.countryOfRiskName)
-        : "",
-      sector: isSet(object.sector) ? String(object.sector) : "",
-      expirationDate: isSet(object.expirationDate)
-        ? fromJsonTimestamp(object.expirationDate)
-        : undefined,
-      tradingStatus: isSet(object.tradingStatus)
-        ? securityTradingStatusFromJSON(object.tradingStatus)
-        : 0,
-      otcFlag: isSet(object.otcFlag) ? Boolean(object.otcFlag) : false,
-      buyAvailableFlag: isSet(object.buyAvailableFlag)
-        ? Boolean(object.buyAvailableFlag)
-        : false,
-      sellAvailableFlag: isSet(object.sellAvailableFlag)
-        ? Boolean(object.sellAvailableFlag)
-        : false,
-      minPriceIncrement: isSet(object.minPriceIncrement)
-        ? Quotation.fromJSON(object.minPriceIncrement)
-        : undefined,
+      dshort: isSet(object.dshort) ? Quotation.fromJSON(object.dshort) : undefined,
+      dlongMin: isSet(object.dlongMin) ? Quotation.fromJSON(object.dlongMin) : undefined,
+      dshortMin: isSet(object.dshortMin) ? Quotation.fromJSON(object.dshortMin) : undefined,
+      shortEnabledFlag: isSet(object.shortEnabledFlag) ? globalThis.Boolean(object.shortEnabledFlag) : false,
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      exchange: isSet(object.exchange) ? globalThis.String(object.exchange) : "",
+      firstTradeDate: isSet(object.firstTradeDate) ? fromJsonTimestamp(object.firstTradeDate) : undefined,
+      lastTradeDate: isSet(object.lastTradeDate) ? fromJsonTimestamp(object.lastTradeDate) : undefined,
+      futuresType: isSet(object.futuresType) ? globalThis.String(object.futuresType) : "",
+      assetType: isSet(object.assetType) ? globalThis.String(object.assetType) : "",
+      basicAsset: isSet(object.basicAsset) ? globalThis.String(object.basicAsset) : "",
+      basicAssetSize: isSet(object.basicAssetSize) ? Quotation.fromJSON(object.basicAssetSize) : undefined,
+      countryOfRisk: isSet(object.countryOfRisk) ? globalThis.String(object.countryOfRisk) : "",
+      countryOfRiskName: isSet(object.countryOfRiskName) ? globalThis.String(object.countryOfRiskName) : "",
+      sector: isSet(object.sector) ? globalThis.String(object.sector) : "",
+      expirationDate: isSet(object.expirationDate) ? fromJsonTimestamp(object.expirationDate) : undefined,
+      tradingStatus: isSet(object.tradingStatus) ? securityTradingStatusFromJSON(object.tradingStatus) : 0,
+      otcFlag: isSet(object.otcFlag) ? globalThis.Boolean(object.otcFlag) : false,
+      buyAvailableFlag: isSet(object.buyAvailableFlag) ? globalThis.Boolean(object.buyAvailableFlag) : false,
+      sellAvailableFlag: isSet(object.sellAvailableFlag) ? globalThis.Boolean(object.sellAvailableFlag) : false,
+      minPriceIncrement: isSet(object.minPriceIncrement) ? Quotation.fromJSON(object.minPriceIncrement) : undefined,
       apiTradeAvailableFlag: isSet(object.apiTradeAvailableFlag)
-        ? Boolean(object.apiTradeAvailableFlag)
+        ? globalThis.Boolean(object.apiTradeAvailableFlag)
         : false,
-      uid: isSet(object.uid) ? String(object.uid) : "",
-      realExchange: isSet(object.realExchange)
-        ? realExchangeFromJSON(object.realExchange)
-        : 0,
-      positionUid: isSet(object.positionUid) ? String(object.positionUid) : "",
-      basicAssetPositionUid: isSet(object.basicAssetPositionUid)
-        ? String(object.basicAssetPositionUid)
-        : "",
-      forIisFlag: isSet(object.forIisFlag) ? Boolean(object.forIisFlag) : false,
-      forQualInvestorFlag: isSet(object.forQualInvestorFlag)
-        ? Boolean(object.forQualInvestorFlag)
-        : false,
-      weekendFlag: isSet(object.weekendFlag)
-        ? Boolean(object.weekendFlag)
-        : false,
-      blockedTcaFlag: isSet(object.blockedTcaFlag)
-        ? Boolean(object.blockedTcaFlag)
-        : false,
+      uid: isSet(object.uid) ? globalThis.String(object.uid) : "",
+      realExchange: isSet(object.realExchange) ? realExchangeFromJSON(object.realExchange) : 0,
+      positionUid: isSet(object.positionUid) ? globalThis.String(object.positionUid) : "",
+      basicAssetPositionUid: isSet(object.basicAssetPositionUid) ? globalThis.String(object.basicAssetPositionUid) : "",
+      forIisFlag: isSet(object.forIisFlag) ? globalThis.Boolean(object.forIisFlag) : false,
+      forQualInvestorFlag: isSet(object.forQualInvestorFlag) ? globalThis.Boolean(object.forQualInvestorFlag) : false,
+      weekendFlag: isSet(object.weekendFlag) ? globalThis.Boolean(object.weekendFlag) : false,
+      blockedTcaFlag: isSet(object.blockedTcaFlag) ? globalThis.Boolean(object.blockedTcaFlag) : false,
       first1minCandleDate: isSet(object.first1minCandleDate)
         ? fromJsonTimestamp(object.first1minCandleDate)
         : undefined,
@@ -6199,85 +7101,126 @@ export const Future = {
 
   toJSON(message: Future): unknown {
     const obj: any = {};
-    message.figi !== undefined && (obj.figi = message.figi);
-    message.ticker !== undefined && (obj.ticker = message.ticker);
-    message.classCode !== undefined && (obj.classCode = message.classCode);
-    message.lot !== undefined && (obj.lot = Math.round(message.lot));
-    message.currency !== undefined && (obj.currency = message.currency);
-    message.klong !== undefined &&
-      (obj.klong = message.klong ? Quotation.toJSON(message.klong) : undefined);
-    message.kshort !== undefined &&
-      (obj.kshort = message.kshort
-        ? Quotation.toJSON(message.kshort)
-        : undefined);
-    message.dlong !== undefined &&
-      (obj.dlong = message.dlong ? Quotation.toJSON(message.dlong) : undefined);
-    message.dshort !== undefined &&
-      (obj.dshort = message.dshort
-        ? Quotation.toJSON(message.dshort)
-        : undefined);
-    message.dlongMin !== undefined &&
-      (obj.dlongMin = message.dlongMin
-        ? Quotation.toJSON(message.dlongMin)
-        : undefined);
-    message.dshortMin !== undefined &&
-      (obj.dshortMin = message.dshortMin
-        ? Quotation.toJSON(message.dshortMin)
-        : undefined);
-    message.shortEnabledFlag !== undefined &&
-      (obj.shortEnabledFlag = message.shortEnabledFlag);
-    message.name !== undefined && (obj.name = message.name);
-    message.exchange !== undefined && (obj.exchange = message.exchange);
-    message.firstTradeDate !== undefined &&
-      (obj.firstTradeDate = message.firstTradeDate.toISOString());
-    message.lastTradeDate !== undefined &&
-      (obj.lastTradeDate = message.lastTradeDate.toISOString());
-    message.futuresType !== undefined &&
-      (obj.futuresType = message.futuresType);
-    message.assetType !== undefined && (obj.assetType = message.assetType);
-    message.basicAsset !== undefined && (obj.basicAsset = message.basicAsset);
-    message.basicAssetSize !== undefined &&
-      (obj.basicAssetSize = message.basicAssetSize
-        ? Quotation.toJSON(message.basicAssetSize)
-        : undefined);
-    message.countryOfRisk !== undefined &&
-      (obj.countryOfRisk = message.countryOfRisk);
-    message.countryOfRiskName !== undefined &&
-      (obj.countryOfRiskName = message.countryOfRiskName);
-    message.sector !== undefined && (obj.sector = message.sector);
-    message.expirationDate !== undefined &&
-      (obj.expirationDate = message.expirationDate.toISOString());
-    message.tradingStatus !== undefined &&
-      (obj.tradingStatus = securityTradingStatusToJSON(message.tradingStatus));
-    message.otcFlag !== undefined && (obj.otcFlag = message.otcFlag);
-    message.buyAvailableFlag !== undefined &&
-      (obj.buyAvailableFlag = message.buyAvailableFlag);
-    message.sellAvailableFlag !== undefined &&
-      (obj.sellAvailableFlag = message.sellAvailableFlag);
-    message.minPriceIncrement !== undefined &&
-      (obj.minPriceIncrement = message.minPriceIncrement
-        ? Quotation.toJSON(message.minPriceIncrement)
-        : undefined);
-    message.apiTradeAvailableFlag !== undefined &&
-      (obj.apiTradeAvailableFlag = message.apiTradeAvailableFlag);
-    message.uid !== undefined && (obj.uid = message.uid);
-    message.realExchange !== undefined &&
-      (obj.realExchange = realExchangeToJSON(message.realExchange));
-    message.positionUid !== undefined &&
-      (obj.positionUid = message.positionUid);
-    message.basicAssetPositionUid !== undefined &&
-      (obj.basicAssetPositionUid = message.basicAssetPositionUid);
-    message.forIisFlag !== undefined && (obj.forIisFlag = message.forIisFlag);
-    message.forQualInvestorFlag !== undefined &&
-      (obj.forQualInvestorFlag = message.forQualInvestorFlag);
-    message.weekendFlag !== undefined &&
-      (obj.weekendFlag = message.weekendFlag);
-    message.blockedTcaFlag !== undefined &&
-      (obj.blockedTcaFlag = message.blockedTcaFlag);
-    message.first1minCandleDate !== undefined &&
-      (obj.first1minCandleDate = message.first1minCandleDate.toISOString());
-    message.first1dayCandleDate !== undefined &&
-      (obj.first1dayCandleDate = message.first1dayCandleDate.toISOString());
+    if (message.figi !== "") {
+      obj.figi = message.figi;
+    }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
+    }
+    if (message.lot !== 0) {
+      obj.lot = Math.round(message.lot);
+    }
+    if (message.currency !== "") {
+      obj.currency = message.currency;
+    }
+    if (message.klong !== undefined) {
+      obj.klong = Quotation.toJSON(message.klong);
+    }
+    if (message.kshort !== undefined) {
+      obj.kshort = Quotation.toJSON(message.kshort);
+    }
+    if (message.dlong !== undefined) {
+      obj.dlong = Quotation.toJSON(message.dlong);
+    }
+    if (message.dshort !== undefined) {
+      obj.dshort = Quotation.toJSON(message.dshort);
+    }
+    if (message.dlongMin !== undefined) {
+      obj.dlongMin = Quotation.toJSON(message.dlongMin);
+    }
+    if (message.dshortMin !== undefined) {
+      obj.dshortMin = Quotation.toJSON(message.dshortMin);
+    }
+    if (message.shortEnabledFlag === true) {
+      obj.shortEnabledFlag = message.shortEnabledFlag;
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.exchange !== "") {
+      obj.exchange = message.exchange;
+    }
+    if (message.firstTradeDate !== undefined) {
+      obj.firstTradeDate = message.firstTradeDate.toISOString();
+    }
+    if (message.lastTradeDate !== undefined) {
+      obj.lastTradeDate = message.lastTradeDate.toISOString();
+    }
+    if (message.futuresType !== "") {
+      obj.futuresType = message.futuresType;
+    }
+    if (message.assetType !== "") {
+      obj.assetType = message.assetType;
+    }
+    if (message.basicAsset !== "") {
+      obj.basicAsset = message.basicAsset;
+    }
+    if (message.basicAssetSize !== undefined) {
+      obj.basicAssetSize = Quotation.toJSON(message.basicAssetSize);
+    }
+    if (message.countryOfRisk !== "") {
+      obj.countryOfRisk = message.countryOfRisk;
+    }
+    if (message.countryOfRiskName !== "") {
+      obj.countryOfRiskName = message.countryOfRiskName;
+    }
+    if (message.sector !== "") {
+      obj.sector = message.sector;
+    }
+    if (message.expirationDate !== undefined) {
+      obj.expirationDate = message.expirationDate.toISOString();
+    }
+    if (message.tradingStatus !== 0) {
+      obj.tradingStatus = securityTradingStatusToJSON(message.tradingStatus);
+    }
+    if (message.otcFlag === true) {
+      obj.otcFlag = message.otcFlag;
+    }
+    if (message.buyAvailableFlag === true) {
+      obj.buyAvailableFlag = message.buyAvailableFlag;
+    }
+    if (message.sellAvailableFlag === true) {
+      obj.sellAvailableFlag = message.sellAvailableFlag;
+    }
+    if (message.minPriceIncrement !== undefined) {
+      obj.minPriceIncrement = Quotation.toJSON(message.minPriceIncrement);
+    }
+    if (message.apiTradeAvailableFlag === true) {
+      obj.apiTradeAvailableFlag = message.apiTradeAvailableFlag;
+    }
+    if (message.uid !== "") {
+      obj.uid = message.uid;
+    }
+    if (message.realExchange !== 0) {
+      obj.realExchange = realExchangeToJSON(message.realExchange);
+    }
+    if (message.positionUid !== "") {
+      obj.positionUid = message.positionUid;
+    }
+    if (message.basicAssetPositionUid !== "") {
+      obj.basicAssetPositionUid = message.basicAssetPositionUid;
+    }
+    if (message.forIisFlag === true) {
+      obj.forIisFlag = message.forIisFlag;
+    }
+    if (message.forQualInvestorFlag === true) {
+      obj.forQualInvestorFlag = message.forQualInvestorFlag;
+    }
+    if (message.weekendFlag === true) {
+      obj.weekendFlag = message.weekendFlag;
+    }
+    if (message.blockedTcaFlag === true) {
+      obj.blockedTcaFlag = message.blockedTcaFlag;
+    }
+    if (message.first1minCandleDate !== undefined) {
+      obj.first1minCandleDate = message.first1minCandleDate.toISOString();
+    }
+    if (message.first1dayCandleDate !== undefined) {
+      obj.first1dayCandleDate = message.first1dayCandleDate.toISOString();
+    }
     return obj;
   },
 };
@@ -6375,10 +7318,7 @@ export const Share = {
       writer.uint32(130).string(message.exchange);
     }
     if (message.ipoDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.ipoDate),
-        writer.uint32(138).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.ipoDate), writer.uint32(138).fork()).ldelim();
     }
     if (message.issueSize !== 0) {
       writer.uint32(144).int64(message.issueSize);
@@ -6417,10 +7357,7 @@ export const Share = {
       writer.uint32(240).int32(message.shareType);
     }
     if (message.minPriceIncrement !== undefined) {
-      Quotation.encode(
-        message.minPriceIncrement,
-        writer.uint32(250).fork()
-      ).ldelim();
+      Quotation.encode(message.minPriceIncrement, writer.uint32(250).fork()).ldelim();
     }
     if (message.apiTradeAvailableFlag === true) {
       writer.uint32(256).bool(message.apiTradeAvailableFlag);
@@ -6450,245 +7387,352 @@ export const Share = {
       writer.uint32(400).bool(message.liquidityFlag);
     }
     if (message.first1minCandleDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.first1minCandleDate),
-        writer.uint32(450).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.first1minCandleDate), writer.uint32(450).fork()).ldelim();
     }
     if (message.first1dayCandleDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.first1dayCandleDate),
-        writer.uint32(458).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.first1dayCandleDate), writer.uint32(458).fork()).ldelim();
     }
     return writer;
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Share {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseShare();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.figi = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.ticker = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.classCode = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.isin = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag !== 40) {
+            break;
+          }
+
           message.lot = reader.int32();
-          break;
+          continue;
         case 6:
+          if (tag !== 50) {
+            break;
+          }
+
           message.currency = reader.string();
-          break;
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.klong = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 8:
+          if (tag !== 66) {
+            break;
+          }
+
           message.kshort = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 9:
+          if (tag !== 74) {
+            break;
+          }
+
           message.dlong = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 10:
+          if (tag !== 82) {
+            break;
+          }
+
           message.dshort = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 11:
+          if (tag !== 90) {
+            break;
+          }
+
           message.dlongMin = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 12:
+          if (tag !== 98) {
+            break;
+          }
+
           message.dshortMin = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 13:
+          if (tag !== 104) {
+            break;
+          }
+
           message.shortEnabledFlag = reader.bool();
-          break;
+          continue;
         case 15:
+          if (tag !== 122) {
+            break;
+          }
+
           message.name = reader.string();
-          break;
+          continue;
         case 16:
+          if (tag !== 130) {
+            break;
+          }
+
           message.exchange = reader.string();
-          break;
+          continue;
         case 17:
-          message.ipoDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 138) {
+            break;
+          }
+
+          message.ipoDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 18:
+          if (tag !== 144) {
+            break;
+          }
+
           message.issueSize = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 19:
+          if (tag !== 154) {
+            break;
+          }
+
           message.countryOfRisk = reader.string();
-          break;
+          continue;
         case 20:
+          if (tag !== 162) {
+            break;
+          }
+
           message.countryOfRiskName = reader.string();
-          break;
+          continue;
         case 21:
+          if (tag !== 170) {
+            break;
+          }
+
           message.sector = reader.string();
-          break;
+          continue;
         case 22:
+          if (tag !== 176) {
+            break;
+          }
+
           message.issueSizePlan = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 23:
+          if (tag !== 186) {
+            break;
+          }
+
           message.nominal = MoneyValue.decode(reader, reader.uint32());
-          break;
+          continue;
         case 25:
+          if (tag !== 200) {
+            break;
+          }
+
           message.tradingStatus = reader.int32() as any;
-          break;
+          continue;
         case 26:
+          if (tag !== 208) {
+            break;
+          }
+
           message.otcFlag = reader.bool();
-          break;
+          continue;
         case 27:
+          if (tag !== 216) {
+            break;
+          }
+
           message.buyAvailableFlag = reader.bool();
-          break;
+          continue;
         case 28:
+          if (tag !== 224) {
+            break;
+          }
+
           message.sellAvailableFlag = reader.bool();
-          break;
+          continue;
         case 29:
+          if (tag !== 232) {
+            break;
+          }
+
           message.divYieldFlag = reader.bool();
-          break;
+          continue;
         case 30:
+          if (tag !== 240) {
+            break;
+          }
+
           message.shareType = reader.int32() as any;
-          break;
+          continue;
         case 31:
+          if (tag !== 250) {
+            break;
+          }
+
           message.minPriceIncrement = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 32:
+          if (tag !== 256) {
+            break;
+          }
+
           message.apiTradeAvailableFlag = reader.bool();
-          break;
+          continue;
         case 33:
+          if (tag !== 266) {
+            break;
+          }
+
           message.uid = reader.string();
-          break;
+          continue;
         case 34:
+          if (tag !== 272) {
+            break;
+          }
+
           message.realExchange = reader.int32() as any;
-          break;
+          continue;
         case 35:
+          if (tag !== 282) {
+            break;
+          }
+
           message.positionUid = reader.string();
-          break;
+          continue;
         case 46:
+          if (tag !== 368) {
+            break;
+          }
+
           message.forIisFlag = reader.bool();
-          break;
+          continue;
         case 47:
+          if (tag !== 376) {
+            break;
+          }
+
           message.forQualInvestorFlag = reader.bool();
-          break;
+          continue;
         case 48:
+          if (tag !== 384) {
+            break;
+          }
+
           message.weekendFlag = reader.bool();
-          break;
+          continue;
         case 49:
+          if (tag !== 392) {
+            break;
+          }
+
           message.blockedTcaFlag = reader.bool();
-          break;
+          continue;
         case 50:
+          if (tag !== 400) {
+            break;
+          }
+
           message.liquidityFlag = reader.bool();
-          break;
+          continue;
         case 56:
-          message.first1minCandleDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 450) {
+            break;
+          }
+
+          message.first1minCandleDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 57:
-          message.first1dayCandleDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          if (tag !== 458) {
+            break;
+          }
+
+          message.first1dayCandleDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): Share {
     return {
-      figi: isSet(object.figi) ? String(object.figi) : "",
-      ticker: isSet(object.ticker) ? String(object.ticker) : "",
-      classCode: isSet(object.classCode) ? String(object.classCode) : "",
-      isin: isSet(object.isin) ? String(object.isin) : "",
-      lot: isSet(object.lot) ? Number(object.lot) : 0,
-      currency: isSet(object.currency) ? String(object.currency) : "",
+      figi: isSet(object.figi) ? globalThis.String(object.figi) : "",
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
+      isin: isSet(object.isin) ? globalThis.String(object.isin) : "",
+      lot: isSet(object.lot) ? globalThis.Number(object.lot) : 0,
+      currency: isSet(object.currency) ? globalThis.String(object.currency) : "",
       klong: isSet(object.klong) ? Quotation.fromJSON(object.klong) : undefined,
-      kshort: isSet(object.kshort)
-        ? Quotation.fromJSON(object.kshort)
-        : undefined,
+      kshort: isSet(object.kshort) ? Quotation.fromJSON(object.kshort) : undefined,
       dlong: isSet(object.dlong) ? Quotation.fromJSON(object.dlong) : undefined,
-      dshort: isSet(object.dshort)
-        ? Quotation.fromJSON(object.dshort)
-        : undefined,
-      dlongMin: isSet(object.dlongMin)
-        ? Quotation.fromJSON(object.dlongMin)
-        : undefined,
-      dshortMin: isSet(object.dshortMin)
-        ? Quotation.fromJSON(object.dshortMin)
-        : undefined,
-      shortEnabledFlag: isSet(object.shortEnabledFlag)
-        ? Boolean(object.shortEnabledFlag)
-        : false,
-      name: isSet(object.name) ? String(object.name) : "",
-      exchange: isSet(object.exchange) ? String(object.exchange) : "",
-      ipoDate: isSet(object.ipoDate)
-        ? fromJsonTimestamp(object.ipoDate)
-        : undefined,
-      issueSize: isSet(object.issueSize) ? Number(object.issueSize) : 0,
-      countryOfRisk: isSet(object.countryOfRisk)
-        ? String(object.countryOfRisk)
-        : "",
-      countryOfRiskName: isSet(object.countryOfRiskName)
-        ? String(object.countryOfRiskName)
-        : "",
-      sector: isSet(object.sector) ? String(object.sector) : "",
-      issueSizePlan: isSet(object.issueSizePlan)
-        ? Number(object.issueSizePlan)
-        : 0,
-      nominal: isSet(object.nominal)
-        ? MoneyValue.fromJSON(object.nominal)
-        : undefined,
-      tradingStatus: isSet(object.tradingStatus)
-        ? securityTradingStatusFromJSON(object.tradingStatus)
-        : 0,
-      otcFlag: isSet(object.otcFlag) ? Boolean(object.otcFlag) : false,
-      buyAvailableFlag: isSet(object.buyAvailableFlag)
-        ? Boolean(object.buyAvailableFlag)
-        : false,
-      sellAvailableFlag: isSet(object.sellAvailableFlag)
-        ? Boolean(object.sellAvailableFlag)
-        : false,
-      divYieldFlag: isSet(object.divYieldFlag)
-        ? Boolean(object.divYieldFlag)
-        : false,
-      shareType: isSet(object.shareType)
-        ? shareTypeFromJSON(object.shareType)
-        : 0,
-      minPriceIncrement: isSet(object.minPriceIncrement)
-        ? Quotation.fromJSON(object.minPriceIncrement)
-        : undefined,
+      dshort: isSet(object.dshort) ? Quotation.fromJSON(object.dshort) : undefined,
+      dlongMin: isSet(object.dlongMin) ? Quotation.fromJSON(object.dlongMin) : undefined,
+      dshortMin: isSet(object.dshortMin) ? Quotation.fromJSON(object.dshortMin) : undefined,
+      shortEnabledFlag: isSet(object.shortEnabledFlag) ? globalThis.Boolean(object.shortEnabledFlag) : false,
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      exchange: isSet(object.exchange) ? globalThis.String(object.exchange) : "",
+      ipoDate: isSet(object.ipoDate) ? fromJsonTimestamp(object.ipoDate) : undefined,
+      issueSize: isSet(object.issueSize) ? globalThis.Number(object.issueSize) : 0,
+      countryOfRisk: isSet(object.countryOfRisk) ? globalThis.String(object.countryOfRisk) : "",
+      countryOfRiskName: isSet(object.countryOfRiskName) ? globalThis.String(object.countryOfRiskName) : "",
+      sector: isSet(object.sector) ? globalThis.String(object.sector) : "",
+      issueSizePlan: isSet(object.issueSizePlan) ? globalThis.Number(object.issueSizePlan) : 0,
+      nominal: isSet(object.nominal) ? MoneyValue.fromJSON(object.nominal) : undefined,
+      tradingStatus: isSet(object.tradingStatus) ? securityTradingStatusFromJSON(object.tradingStatus) : 0,
+      otcFlag: isSet(object.otcFlag) ? globalThis.Boolean(object.otcFlag) : false,
+      buyAvailableFlag: isSet(object.buyAvailableFlag) ? globalThis.Boolean(object.buyAvailableFlag) : false,
+      sellAvailableFlag: isSet(object.sellAvailableFlag) ? globalThis.Boolean(object.sellAvailableFlag) : false,
+      divYieldFlag: isSet(object.divYieldFlag) ? globalThis.Boolean(object.divYieldFlag) : false,
+      shareType: isSet(object.shareType) ? shareTypeFromJSON(object.shareType) : 0,
+      minPriceIncrement: isSet(object.minPriceIncrement) ? Quotation.fromJSON(object.minPriceIncrement) : undefined,
       apiTradeAvailableFlag: isSet(object.apiTradeAvailableFlag)
-        ? Boolean(object.apiTradeAvailableFlag)
+        ? globalThis.Boolean(object.apiTradeAvailableFlag)
         : false,
-      uid: isSet(object.uid) ? String(object.uid) : "",
-      realExchange: isSet(object.realExchange)
-        ? realExchangeFromJSON(object.realExchange)
-        : 0,
-      positionUid: isSet(object.positionUid) ? String(object.positionUid) : "",
-      forIisFlag: isSet(object.forIisFlag) ? Boolean(object.forIisFlag) : false,
-      forQualInvestorFlag: isSet(object.forQualInvestorFlag)
-        ? Boolean(object.forQualInvestorFlag)
-        : false,
-      weekendFlag: isSet(object.weekendFlag)
-        ? Boolean(object.weekendFlag)
-        : false,
-      blockedTcaFlag: isSet(object.blockedTcaFlag)
-        ? Boolean(object.blockedTcaFlag)
-        : false,
-      liquidityFlag: isSet(object.liquidityFlag)
-        ? Boolean(object.liquidityFlag)
-        : false,
+      uid: isSet(object.uid) ? globalThis.String(object.uid) : "",
+      realExchange: isSet(object.realExchange) ? realExchangeFromJSON(object.realExchange) : 0,
+      positionUid: isSet(object.positionUid) ? globalThis.String(object.positionUid) : "",
+      forIisFlag: isSet(object.forIisFlag) ? globalThis.Boolean(object.forIisFlag) : false,
+      forQualInvestorFlag: isSet(object.forQualInvestorFlag) ? globalThis.Boolean(object.forQualInvestorFlag) : false,
+      weekendFlag: isSet(object.weekendFlag) ? globalThis.Boolean(object.weekendFlag) : false,
+      blockedTcaFlag: isSet(object.blockedTcaFlag) ? globalThis.Boolean(object.blockedTcaFlag) : false,
+      liquidityFlag: isSet(object.liquidityFlag) ? globalThis.Boolean(object.liquidityFlag) : false,
       first1minCandleDate: isSet(object.first1minCandleDate)
         ? fromJsonTimestamp(object.first1minCandleDate)
         : undefined,
@@ -6700,86 +7744,126 @@ export const Share = {
 
   toJSON(message: Share): unknown {
     const obj: any = {};
-    message.figi !== undefined && (obj.figi = message.figi);
-    message.ticker !== undefined && (obj.ticker = message.ticker);
-    message.classCode !== undefined && (obj.classCode = message.classCode);
-    message.isin !== undefined && (obj.isin = message.isin);
-    message.lot !== undefined && (obj.lot = Math.round(message.lot));
-    message.currency !== undefined && (obj.currency = message.currency);
-    message.klong !== undefined &&
-      (obj.klong = message.klong ? Quotation.toJSON(message.klong) : undefined);
-    message.kshort !== undefined &&
-      (obj.kshort = message.kshort
-        ? Quotation.toJSON(message.kshort)
-        : undefined);
-    message.dlong !== undefined &&
-      (obj.dlong = message.dlong ? Quotation.toJSON(message.dlong) : undefined);
-    message.dshort !== undefined &&
-      (obj.dshort = message.dshort
-        ? Quotation.toJSON(message.dshort)
-        : undefined);
-    message.dlongMin !== undefined &&
-      (obj.dlongMin = message.dlongMin
-        ? Quotation.toJSON(message.dlongMin)
-        : undefined);
-    message.dshortMin !== undefined &&
-      (obj.dshortMin = message.dshortMin
-        ? Quotation.toJSON(message.dshortMin)
-        : undefined);
-    message.shortEnabledFlag !== undefined &&
-      (obj.shortEnabledFlag = message.shortEnabledFlag);
-    message.name !== undefined && (obj.name = message.name);
-    message.exchange !== undefined && (obj.exchange = message.exchange);
-    message.ipoDate !== undefined &&
-      (obj.ipoDate = message.ipoDate.toISOString());
-    message.issueSize !== undefined &&
-      (obj.issueSize = Math.round(message.issueSize));
-    message.countryOfRisk !== undefined &&
-      (obj.countryOfRisk = message.countryOfRisk);
-    message.countryOfRiskName !== undefined &&
-      (obj.countryOfRiskName = message.countryOfRiskName);
-    message.sector !== undefined && (obj.sector = message.sector);
-    message.issueSizePlan !== undefined &&
-      (obj.issueSizePlan = Math.round(message.issueSizePlan));
-    message.nominal !== undefined &&
-      (obj.nominal = message.nominal
-        ? MoneyValue.toJSON(message.nominal)
-        : undefined);
-    message.tradingStatus !== undefined &&
-      (obj.tradingStatus = securityTradingStatusToJSON(message.tradingStatus));
-    message.otcFlag !== undefined && (obj.otcFlag = message.otcFlag);
-    message.buyAvailableFlag !== undefined &&
-      (obj.buyAvailableFlag = message.buyAvailableFlag);
-    message.sellAvailableFlag !== undefined &&
-      (obj.sellAvailableFlag = message.sellAvailableFlag);
-    message.divYieldFlag !== undefined &&
-      (obj.divYieldFlag = message.divYieldFlag);
-    message.shareType !== undefined &&
-      (obj.shareType = shareTypeToJSON(message.shareType));
-    message.minPriceIncrement !== undefined &&
-      (obj.minPriceIncrement = message.minPriceIncrement
-        ? Quotation.toJSON(message.minPriceIncrement)
-        : undefined);
-    message.apiTradeAvailableFlag !== undefined &&
-      (obj.apiTradeAvailableFlag = message.apiTradeAvailableFlag);
-    message.uid !== undefined && (obj.uid = message.uid);
-    message.realExchange !== undefined &&
-      (obj.realExchange = realExchangeToJSON(message.realExchange));
-    message.positionUid !== undefined &&
-      (obj.positionUid = message.positionUid);
-    message.forIisFlag !== undefined && (obj.forIisFlag = message.forIisFlag);
-    message.forQualInvestorFlag !== undefined &&
-      (obj.forQualInvestorFlag = message.forQualInvestorFlag);
-    message.weekendFlag !== undefined &&
-      (obj.weekendFlag = message.weekendFlag);
-    message.blockedTcaFlag !== undefined &&
-      (obj.blockedTcaFlag = message.blockedTcaFlag);
-    message.liquidityFlag !== undefined &&
-      (obj.liquidityFlag = message.liquidityFlag);
-    message.first1minCandleDate !== undefined &&
-      (obj.first1minCandleDate = message.first1minCandleDate.toISOString());
-    message.first1dayCandleDate !== undefined &&
-      (obj.first1dayCandleDate = message.first1dayCandleDate.toISOString());
+    if (message.figi !== "") {
+      obj.figi = message.figi;
+    }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
+    }
+    if (message.isin !== "") {
+      obj.isin = message.isin;
+    }
+    if (message.lot !== 0) {
+      obj.lot = Math.round(message.lot);
+    }
+    if (message.currency !== "") {
+      obj.currency = message.currency;
+    }
+    if (message.klong !== undefined) {
+      obj.klong = Quotation.toJSON(message.klong);
+    }
+    if (message.kshort !== undefined) {
+      obj.kshort = Quotation.toJSON(message.kshort);
+    }
+    if (message.dlong !== undefined) {
+      obj.dlong = Quotation.toJSON(message.dlong);
+    }
+    if (message.dshort !== undefined) {
+      obj.dshort = Quotation.toJSON(message.dshort);
+    }
+    if (message.dlongMin !== undefined) {
+      obj.dlongMin = Quotation.toJSON(message.dlongMin);
+    }
+    if (message.dshortMin !== undefined) {
+      obj.dshortMin = Quotation.toJSON(message.dshortMin);
+    }
+    if (message.shortEnabledFlag === true) {
+      obj.shortEnabledFlag = message.shortEnabledFlag;
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.exchange !== "") {
+      obj.exchange = message.exchange;
+    }
+    if (message.ipoDate !== undefined) {
+      obj.ipoDate = message.ipoDate.toISOString();
+    }
+    if (message.issueSize !== 0) {
+      obj.issueSize = Math.round(message.issueSize);
+    }
+    if (message.countryOfRisk !== "") {
+      obj.countryOfRisk = message.countryOfRisk;
+    }
+    if (message.countryOfRiskName !== "") {
+      obj.countryOfRiskName = message.countryOfRiskName;
+    }
+    if (message.sector !== "") {
+      obj.sector = message.sector;
+    }
+    if (message.issueSizePlan !== 0) {
+      obj.issueSizePlan = Math.round(message.issueSizePlan);
+    }
+    if (message.nominal !== undefined) {
+      obj.nominal = MoneyValue.toJSON(message.nominal);
+    }
+    if (message.tradingStatus !== 0) {
+      obj.tradingStatus = securityTradingStatusToJSON(message.tradingStatus);
+    }
+    if (message.otcFlag === true) {
+      obj.otcFlag = message.otcFlag;
+    }
+    if (message.buyAvailableFlag === true) {
+      obj.buyAvailableFlag = message.buyAvailableFlag;
+    }
+    if (message.sellAvailableFlag === true) {
+      obj.sellAvailableFlag = message.sellAvailableFlag;
+    }
+    if (message.divYieldFlag === true) {
+      obj.divYieldFlag = message.divYieldFlag;
+    }
+    if (message.shareType !== 0) {
+      obj.shareType = shareTypeToJSON(message.shareType);
+    }
+    if (message.minPriceIncrement !== undefined) {
+      obj.minPriceIncrement = Quotation.toJSON(message.minPriceIncrement);
+    }
+    if (message.apiTradeAvailableFlag === true) {
+      obj.apiTradeAvailableFlag = message.apiTradeAvailableFlag;
+    }
+    if (message.uid !== "") {
+      obj.uid = message.uid;
+    }
+    if (message.realExchange !== 0) {
+      obj.realExchange = realExchangeToJSON(message.realExchange);
+    }
+    if (message.positionUid !== "") {
+      obj.positionUid = message.positionUid;
+    }
+    if (message.forIisFlag === true) {
+      obj.forIisFlag = message.forIisFlag;
+    }
+    if (message.forQualInvestorFlag === true) {
+      obj.forQualInvestorFlag = message.forQualInvestorFlag;
+    }
+    if (message.weekendFlag === true) {
+      obj.weekendFlag = message.weekendFlag;
+    }
+    if (message.blockedTcaFlag === true) {
+      obj.blockedTcaFlag = message.blockedTcaFlag;
+    }
+    if (message.liquidityFlag === true) {
+      obj.liquidityFlag = message.liquidityFlag;
+    }
+    if (message.first1minCandleDate !== undefined) {
+      obj.first1minCandleDate = message.first1minCandleDate.toISOString();
+    }
+    if (message.first1dayCandleDate !== undefined) {
+      obj.first1dayCandleDate = message.first1dayCandleDate.toISOString();
+    }
     return obj;
   },
 };
@@ -6789,60 +7873,59 @@ function createBaseGetAccruedInterestsRequest(): GetAccruedInterestsRequest {
 }
 
 export const GetAccruedInterestsRequest = {
-  encode(
-    message: GetAccruedInterestsRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: GetAccruedInterestsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.figi !== "") {
       writer.uint32(10).string(message.figi);
     }
     if (message.from !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.from),
-        writer.uint32(18).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.from), writer.uint32(18).fork()).ldelim();
     }
     if (message.to !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.to),
-        writer.uint32(26).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.to), writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): GetAccruedInterestsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetAccruedInterestsRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetAccruedInterestsRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.figi = reader.string();
-          break;
+          continue;
         case 2:
-          message.from = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 18) {
+            break;
+          }
+
+          message.from = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.to = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): GetAccruedInterestsRequest {
     return {
-      figi: isSet(object.figi) ? String(object.figi) : "",
+      figi: isSet(object.figi) ? globalThis.String(object.figi) : "",
       from: isSet(object.from) ? fromJsonTimestamp(object.from) : undefined,
       to: isSet(object.to) ? fromJsonTimestamp(object.to) : undefined,
     };
@@ -6850,9 +7933,15 @@ export const GetAccruedInterestsRequest = {
 
   toJSON(message: GetAccruedInterestsRequest): unknown {
     const obj: any = {};
-    message.figi !== undefined && (obj.figi = message.figi);
-    message.from !== undefined && (obj.from = message.from.toISOString());
-    message.to !== undefined && (obj.to = message.to.toISOString());
+    if (message.figi !== "") {
+      obj.figi = message.figi;
+    }
+    if (message.from !== undefined) {
+      obj.from = message.from.toISOString();
+    }
+    if (message.to !== undefined) {
+      obj.to = message.to.toISOString();
+    }
     return obj;
   },
 };
@@ -6862,42 +7951,39 @@ function createBaseGetAccruedInterestsResponse(): GetAccruedInterestsResponse {
 }
 
 export const GetAccruedInterestsResponse = {
-  encode(
-    message: GetAccruedInterestsResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: GetAccruedInterestsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.accruedInterests) {
       AccruedInterest.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): GetAccruedInterestsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetAccruedInterestsResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetAccruedInterestsResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.accruedInterests.push(
-            AccruedInterest.decode(reader, reader.uint32())
-          );
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          if (tag !== 10) {
+            break;
+          }
+
+          message.accruedInterests.push(AccruedInterest.decode(reader, reader.uint32()));
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): GetAccruedInterestsResponse {
     return {
-      accruedInterests: Array.isArray(object?.accruedInterests)
+      accruedInterests: globalThis.Array.isArray(object?.accruedInterests)
         ? object.accruedInterests.map((e: any) => AccruedInterest.fromJSON(e))
         : [],
     };
@@ -6905,36 +7991,21 @@ export const GetAccruedInterestsResponse = {
 
   toJSON(message: GetAccruedInterestsResponse): unknown {
     const obj: any = {};
-    if (message.accruedInterests) {
-      obj.accruedInterests = message.accruedInterests.map((e) =>
-        e ? AccruedInterest.toJSON(e) : undefined
-      );
-    } else {
-      obj.accruedInterests = [];
+    if (message.accruedInterests?.length) {
+      obj.accruedInterests = message.accruedInterests.map((e) => AccruedInterest.toJSON(e));
     }
     return obj;
   },
 };
 
 function createBaseAccruedInterest(): AccruedInterest {
-  return {
-    date: undefined,
-    value: undefined,
-    valuePercent: undefined,
-    nominal: undefined,
-  };
+  return { date: undefined, value: undefined, valuePercent: undefined, nominal: undefined };
 }
 
 export const AccruedInterest = {
-  encode(
-    message: AccruedInterest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: AccruedInterest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.date !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.date),
-        writer.uint32(10).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.date), writer.uint32(10).fork()).ldelim();
     }
     if (message.value !== undefined) {
       Quotation.encode(message.value, writer.uint32(18).fork()).ldelim();
@@ -6949,30 +8020,45 @@ export const AccruedInterest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): AccruedInterest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAccruedInterest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.date = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 10) {
+            break;
+          }
+
+          message.date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.value = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.valuePercent = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.nominal = Quotation.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -6981,28 +8067,25 @@ export const AccruedInterest = {
     return {
       date: isSet(object.date) ? fromJsonTimestamp(object.date) : undefined,
       value: isSet(object.value) ? Quotation.fromJSON(object.value) : undefined,
-      valuePercent: isSet(object.valuePercent)
-        ? Quotation.fromJSON(object.valuePercent)
-        : undefined,
-      nominal: isSet(object.nominal)
-        ? Quotation.fromJSON(object.nominal)
-        : undefined,
+      valuePercent: isSet(object.valuePercent) ? Quotation.fromJSON(object.valuePercent) : undefined,
+      nominal: isSet(object.nominal) ? Quotation.fromJSON(object.nominal) : undefined,
     };
   },
 
   toJSON(message: AccruedInterest): unknown {
     const obj: any = {};
-    message.date !== undefined && (obj.date = message.date.toISOString());
-    message.value !== undefined &&
-      (obj.value = message.value ? Quotation.toJSON(message.value) : undefined);
-    message.valuePercent !== undefined &&
-      (obj.valuePercent = message.valuePercent
-        ? Quotation.toJSON(message.valuePercent)
-        : undefined);
-    message.nominal !== undefined &&
-      (obj.nominal = message.nominal
-        ? Quotation.toJSON(message.nominal)
-        : undefined);
+    if (message.date !== undefined) {
+      obj.date = message.date.toISOString();
+    }
+    if (message.value !== undefined) {
+      obj.value = Quotation.toJSON(message.value);
+    }
+    if (message.valuePercent !== undefined) {
+      obj.valuePercent = Quotation.toJSON(message.valuePercent);
+    }
+    if (message.nominal !== undefined) {
+      obj.nominal = Quotation.toJSON(message.nominal);
+    }
     return obj;
   },
 };
@@ -7012,46 +8095,45 @@ function createBaseGetFuturesMarginRequest(): GetFuturesMarginRequest {
 }
 
 export const GetFuturesMarginRequest = {
-  encode(
-    message: GetFuturesMarginRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: GetFuturesMarginRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.figi !== "") {
       writer.uint32(10).string(message.figi);
     }
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): GetFuturesMarginRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetFuturesMarginRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetFuturesMarginRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.figi = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): GetFuturesMarginRequest {
-    return {
-      figi: isSet(object.figi) ? String(object.figi) : "",
-    };
+    return { figi: isSet(object.figi) ? globalThis.String(object.figi) : "" };
   },
 
   toJSON(message: GetFuturesMarginRequest): unknown {
     const obj: any = {};
-    message.figi !== undefined && (obj.figi = message.figi);
+    if (message.figi !== "") {
+      obj.figi = message.figi;
+    }
     return obj;
   },
 };
@@ -7066,87 +8148,73 @@ function createBaseGetFuturesMarginResponse(): GetFuturesMarginResponse {
 }
 
 export const GetFuturesMarginResponse = {
-  encode(
-    message: GetFuturesMarginResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: GetFuturesMarginResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.initialMarginOnBuy !== undefined) {
-      MoneyValue.encode(
-        message.initialMarginOnBuy,
-        writer.uint32(10).fork()
-      ).ldelim();
+      MoneyValue.encode(message.initialMarginOnBuy, writer.uint32(10).fork()).ldelim();
     }
     if (message.initialMarginOnSell !== undefined) {
-      MoneyValue.encode(
-        message.initialMarginOnSell,
-        writer.uint32(18).fork()
-      ).ldelim();
+      MoneyValue.encode(message.initialMarginOnSell, writer.uint32(18).fork()).ldelim();
     }
     if (message.minPriceIncrement !== undefined) {
-      Quotation.encode(
-        message.minPriceIncrement,
-        writer.uint32(26).fork()
-      ).ldelim();
+      Quotation.encode(message.minPriceIncrement, writer.uint32(26).fork()).ldelim();
     }
     if (message.minPriceIncrementAmount !== undefined) {
-      Quotation.encode(
-        message.minPriceIncrementAmount,
-        writer.uint32(34).fork()
-      ).ldelim();
+      Quotation.encode(message.minPriceIncrementAmount, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): GetFuturesMarginResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetFuturesMarginResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetFuturesMarginResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.initialMarginOnBuy = MoneyValue.decode(
-            reader,
-            reader.uint32()
-          );
-          break;
+          if (tag !== 10) {
+            break;
+          }
+
+          message.initialMarginOnBuy = MoneyValue.decode(reader, reader.uint32());
+          continue;
         case 2:
-          message.initialMarginOnSell = MoneyValue.decode(
-            reader,
-            reader.uint32()
-          );
-          break;
+          if (tag !== 18) {
+            break;
+          }
+
+          message.initialMarginOnSell = MoneyValue.decode(reader, reader.uint32());
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.minPriceIncrement = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 4:
-          message.minPriceIncrementAmount = Quotation.decode(
-            reader,
-            reader.uint32()
-          );
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          if (tag !== 34) {
+            break;
+          }
+
+          message.minPriceIncrementAmount = Quotation.decode(reader, reader.uint32());
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): GetFuturesMarginResponse {
     return {
-      initialMarginOnBuy: isSet(object.initialMarginOnBuy)
-        ? MoneyValue.fromJSON(object.initialMarginOnBuy)
-        : undefined,
+      initialMarginOnBuy: isSet(object.initialMarginOnBuy) ? MoneyValue.fromJSON(object.initialMarginOnBuy) : undefined,
       initialMarginOnSell: isSet(object.initialMarginOnSell)
         ? MoneyValue.fromJSON(object.initialMarginOnSell)
         : undefined,
-      minPriceIncrement: isSet(object.minPriceIncrement)
-        ? Quotation.fromJSON(object.minPriceIncrement)
-        : undefined,
+      minPriceIncrement: isSet(object.minPriceIncrement) ? Quotation.fromJSON(object.minPriceIncrement) : undefined,
       minPriceIncrementAmount: isSet(object.minPriceIncrementAmount)
         ? Quotation.fromJSON(object.minPriceIncrementAmount)
         : undefined,
@@ -7155,22 +8223,18 @@ export const GetFuturesMarginResponse = {
 
   toJSON(message: GetFuturesMarginResponse): unknown {
     const obj: any = {};
-    message.initialMarginOnBuy !== undefined &&
-      (obj.initialMarginOnBuy = message.initialMarginOnBuy
-        ? MoneyValue.toJSON(message.initialMarginOnBuy)
-        : undefined);
-    message.initialMarginOnSell !== undefined &&
-      (obj.initialMarginOnSell = message.initialMarginOnSell
-        ? MoneyValue.toJSON(message.initialMarginOnSell)
-        : undefined);
-    message.minPriceIncrement !== undefined &&
-      (obj.minPriceIncrement = message.minPriceIncrement
-        ? Quotation.toJSON(message.minPriceIncrement)
-        : undefined);
-    message.minPriceIncrementAmount !== undefined &&
-      (obj.minPriceIncrementAmount = message.minPriceIncrementAmount
-        ? Quotation.toJSON(message.minPriceIncrementAmount)
-        : undefined);
+    if (message.initialMarginOnBuy !== undefined) {
+      obj.initialMarginOnBuy = MoneyValue.toJSON(message.initialMarginOnBuy);
+    }
+    if (message.initialMarginOnSell !== undefined) {
+      obj.initialMarginOnSell = MoneyValue.toJSON(message.initialMarginOnSell);
+    }
+    if (message.minPriceIncrement !== undefined) {
+      obj.minPriceIncrement = Quotation.toJSON(message.minPriceIncrement);
+    }
+    if (message.minPriceIncrementAmount !== undefined) {
+      obj.minPriceIncrementAmount = Quotation.toJSON(message.minPriceIncrementAmount);
+    }
     return obj;
   },
 };
@@ -7180,10 +8244,7 @@ function createBaseInstrumentResponse(): InstrumentResponse {
 }
 
 export const InstrumentResponse = {
-  encode(
-    message: InstrumentResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: InstrumentResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.instrument !== undefined) {
       Instrument.encode(message.instrument, writer.uint32(10).fork()).ldelim();
     }
@@ -7191,37 +8252,37 @@ export const InstrumentResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): InstrumentResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseInstrumentResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.instrument = Instrument.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): InstrumentResponse {
-    return {
-      instrument: isSet(object.instrument)
-        ? Instrument.fromJSON(object.instrument)
-        : undefined,
-    };
+    return { instrument: isSet(object.instrument) ? Instrument.fromJSON(object.instrument) : undefined };
   },
 
   toJSON(message: InstrumentResponse): unknown {
     const obj: any = {};
-    message.instrument !== undefined &&
-      (obj.instrument = message.instrument
-        ? Instrument.toJSON(message.instrument)
-        : undefined);
+    if (message.instrument !== undefined) {
+      obj.instrument = Instrument.toJSON(message.instrument);
+    }
     return obj;
   },
 };
@@ -7266,10 +8327,7 @@ function createBaseInstrument(): Instrument {
 }
 
 export const Instrument = {
-  encode(
-    message: Instrument,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: Instrument, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.figi !== "") {
       writer.uint32(10).string(message.figi);
     }
@@ -7337,10 +8395,7 @@ export const Instrument = {
       writer.uint32(176).bool(message.sellAvailableFlag);
     }
     if (message.minPriceIncrement !== undefined) {
-      Quotation.encode(
-        message.minPriceIncrement,
-        writer.uint32(186).fork()
-      ).ldelim();
+      Quotation.encode(message.minPriceIncrement, writer.uint32(186).fork()).ldelim();
     }
     if (message.apiTradeAvailableFlag === true) {
       writer.uint32(192).bool(message.apiTradeAvailableFlag);
@@ -7370,211 +8425,304 @@ export const Instrument = {
       writer.uint32(320).int32(message.instrumentKind);
     }
     if (message.first1minCandleDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.first1minCandleDate),
-        writer.uint32(450).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.first1minCandleDate), writer.uint32(450).fork()).ldelim();
     }
     if (message.first1dayCandleDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.first1dayCandleDate),
-        writer.uint32(458).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.first1dayCandleDate), writer.uint32(458).fork()).ldelim();
     }
     return writer;
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Instrument {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseInstrument();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.figi = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.ticker = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.classCode = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.isin = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag !== 40) {
+            break;
+          }
+
           message.lot = reader.int32();
-          break;
+          continue;
         case 6:
+          if (tag !== 50) {
+            break;
+          }
+
           message.currency = reader.string();
-          break;
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.klong = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 8:
+          if (tag !== 66) {
+            break;
+          }
+
           message.kshort = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 9:
+          if (tag !== 74) {
+            break;
+          }
+
           message.dlong = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 10:
+          if (tag !== 82) {
+            break;
+          }
+
           message.dshort = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 11:
+          if (tag !== 90) {
+            break;
+          }
+
           message.dlongMin = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 12:
+          if (tag !== 98) {
+            break;
+          }
+
           message.dshortMin = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 13:
+          if (tag !== 104) {
+            break;
+          }
+
           message.shortEnabledFlag = reader.bool();
-          break;
+          continue;
         case 14:
+          if (tag !== 114) {
+            break;
+          }
+
           message.name = reader.string();
-          break;
+          continue;
         case 15:
+          if (tag !== 122) {
+            break;
+          }
+
           message.exchange = reader.string();
-          break;
+          continue;
         case 16:
+          if (tag !== 130) {
+            break;
+          }
+
           message.countryOfRisk = reader.string();
-          break;
+          continue;
         case 17:
+          if (tag !== 138) {
+            break;
+          }
+
           message.countryOfRiskName = reader.string();
-          break;
+          continue;
         case 18:
+          if (tag !== 146) {
+            break;
+          }
+
           message.instrumentType = reader.string();
-          break;
+          continue;
         case 19:
+          if (tag !== 152) {
+            break;
+          }
+
           message.tradingStatus = reader.int32() as any;
-          break;
+          continue;
         case 20:
+          if (tag !== 160) {
+            break;
+          }
+
           message.otcFlag = reader.bool();
-          break;
+          continue;
         case 21:
+          if (tag !== 168) {
+            break;
+          }
+
           message.buyAvailableFlag = reader.bool();
-          break;
+          continue;
         case 22:
+          if (tag !== 176) {
+            break;
+          }
+
           message.sellAvailableFlag = reader.bool();
-          break;
+          continue;
         case 23:
+          if (tag !== 186) {
+            break;
+          }
+
           message.minPriceIncrement = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 24:
+          if (tag !== 192) {
+            break;
+          }
+
           message.apiTradeAvailableFlag = reader.bool();
-          break;
+          continue;
         case 25:
+          if (tag !== 202) {
+            break;
+          }
+
           message.uid = reader.string();
-          break;
+          continue;
         case 26:
+          if (tag !== 208) {
+            break;
+          }
+
           message.realExchange = reader.int32() as any;
-          break;
+          continue;
         case 27:
+          if (tag !== 218) {
+            break;
+          }
+
           message.positionUid = reader.string();
-          break;
+          continue;
         case 36:
+          if (tag !== 288) {
+            break;
+          }
+
           message.forIisFlag = reader.bool();
-          break;
+          continue;
         case 37:
+          if (tag !== 296) {
+            break;
+          }
+
           message.forQualInvestorFlag = reader.bool();
-          break;
+          continue;
         case 38:
+          if (tag !== 304) {
+            break;
+          }
+
           message.weekendFlag = reader.bool();
-          break;
+          continue;
         case 39:
+          if (tag !== 312) {
+            break;
+          }
+
           message.blockedTcaFlag = reader.bool();
-          break;
+          continue;
         case 40:
+          if (tag !== 320) {
+            break;
+          }
+
           message.instrumentKind = reader.int32() as any;
-          break;
+          continue;
         case 56:
-          message.first1minCandleDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 450) {
+            break;
+          }
+
+          message.first1minCandleDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 57:
-          message.first1dayCandleDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          if (tag !== 458) {
+            break;
+          }
+
+          message.first1dayCandleDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): Instrument {
     return {
-      figi: isSet(object.figi) ? String(object.figi) : "",
-      ticker: isSet(object.ticker) ? String(object.ticker) : "",
-      classCode: isSet(object.classCode) ? String(object.classCode) : "",
-      isin: isSet(object.isin) ? String(object.isin) : "",
-      lot: isSet(object.lot) ? Number(object.lot) : 0,
-      currency: isSet(object.currency) ? String(object.currency) : "",
+      figi: isSet(object.figi) ? globalThis.String(object.figi) : "",
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
+      isin: isSet(object.isin) ? globalThis.String(object.isin) : "",
+      lot: isSet(object.lot) ? globalThis.Number(object.lot) : 0,
+      currency: isSet(object.currency) ? globalThis.String(object.currency) : "",
       klong: isSet(object.klong) ? Quotation.fromJSON(object.klong) : undefined,
-      kshort: isSet(object.kshort)
-        ? Quotation.fromJSON(object.kshort)
-        : undefined,
+      kshort: isSet(object.kshort) ? Quotation.fromJSON(object.kshort) : undefined,
       dlong: isSet(object.dlong) ? Quotation.fromJSON(object.dlong) : undefined,
-      dshort: isSet(object.dshort)
-        ? Quotation.fromJSON(object.dshort)
-        : undefined,
-      dlongMin: isSet(object.dlongMin)
-        ? Quotation.fromJSON(object.dlongMin)
-        : undefined,
-      dshortMin: isSet(object.dshortMin)
-        ? Quotation.fromJSON(object.dshortMin)
-        : undefined,
-      shortEnabledFlag: isSet(object.shortEnabledFlag)
-        ? Boolean(object.shortEnabledFlag)
-        : false,
-      name: isSet(object.name) ? String(object.name) : "",
-      exchange: isSet(object.exchange) ? String(object.exchange) : "",
-      countryOfRisk: isSet(object.countryOfRisk)
-        ? String(object.countryOfRisk)
-        : "",
-      countryOfRiskName: isSet(object.countryOfRiskName)
-        ? String(object.countryOfRiskName)
-        : "",
-      instrumentType: isSet(object.instrumentType)
-        ? String(object.instrumentType)
-        : "",
-      tradingStatus: isSet(object.tradingStatus)
-        ? securityTradingStatusFromJSON(object.tradingStatus)
-        : 0,
-      otcFlag: isSet(object.otcFlag) ? Boolean(object.otcFlag) : false,
-      buyAvailableFlag: isSet(object.buyAvailableFlag)
-        ? Boolean(object.buyAvailableFlag)
-        : false,
-      sellAvailableFlag: isSet(object.sellAvailableFlag)
-        ? Boolean(object.sellAvailableFlag)
-        : false,
-      minPriceIncrement: isSet(object.minPriceIncrement)
-        ? Quotation.fromJSON(object.minPriceIncrement)
-        : undefined,
+      dshort: isSet(object.dshort) ? Quotation.fromJSON(object.dshort) : undefined,
+      dlongMin: isSet(object.dlongMin) ? Quotation.fromJSON(object.dlongMin) : undefined,
+      dshortMin: isSet(object.dshortMin) ? Quotation.fromJSON(object.dshortMin) : undefined,
+      shortEnabledFlag: isSet(object.shortEnabledFlag) ? globalThis.Boolean(object.shortEnabledFlag) : false,
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      exchange: isSet(object.exchange) ? globalThis.String(object.exchange) : "",
+      countryOfRisk: isSet(object.countryOfRisk) ? globalThis.String(object.countryOfRisk) : "",
+      countryOfRiskName: isSet(object.countryOfRiskName) ? globalThis.String(object.countryOfRiskName) : "",
+      instrumentType: isSet(object.instrumentType) ? globalThis.String(object.instrumentType) : "",
+      tradingStatus: isSet(object.tradingStatus) ? securityTradingStatusFromJSON(object.tradingStatus) : 0,
+      otcFlag: isSet(object.otcFlag) ? globalThis.Boolean(object.otcFlag) : false,
+      buyAvailableFlag: isSet(object.buyAvailableFlag) ? globalThis.Boolean(object.buyAvailableFlag) : false,
+      sellAvailableFlag: isSet(object.sellAvailableFlag) ? globalThis.Boolean(object.sellAvailableFlag) : false,
+      minPriceIncrement: isSet(object.minPriceIncrement) ? Quotation.fromJSON(object.minPriceIncrement) : undefined,
       apiTradeAvailableFlag: isSet(object.apiTradeAvailableFlag)
-        ? Boolean(object.apiTradeAvailableFlag)
+        ? globalThis.Boolean(object.apiTradeAvailableFlag)
         : false,
-      uid: isSet(object.uid) ? String(object.uid) : "",
-      realExchange: isSet(object.realExchange)
-        ? realExchangeFromJSON(object.realExchange)
-        : 0,
-      positionUid: isSet(object.positionUid) ? String(object.positionUid) : "",
-      forIisFlag: isSet(object.forIisFlag) ? Boolean(object.forIisFlag) : false,
-      forQualInvestorFlag: isSet(object.forQualInvestorFlag)
-        ? Boolean(object.forQualInvestorFlag)
-        : false,
-      weekendFlag: isSet(object.weekendFlag)
-        ? Boolean(object.weekendFlag)
-        : false,
-      blockedTcaFlag: isSet(object.blockedTcaFlag)
-        ? Boolean(object.blockedTcaFlag)
-        : false,
-      instrumentKind: isSet(object.instrumentKind)
-        ? instrumentTypeFromJSON(object.instrumentKind)
-        : 0,
+      uid: isSet(object.uid) ? globalThis.String(object.uid) : "",
+      realExchange: isSet(object.realExchange) ? realExchangeFromJSON(object.realExchange) : 0,
+      positionUid: isSet(object.positionUid) ? globalThis.String(object.positionUid) : "",
+      forIisFlag: isSet(object.forIisFlag) ? globalThis.Boolean(object.forIisFlag) : false,
+      forQualInvestorFlag: isSet(object.forQualInvestorFlag) ? globalThis.Boolean(object.forQualInvestorFlag) : false,
+      weekendFlag: isSet(object.weekendFlag) ? globalThis.Boolean(object.weekendFlag) : false,
+      blockedTcaFlag: isSet(object.blockedTcaFlag) ? globalThis.Boolean(object.blockedTcaFlag) : false,
+      instrumentKind: isSet(object.instrumentKind) ? instrumentTypeFromJSON(object.instrumentKind) : 0,
       first1minCandleDate: isSet(object.first1minCandleDate)
         ? fromJsonTimestamp(object.first1minCandleDate)
         : undefined,
@@ -7586,73 +8734,108 @@ export const Instrument = {
 
   toJSON(message: Instrument): unknown {
     const obj: any = {};
-    message.figi !== undefined && (obj.figi = message.figi);
-    message.ticker !== undefined && (obj.ticker = message.ticker);
-    message.classCode !== undefined && (obj.classCode = message.classCode);
-    message.isin !== undefined && (obj.isin = message.isin);
-    message.lot !== undefined && (obj.lot = Math.round(message.lot));
-    message.currency !== undefined && (obj.currency = message.currency);
-    message.klong !== undefined &&
-      (obj.klong = message.klong ? Quotation.toJSON(message.klong) : undefined);
-    message.kshort !== undefined &&
-      (obj.kshort = message.kshort
-        ? Quotation.toJSON(message.kshort)
-        : undefined);
-    message.dlong !== undefined &&
-      (obj.dlong = message.dlong ? Quotation.toJSON(message.dlong) : undefined);
-    message.dshort !== undefined &&
-      (obj.dshort = message.dshort
-        ? Quotation.toJSON(message.dshort)
-        : undefined);
-    message.dlongMin !== undefined &&
-      (obj.dlongMin = message.dlongMin
-        ? Quotation.toJSON(message.dlongMin)
-        : undefined);
-    message.dshortMin !== undefined &&
-      (obj.dshortMin = message.dshortMin
-        ? Quotation.toJSON(message.dshortMin)
-        : undefined);
-    message.shortEnabledFlag !== undefined &&
-      (obj.shortEnabledFlag = message.shortEnabledFlag);
-    message.name !== undefined && (obj.name = message.name);
-    message.exchange !== undefined && (obj.exchange = message.exchange);
-    message.countryOfRisk !== undefined &&
-      (obj.countryOfRisk = message.countryOfRisk);
-    message.countryOfRiskName !== undefined &&
-      (obj.countryOfRiskName = message.countryOfRiskName);
-    message.instrumentType !== undefined &&
-      (obj.instrumentType = message.instrumentType);
-    message.tradingStatus !== undefined &&
-      (obj.tradingStatus = securityTradingStatusToJSON(message.tradingStatus));
-    message.otcFlag !== undefined && (obj.otcFlag = message.otcFlag);
-    message.buyAvailableFlag !== undefined &&
-      (obj.buyAvailableFlag = message.buyAvailableFlag);
-    message.sellAvailableFlag !== undefined &&
-      (obj.sellAvailableFlag = message.sellAvailableFlag);
-    message.minPriceIncrement !== undefined &&
-      (obj.minPriceIncrement = message.minPriceIncrement
-        ? Quotation.toJSON(message.minPriceIncrement)
-        : undefined);
-    message.apiTradeAvailableFlag !== undefined &&
-      (obj.apiTradeAvailableFlag = message.apiTradeAvailableFlag);
-    message.uid !== undefined && (obj.uid = message.uid);
-    message.realExchange !== undefined &&
-      (obj.realExchange = realExchangeToJSON(message.realExchange));
-    message.positionUid !== undefined &&
-      (obj.positionUid = message.positionUid);
-    message.forIisFlag !== undefined && (obj.forIisFlag = message.forIisFlag);
-    message.forQualInvestorFlag !== undefined &&
-      (obj.forQualInvestorFlag = message.forQualInvestorFlag);
-    message.weekendFlag !== undefined &&
-      (obj.weekendFlag = message.weekendFlag);
-    message.blockedTcaFlag !== undefined &&
-      (obj.blockedTcaFlag = message.blockedTcaFlag);
-    message.instrumentKind !== undefined &&
-      (obj.instrumentKind = instrumentTypeToJSON(message.instrumentKind));
-    message.first1minCandleDate !== undefined &&
-      (obj.first1minCandleDate = message.first1minCandleDate.toISOString());
-    message.first1dayCandleDate !== undefined &&
-      (obj.first1dayCandleDate = message.first1dayCandleDate.toISOString());
+    if (message.figi !== "") {
+      obj.figi = message.figi;
+    }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
+    }
+    if (message.isin !== "") {
+      obj.isin = message.isin;
+    }
+    if (message.lot !== 0) {
+      obj.lot = Math.round(message.lot);
+    }
+    if (message.currency !== "") {
+      obj.currency = message.currency;
+    }
+    if (message.klong !== undefined) {
+      obj.klong = Quotation.toJSON(message.klong);
+    }
+    if (message.kshort !== undefined) {
+      obj.kshort = Quotation.toJSON(message.kshort);
+    }
+    if (message.dlong !== undefined) {
+      obj.dlong = Quotation.toJSON(message.dlong);
+    }
+    if (message.dshort !== undefined) {
+      obj.dshort = Quotation.toJSON(message.dshort);
+    }
+    if (message.dlongMin !== undefined) {
+      obj.dlongMin = Quotation.toJSON(message.dlongMin);
+    }
+    if (message.dshortMin !== undefined) {
+      obj.dshortMin = Quotation.toJSON(message.dshortMin);
+    }
+    if (message.shortEnabledFlag === true) {
+      obj.shortEnabledFlag = message.shortEnabledFlag;
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.exchange !== "") {
+      obj.exchange = message.exchange;
+    }
+    if (message.countryOfRisk !== "") {
+      obj.countryOfRisk = message.countryOfRisk;
+    }
+    if (message.countryOfRiskName !== "") {
+      obj.countryOfRiskName = message.countryOfRiskName;
+    }
+    if (message.instrumentType !== "") {
+      obj.instrumentType = message.instrumentType;
+    }
+    if (message.tradingStatus !== 0) {
+      obj.tradingStatus = securityTradingStatusToJSON(message.tradingStatus);
+    }
+    if (message.otcFlag === true) {
+      obj.otcFlag = message.otcFlag;
+    }
+    if (message.buyAvailableFlag === true) {
+      obj.buyAvailableFlag = message.buyAvailableFlag;
+    }
+    if (message.sellAvailableFlag === true) {
+      obj.sellAvailableFlag = message.sellAvailableFlag;
+    }
+    if (message.minPriceIncrement !== undefined) {
+      obj.minPriceIncrement = Quotation.toJSON(message.minPriceIncrement);
+    }
+    if (message.apiTradeAvailableFlag === true) {
+      obj.apiTradeAvailableFlag = message.apiTradeAvailableFlag;
+    }
+    if (message.uid !== "") {
+      obj.uid = message.uid;
+    }
+    if (message.realExchange !== 0) {
+      obj.realExchange = realExchangeToJSON(message.realExchange);
+    }
+    if (message.positionUid !== "") {
+      obj.positionUid = message.positionUid;
+    }
+    if (message.forIisFlag === true) {
+      obj.forIisFlag = message.forIisFlag;
+    }
+    if (message.forQualInvestorFlag === true) {
+      obj.forQualInvestorFlag = message.forQualInvestorFlag;
+    }
+    if (message.weekendFlag === true) {
+      obj.weekendFlag = message.weekendFlag;
+    }
+    if (message.blockedTcaFlag === true) {
+      obj.blockedTcaFlag = message.blockedTcaFlag;
+    }
+    if (message.instrumentKind !== 0) {
+      obj.instrumentKind = instrumentTypeToJSON(message.instrumentKind);
+    }
+    if (message.first1minCandleDate !== undefined) {
+      obj.first1minCandleDate = message.first1minCandleDate.toISOString();
+    }
+    if (message.first1dayCandleDate !== undefined) {
+      obj.first1dayCandleDate = message.first1dayCandleDate.toISOString();
+    }
     return obj;
   },
 };
@@ -7662,57 +8845,59 @@ function createBaseGetDividendsRequest(): GetDividendsRequest {
 }
 
 export const GetDividendsRequest = {
-  encode(
-    message: GetDividendsRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: GetDividendsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.figi !== "") {
       writer.uint32(10).string(message.figi);
     }
     if (message.from !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.from),
-        writer.uint32(18).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.from), writer.uint32(18).fork()).ldelim();
     }
     if (message.to !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.to),
-        writer.uint32(26).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.to), writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetDividendsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetDividendsRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.figi = reader.string();
-          break;
+          continue;
         case 2:
-          message.from = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 18) {
+            break;
+          }
+
+          message.from = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.to = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): GetDividendsRequest {
     return {
-      figi: isSet(object.figi) ? String(object.figi) : "",
+      figi: isSet(object.figi) ? globalThis.String(object.figi) : "",
       from: isSet(object.from) ? fromJsonTimestamp(object.from) : undefined,
       to: isSet(object.to) ? fromJsonTimestamp(object.to) : undefined,
     };
@@ -7720,9 +8905,15 @@ export const GetDividendsRequest = {
 
   toJSON(message: GetDividendsRequest): unknown {
     const obj: any = {};
-    message.figi !== undefined && (obj.figi = message.figi);
-    message.from !== undefined && (obj.from = message.from.toISOString());
-    message.to !== undefined && (obj.to = message.to.toISOString());
+    if (message.figi !== "") {
+      obj.figi = message.figi;
+    }
+    if (message.from !== undefined) {
+      obj.from = message.from.toISOString();
+    }
+    if (message.to !== undefined) {
+      obj.to = message.to.toISOString();
+    }
     return obj;
   },
 };
@@ -7732,40 +8923,39 @@ function createBaseGetDividendsResponse(): GetDividendsResponse {
 }
 
 export const GetDividendsResponse = {
-  encode(
-    message: GetDividendsResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: GetDividendsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.dividends) {
       Dividend.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): GetDividendsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetDividendsResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetDividendsResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.dividends.push(Dividend.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): GetDividendsResponse {
     return {
-      dividends: Array.isArray(object?.dividends)
+      dividends: globalThis.Array.isArray(object?.dividends)
         ? object.dividends.map((e: any) => Dividend.fromJSON(e))
         : [],
     };
@@ -7773,12 +8963,8 @@ export const GetDividendsResponse = {
 
   toJSON(message: GetDividendsResponse): unknown {
     const obj: any = {};
-    if (message.dividends) {
-      obj.dividends = message.dividends.map((e) =>
-        e ? Dividend.toJSON(e) : undefined
-      );
-    } else {
-      obj.dividends = [];
+    if (message.dividends?.length) {
+      obj.dividends = message.dividends.map((e) => Dividend.toJSON(e));
     }
     return obj;
   },
@@ -7800,39 +8986,24 @@ function createBaseDividend(): Dividend {
 }
 
 export const Dividend = {
-  encode(
-    message: Dividend,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: Dividend, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.dividendNet !== undefined) {
       MoneyValue.encode(message.dividendNet, writer.uint32(10).fork()).ldelim();
     }
     if (message.paymentDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.paymentDate),
-        writer.uint32(18).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.paymentDate), writer.uint32(18).fork()).ldelim();
     }
     if (message.declaredDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.declaredDate),
-        writer.uint32(26).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.declaredDate), writer.uint32(26).fork()).ldelim();
     }
     if (message.lastBuyDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.lastBuyDate),
-        writer.uint32(34).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.lastBuyDate), writer.uint32(34).fork()).ldelim();
     }
     if (message.dividendType !== "") {
       writer.uint32(42).string(message.dividendType);
     }
     if (message.recordDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.recordDate),
-        writer.uint32(50).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.recordDate), writer.uint32(50).fork()).ldelim();
     }
     if (message.regularity !== "") {
       writer.uint32(58).string(message.regularity);
@@ -7844,129 +9015,144 @@ export const Dividend = {
       Quotation.encode(message.yieldValue, writer.uint32(74).fork()).ldelim();
     }
     if (message.createdAt !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.createdAt),
-        writer.uint32(82).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.createdAt), writer.uint32(82).fork()).ldelim();
     }
     return writer;
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Dividend {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDividend();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.dividendNet = MoneyValue.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
-          message.paymentDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 18) {
+            break;
+          }
+
+          message.paymentDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 3:
-          message.declaredDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 26) {
+            break;
+          }
+
+          message.declaredDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 4:
-          message.lastBuyDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 34) {
+            break;
+          }
+
+          message.lastBuyDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 5:
+          if (tag !== 42) {
+            break;
+          }
+
           message.dividendType = reader.string();
-          break;
+          continue;
         case 6:
-          message.recordDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 50) {
+            break;
+          }
+
+          message.recordDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.regularity = reader.string();
-          break;
+          continue;
         case 8:
+          if (tag !== 66) {
+            break;
+          }
+
           message.closePrice = MoneyValue.decode(reader, reader.uint32());
-          break;
+          continue;
         case 9:
+          if (tag !== 74) {
+            break;
+          }
+
           message.yieldValue = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 10:
-          message.createdAt = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          if (tag !== 82) {
+            break;
+          }
+
+          message.createdAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): Dividend {
     return {
-      dividendNet: isSet(object.dividendNet)
-        ? MoneyValue.fromJSON(object.dividendNet)
-        : undefined,
-      paymentDate: isSet(object.paymentDate)
-        ? fromJsonTimestamp(object.paymentDate)
-        : undefined,
-      declaredDate: isSet(object.declaredDate)
-        ? fromJsonTimestamp(object.declaredDate)
-        : undefined,
-      lastBuyDate: isSet(object.lastBuyDate)
-        ? fromJsonTimestamp(object.lastBuyDate)
-        : undefined,
-      dividendType: isSet(object.dividendType)
-        ? String(object.dividendType)
-        : "",
-      recordDate: isSet(object.recordDate)
-        ? fromJsonTimestamp(object.recordDate)
-        : undefined,
-      regularity: isSet(object.regularity) ? String(object.regularity) : "",
-      closePrice: isSet(object.closePrice)
-        ? MoneyValue.fromJSON(object.closePrice)
-        : undefined,
-      yieldValue: isSet(object.yieldValue)
-        ? Quotation.fromJSON(object.yieldValue)
-        : undefined,
-      createdAt: isSet(object.createdAt)
-        ? fromJsonTimestamp(object.createdAt)
-        : undefined,
+      dividendNet: isSet(object.dividendNet) ? MoneyValue.fromJSON(object.dividendNet) : undefined,
+      paymentDate: isSet(object.paymentDate) ? fromJsonTimestamp(object.paymentDate) : undefined,
+      declaredDate: isSet(object.declaredDate) ? fromJsonTimestamp(object.declaredDate) : undefined,
+      lastBuyDate: isSet(object.lastBuyDate) ? fromJsonTimestamp(object.lastBuyDate) : undefined,
+      dividendType: isSet(object.dividendType) ? globalThis.String(object.dividendType) : "",
+      recordDate: isSet(object.recordDate) ? fromJsonTimestamp(object.recordDate) : undefined,
+      regularity: isSet(object.regularity) ? globalThis.String(object.regularity) : "",
+      closePrice: isSet(object.closePrice) ? MoneyValue.fromJSON(object.closePrice) : undefined,
+      yieldValue: isSet(object.yieldValue) ? Quotation.fromJSON(object.yieldValue) : undefined,
+      createdAt: isSet(object.createdAt) ? fromJsonTimestamp(object.createdAt) : undefined,
     };
   },
 
   toJSON(message: Dividend): unknown {
     const obj: any = {};
-    message.dividendNet !== undefined &&
-      (obj.dividendNet = message.dividendNet
-        ? MoneyValue.toJSON(message.dividendNet)
-        : undefined);
-    message.paymentDate !== undefined &&
-      (obj.paymentDate = message.paymentDate.toISOString());
-    message.declaredDate !== undefined &&
-      (obj.declaredDate = message.declaredDate.toISOString());
-    message.lastBuyDate !== undefined &&
-      (obj.lastBuyDate = message.lastBuyDate.toISOString());
-    message.dividendType !== undefined &&
-      (obj.dividendType = message.dividendType);
-    message.recordDate !== undefined &&
-      (obj.recordDate = message.recordDate.toISOString());
-    message.regularity !== undefined && (obj.regularity = message.regularity);
-    message.closePrice !== undefined &&
-      (obj.closePrice = message.closePrice
-        ? MoneyValue.toJSON(message.closePrice)
-        : undefined);
-    message.yieldValue !== undefined &&
-      (obj.yieldValue = message.yieldValue
-        ? Quotation.toJSON(message.yieldValue)
-        : undefined);
-    message.createdAt !== undefined &&
-      (obj.createdAt = message.createdAt.toISOString());
+    if (message.dividendNet !== undefined) {
+      obj.dividendNet = MoneyValue.toJSON(message.dividendNet);
+    }
+    if (message.paymentDate !== undefined) {
+      obj.paymentDate = message.paymentDate.toISOString();
+    }
+    if (message.declaredDate !== undefined) {
+      obj.declaredDate = message.declaredDate.toISOString();
+    }
+    if (message.lastBuyDate !== undefined) {
+      obj.lastBuyDate = message.lastBuyDate.toISOString();
+    }
+    if (message.dividendType !== "") {
+      obj.dividendType = message.dividendType;
+    }
+    if (message.recordDate !== undefined) {
+      obj.recordDate = message.recordDate.toISOString();
+    }
+    if (message.regularity !== "") {
+      obj.regularity = message.regularity;
+    }
+    if (message.closePrice !== undefined) {
+      obj.closePrice = MoneyValue.toJSON(message.closePrice);
+    }
+    if (message.yieldValue !== undefined) {
+      obj.yieldValue = Quotation.toJSON(message.yieldValue);
+    }
+    if (message.createdAt !== undefined) {
+      obj.createdAt = message.createdAt.toISOString();
+    }
     return obj;
   },
 };
@@ -7976,10 +9162,7 @@ function createBaseAssetRequest(): AssetRequest {
 }
 
 export const AssetRequest = {
-  encode(
-    message: AssetRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: AssetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
     }
@@ -7987,32 +9170,37 @@ export const AssetRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): AssetRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAssetRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.id = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): AssetRequest {
-    return {
-      id: isSet(object.id) ? String(object.id) : "",
-    };
+    return { id: isSet(object.id) ? globalThis.String(object.id) : "" };
   },
 
   toJSON(message: AssetRequest): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = message.id);
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
     return obj;
   },
 };
@@ -8022,10 +9210,7 @@ function createBaseAssetResponse(): AssetResponse {
 }
 
 export const AssetResponse = {
-  encode(
-    message: AssetResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: AssetResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.asset !== undefined) {
       AssetFull.encode(message.asset, writer.uint32(10).fork()).ldelim();
     }
@@ -8033,33 +9218,37 @@ export const AssetResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): AssetResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAssetResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.asset = AssetFull.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): AssetResponse {
-    return {
-      asset: isSet(object.asset) ? AssetFull.fromJSON(object.asset) : undefined,
-    };
+    return { asset: isSet(object.asset) ? AssetFull.fromJSON(object.asset) : undefined };
   },
 
   toJSON(message: AssetResponse): unknown {
     const obj: any = {};
-    message.asset !== undefined &&
-      (obj.asset = message.asset ? AssetFull.toJSON(message.asset) : undefined);
+    if (message.asset !== undefined) {
+      obj.asset = AssetFull.toJSON(message.asset);
+    }
     return obj;
   },
 };
@@ -8069,10 +9258,7 @@ function createBaseAssetsRequest(): AssetsRequest {
 }
 
 export const AssetsRequest = {
-  encode(
-    message: AssetsRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: AssetsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.instrumentType !== 0) {
       writer.uint32(8).int32(message.instrumentType);
     }
@@ -8080,35 +9266,37 @@ export const AssetsRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): AssetsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAssetsRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.instrumentType = reader.int32() as any;
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): AssetsRequest {
-    return {
-      instrumentType: isSet(object.instrumentType)
-        ? instrumentTypeFromJSON(object.instrumentType)
-        : 0,
-    };
+    return { instrumentType: isSet(object.instrumentType) ? instrumentTypeFromJSON(object.instrumentType) : 0 };
   },
 
   toJSON(message: AssetsRequest): unknown {
     const obj: any = {};
-    message.instrumentType !== undefined &&
-      (obj.instrumentType = instrumentTypeToJSON(message.instrumentType));
+    if (message.instrumentType !== 0) {
+      obj.instrumentType = instrumentTypeToJSON(message.instrumentType);
+    }
     return obj;
   },
 };
@@ -8118,10 +9306,7 @@ function createBaseAssetsResponse(): AssetsResponse {
 }
 
 export const AssetsResponse = {
-  encode(
-    message: AssetsResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: AssetsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.assets) {
       Asset.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -8129,37 +9314,36 @@ export const AssetsResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): AssetsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAssetsResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.assets.push(Asset.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): AssetsResponse {
-    return {
-      assets: Array.isArray(object?.assets)
-        ? object.assets.map((e: any) => Asset.fromJSON(e))
-        : [],
-    };
+    return { assets: globalThis.Array.isArray(object?.assets) ? object.assets.map((e: any) => Asset.fromJSON(e)) : [] };
   },
 
   toJSON(message: AssetsResponse): unknown {
     const obj: any = {};
-    if (message.assets) {
-      obj.assets = message.assets.map((e) => (e ? Asset.toJSON(e) : undefined));
-    } else {
-      obj.assets = [];
+    if (message.assets?.length) {
+      obj.assets = message.assets.map((e) => Asset.toJSON(e));
     }
     return obj;
   },
@@ -8189,10 +9373,7 @@ function createBaseAssetFull(): AssetFull {
 }
 
 export const AssetFull = {
-  encode(
-    message: AssetFull,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: AssetFull, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.uid !== "") {
       writer.uint32(10).string(message.uid);
     }
@@ -8209,10 +9390,7 @@ export const AssetFull = {
       writer.uint32(42).string(message.description);
     }
     if (message.deletedAt !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.deletedAt),
-        writer.uint32(50).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.deletedAt), writer.uint32(50).fork()).ldelim();
     }
     for (const v of message.requiredTests) {
       writer.uint32(58).string(v!);
@@ -8239,10 +9417,7 @@ export const AssetFull = {
       Brand.encode(message.brand, writer.uint32(114).fork()).ldelim();
     }
     if (message.updatedAt !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.updatedAt),
-        writer.uint32(122).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.updatedAt), writer.uint32(122).fork()).ldelim();
     }
     if (message.brCode !== "") {
       writer.uint32(130).string(message.brCode);
@@ -8257,110 +9432,169 @@ export const AssetFull = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): AssetFull {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAssetFull();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.uid = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 16) {
+            break;
+          }
+
           message.type = reader.int32() as any;
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.name = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.nameBrief = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag !== 42) {
+            break;
+          }
+
           message.description = reader.string();
-          break;
+          continue;
         case 6:
-          message.deletedAt = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 50) {
+            break;
+          }
+
+          message.deletedAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.requiredTests.push(reader.string());
-          break;
+          continue;
         case 8:
+          if (tag !== 66) {
+            break;
+          }
+
           message.currency = AssetCurrency.decode(reader, reader.uint32());
-          break;
+          continue;
         case 9:
+          if (tag !== 74) {
+            break;
+          }
+
           message.security = AssetSecurity.decode(reader, reader.uint32());
-          break;
+          continue;
         case 10:
+          if (tag !== 82) {
+            break;
+          }
+
           message.gosRegCode = reader.string();
-          break;
+          continue;
         case 11:
+          if (tag !== 90) {
+            break;
+          }
+
           message.cfi = reader.string();
-          break;
+          continue;
         case 12:
+          if (tag !== 98) {
+            break;
+          }
+
           message.codeNsd = reader.string();
-          break;
+          continue;
         case 13:
+          if (tag !== 106) {
+            break;
+          }
+
           message.status = reader.string();
-          break;
+          continue;
         case 14:
+          if (tag !== 114) {
+            break;
+          }
+
           message.brand = Brand.decode(reader, reader.uint32());
-          break;
+          continue;
         case 15:
-          message.updatedAt = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 122) {
+            break;
+          }
+
+          message.updatedAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 16:
+          if (tag !== 130) {
+            break;
+          }
+
           message.brCode = reader.string();
-          break;
+          continue;
         case 17:
+          if (tag !== 138) {
+            break;
+          }
+
           message.brCodeName = reader.string();
-          break;
+          continue;
         case 18:
-          message.instruments.push(
-            AssetInstrument.decode(reader, reader.uint32())
-          );
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          if (tag !== 146) {
+            break;
+          }
+
+          message.instruments.push(AssetInstrument.decode(reader, reader.uint32()));
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): AssetFull {
     return {
-      uid: isSet(object.uid) ? String(object.uid) : "",
+      uid: isSet(object.uid) ? globalThis.String(object.uid) : "",
       type: isSet(object.type) ? assetTypeFromJSON(object.type) : 0,
-      name: isSet(object.name) ? String(object.name) : "",
-      nameBrief: isSet(object.nameBrief) ? String(object.nameBrief) : "",
-      description: isSet(object.description) ? String(object.description) : "",
-      deletedAt: isSet(object.deletedAt)
-        ? fromJsonTimestamp(object.deletedAt)
-        : undefined,
-      requiredTests: Array.isArray(object?.requiredTests)
-        ? object.requiredTests.map((e: any) => String(e))
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      nameBrief: isSet(object.nameBrief) ? globalThis.String(object.nameBrief) : "",
+      description: isSet(object.description) ? globalThis.String(object.description) : "",
+      deletedAt: isSet(object.deletedAt) ? fromJsonTimestamp(object.deletedAt) : undefined,
+      requiredTests: globalThis.Array.isArray(object?.requiredTests)
+        ? object.requiredTests.map((e: any) => globalThis.String(e))
         : [],
-      currency: isSet(object.currency)
-        ? AssetCurrency.fromJSON(object.currency)
-        : undefined,
-      security: isSet(object.security)
-        ? AssetSecurity.fromJSON(object.security)
-        : undefined,
-      gosRegCode: isSet(object.gosRegCode) ? String(object.gosRegCode) : "",
-      cfi: isSet(object.cfi) ? String(object.cfi) : "",
-      codeNsd: isSet(object.codeNsd) ? String(object.codeNsd) : "",
-      status: isSet(object.status) ? String(object.status) : "",
+      currency: isSet(object.currency) ? AssetCurrency.fromJSON(object.currency) : undefined,
+      security: isSet(object.security) ? AssetSecurity.fromJSON(object.security) : undefined,
+      gosRegCode: isSet(object.gosRegCode) ? globalThis.String(object.gosRegCode) : "",
+      cfi: isSet(object.cfi) ? globalThis.String(object.cfi) : "",
+      codeNsd: isSet(object.codeNsd) ? globalThis.String(object.codeNsd) : "",
+      status: isSet(object.status) ? globalThis.String(object.status) : "",
       brand: isSet(object.brand) ? Brand.fromJSON(object.brand) : undefined,
-      updatedAt: isSet(object.updatedAt)
-        ? fromJsonTimestamp(object.updatedAt)
-        : undefined,
-      brCode: isSet(object.brCode) ? String(object.brCode) : "",
-      brCodeName: isSet(object.brCodeName) ? String(object.brCodeName) : "",
-      instruments: Array.isArray(object?.instruments)
+      updatedAt: isSet(object.updatedAt) ? fromJsonTimestamp(object.updatedAt) : undefined,
+      brCode: isSet(object.brCode) ? globalThis.String(object.brCode) : "",
+      brCodeName: isSet(object.brCodeName) ? globalThis.String(object.brCodeName) : "",
+      instruments: globalThis.Array.isArray(object?.instruments)
         ? object.instruments.map((e: any) => AssetInstrument.fromJSON(e))
         : [],
     };
@@ -8368,43 +9602,59 @@ export const AssetFull = {
 
   toJSON(message: AssetFull): unknown {
     const obj: any = {};
-    message.uid !== undefined && (obj.uid = message.uid);
-    message.type !== undefined && (obj.type = assetTypeToJSON(message.type));
-    message.name !== undefined && (obj.name = message.name);
-    message.nameBrief !== undefined && (obj.nameBrief = message.nameBrief);
-    message.description !== undefined &&
-      (obj.description = message.description);
-    message.deletedAt !== undefined &&
-      (obj.deletedAt = message.deletedAt.toISOString());
-    if (message.requiredTests) {
-      obj.requiredTests = message.requiredTests.map((e) => e);
-    } else {
-      obj.requiredTests = [];
+    if (message.uid !== "") {
+      obj.uid = message.uid;
     }
-    message.currency !== undefined &&
-      (obj.currency = message.currency
-        ? AssetCurrency.toJSON(message.currency)
-        : undefined);
-    message.security !== undefined &&
-      (obj.security = message.security
-        ? AssetSecurity.toJSON(message.security)
-        : undefined);
-    message.gosRegCode !== undefined && (obj.gosRegCode = message.gosRegCode);
-    message.cfi !== undefined && (obj.cfi = message.cfi);
-    message.codeNsd !== undefined && (obj.codeNsd = message.codeNsd);
-    message.status !== undefined && (obj.status = message.status);
-    message.brand !== undefined &&
-      (obj.brand = message.brand ? Brand.toJSON(message.brand) : undefined);
-    message.updatedAt !== undefined &&
-      (obj.updatedAt = message.updatedAt.toISOString());
-    message.brCode !== undefined && (obj.brCode = message.brCode);
-    message.brCodeName !== undefined && (obj.brCodeName = message.brCodeName);
-    if (message.instruments) {
-      obj.instruments = message.instruments.map((e) =>
-        e ? AssetInstrument.toJSON(e) : undefined
-      );
-    } else {
-      obj.instruments = [];
+    if (message.type !== 0) {
+      obj.type = assetTypeToJSON(message.type);
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.nameBrief !== "") {
+      obj.nameBrief = message.nameBrief;
+    }
+    if (message.description !== "") {
+      obj.description = message.description;
+    }
+    if (message.deletedAt !== undefined) {
+      obj.deletedAt = message.deletedAt.toISOString();
+    }
+    if (message.requiredTests?.length) {
+      obj.requiredTests = message.requiredTests;
+    }
+    if (message.currency !== undefined) {
+      obj.currency = AssetCurrency.toJSON(message.currency);
+    }
+    if (message.security !== undefined) {
+      obj.security = AssetSecurity.toJSON(message.security);
+    }
+    if (message.gosRegCode !== "") {
+      obj.gosRegCode = message.gosRegCode;
+    }
+    if (message.cfi !== "") {
+      obj.cfi = message.cfi;
+    }
+    if (message.codeNsd !== "") {
+      obj.codeNsd = message.codeNsd;
+    }
+    if (message.status !== "") {
+      obj.status = message.status;
+    }
+    if (message.brand !== undefined) {
+      obj.brand = Brand.toJSON(message.brand);
+    }
+    if (message.updatedAt !== undefined) {
+      obj.updatedAt = message.updatedAt.toISOString();
+    }
+    if (message.brCode !== "") {
+      obj.brCode = message.brCode;
+    }
+    if (message.brCodeName !== "") {
+      obj.brCodeName = message.brCodeName;
+    }
+    if (message.instruments?.length) {
+      obj.instruments = message.instruments.map((e) => AssetInstrument.toJSON(e));
     }
     return obj;
   },
@@ -8432,40 +9682,55 @@ export const Asset = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Asset {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAsset();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.uid = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 16) {
+            break;
+          }
+
           message.type = reader.int32() as any;
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.name = reader.string();
-          break;
+          continue;
         case 4:
-          message.instruments.push(
-            AssetInstrument.decode(reader, reader.uint32())
-          );
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          if (tag !== 34) {
+            break;
+          }
+
+          message.instruments.push(AssetInstrument.decode(reader, reader.uint32()));
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): Asset {
     return {
-      uid: isSet(object.uid) ? String(object.uid) : "",
+      uid: isSet(object.uid) ? globalThis.String(object.uid) : "",
       type: isSet(object.type) ? assetTypeFromJSON(object.type) : 0,
-      name: isSet(object.name) ? String(object.name) : "",
-      instruments: Array.isArray(object?.instruments)
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      instruments: globalThis.Array.isArray(object?.instruments)
         ? object.instruments.map((e: any) => AssetInstrument.fromJSON(e))
         : [],
     };
@@ -8473,15 +9738,17 @@ export const Asset = {
 
   toJSON(message: Asset): unknown {
     const obj: any = {};
-    message.uid !== undefined && (obj.uid = message.uid);
-    message.type !== undefined && (obj.type = assetTypeToJSON(message.type));
-    message.name !== undefined && (obj.name = message.name);
-    if (message.instruments) {
-      obj.instruments = message.instruments.map((e) =>
-        e ? AssetInstrument.toJSON(e) : undefined
-      );
-    } else {
-      obj.instruments = [];
+    if (message.uid !== "") {
+      obj.uid = message.uid;
+    }
+    if (message.type !== 0) {
+      obj.type = assetTypeToJSON(message.type);
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.instruments?.length) {
+      obj.instruments = message.instruments.map((e) => AssetInstrument.toJSON(e));
     }
     return obj;
   },
@@ -8492,10 +9759,7 @@ function createBaseAssetCurrency(): AssetCurrency {
 }
 
 export const AssetCurrency = {
-  encode(
-    message: AssetCurrency,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: AssetCurrency, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.baseCurrency !== "") {
       writer.uint32(10).string(message.baseCurrency);
     }
@@ -8503,35 +9767,37 @@ export const AssetCurrency = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): AssetCurrency {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAssetCurrency();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.baseCurrency = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): AssetCurrency {
-    return {
-      baseCurrency: isSet(object.baseCurrency)
-        ? String(object.baseCurrency)
-        : "",
-    };
+    return { baseCurrency: isSet(object.baseCurrency) ? globalThis.String(object.baseCurrency) : "" };
   },
 
   toJSON(message: AssetCurrency): unknown {
     const obj: any = {};
-    message.baseCurrency !== undefined &&
-      (obj.baseCurrency = message.baseCurrency);
+    if (message.baseCurrency !== "") {
+      obj.baseCurrency = message.baseCurrency;
+    }
     return obj;
   },
 };
@@ -8550,10 +9816,7 @@ function createBaseAssetSecurity(): AssetSecurity {
 }
 
 export const AssetSecurity = {
-  encode(
-    message: AssetSecurity,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: AssetSecurity, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.isin !== "") {
       writer.uint32(10).string(message.isin);
     }
@@ -8570,79 +9833,97 @@ export const AssetSecurity = {
       AssetBond.encode(message.bond, writer.uint32(34).fork()).ldelim();
     }
     if (message.sp !== undefined) {
-      AssetStructuredProduct.encode(
-        message.sp,
-        writer.uint32(42).fork()
-      ).ldelim();
+      AssetStructuredProduct.encode(message.sp, writer.uint32(42).fork()).ldelim();
     }
     if (message.etf !== undefined) {
       AssetEtf.encode(message.etf, writer.uint32(50).fork()).ldelim();
     }
     if (message.clearingCertificate !== undefined) {
-      AssetClearingCertificate.encode(
-        message.clearingCertificate,
-        writer.uint32(58).fork()
-      ).ldelim();
+      AssetClearingCertificate.encode(message.clearingCertificate, writer.uint32(58).fork()).ldelim();
     }
     return writer;
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): AssetSecurity {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAssetSecurity();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.isin = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.type = reader.string();
-          break;
+          continue;
         case 10:
+          if (tag !== 80) {
+            break;
+          }
+
           message.instrumentKind = reader.int32() as any;
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.share = AssetShare.decode(reader, reader.uint32());
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.bond = AssetBond.decode(reader, reader.uint32());
-          break;
+          continue;
         case 5:
+          if (tag !== 42) {
+            break;
+          }
+
           message.sp = AssetStructuredProduct.decode(reader, reader.uint32());
-          break;
+          continue;
         case 6:
+          if (tag !== 50) {
+            break;
+          }
+
           message.etf = AssetEtf.decode(reader, reader.uint32());
-          break;
+          continue;
         case 7:
-          message.clearingCertificate = AssetClearingCertificate.decode(
-            reader,
-            reader.uint32()
-          );
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          if (tag !== 58) {
+            break;
+          }
+
+          message.clearingCertificate = AssetClearingCertificate.decode(reader, reader.uint32());
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): AssetSecurity {
     return {
-      isin: isSet(object.isin) ? String(object.isin) : "",
-      type: isSet(object.type) ? String(object.type) : "",
-      instrumentKind: isSet(object.instrumentKind)
-        ? instrumentTypeFromJSON(object.instrumentKind)
-        : 0,
-      share: isSet(object.share)
-        ? AssetShare.fromJSON(object.share)
-        : undefined,
+      isin: isSet(object.isin) ? globalThis.String(object.isin) : "",
+      type: isSet(object.type) ? globalThis.String(object.type) : "",
+      instrumentKind: isSet(object.instrumentKind) ? instrumentTypeFromJSON(object.instrumentKind) : 0,
+      share: isSet(object.share) ? AssetShare.fromJSON(object.share) : undefined,
       bond: isSet(object.bond) ? AssetBond.fromJSON(object.bond) : undefined,
-      sp: isSet(object.sp)
-        ? AssetStructuredProduct.fromJSON(object.sp)
-        : undefined,
+      sp: isSet(object.sp) ? AssetStructuredProduct.fromJSON(object.sp) : undefined,
       etf: isSet(object.etf) ? AssetEtf.fromJSON(object.etf) : undefined,
       clearingCertificate: isSet(object.clearingCertificate)
         ? AssetClearingCertificate.fromJSON(object.clearingCertificate)
@@ -8652,26 +9933,30 @@ export const AssetSecurity = {
 
   toJSON(message: AssetSecurity): unknown {
     const obj: any = {};
-    message.isin !== undefined && (obj.isin = message.isin);
-    message.type !== undefined && (obj.type = message.type);
-    message.instrumentKind !== undefined &&
-      (obj.instrumentKind = instrumentTypeToJSON(message.instrumentKind));
-    message.share !== undefined &&
-      (obj.share = message.share
-        ? AssetShare.toJSON(message.share)
-        : undefined);
-    message.bond !== undefined &&
-      (obj.bond = message.bond ? AssetBond.toJSON(message.bond) : undefined);
-    message.sp !== undefined &&
-      (obj.sp = message.sp
-        ? AssetStructuredProduct.toJSON(message.sp)
-        : undefined);
-    message.etf !== undefined &&
-      (obj.etf = message.etf ? AssetEtf.toJSON(message.etf) : undefined);
-    message.clearingCertificate !== undefined &&
-      (obj.clearingCertificate = message.clearingCertificate
-        ? AssetClearingCertificate.toJSON(message.clearingCertificate)
-        : undefined);
+    if (message.isin !== "") {
+      obj.isin = message.isin;
+    }
+    if (message.type !== "") {
+      obj.type = message.type;
+    }
+    if (message.instrumentKind !== 0) {
+      obj.instrumentKind = instrumentTypeToJSON(message.instrumentKind);
+    }
+    if (message.share !== undefined) {
+      obj.share = AssetShare.toJSON(message.share);
+    }
+    if (message.bond !== undefined) {
+      obj.bond = AssetBond.toJSON(message.bond);
+    }
+    if (message.sp !== undefined) {
+      obj.sp = AssetStructuredProduct.toJSON(message.sp);
+    }
+    if (message.etf !== undefined) {
+      obj.etf = AssetEtf.toJSON(message.etf);
+    }
+    if (message.clearingCertificate !== undefined) {
+      obj.clearingCertificate = AssetClearingCertificate.toJSON(message.clearingCertificate);
+    }
     return obj;
   },
 };
@@ -8697,10 +9982,7 @@ function createBaseAssetShare(): AssetShare {
 }
 
 export const AssetShare = {
-  encode(
-    message: AssetShare,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: AssetShare, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.type !== 0) {
       writer.uint32(8).int32(message.type);
     }
@@ -8723,16 +10005,10 @@ export const AssetShare = {
       writer.uint32(58).string(message.preferredShareType);
     }
     if (message.ipoDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.ipoDate),
-        writer.uint32(66).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.ipoDate), writer.uint32(66).fork()).ldelim();
     }
     if (message.registryDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.registryDate),
-        writer.uint32(74).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.registryDate), writer.uint32(74).fork()).ldelim();
     }
     if (message.divYieldFlag === true) {
       writer.uint32(80).bool(message.divYieldFlag);
@@ -8741,19 +10017,13 @@ export const AssetShare = {
       writer.uint32(90).string(message.issueKind);
     }
     if (message.placementDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.placementDate),
-        writer.uint32(98).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.placementDate), writer.uint32(98).fork()).ldelim();
     }
     if (message.represIsin !== "") {
       writer.uint32(106).string(message.represIsin);
     }
     if (message.issueSizePlan !== undefined) {
-      Quotation.encode(
-        message.issueSizePlan,
-        writer.uint32(114).fork()
-      ).ldelim();
+      Quotation.encode(message.issueSizePlan, writer.uint32(114).fork()).ldelim();
     }
     if (message.totalFloat !== undefined) {
       Quotation.encode(message.totalFloat, writer.uint32(122).fork()).ldelim();
@@ -8762,67 +10032,122 @@ export const AssetShare = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): AssetShare {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAssetShare();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 8) {
+            break;
+          }
+
           message.type = reader.int32() as any;
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.issueSize = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.nominal = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.nominalCurrency = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag !== 42) {
+            break;
+          }
+
           message.primaryIndex = reader.string();
-          break;
+          continue;
         case 6:
+          if (tag !== 50) {
+            break;
+          }
+
           message.dividendRate = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.preferredShareType = reader.string();
-          break;
+          continue;
         case 8:
-          message.ipoDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 66) {
+            break;
+          }
+
+          message.ipoDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 9:
-          message.registryDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 74) {
+            break;
+          }
+
+          message.registryDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 10:
+          if (tag !== 80) {
+            break;
+          }
+
           message.divYieldFlag = reader.bool();
-          break;
+          continue;
         case 11:
+          if (tag !== 90) {
+            break;
+          }
+
           message.issueKind = reader.string();
-          break;
+          continue;
         case 12:
-          message.placementDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 98) {
+            break;
+          }
+
+          message.placementDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 13:
+          if (tag !== 106) {
+            break;
+          }
+
           message.represIsin = reader.string();
-          break;
+          continue;
         case 14:
+          if (tag !== 114) {
+            break;
+          }
+
           message.issueSizePlan = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 15:
+          if (tag !== 122) {
+            break;
+          }
+
           message.totalFloat = Quotation.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -8830,86 +10155,70 @@ export const AssetShare = {
   fromJSON(object: any): AssetShare {
     return {
       type: isSet(object.type) ? shareTypeFromJSON(object.type) : 0,
-      issueSize: isSet(object.issueSize)
-        ? Quotation.fromJSON(object.issueSize)
-        : undefined,
-      nominal: isSet(object.nominal)
-        ? Quotation.fromJSON(object.nominal)
-        : undefined,
-      nominalCurrency: isSet(object.nominalCurrency)
-        ? String(object.nominalCurrency)
-        : "",
-      primaryIndex: isSet(object.primaryIndex)
-        ? String(object.primaryIndex)
-        : "",
-      dividendRate: isSet(object.dividendRate)
-        ? Quotation.fromJSON(object.dividendRate)
-        : undefined,
-      preferredShareType: isSet(object.preferredShareType)
-        ? String(object.preferredShareType)
-        : "",
-      ipoDate: isSet(object.ipoDate)
-        ? fromJsonTimestamp(object.ipoDate)
-        : undefined,
-      registryDate: isSet(object.registryDate)
-        ? fromJsonTimestamp(object.registryDate)
-        : undefined,
-      divYieldFlag: isSet(object.divYieldFlag)
-        ? Boolean(object.divYieldFlag)
-        : false,
-      issueKind: isSet(object.issueKind) ? String(object.issueKind) : "",
-      placementDate: isSet(object.placementDate)
-        ? fromJsonTimestamp(object.placementDate)
-        : undefined,
-      represIsin: isSet(object.represIsin) ? String(object.represIsin) : "",
-      issueSizePlan: isSet(object.issueSizePlan)
-        ? Quotation.fromJSON(object.issueSizePlan)
-        : undefined,
-      totalFloat: isSet(object.totalFloat)
-        ? Quotation.fromJSON(object.totalFloat)
-        : undefined,
+      issueSize: isSet(object.issueSize) ? Quotation.fromJSON(object.issueSize) : undefined,
+      nominal: isSet(object.nominal) ? Quotation.fromJSON(object.nominal) : undefined,
+      nominalCurrency: isSet(object.nominalCurrency) ? globalThis.String(object.nominalCurrency) : "",
+      primaryIndex: isSet(object.primaryIndex) ? globalThis.String(object.primaryIndex) : "",
+      dividendRate: isSet(object.dividendRate) ? Quotation.fromJSON(object.dividendRate) : undefined,
+      preferredShareType: isSet(object.preferredShareType) ? globalThis.String(object.preferredShareType) : "",
+      ipoDate: isSet(object.ipoDate) ? fromJsonTimestamp(object.ipoDate) : undefined,
+      registryDate: isSet(object.registryDate) ? fromJsonTimestamp(object.registryDate) : undefined,
+      divYieldFlag: isSet(object.divYieldFlag) ? globalThis.Boolean(object.divYieldFlag) : false,
+      issueKind: isSet(object.issueKind) ? globalThis.String(object.issueKind) : "",
+      placementDate: isSet(object.placementDate) ? fromJsonTimestamp(object.placementDate) : undefined,
+      represIsin: isSet(object.represIsin) ? globalThis.String(object.represIsin) : "",
+      issueSizePlan: isSet(object.issueSizePlan) ? Quotation.fromJSON(object.issueSizePlan) : undefined,
+      totalFloat: isSet(object.totalFloat) ? Quotation.fromJSON(object.totalFloat) : undefined,
     };
   },
 
   toJSON(message: AssetShare): unknown {
     const obj: any = {};
-    message.type !== undefined && (obj.type = shareTypeToJSON(message.type));
-    message.issueSize !== undefined &&
-      (obj.issueSize = message.issueSize
-        ? Quotation.toJSON(message.issueSize)
-        : undefined);
-    message.nominal !== undefined &&
-      (obj.nominal = message.nominal
-        ? Quotation.toJSON(message.nominal)
-        : undefined);
-    message.nominalCurrency !== undefined &&
-      (obj.nominalCurrency = message.nominalCurrency);
-    message.primaryIndex !== undefined &&
-      (obj.primaryIndex = message.primaryIndex);
-    message.dividendRate !== undefined &&
-      (obj.dividendRate = message.dividendRate
-        ? Quotation.toJSON(message.dividendRate)
-        : undefined);
-    message.preferredShareType !== undefined &&
-      (obj.preferredShareType = message.preferredShareType);
-    message.ipoDate !== undefined &&
-      (obj.ipoDate = message.ipoDate.toISOString());
-    message.registryDate !== undefined &&
-      (obj.registryDate = message.registryDate.toISOString());
-    message.divYieldFlag !== undefined &&
-      (obj.divYieldFlag = message.divYieldFlag);
-    message.issueKind !== undefined && (obj.issueKind = message.issueKind);
-    message.placementDate !== undefined &&
-      (obj.placementDate = message.placementDate.toISOString());
-    message.represIsin !== undefined && (obj.represIsin = message.represIsin);
-    message.issueSizePlan !== undefined &&
-      (obj.issueSizePlan = message.issueSizePlan
-        ? Quotation.toJSON(message.issueSizePlan)
-        : undefined);
-    message.totalFloat !== undefined &&
-      (obj.totalFloat = message.totalFloat
-        ? Quotation.toJSON(message.totalFloat)
-        : undefined);
+    if (message.type !== 0) {
+      obj.type = shareTypeToJSON(message.type);
+    }
+    if (message.issueSize !== undefined) {
+      obj.issueSize = Quotation.toJSON(message.issueSize);
+    }
+    if (message.nominal !== undefined) {
+      obj.nominal = Quotation.toJSON(message.nominal);
+    }
+    if (message.nominalCurrency !== "") {
+      obj.nominalCurrency = message.nominalCurrency;
+    }
+    if (message.primaryIndex !== "") {
+      obj.primaryIndex = message.primaryIndex;
+    }
+    if (message.dividendRate !== undefined) {
+      obj.dividendRate = Quotation.toJSON(message.dividendRate);
+    }
+    if (message.preferredShareType !== "") {
+      obj.preferredShareType = message.preferredShareType;
+    }
+    if (message.ipoDate !== undefined) {
+      obj.ipoDate = message.ipoDate.toISOString();
+    }
+    if (message.registryDate !== undefined) {
+      obj.registryDate = message.registryDate.toISOString();
+    }
+    if (message.divYieldFlag === true) {
+      obj.divYieldFlag = message.divYieldFlag;
+    }
+    if (message.issueKind !== "") {
+      obj.issueKind = message.issueKind;
+    }
+    if (message.placementDate !== undefined) {
+      obj.placementDate = message.placementDate.toISOString();
+    }
+    if (message.represIsin !== "") {
+      obj.represIsin = message.represIsin;
+    }
+    if (message.issueSizePlan !== undefined) {
+      obj.issueSizePlan = Quotation.toJSON(message.issueSizePlan);
+    }
+    if (message.totalFloat !== undefined) {
+      obj.totalFloat = Quotation.toJSON(message.totalFloat);
+    }
     return obj;
   },
 };
@@ -8941,15 +10250,9 @@ function createBaseAssetBond(): AssetBond {
 }
 
 export const AssetBond = {
-  encode(
-    message: AssetBond,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: AssetBond, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.currentNominal !== undefined) {
-      Quotation.encode(
-        message.currentNominal,
-        writer.uint32(10).fork()
-      ).ldelim();
+      Quotation.encode(message.currentNominal, writer.uint32(10).fork()).ldelim();
     }
     if (message.borrowName !== "") {
       writer.uint32(18).string(message.borrowName);
@@ -8994,241 +10297,280 @@ export const AssetBond = {
       writer.uint32(120).bool(message.perpetualFlag);
     }
     if (message.maturityDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.maturityDate),
-        writer.uint32(130).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.maturityDate), writer.uint32(130).fork()).ldelim();
     }
     if (message.returnCondition !== "") {
       writer.uint32(138).string(message.returnCondition);
     }
     if (message.stateRegDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.stateRegDate),
-        writer.uint32(146).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.stateRegDate), writer.uint32(146).fork()).ldelim();
     }
     if (message.placementDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.placementDate),
-        writer.uint32(154).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.placementDate), writer.uint32(154).fork()).ldelim();
     }
     if (message.placementPrice !== undefined) {
-      Quotation.encode(
-        message.placementPrice,
-        writer.uint32(162).fork()
-      ).ldelim();
+      Quotation.encode(message.placementPrice, writer.uint32(162).fork()).ldelim();
     }
     if (message.issueSizePlan !== undefined) {
-      Quotation.encode(
-        message.issueSizePlan,
-        writer.uint32(170).fork()
-      ).ldelim();
+      Quotation.encode(message.issueSizePlan, writer.uint32(170).fork()).ldelim();
     }
     return writer;
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): AssetBond {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAssetBond();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.currentNominal = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.borrowName = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.issueSize = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.nominal = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 5:
+          if (tag !== 42) {
+            break;
+          }
+
           message.nominalCurrency = reader.string();
-          break;
+          continue;
         case 6:
+          if (tag !== 50) {
+            break;
+          }
+
           message.issueKind = reader.string();
-          break;
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.interestKind = reader.string();
-          break;
+          continue;
         case 8:
+          if (tag !== 64) {
+            break;
+          }
+
           message.couponQuantityPerYear = reader.int32();
-          break;
+          continue;
         case 9:
+          if (tag !== 72) {
+            break;
+          }
+
           message.indexedNominalFlag = reader.bool();
-          break;
+          continue;
         case 10:
+          if (tag !== 80) {
+            break;
+          }
+
           message.subordinatedFlag = reader.bool();
-          break;
+          continue;
         case 11:
+          if (tag !== 88) {
+            break;
+          }
+
           message.collateralFlag = reader.bool();
-          break;
+          continue;
         case 12:
+          if (tag !== 96) {
+            break;
+          }
+
           message.taxFreeFlag = reader.bool();
-          break;
+          continue;
         case 13:
+          if (tag !== 104) {
+            break;
+          }
+
           message.amortizationFlag = reader.bool();
-          break;
+          continue;
         case 14:
+          if (tag !== 112) {
+            break;
+          }
+
           message.floatingCouponFlag = reader.bool();
-          break;
+          continue;
         case 15:
+          if (tag !== 120) {
+            break;
+          }
+
           message.perpetualFlag = reader.bool();
-          break;
+          continue;
         case 16:
-          message.maturityDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 130) {
+            break;
+          }
+
+          message.maturityDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 17:
+          if (tag !== 138) {
+            break;
+          }
+
           message.returnCondition = reader.string();
-          break;
+          continue;
         case 18:
-          message.stateRegDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 146) {
+            break;
+          }
+
+          message.stateRegDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 19:
-          message.placementDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 154) {
+            break;
+          }
+
+          message.placementDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 20:
+          if (tag !== 162) {
+            break;
+          }
+
           message.placementPrice = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 21:
+          if (tag !== 170) {
+            break;
+          }
+
           message.issueSizePlan = Quotation.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): AssetBond {
     return {
-      currentNominal: isSet(object.currentNominal)
-        ? Quotation.fromJSON(object.currentNominal)
-        : undefined,
-      borrowName: isSet(object.borrowName) ? String(object.borrowName) : "",
-      issueSize: isSet(object.issueSize)
-        ? Quotation.fromJSON(object.issueSize)
-        : undefined,
-      nominal: isSet(object.nominal)
-        ? Quotation.fromJSON(object.nominal)
-        : undefined,
-      nominalCurrency: isSet(object.nominalCurrency)
-        ? String(object.nominalCurrency)
-        : "",
-      issueKind: isSet(object.issueKind) ? String(object.issueKind) : "",
-      interestKind: isSet(object.interestKind)
-        ? String(object.interestKind)
-        : "",
-      couponQuantityPerYear: isSet(object.couponQuantityPerYear)
-        ? Number(object.couponQuantityPerYear)
-        : 0,
-      indexedNominalFlag: isSet(object.indexedNominalFlag)
-        ? Boolean(object.indexedNominalFlag)
-        : false,
-      subordinatedFlag: isSet(object.subordinatedFlag)
-        ? Boolean(object.subordinatedFlag)
-        : false,
-      collateralFlag: isSet(object.collateralFlag)
-        ? Boolean(object.collateralFlag)
-        : false,
-      taxFreeFlag: isSet(object.taxFreeFlag)
-        ? Boolean(object.taxFreeFlag)
-        : false,
-      amortizationFlag: isSet(object.amortizationFlag)
-        ? Boolean(object.amortizationFlag)
-        : false,
-      floatingCouponFlag: isSet(object.floatingCouponFlag)
-        ? Boolean(object.floatingCouponFlag)
-        : false,
-      perpetualFlag: isSet(object.perpetualFlag)
-        ? Boolean(object.perpetualFlag)
-        : false,
-      maturityDate: isSet(object.maturityDate)
-        ? fromJsonTimestamp(object.maturityDate)
-        : undefined,
-      returnCondition: isSet(object.returnCondition)
-        ? String(object.returnCondition)
-        : "",
-      stateRegDate: isSet(object.stateRegDate)
-        ? fromJsonTimestamp(object.stateRegDate)
-        : undefined,
-      placementDate: isSet(object.placementDate)
-        ? fromJsonTimestamp(object.placementDate)
-        : undefined,
-      placementPrice: isSet(object.placementPrice)
-        ? Quotation.fromJSON(object.placementPrice)
-        : undefined,
-      issueSizePlan: isSet(object.issueSizePlan)
-        ? Quotation.fromJSON(object.issueSizePlan)
-        : undefined,
+      currentNominal: isSet(object.currentNominal) ? Quotation.fromJSON(object.currentNominal) : undefined,
+      borrowName: isSet(object.borrowName) ? globalThis.String(object.borrowName) : "",
+      issueSize: isSet(object.issueSize) ? Quotation.fromJSON(object.issueSize) : undefined,
+      nominal: isSet(object.nominal) ? Quotation.fromJSON(object.nominal) : undefined,
+      nominalCurrency: isSet(object.nominalCurrency) ? globalThis.String(object.nominalCurrency) : "",
+      issueKind: isSet(object.issueKind) ? globalThis.String(object.issueKind) : "",
+      interestKind: isSet(object.interestKind) ? globalThis.String(object.interestKind) : "",
+      couponQuantityPerYear: isSet(object.couponQuantityPerYear) ? globalThis.Number(object.couponQuantityPerYear) : 0,
+      indexedNominalFlag: isSet(object.indexedNominalFlag) ? globalThis.Boolean(object.indexedNominalFlag) : false,
+      subordinatedFlag: isSet(object.subordinatedFlag) ? globalThis.Boolean(object.subordinatedFlag) : false,
+      collateralFlag: isSet(object.collateralFlag) ? globalThis.Boolean(object.collateralFlag) : false,
+      taxFreeFlag: isSet(object.taxFreeFlag) ? globalThis.Boolean(object.taxFreeFlag) : false,
+      amortizationFlag: isSet(object.amortizationFlag) ? globalThis.Boolean(object.amortizationFlag) : false,
+      floatingCouponFlag: isSet(object.floatingCouponFlag) ? globalThis.Boolean(object.floatingCouponFlag) : false,
+      perpetualFlag: isSet(object.perpetualFlag) ? globalThis.Boolean(object.perpetualFlag) : false,
+      maturityDate: isSet(object.maturityDate) ? fromJsonTimestamp(object.maturityDate) : undefined,
+      returnCondition: isSet(object.returnCondition) ? globalThis.String(object.returnCondition) : "",
+      stateRegDate: isSet(object.stateRegDate) ? fromJsonTimestamp(object.stateRegDate) : undefined,
+      placementDate: isSet(object.placementDate) ? fromJsonTimestamp(object.placementDate) : undefined,
+      placementPrice: isSet(object.placementPrice) ? Quotation.fromJSON(object.placementPrice) : undefined,
+      issueSizePlan: isSet(object.issueSizePlan) ? Quotation.fromJSON(object.issueSizePlan) : undefined,
     };
   },
 
   toJSON(message: AssetBond): unknown {
     const obj: any = {};
-    message.currentNominal !== undefined &&
-      (obj.currentNominal = message.currentNominal
-        ? Quotation.toJSON(message.currentNominal)
-        : undefined);
-    message.borrowName !== undefined && (obj.borrowName = message.borrowName);
-    message.issueSize !== undefined &&
-      (obj.issueSize = message.issueSize
-        ? Quotation.toJSON(message.issueSize)
-        : undefined);
-    message.nominal !== undefined &&
-      (obj.nominal = message.nominal
-        ? Quotation.toJSON(message.nominal)
-        : undefined);
-    message.nominalCurrency !== undefined &&
-      (obj.nominalCurrency = message.nominalCurrency);
-    message.issueKind !== undefined && (obj.issueKind = message.issueKind);
-    message.interestKind !== undefined &&
-      (obj.interestKind = message.interestKind);
-    message.couponQuantityPerYear !== undefined &&
-      (obj.couponQuantityPerYear = Math.round(message.couponQuantityPerYear));
-    message.indexedNominalFlag !== undefined &&
-      (obj.indexedNominalFlag = message.indexedNominalFlag);
-    message.subordinatedFlag !== undefined &&
-      (obj.subordinatedFlag = message.subordinatedFlag);
-    message.collateralFlag !== undefined &&
-      (obj.collateralFlag = message.collateralFlag);
-    message.taxFreeFlag !== undefined &&
-      (obj.taxFreeFlag = message.taxFreeFlag);
-    message.amortizationFlag !== undefined &&
-      (obj.amortizationFlag = message.amortizationFlag);
-    message.floatingCouponFlag !== undefined &&
-      (obj.floatingCouponFlag = message.floatingCouponFlag);
-    message.perpetualFlag !== undefined &&
-      (obj.perpetualFlag = message.perpetualFlag);
-    message.maturityDate !== undefined &&
-      (obj.maturityDate = message.maturityDate.toISOString());
-    message.returnCondition !== undefined &&
-      (obj.returnCondition = message.returnCondition);
-    message.stateRegDate !== undefined &&
-      (obj.stateRegDate = message.stateRegDate.toISOString());
-    message.placementDate !== undefined &&
-      (obj.placementDate = message.placementDate.toISOString());
-    message.placementPrice !== undefined &&
-      (obj.placementPrice = message.placementPrice
-        ? Quotation.toJSON(message.placementPrice)
-        : undefined);
-    message.issueSizePlan !== undefined &&
-      (obj.issueSizePlan = message.issueSizePlan
-        ? Quotation.toJSON(message.issueSizePlan)
-        : undefined);
+    if (message.currentNominal !== undefined) {
+      obj.currentNominal = Quotation.toJSON(message.currentNominal);
+    }
+    if (message.borrowName !== "") {
+      obj.borrowName = message.borrowName;
+    }
+    if (message.issueSize !== undefined) {
+      obj.issueSize = Quotation.toJSON(message.issueSize);
+    }
+    if (message.nominal !== undefined) {
+      obj.nominal = Quotation.toJSON(message.nominal);
+    }
+    if (message.nominalCurrency !== "") {
+      obj.nominalCurrency = message.nominalCurrency;
+    }
+    if (message.issueKind !== "") {
+      obj.issueKind = message.issueKind;
+    }
+    if (message.interestKind !== "") {
+      obj.interestKind = message.interestKind;
+    }
+    if (message.couponQuantityPerYear !== 0) {
+      obj.couponQuantityPerYear = Math.round(message.couponQuantityPerYear);
+    }
+    if (message.indexedNominalFlag === true) {
+      obj.indexedNominalFlag = message.indexedNominalFlag;
+    }
+    if (message.subordinatedFlag === true) {
+      obj.subordinatedFlag = message.subordinatedFlag;
+    }
+    if (message.collateralFlag === true) {
+      obj.collateralFlag = message.collateralFlag;
+    }
+    if (message.taxFreeFlag === true) {
+      obj.taxFreeFlag = message.taxFreeFlag;
+    }
+    if (message.amortizationFlag === true) {
+      obj.amortizationFlag = message.amortizationFlag;
+    }
+    if (message.floatingCouponFlag === true) {
+      obj.floatingCouponFlag = message.floatingCouponFlag;
+    }
+    if (message.perpetualFlag === true) {
+      obj.perpetualFlag = message.perpetualFlag;
+    }
+    if (message.maturityDate !== undefined) {
+      obj.maturityDate = message.maturityDate.toISOString();
+    }
+    if (message.returnCondition !== "") {
+      obj.returnCondition = message.returnCondition;
+    }
+    if (message.stateRegDate !== undefined) {
+      obj.stateRegDate = message.stateRegDate.toISOString();
+    }
+    if (message.placementDate !== undefined) {
+      obj.placementDate = message.placementDate.toISOString();
+    }
+    if (message.placementPrice !== undefined) {
+      obj.placementPrice = Quotation.toJSON(message.placementPrice);
+    }
+    if (message.issueSizePlan !== undefined) {
+      obj.issueSizePlan = Quotation.toJSON(message.issueSizePlan);
+    }
     return obj;
   },
 };
@@ -9252,10 +10594,7 @@ function createBaseAssetStructuredProduct(): AssetStructuredProduct {
 }
 
 export const AssetStructuredProduct = {
-  encode(
-    message: AssetStructuredProduct,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: AssetStructuredProduct, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.borrowName !== "") {
       writer.uint32(10).string(message.borrowName);
     }
@@ -9278,31 +10617,19 @@ export const AssetStructuredProduct = {
       writer.uint32(58).string(message.basicAsset);
     }
     if (message.safetyBarrier !== undefined) {
-      Quotation.encode(
-        message.safetyBarrier,
-        writer.uint32(66).fork()
-      ).ldelim();
+      Quotation.encode(message.safetyBarrier, writer.uint32(66).fork()).ldelim();
     }
     if (message.maturityDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.maturityDate),
-        writer.uint32(74).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.maturityDate), writer.uint32(74).fork()).ldelim();
     }
     if (message.issueSizePlan !== undefined) {
-      Quotation.encode(
-        message.issueSizePlan,
-        writer.uint32(82).fork()
-      ).ldelim();
+      Quotation.encode(message.issueSizePlan, writer.uint32(82).fork()).ldelim();
     }
     if (message.issueSize !== undefined) {
       Quotation.encode(message.issueSize, writer.uint32(90).fork()).ldelim();
     }
     if (message.placementDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.placementDate),
-        writer.uint32(98).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.placementDate), writer.uint32(98).fork()).ldelim();
     }
     if (message.issueKind !== "") {
       writer.uint32(106).string(message.issueKind);
@@ -9310,136 +10637,172 @@ export const AssetStructuredProduct = {
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): AssetStructuredProduct {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): AssetStructuredProduct {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAssetStructuredProduct();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.borrowName = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.nominal = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.nominalCurrency = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag !== 32) {
+            break;
+          }
+
           message.type = reader.int32() as any;
-          break;
+          continue;
         case 5:
+          if (tag !== 42) {
+            break;
+          }
+
           message.logicPortfolio = reader.string();
-          break;
+          continue;
         case 6:
+          if (tag !== 48) {
+            break;
+          }
+
           message.assetType = reader.int32() as any;
-          break;
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.basicAsset = reader.string();
-          break;
+          continue;
         case 8:
+          if (tag !== 66) {
+            break;
+          }
+
           message.safetyBarrier = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 9:
-          message.maturityDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 74) {
+            break;
+          }
+
+          message.maturityDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 10:
+          if (tag !== 82) {
+            break;
+          }
+
           message.issueSizePlan = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 11:
+          if (tag !== 90) {
+            break;
+          }
+
           message.issueSize = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 12:
-          message.placementDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 98) {
+            break;
+          }
+
+          message.placementDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 13:
+          if (tag !== 106) {
+            break;
+          }
+
           message.issueKind = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): AssetStructuredProduct {
     return {
-      borrowName: isSet(object.borrowName) ? String(object.borrowName) : "",
-      nominal: isSet(object.nominal)
-        ? Quotation.fromJSON(object.nominal)
-        : undefined,
-      nominalCurrency: isSet(object.nominalCurrency)
-        ? String(object.nominalCurrency)
-        : "",
+      borrowName: isSet(object.borrowName) ? globalThis.String(object.borrowName) : "",
+      nominal: isSet(object.nominal) ? Quotation.fromJSON(object.nominal) : undefined,
+      nominalCurrency: isSet(object.nominalCurrency) ? globalThis.String(object.nominalCurrency) : "",
       type: isSet(object.type) ? structuredProductTypeFromJSON(object.type) : 0,
-      logicPortfolio: isSet(object.logicPortfolio)
-        ? String(object.logicPortfolio)
-        : "",
-      assetType: isSet(object.assetType)
-        ? assetTypeFromJSON(object.assetType)
-        : 0,
-      basicAsset: isSet(object.basicAsset) ? String(object.basicAsset) : "",
-      safetyBarrier: isSet(object.safetyBarrier)
-        ? Quotation.fromJSON(object.safetyBarrier)
-        : undefined,
-      maturityDate: isSet(object.maturityDate)
-        ? fromJsonTimestamp(object.maturityDate)
-        : undefined,
-      issueSizePlan: isSet(object.issueSizePlan)
-        ? Quotation.fromJSON(object.issueSizePlan)
-        : undefined,
-      issueSize: isSet(object.issueSize)
-        ? Quotation.fromJSON(object.issueSize)
-        : undefined,
-      placementDate: isSet(object.placementDate)
-        ? fromJsonTimestamp(object.placementDate)
-        : undefined,
-      issueKind: isSet(object.issueKind) ? String(object.issueKind) : "",
+      logicPortfolio: isSet(object.logicPortfolio) ? globalThis.String(object.logicPortfolio) : "",
+      assetType: isSet(object.assetType) ? assetTypeFromJSON(object.assetType) : 0,
+      basicAsset: isSet(object.basicAsset) ? globalThis.String(object.basicAsset) : "",
+      safetyBarrier: isSet(object.safetyBarrier) ? Quotation.fromJSON(object.safetyBarrier) : undefined,
+      maturityDate: isSet(object.maturityDate) ? fromJsonTimestamp(object.maturityDate) : undefined,
+      issueSizePlan: isSet(object.issueSizePlan) ? Quotation.fromJSON(object.issueSizePlan) : undefined,
+      issueSize: isSet(object.issueSize) ? Quotation.fromJSON(object.issueSize) : undefined,
+      placementDate: isSet(object.placementDate) ? fromJsonTimestamp(object.placementDate) : undefined,
+      issueKind: isSet(object.issueKind) ? globalThis.String(object.issueKind) : "",
     };
   },
 
   toJSON(message: AssetStructuredProduct): unknown {
     const obj: any = {};
-    message.borrowName !== undefined && (obj.borrowName = message.borrowName);
-    message.nominal !== undefined &&
-      (obj.nominal = message.nominal
-        ? Quotation.toJSON(message.nominal)
-        : undefined);
-    message.nominalCurrency !== undefined &&
-      (obj.nominalCurrency = message.nominalCurrency);
-    message.type !== undefined &&
-      (obj.type = structuredProductTypeToJSON(message.type));
-    message.logicPortfolio !== undefined &&
-      (obj.logicPortfolio = message.logicPortfolio);
-    message.assetType !== undefined &&
-      (obj.assetType = assetTypeToJSON(message.assetType));
-    message.basicAsset !== undefined && (obj.basicAsset = message.basicAsset);
-    message.safetyBarrier !== undefined &&
-      (obj.safetyBarrier = message.safetyBarrier
-        ? Quotation.toJSON(message.safetyBarrier)
-        : undefined);
-    message.maturityDate !== undefined &&
-      (obj.maturityDate = message.maturityDate.toISOString());
-    message.issueSizePlan !== undefined &&
-      (obj.issueSizePlan = message.issueSizePlan
-        ? Quotation.toJSON(message.issueSizePlan)
-        : undefined);
-    message.issueSize !== undefined &&
-      (obj.issueSize = message.issueSize
-        ? Quotation.toJSON(message.issueSize)
-        : undefined);
-    message.placementDate !== undefined &&
-      (obj.placementDate = message.placementDate.toISOString());
-    message.issueKind !== undefined && (obj.issueKind = message.issueKind);
+    if (message.borrowName !== "") {
+      obj.borrowName = message.borrowName;
+    }
+    if (message.nominal !== undefined) {
+      obj.nominal = Quotation.toJSON(message.nominal);
+    }
+    if (message.nominalCurrency !== "") {
+      obj.nominalCurrency = message.nominalCurrency;
+    }
+    if (message.type !== 0) {
+      obj.type = structuredProductTypeToJSON(message.type);
+    }
+    if (message.logicPortfolio !== "") {
+      obj.logicPortfolio = message.logicPortfolio;
+    }
+    if (message.assetType !== 0) {
+      obj.assetType = assetTypeToJSON(message.assetType);
+    }
+    if (message.basicAsset !== "") {
+      obj.basicAsset = message.basicAsset;
+    }
+    if (message.safetyBarrier !== undefined) {
+      obj.safetyBarrier = Quotation.toJSON(message.safetyBarrier);
+    }
+    if (message.maturityDate !== undefined) {
+      obj.maturityDate = message.maturityDate.toISOString();
+    }
+    if (message.issueSizePlan !== undefined) {
+      obj.issueSizePlan = Quotation.toJSON(message.issueSizePlan);
+    }
+    if (message.issueSize !== undefined) {
+      obj.issueSize = Quotation.toJSON(message.issueSize);
+    }
+    if (message.placementDate !== undefined) {
+      obj.placementDate = message.placementDate.toISOString();
+    }
+    if (message.issueKind !== "") {
+      obj.issueKind = message.issueKind;
+    }
     return obj;
   },
 };
@@ -9481,10 +10844,7 @@ function createBaseAssetEtf(): AssetEtf {
 }
 
 export const AssetEtf = {
-  encode(
-    message: AssetEtf,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: AssetEtf, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.totalExpense !== undefined) {
       Quotation.encode(message.totalExpense, writer.uint32(10).fork()).ldelim();
     }
@@ -9492,16 +10852,10 @@ export const AssetEtf = {
       Quotation.encode(message.hurdleRate, writer.uint32(18).fork()).ldelim();
     }
     if (message.performanceFee !== undefined) {
-      Quotation.encode(
-        message.performanceFee,
-        writer.uint32(26).fork()
-      ).ldelim();
+      Quotation.encode(message.performanceFee, writer.uint32(26).fork()).ldelim();
     }
     if (message.fixedCommission !== undefined) {
-      Quotation.encode(
-        message.fixedCommission,
-        writer.uint32(34).fork()
-      ).ldelim();
+      Quotation.encode(message.fixedCommission, writer.uint32(34).fork()).ldelim();
     }
     if (message.paymentType !== "") {
       writer.uint32(42).string(message.paymentType);
@@ -9540,10 +10894,7 @@ export const AssetEtf = {
       writer.uint32(128).bool(message.ucitsFlag);
     }
     if (message.releasedDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.releasedDate),
-        writer.uint32(138).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.releasedDate), writer.uint32(138).fork()).ldelim();
     }
     if (message.description !== "") {
       writer.uint32(146).string(message.description);
@@ -9555,10 +10906,7 @@ export const AssetEtf = {
       writer.uint32(162).string(message.primaryIndexCompany);
     }
     if (message.indexRecoveryPeriod !== undefined) {
-      Quotation.encode(
-        message.indexRecoveryPeriod,
-        writer.uint32(170).fork()
-      ).ldelim();
+      Quotation.encode(message.indexRecoveryPeriod, writer.uint32(170).fork()).ldelim();
     }
     if (message.inavCode !== "") {
       writer.uint32(178).string(message.inavCode);
@@ -9567,16 +10915,10 @@ export const AssetEtf = {
       writer.uint32(184).bool(message.divYieldFlag);
     }
     if (message.expenseCommission !== undefined) {
-      Quotation.encode(
-        message.expenseCommission,
-        writer.uint32(194).fork()
-      ).ldelim();
+      Quotation.encode(message.expenseCommission, writer.uint32(194).fork()).ldelim();
     }
     if (message.primaryIndexTrackingError !== undefined) {
-      Quotation.encode(
-        message.primaryIndexTrackingError,
-        writer.uint32(202).fork()
-      ).ldelim();
+      Quotation.encode(message.primaryIndexTrackingError, writer.uint32(202).fork()).ldelim();
     }
     if (message.rebalancingPlan !== "") {
       writer.uint32(210).string(message.rebalancingPlan);
@@ -9600,293 +10942,377 @@ export const AssetEtf = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): AssetEtf {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAssetEtf();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.totalExpense = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.hurdleRate = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.performanceFee = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.fixedCommission = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 5:
+          if (tag !== 42) {
+            break;
+          }
+
           message.paymentType = reader.string();
-          break;
+          continue;
         case 6:
+          if (tag !== 48) {
+            break;
+          }
+
           message.watermarkFlag = reader.bool();
-          break;
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.buyPremium = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 8:
+          if (tag !== 66) {
+            break;
+          }
+
           message.sellDiscount = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 9:
+          if (tag !== 72) {
+            break;
+          }
+
           message.rebalancingFlag = reader.bool();
-          break;
+          continue;
         case 10:
+          if (tag !== 82) {
+            break;
+          }
+
           message.rebalancingFreq = reader.string();
-          break;
+          continue;
         case 11:
+          if (tag !== 90) {
+            break;
+          }
+
           message.managementType = reader.string();
-          break;
+          continue;
         case 12:
+          if (tag !== 98) {
+            break;
+          }
+
           message.primaryIndex = reader.string();
-          break;
+          continue;
         case 13:
+          if (tag !== 106) {
+            break;
+          }
+
           message.focusType = reader.string();
-          break;
+          continue;
         case 14:
+          if (tag !== 112) {
+            break;
+          }
+
           message.leveragedFlag = reader.bool();
-          break;
+          continue;
         case 15:
+          if (tag !== 122) {
+            break;
+          }
+
           message.numShare = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 16:
+          if (tag !== 128) {
+            break;
+          }
+
           message.ucitsFlag = reader.bool();
-          break;
+          continue;
         case 17:
-          message.releasedDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 138) {
+            break;
+          }
+
+          message.releasedDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 18:
+          if (tag !== 146) {
+            break;
+          }
+
           message.description = reader.string();
-          break;
+          continue;
         case 19:
+          if (tag !== 154) {
+            break;
+          }
+
           message.primaryIndexDescription = reader.string();
-          break;
+          continue;
         case 20:
+          if (tag !== 162) {
+            break;
+          }
+
           message.primaryIndexCompany = reader.string();
-          break;
+          continue;
         case 21:
-          message.indexRecoveryPeriod = Quotation.decode(
-            reader,
-            reader.uint32()
-          );
-          break;
+          if (tag !== 170) {
+            break;
+          }
+
+          message.indexRecoveryPeriod = Quotation.decode(reader, reader.uint32());
+          continue;
         case 22:
+          if (tag !== 178) {
+            break;
+          }
+
           message.inavCode = reader.string();
-          break;
+          continue;
         case 23:
+          if (tag !== 184) {
+            break;
+          }
+
           message.divYieldFlag = reader.bool();
-          break;
+          continue;
         case 24:
+          if (tag !== 194) {
+            break;
+          }
+
           message.expenseCommission = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 25:
-          message.primaryIndexTrackingError = Quotation.decode(
-            reader,
-            reader.uint32()
-          );
-          break;
+          if (tag !== 202) {
+            break;
+          }
+
+          message.primaryIndexTrackingError = Quotation.decode(reader, reader.uint32());
+          continue;
         case 26:
+          if (tag !== 210) {
+            break;
+          }
+
           message.rebalancingPlan = reader.string();
-          break;
+          continue;
         case 27:
+          if (tag !== 218) {
+            break;
+          }
+
           message.taxRate = reader.string();
-          break;
+          continue;
         case 28:
-          message.rebalancingDates.push(
-            fromTimestamp(Timestamp.decode(reader, reader.uint32()))
-          );
-          break;
+          if (tag !== 226) {
+            break;
+          }
+
+          message.rebalancingDates.push(fromTimestamp(Timestamp.decode(reader, reader.uint32())));
+          continue;
         case 29:
+          if (tag !== 234) {
+            break;
+          }
+
           message.issueKind = reader.string();
-          break;
+          continue;
         case 30:
+          if (tag !== 242) {
+            break;
+          }
+
           message.nominal = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 31:
+          if (tag !== 250) {
+            break;
+          }
+
           message.nominalCurrency = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): AssetEtf {
     return {
-      totalExpense: isSet(object.totalExpense)
-        ? Quotation.fromJSON(object.totalExpense)
-        : undefined,
-      hurdleRate: isSet(object.hurdleRate)
-        ? Quotation.fromJSON(object.hurdleRate)
-        : undefined,
-      performanceFee: isSet(object.performanceFee)
-        ? Quotation.fromJSON(object.performanceFee)
-        : undefined,
-      fixedCommission: isSet(object.fixedCommission)
-        ? Quotation.fromJSON(object.fixedCommission)
-        : undefined,
-      paymentType: isSet(object.paymentType) ? String(object.paymentType) : "",
-      watermarkFlag: isSet(object.watermarkFlag)
-        ? Boolean(object.watermarkFlag)
-        : false,
-      buyPremium: isSet(object.buyPremium)
-        ? Quotation.fromJSON(object.buyPremium)
-        : undefined,
-      sellDiscount: isSet(object.sellDiscount)
-        ? Quotation.fromJSON(object.sellDiscount)
-        : undefined,
-      rebalancingFlag: isSet(object.rebalancingFlag)
-        ? Boolean(object.rebalancingFlag)
-        : false,
-      rebalancingFreq: isSet(object.rebalancingFreq)
-        ? String(object.rebalancingFreq)
-        : "",
-      managementType: isSet(object.managementType)
-        ? String(object.managementType)
-        : "",
-      primaryIndex: isSet(object.primaryIndex)
-        ? String(object.primaryIndex)
-        : "",
-      focusType: isSet(object.focusType) ? String(object.focusType) : "",
-      leveragedFlag: isSet(object.leveragedFlag)
-        ? Boolean(object.leveragedFlag)
-        : false,
-      numShare: isSet(object.numShare)
-        ? Quotation.fromJSON(object.numShare)
-        : undefined,
-      ucitsFlag: isSet(object.ucitsFlag) ? Boolean(object.ucitsFlag) : false,
-      releasedDate: isSet(object.releasedDate)
-        ? fromJsonTimestamp(object.releasedDate)
-        : undefined,
-      description: isSet(object.description) ? String(object.description) : "",
+      totalExpense: isSet(object.totalExpense) ? Quotation.fromJSON(object.totalExpense) : undefined,
+      hurdleRate: isSet(object.hurdleRate) ? Quotation.fromJSON(object.hurdleRate) : undefined,
+      performanceFee: isSet(object.performanceFee) ? Quotation.fromJSON(object.performanceFee) : undefined,
+      fixedCommission: isSet(object.fixedCommission) ? Quotation.fromJSON(object.fixedCommission) : undefined,
+      paymentType: isSet(object.paymentType) ? globalThis.String(object.paymentType) : "",
+      watermarkFlag: isSet(object.watermarkFlag) ? globalThis.Boolean(object.watermarkFlag) : false,
+      buyPremium: isSet(object.buyPremium) ? Quotation.fromJSON(object.buyPremium) : undefined,
+      sellDiscount: isSet(object.sellDiscount) ? Quotation.fromJSON(object.sellDiscount) : undefined,
+      rebalancingFlag: isSet(object.rebalancingFlag) ? globalThis.Boolean(object.rebalancingFlag) : false,
+      rebalancingFreq: isSet(object.rebalancingFreq) ? globalThis.String(object.rebalancingFreq) : "",
+      managementType: isSet(object.managementType) ? globalThis.String(object.managementType) : "",
+      primaryIndex: isSet(object.primaryIndex) ? globalThis.String(object.primaryIndex) : "",
+      focusType: isSet(object.focusType) ? globalThis.String(object.focusType) : "",
+      leveragedFlag: isSet(object.leveragedFlag) ? globalThis.Boolean(object.leveragedFlag) : false,
+      numShare: isSet(object.numShare) ? Quotation.fromJSON(object.numShare) : undefined,
+      ucitsFlag: isSet(object.ucitsFlag) ? globalThis.Boolean(object.ucitsFlag) : false,
+      releasedDate: isSet(object.releasedDate) ? fromJsonTimestamp(object.releasedDate) : undefined,
+      description: isSet(object.description) ? globalThis.String(object.description) : "",
       primaryIndexDescription: isSet(object.primaryIndexDescription)
-        ? String(object.primaryIndexDescription)
+        ? globalThis.String(object.primaryIndexDescription)
         : "",
-      primaryIndexCompany: isSet(object.primaryIndexCompany)
-        ? String(object.primaryIndexCompany)
-        : "",
+      primaryIndexCompany: isSet(object.primaryIndexCompany) ? globalThis.String(object.primaryIndexCompany) : "",
       indexRecoveryPeriod: isSet(object.indexRecoveryPeriod)
         ? Quotation.fromJSON(object.indexRecoveryPeriod)
         : undefined,
-      inavCode: isSet(object.inavCode) ? String(object.inavCode) : "",
-      divYieldFlag: isSet(object.divYieldFlag)
-        ? Boolean(object.divYieldFlag)
-        : false,
-      expenseCommission: isSet(object.expenseCommission)
-        ? Quotation.fromJSON(object.expenseCommission)
-        : undefined,
+      inavCode: isSet(object.inavCode) ? globalThis.String(object.inavCode) : "",
+      divYieldFlag: isSet(object.divYieldFlag) ? globalThis.Boolean(object.divYieldFlag) : false,
+      expenseCommission: isSet(object.expenseCommission) ? Quotation.fromJSON(object.expenseCommission) : undefined,
       primaryIndexTrackingError: isSet(object.primaryIndexTrackingError)
         ? Quotation.fromJSON(object.primaryIndexTrackingError)
         : undefined,
-      rebalancingPlan: isSet(object.rebalancingPlan)
-        ? String(object.rebalancingPlan)
-        : "",
-      taxRate: isSet(object.taxRate) ? String(object.taxRate) : "",
-      rebalancingDates: Array.isArray(object?.rebalancingDates)
+      rebalancingPlan: isSet(object.rebalancingPlan) ? globalThis.String(object.rebalancingPlan) : "",
+      taxRate: isSet(object.taxRate) ? globalThis.String(object.taxRate) : "",
+      rebalancingDates: globalThis.Array.isArray(object?.rebalancingDates)
         ? object.rebalancingDates.map((e: any) => fromJsonTimestamp(e))
         : [],
-      issueKind: isSet(object.issueKind) ? String(object.issueKind) : "",
-      nominal: isSet(object.nominal)
-        ? Quotation.fromJSON(object.nominal)
-        : undefined,
-      nominalCurrency: isSet(object.nominalCurrency)
-        ? String(object.nominalCurrency)
-        : "",
+      issueKind: isSet(object.issueKind) ? globalThis.String(object.issueKind) : "",
+      nominal: isSet(object.nominal) ? Quotation.fromJSON(object.nominal) : undefined,
+      nominalCurrency: isSet(object.nominalCurrency) ? globalThis.String(object.nominalCurrency) : "",
     };
   },
 
   toJSON(message: AssetEtf): unknown {
     const obj: any = {};
-    message.totalExpense !== undefined &&
-      (obj.totalExpense = message.totalExpense
-        ? Quotation.toJSON(message.totalExpense)
-        : undefined);
-    message.hurdleRate !== undefined &&
-      (obj.hurdleRate = message.hurdleRate
-        ? Quotation.toJSON(message.hurdleRate)
-        : undefined);
-    message.performanceFee !== undefined &&
-      (obj.performanceFee = message.performanceFee
-        ? Quotation.toJSON(message.performanceFee)
-        : undefined);
-    message.fixedCommission !== undefined &&
-      (obj.fixedCommission = message.fixedCommission
-        ? Quotation.toJSON(message.fixedCommission)
-        : undefined);
-    message.paymentType !== undefined &&
-      (obj.paymentType = message.paymentType);
-    message.watermarkFlag !== undefined &&
-      (obj.watermarkFlag = message.watermarkFlag);
-    message.buyPremium !== undefined &&
-      (obj.buyPremium = message.buyPremium
-        ? Quotation.toJSON(message.buyPremium)
-        : undefined);
-    message.sellDiscount !== undefined &&
-      (obj.sellDiscount = message.sellDiscount
-        ? Quotation.toJSON(message.sellDiscount)
-        : undefined);
-    message.rebalancingFlag !== undefined &&
-      (obj.rebalancingFlag = message.rebalancingFlag);
-    message.rebalancingFreq !== undefined &&
-      (obj.rebalancingFreq = message.rebalancingFreq);
-    message.managementType !== undefined &&
-      (obj.managementType = message.managementType);
-    message.primaryIndex !== undefined &&
-      (obj.primaryIndex = message.primaryIndex);
-    message.focusType !== undefined && (obj.focusType = message.focusType);
-    message.leveragedFlag !== undefined &&
-      (obj.leveragedFlag = message.leveragedFlag);
-    message.numShare !== undefined &&
-      (obj.numShare = message.numShare
-        ? Quotation.toJSON(message.numShare)
-        : undefined);
-    message.ucitsFlag !== undefined && (obj.ucitsFlag = message.ucitsFlag);
-    message.releasedDate !== undefined &&
-      (obj.releasedDate = message.releasedDate.toISOString());
-    message.description !== undefined &&
-      (obj.description = message.description);
-    message.primaryIndexDescription !== undefined &&
-      (obj.primaryIndexDescription = message.primaryIndexDescription);
-    message.primaryIndexCompany !== undefined &&
-      (obj.primaryIndexCompany = message.primaryIndexCompany);
-    message.indexRecoveryPeriod !== undefined &&
-      (obj.indexRecoveryPeriod = message.indexRecoveryPeriod
-        ? Quotation.toJSON(message.indexRecoveryPeriod)
-        : undefined);
-    message.inavCode !== undefined && (obj.inavCode = message.inavCode);
-    message.divYieldFlag !== undefined &&
-      (obj.divYieldFlag = message.divYieldFlag);
-    message.expenseCommission !== undefined &&
-      (obj.expenseCommission = message.expenseCommission
-        ? Quotation.toJSON(message.expenseCommission)
-        : undefined);
-    message.primaryIndexTrackingError !== undefined &&
-      (obj.primaryIndexTrackingError = message.primaryIndexTrackingError
-        ? Quotation.toJSON(message.primaryIndexTrackingError)
-        : undefined);
-    message.rebalancingPlan !== undefined &&
-      (obj.rebalancingPlan = message.rebalancingPlan);
-    message.taxRate !== undefined && (obj.taxRate = message.taxRate);
-    if (message.rebalancingDates) {
-      obj.rebalancingDates = message.rebalancingDates.map((e) =>
-        e.toISOString()
-      );
-    } else {
-      obj.rebalancingDates = [];
+    if (message.totalExpense !== undefined) {
+      obj.totalExpense = Quotation.toJSON(message.totalExpense);
     }
-    message.issueKind !== undefined && (obj.issueKind = message.issueKind);
-    message.nominal !== undefined &&
-      (obj.nominal = message.nominal
-        ? Quotation.toJSON(message.nominal)
-        : undefined);
-    message.nominalCurrency !== undefined &&
-      (obj.nominalCurrency = message.nominalCurrency);
+    if (message.hurdleRate !== undefined) {
+      obj.hurdleRate = Quotation.toJSON(message.hurdleRate);
+    }
+    if (message.performanceFee !== undefined) {
+      obj.performanceFee = Quotation.toJSON(message.performanceFee);
+    }
+    if (message.fixedCommission !== undefined) {
+      obj.fixedCommission = Quotation.toJSON(message.fixedCommission);
+    }
+    if (message.paymentType !== "") {
+      obj.paymentType = message.paymentType;
+    }
+    if (message.watermarkFlag === true) {
+      obj.watermarkFlag = message.watermarkFlag;
+    }
+    if (message.buyPremium !== undefined) {
+      obj.buyPremium = Quotation.toJSON(message.buyPremium);
+    }
+    if (message.sellDiscount !== undefined) {
+      obj.sellDiscount = Quotation.toJSON(message.sellDiscount);
+    }
+    if (message.rebalancingFlag === true) {
+      obj.rebalancingFlag = message.rebalancingFlag;
+    }
+    if (message.rebalancingFreq !== "") {
+      obj.rebalancingFreq = message.rebalancingFreq;
+    }
+    if (message.managementType !== "") {
+      obj.managementType = message.managementType;
+    }
+    if (message.primaryIndex !== "") {
+      obj.primaryIndex = message.primaryIndex;
+    }
+    if (message.focusType !== "") {
+      obj.focusType = message.focusType;
+    }
+    if (message.leveragedFlag === true) {
+      obj.leveragedFlag = message.leveragedFlag;
+    }
+    if (message.numShare !== undefined) {
+      obj.numShare = Quotation.toJSON(message.numShare);
+    }
+    if (message.ucitsFlag === true) {
+      obj.ucitsFlag = message.ucitsFlag;
+    }
+    if (message.releasedDate !== undefined) {
+      obj.releasedDate = message.releasedDate.toISOString();
+    }
+    if (message.description !== "") {
+      obj.description = message.description;
+    }
+    if (message.primaryIndexDescription !== "") {
+      obj.primaryIndexDescription = message.primaryIndexDescription;
+    }
+    if (message.primaryIndexCompany !== "") {
+      obj.primaryIndexCompany = message.primaryIndexCompany;
+    }
+    if (message.indexRecoveryPeriod !== undefined) {
+      obj.indexRecoveryPeriod = Quotation.toJSON(message.indexRecoveryPeriod);
+    }
+    if (message.inavCode !== "") {
+      obj.inavCode = message.inavCode;
+    }
+    if (message.divYieldFlag === true) {
+      obj.divYieldFlag = message.divYieldFlag;
+    }
+    if (message.expenseCommission !== undefined) {
+      obj.expenseCommission = Quotation.toJSON(message.expenseCommission);
+    }
+    if (message.primaryIndexTrackingError !== undefined) {
+      obj.primaryIndexTrackingError = Quotation.toJSON(message.primaryIndexTrackingError);
+    }
+    if (message.rebalancingPlan !== "") {
+      obj.rebalancingPlan = message.rebalancingPlan;
+    }
+    if (message.taxRate !== "") {
+      obj.taxRate = message.taxRate;
+    }
+    if (message.rebalancingDates?.length) {
+      obj.rebalancingDates = message.rebalancingDates.map((e) => e.toISOString());
+    }
+    if (message.issueKind !== "") {
+      obj.issueKind = message.issueKind;
+    }
+    if (message.nominal !== undefined) {
+      obj.nominal = Quotation.toJSON(message.nominal);
+    }
+    if (message.nominalCurrency !== "") {
+      obj.nominalCurrency = message.nominalCurrency;
+    }
     return obj;
   },
 };
@@ -9896,10 +11322,7 @@ function createBaseAssetClearingCertificate(): AssetClearingCertificate {
 }
 
 export const AssetClearingCertificate = {
-  encode(
-    message: AssetClearingCertificate,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: AssetClearingCertificate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.nominal !== undefined) {
       Quotation.encode(message.nominal, writer.uint32(10).fork()).ldelim();
     }
@@ -9909,49 +11332,51 @@ export const AssetClearingCertificate = {
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): AssetClearingCertificate {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): AssetClearingCertificate {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAssetClearingCertificate();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.nominal = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.nominalCurrency = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): AssetClearingCertificate {
     return {
-      nominal: isSet(object.nominal)
-        ? Quotation.fromJSON(object.nominal)
-        : undefined,
-      nominalCurrency: isSet(object.nominalCurrency)
-        ? String(object.nominalCurrency)
-        : "",
+      nominal: isSet(object.nominal) ? Quotation.fromJSON(object.nominal) : undefined,
+      nominalCurrency: isSet(object.nominalCurrency) ? globalThis.String(object.nominalCurrency) : "",
     };
   },
 
   toJSON(message: AssetClearingCertificate): unknown {
     const obj: any = {};
-    message.nominal !== undefined &&
-      (obj.nominal = message.nominal
-        ? Quotation.toJSON(message.nominal)
-        : undefined);
-    message.nominalCurrency !== undefined &&
-      (obj.nominalCurrency = message.nominalCurrency);
+    if (message.nominal !== undefined) {
+      obj.nominal = Quotation.toJSON(message.nominal);
+    }
+    if (message.nominalCurrency !== "") {
+      obj.nominalCurrency = message.nominalCurrency;
+    }
     return obj;
   },
 };
@@ -9999,74 +11424,116 @@ export const Brand = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Brand {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseBrand();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.uid = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.name = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.description = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.info = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag !== 42) {
+            break;
+          }
+
           message.company = reader.string();
-          break;
+          continue;
         case 6:
+          if (tag !== 50) {
+            break;
+          }
+
           message.sector = reader.string();
-          break;
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.countryOfRisk = reader.string();
-          break;
+          continue;
         case 8:
+          if (tag !== 66) {
+            break;
+          }
+
           message.countryOfRiskName = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): Brand {
     return {
-      uid: isSet(object.uid) ? String(object.uid) : "",
-      name: isSet(object.name) ? String(object.name) : "",
-      description: isSet(object.description) ? String(object.description) : "",
-      info: isSet(object.info) ? String(object.info) : "",
-      company: isSet(object.company) ? String(object.company) : "",
-      sector: isSet(object.sector) ? String(object.sector) : "",
-      countryOfRisk: isSet(object.countryOfRisk)
-        ? String(object.countryOfRisk)
-        : "",
-      countryOfRiskName: isSet(object.countryOfRiskName)
-        ? String(object.countryOfRiskName)
-        : "",
+      uid: isSet(object.uid) ? globalThis.String(object.uid) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      description: isSet(object.description) ? globalThis.String(object.description) : "",
+      info: isSet(object.info) ? globalThis.String(object.info) : "",
+      company: isSet(object.company) ? globalThis.String(object.company) : "",
+      sector: isSet(object.sector) ? globalThis.String(object.sector) : "",
+      countryOfRisk: isSet(object.countryOfRisk) ? globalThis.String(object.countryOfRisk) : "",
+      countryOfRiskName: isSet(object.countryOfRiskName) ? globalThis.String(object.countryOfRiskName) : "",
     };
   },
 
   toJSON(message: Brand): unknown {
     const obj: any = {};
-    message.uid !== undefined && (obj.uid = message.uid);
-    message.name !== undefined && (obj.name = message.name);
-    message.description !== undefined &&
-      (obj.description = message.description);
-    message.info !== undefined && (obj.info = message.info);
-    message.company !== undefined && (obj.company = message.company);
-    message.sector !== undefined && (obj.sector = message.sector);
-    message.countryOfRisk !== undefined &&
-      (obj.countryOfRisk = message.countryOfRisk);
-    message.countryOfRiskName !== undefined &&
-      (obj.countryOfRiskName = message.countryOfRiskName);
+    if (message.uid !== "") {
+      obj.uid = message.uid;
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.description !== "") {
+      obj.description = message.description;
+    }
+    if (message.info !== "") {
+      obj.info = message.info;
+    }
+    if (message.company !== "") {
+      obj.company = message.company;
+    }
+    if (message.sector !== "") {
+      obj.sector = message.sector;
+    }
+    if (message.countryOfRisk !== "") {
+      obj.countryOfRisk = message.countryOfRisk;
+    }
+    if (message.countryOfRiskName !== "") {
+      obj.countryOfRiskName = message.countryOfRiskName;
+    }
     return obj;
   },
 };
@@ -10085,10 +11552,7 @@ function createBaseAssetInstrument(): AssetInstrument {
 }
 
 export const AssetInstrument = {
-  encode(
-    message: AssetInstrument,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: AssetInstrument, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.uid !== "") {
       writer.uint32(10).string(message.uid);
     }
@@ -10117,82 +11581,116 @@ export const AssetInstrument = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): AssetInstrument {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAssetInstrument();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.uid = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.figi = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.instrumentType = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.ticker = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag !== 42) {
+            break;
+          }
+
           message.classCode = reader.string();
-          break;
+          continue;
         case 6:
+          if (tag !== 50) {
+            break;
+          }
+
           message.links.push(InstrumentLink.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 10:
+          if (tag !== 80) {
+            break;
+          }
+
           message.instrumentKind = reader.int32() as any;
-          break;
+          continue;
         case 11:
+          if (tag !== 90) {
+            break;
+          }
+
           message.positionUid = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): AssetInstrument {
     return {
-      uid: isSet(object.uid) ? String(object.uid) : "",
-      figi: isSet(object.figi) ? String(object.figi) : "",
-      instrumentType: isSet(object.instrumentType)
-        ? String(object.instrumentType)
-        : "",
-      ticker: isSet(object.ticker) ? String(object.ticker) : "",
-      classCode: isSet(object.classCode) ? String(object.classCode) : "",
-      links: Array.isArray(object?.links)
-        ? object.links.map((e: any) => InstrumentLink.fromJSON(e))
-        : [],
-      instrumentKind: isSet(object.instrumentKind)
-        ? instrumentTypeFromJSON(object.instrumentKind)
-        : 0,
-      positionUid: isSet(object.positionUid) ? String(object.positionUid) : "",
+      uid: isSet(object.uid) ? globalThis.String(object.uid) : "",
+      figi: isSet(object.figi) ? globalThis.String(object.figi) : "",
+      instrumentType: isSet(object.instrumentType) ? globalThis.String(object.instrumentType) : "",
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
+      links: globalThis.Array.isArray(object?.links) ? object.links.map((e: any) => InstrumentLink.fromJSON(e)) : [],
+      instrumentKind: isSet(object.instrumentKind) ? instrumentTypeFromJSON(object.instrumentKind) : 0,
+      positionUid: isSet(object.positionUid) ? globalThis.String(object.positionUid) : "",
     };
   },
 
   toJSON(message: AssetInstrument): unknown {
     const obj: any = {};
-    message.uid !== undefined && (obj.uid = message.uid);
-    message.figi !== undefined && (obj.figi = message.figi);
-    message.instrumentType !== undefined &&
-      (obj.instrumentType = message.instrumentType);
-    message.ticker !== undefined && (obj.ticker = message.ticker);
-    message.classCode !== undefined && (obj.classCode = message.classCode);
-    if (message.links) {
-      obj.links = message.links.map((e) =>
-        e ? InstrumentLink.toJSON(e) : undefined
-      );
-    } else {
-      obj.links = [];
+    if (message.uid !== "") {
+      obj.uid = message.uid;
     }
-    message.instrumentKind !== undefined &&
-      (obj.instrumentKind = instrumentTypeToJSON(message.instrumentKind));
-    message.positionUid !== undefined &&
-      (obj.positionUid = message.positionUid);
+    if (message.figi !== "") {
+      obj.figi = message.figi;
+    }
+    if (message.instrumentType !== "") {
+      obj.instrumentType = message.instrumentType;
+    }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
+    }
+    if (message.links?.length) {
+      obj.links = message.links.map((e) => InstrumentLink.toJSON(e));
+    }
+    if (message.instrumentKind !== 0) {
+      obj.instrumentKind = instrumentTypeToJSON(message.instrumentKind);
+    }
+    if (message.positionUid !== "") {
+      obj.positionUid = message.positionUid;
+    }
     return obj;
   },
 };
@@ -10202,10 +11700,7 @@ function createBaseInstrumentLink(): InstrumentLink {
 }
 
 export const InstrumentLink = {
-  encode(
-    message: InstrumentLink,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: InstrumentLink, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.type !== "") {
       writer.uint32(10).string(message.type);
     }
@@ -10216,40 +11711,50 @@ export const InstrumentLink = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): InstrumentLink {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseInstrumentLink();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.type = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.instrumentUid = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): InstrumentLink {
     return {
-      type: isSet(object.type) ? String(object.type) : "",
-      instrumentUid: isSet(object.instrumentUid)
-        ? String(object.instrumentUid)
-        : "",
+      type: isSet(object.type) ? globalThis.String(object.type) : "",
+      instrumentUid: isSet(object.instrumentUid) ? globalThis.String(object.instrumentUid) : "",
     };
   },
 
   toJSON(message: InstrumentLink): unknown {
     const obj: any = {};
-    message.type !== undefined && (obj.type = message.type);
-    message.instrumentUid !== undefined &&
-      (obj.instrumentUid = message.instrumentUid);
+    if (message.type !== "") {
+      obj.type = message.type;
+    }
+    if (message.instrumentUid !== "") {
+      obj.instrumentUid = message.instrumentUid;
+    }
     return obj;
   },
 };
@@ -10259,24 +11764,22 @@ function createBaseGetFavoritesRequest(): GetFavoritesRequest {
 }
 
 export const GetFavoritesRequest = {
-  encode(
-    _: GetFavoritesRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(_: GetFavoritesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetFavoritesRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetFavoritesRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -10296,57 +11799,48 @@ function createBaseGetFavoritesResponse(): GetFavoritesResponse {
 }
 
 export const GetFavoritesResponse = {
-  encode(
-    message: GetFavoritesResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: GetFavoritesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.favoriteInstruments) {
       FavoriteInstrument.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): GetFavoritesResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetFavoritesResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetFavoritesResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.favoriteInstruments.push(
-            FavoriteInstrument.decode(reader, reader.uint32())
-          );
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          if (tag !== 10) {
+            break;
+          }
+
+          message.favoriteInstruments.push(FavoriteInstrument.decode(reader, reader.uint32()));
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): GetFavoritesResponse {
     return {
-      favoriteInstruments: Array.isArray(object?.favoriteInstruments)
-        ? object.favoriteInstruments.map((e: any) =>
-            FavoriteInstrument.fromJSON(e)
-          )
+      favoriteInstruments: globalThis.Array.isArray(object?.favoriteInstruments)
+        ? object.favoriteInstruments.map((e: any) => FavoriteInstrument.fromJSON(e))
         : [],
     };
   },
 
   toJSON(message: GetFavoritesResponse): unknown {
     const obj: any = {};
-    if (message.favoriteInstruments) {
-      obj.favoriteInstruments = message.favoriteInstruments.map((e) =>
-        e ? FavoriteInstrument.toJSON(e) : undefined
-      );
-    } else {
-      obj.favoriteInstruments = [];
+    if (message.favoriteInstruments?.length) {
+      obj.favoriteInstruments = message.favoriteInstruments.map((e) => FavoriteInstrument.toJSON(e));
     }
     return obj;
   },
@@ -10366,10 +11860,7 @@ function createBaseFavoriteInstrument(): FavoriteInstrument {
 }
 
 export const FavoriteInstrument = {
-  encode(
-    message: FavoriteInstrument,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: FavoriteInstrument, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.figi !== "") {
       writer.uint32(10).string(message.figi);
     }
@@ -10398,76 +11889,118 @@ export const FavoriteInstrument = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): FavoriteInstrument {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseFavoriteInstrument();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.figi = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.ticker = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.classCode = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.isin = reader.string();
-          break;
+          continue;
         case 11:
+          if (tag !== 90) {
+            break;
+          }
+
           message.instrumentType = reader.string();
-          break;
+          continue;
         case 16:
+          if (tag !== 128) {
+            break;
+          }
+
           message.otcFlag = reader.bool();
-          break;
+          continue;
         case 17:
+          if (tag !== 136) {
+            break;
+          }
+
           message.apiTradeAvailableFlag = reader.bool();
-          break;
+          continue;
         case 18:
+          if (tag !== 144) {
+            break;
+          }
+
           message.instrumentKind = reader.int32() as any;
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): FavoriteInstrument {
     return {
-      figi: isSet(object.figi) ? String(object.figi) : "",
-      ticker: isSet(object.ticker) ? String(object.ticker) : "",
-      classCode: isSet(object.classCode) ? String(object.classCode) : "",
-      isin: isSet(object.isin) ? String(object.isin) : "",
-      instrumentType: isSet(object.instrumentType)
-        ? String(object.instrumentType)
-        : "",
-      otcFlag: isSet(object.otcFlag) ? Boolean(object.otcFlag) : false,
+      figi: isSet(object.figi) ? globalThis.String(object.figi) : "",
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
+      isin: isSet(object.isin) ? globalThis.String(object.isin) : "",
+      instrumentType: isSet(object.instrumentType) ? globalThis.String(object.instrumentType) : "",
+      otcFlag: isSet(object.otcFlag) ? globalThis.Boolean(object.otcFlag) : false,
       apiTradeAvailableFlag: isSet(object.apiTradeAvailableFlag)
-        ? Boolean(object.apiTradeAvailableFlag)
+        ? globalThis.Boolean(object.apiTradeAvailableFlag)
         : false,
-      instrumentKind: isSet(object.instrumentKind)
-        ? instrumentTypeFromJSON(object.instrumentKind)
-        : 0,
+      instrumentKind: isSet(object.instrumentKind) ? instrumentTypeFromJSON(object.instrumentKind) : 0,
     };
   },
 
   toJSON(message: FavoriteInstrument): unknown {
     const obj: any = {};
-    message.figi !== undefined && (obj.figi = message.figi);
-    message.ticker !== undefined && (obj.ticker = message.ticker);
-    message.classCode !== undefined && (obj.classCode = message.classCode);
-    message.isin !== undefined && (obj.isin = message.isin);
-    message.instrumentType !== undefined &&
-      (obj.instrumentType = message.instrumentType);
-    message.otcFlag !== undefined && (obj.otcFlag = message.otcFlag);
-    message.apiTradeAvailableFlag !== undefined &&
-      (obj.apiTradeAvailableFlag = message.apiTradeAvailableFlag);
-    message.instrumentKind !== undefined &&
-      (obj.instrumentKind = instrumentTypeToJSON(message.instrumentKind));
+    if (message.figi !== "") {
+      obj.figi = message.figi;
+    }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
+    }
+    if (message.isin !== "") {
+      obj.isin = message.isin;
+    }
+    if (message.instrumentType !== "") {
+      obj.instrumentType = message.instrumentType;
+    }
+    if (message.otcFlag === true) {
+      obj.otcFlag = message.otcFlag;
+    }
+    if (message.apiTradeAvailableFlag === true) {
+      obj.apiTradeAvailableFlag = message.apiTradeAvailableFlag;
+    }
+    if (message.instrumentKind !== 0) {
+      obj.instrumentKind = instrumentTypeToJSON(message.instrumentKind);
+    }
     return obj;
   },
 };
@@ -10477,15 +12010,9 @@ function createBaseEditFavoritesRequest(): EditFavoritesRequest {
 }
 
 export const EditFavoritesRequest = {
-  encode(
-    message: EditFavoritesRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: EditFavoritesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.instruments) {
-      EditFavoritesRequestInstrument.encode(
-        v!,
-        writer.uint32(10).fork()
-      ).ldelim();
+      EditFavoritesRequestInstrument.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     if (message.actionType !== 0) {
       writer.uint32(48).int32(message.actionType);
@@ -10493,56 +12020,53 @@ export const EditFavoritesRequest = {
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): EditFavoritesRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EditFavoritesRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEditFavoritesRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.instruments.push(
-            EditFavoritesRequestInstrument.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 10) {
+            break;
+          }
+
+          message.instruments.push(EditFavoritesRequestInstrument.decode(reader, reader.uint32()));
+          continue;
         case 6:
+          if (tag !== 48) {
+            break;
+          }
+
           message.actionType = reader.int32() as any;
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): EditFavoritesRequest {
     return {
-      instruments: Array.isArray(object?.instruments)
-        ? object.instruments.map((e: any) =>
-            EditFavoritesRequestInstrument.fromJSON(e)
-          )
+      instruments: globalThis.Array.isArray(object?.instruments)
+        ? object.instruments.map((e: any) => EditFavoritesRequestInstrument.fromJSON(e))
         : [],
-      actionType: isSet(object.actionType)
-        ? editFavoritesActionTypeFromJSON(object.actionType)
-        : 0,
+      actionType: isSet(object.actionType) ? editFavoritesActionTypeFromJSON(object.actionType) : 0,
     };
   },
 
   toJSON(message: EditFavoritesRequest): unknown {
     const obj: any = {};
-    if (message.instruments) {
-      obj.instruments = message.instruments.map((e) =>
-        e ? EditFavoritesRequestInstrument.toJSON(e) : undefined
-      );
-    } else {
-      obj.instruments = [];
+    if (message.instruments?.length) {
+      obj.instruments = message.instruments.map((e) => EditFavoritesRequestInstrument.toJSON(e));
     }
-    message.actionType !== undefined &&
-      (obj.actionType = editFavoritesActionTypeToJSON(message.actionType));
+    if (message.actionType !== 0) {
+      obj.actionType = editFavoritesActionTypeToJSON(message.actionType);
+    }
     return obj;
   },
 };
@@ -10552,46 +12076,45 @@ function createBaseEditFavoritesRequestInstrument(): EditFavoritesRequestInstrum
 }
 
 export const EditFavoritesRequestInstrument = {
-  encode(
-    message: EditFavoritesRequestInstrument,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: EditFavoritesRequestInstrument, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.figi !== "") {
       writer.uint32(10).string(message.figi);
     }
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): EditFavoritesRequestInstrument {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EditFavoritesRequestInstrument {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEditFavoritesRequestInstrument();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.figi = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): EditFavoritesRequestInstrument {
-    return {
-      figi: isSet(object.figi) ? String(object.figi) : "",
-    };
+    return { figi: isSet(object.figi) ? globalThis.String(object.figi) : "" };
   },
 
   toJSON(message: EditFavoritesRequestInstrument): unknown {
     const obj: any = {};
-    message.figi !== undefined && (obj.figi = message.figi);
+    if (message.figi !== "") {
+      obj.figi = message.figi;
+    }
     return obj;
   },
 };
@@ -10601,57 +12124,48 @@ function createBaseEditFavoritesResponse(): EditFavoritesResponse {
 }
 
 export const EditFavoritesResponse = {
-  encode(
-    message: EditFavoritesResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: EditFavoritesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.favoriteInstruments) {
       FavoriteInstrument.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): EditFavoritesResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EditFavoritesResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEditFavoritesResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.favoriteInstruments.push(
-            FavoriteInstrument.decode(reader, reader.uint32())
-          );
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          if (tag !== 10) {
+            break;
+          }
+
+          message.favoriteInstruments.push(FavoriteInstrument.decode(reader, reader.uint32()));
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): EditFavoritesResponse {
     return {
-      favoriteInstruments: Array.isArray(object?.favoriteInstruments)
-        ? object.favoriteInstruments.map((e: any) =>
-            FavoriteInstrument.fromJSON(e)
-          )
+      favoriteInstruments: globalThis.Array.isArray(object?.favoriteInstruments)
+        ? object.favoriteInstruments.map((e: any) => FavoriteInstrument.fromJSON(e))
         : [],
     };
   },
 
   toJSON(message: EditFavoritesResponse): unknown {
     const obj: any = {};
-    if (message.favoriteInstruments) {
-      obj.favoriteInstruments = message.favoriteInstruments.map((e) =>
-        e ? FavoriteInstrument.toJSON(e) : undefined
-      );
-    } else {
-      obj.favoriteInstruments = [];
+    if (message.favoriteInstruments?.length) {
+      obj.favoriteInstruments = message.favoriteInstruments.map((e) => FavoriteInstrument.toJSON(e));
     }
     return obj;
   },
@@ -10662,24 +12176,22 @@ function createBaseGetCountriesRequest(): GetCountriesRequest {
 }
 
 export const GetCountriesRequest = {
-  encode(
-    _: GetCountriesRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(_: GetCountriesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetCountriesRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetCountriesRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -10699,42 +12211,39 @@ function createBaseGetCountriesResponse(): GetCountriesResponse {
 }
 
 export const GetCountriesResponse = {
-  encode(
-    message: GetCountriesResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: GetCountriesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.countries) {
       CountryResponse.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): GetCountriesResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetCountriesResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetCountriesResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.countries.push(
-            CountryResponse.decode(reader, reader.uint32())
-          );
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          if (tag !== 10) {
+            break;
+          }
+
+          message.countries.push(CountryResponse.decode(reader, reader.uint32()));
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): GetCountriesResponse {
     return {
-      countries: Array.isArray(object?.countries)
+      countries: globalThis.Array.isArray(object?.countries)
         ? object.countries.map((e: any) => CountryResponse.fromJSON(e))
         : [],
     };
@@ -10742,12 +12251,8 @@ export const GetCountriesResponse = {
 
   toJSON(message: GetCountriesResponse): unknown {
     const obj: any = {};
-    if (message.countries) {
-      obj.countries = message.countries.map((e) =>
-        e ? CountryResponse.toJSON(e) : undefined
-      );
-    } else {
-      obj.countries = [];
+    if (message.countries?.length) {
+      obj.countries = message.countries.map((e) => CountryResponse.toJSON(e));
     }
     return obj;
   },
@@ -10758,10 +12263,7 @@ function createBaseCountryResponse(): CountryResponse {
 }
 
 export const CountryResponse = {
-  encode(
-    message: CountryResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: CountryResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.alfaTwo !== "") {
       writer.uint32(10).string(message.alfaTwo);
     }
@@ -10778,47 +12280,72 @@ export const CountryResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CountryResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCountryResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.alfaTwo = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.alfaThree = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.name = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.nameBrief = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): CountryResponse {
     return {
-      alfaTwo: isSet(object.alfaTwo) ? String(object.alfaTwo) : "",
-      alfaThree: isSet(object.alfaThree) ? String(object.alfaThree) : "",
-      name: isSet(object.name) ? String(object.name) : "",
-      nameBrief: isSet(object.nameBrief) ? String(object.nameBrief) : "",
+      alfaTwo: isSet(object.alfaTwo) ? globalThis.String(object.alfaTwo) : "",
+      alfaThree: isSet(object.alfaThree) ? globalThis.String(object.alfaThree) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      nameBrief: isSet(object.nameBrief) ? globalThis.String(object.nameBrief) : "",
     };
   },
 
   toJSON(message: CountryResponse): unknown {
     const obj: any = {};
-    message.alfaTwo !== undefined && (obj.alfaTwo = message.alfaTwo);
-    message.alfaThree !== undefined && (obj.alfaThree = message.alfaThree);
-    message.name !== undefined && (obj.name = message.name);
-    message.nameBrief !== undefined && (obj.nameBrief = message.nameBrief);
+    if (message.alfaTwo !== "") {
+      obj.alfaTwo = message.alfaTwo;
+    }
+    if (message.alfaThree !== "") {
+      obj.alfaThree = message.alfaThree;
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.nameBrief !== "") {
+      obj.nameBrief = message.nameBrief;
+    }
     return obj;
   },
 };
@@ -10828,10 +12355,7 @@ function createBaseFindInstrumentRequest(): FindInstrumentRequest {
 }
 
 export const FindInstrumentRequest = {
-  encode(
-    message: FindInstrumentRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: FindInstrumentRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.query !== "") {
       writer.uint32(10).string(message.query);
     }
@@ -10844,52 +12368,64 @@ export const FindInstrumentRequest = {
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): FindInstrumentRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): FindInstrumentRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseFindInstrumentRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.query = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 16) {
+            break;
+          }
+
           message.instrumentKind = reader.int32() as any;
-          break;
+          continue;
         case 3:
+          if (tag !== 24) {
+            break;
+          }
+
           message.apiTradeAvailableFlag = reader.bool();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): FindInstrumentRequest {
     return {
-      query: isSet(object.query) ? String(object.query) : "",
-      instrumentKind: isSet(object.instrumentKind)
-        ? instrumentTypeFromJSON(object.instrumentKind)
-        : 0,
+      query: isSet(object.query) ? globalThis.String(object.query) : "",
+      instrumentKind: isSet(object.instrumentKind) ? instrumentTypeFromJSON(object.instrumentKind) : 0,
       apiTradeAvailableFlag: isSet(object.apiTradeAvailableFlag)
-        ? Boolean(object.apiTradeAvailableFlag)
+        ? globalThis.Boolean(object.apiTradeAvailableFlag)
         : false,
     };
   },
 
   toJSON(message: FindInstrumentRequest): unknown {
     const obj: any = {};
-    message.query !== undefined && (obj.query = message.query);
-    message.instrumentKind !== undefined &&
-      (obj.instrumentKind = instrumentTypeToJSON(message.instrumentKind));
-    message.apiTradeAvailableFlag !== undefined &&
-      (obj.apiTradeAvailableFlag = message.apiTradeAvailableFlag);
+    if (message.query !== "") {
+      obj.query = message.query;
+    }
+    if (message.instrumentKind !== 0) {
+      obj.instrumentKind = instrumentTypeToJSON(message.instrumentKind);
+    }
+    if (message.apiTradeAvailableFlag === true) {
+      obj.apiTradeAvailableFlag = message.apiTradeAvailableFlag;
+    }
     return obj;
   },
 };
@@ -10899,42 +12435,39 @@ function createBaseFindInstrumentResponse(): FindInstrumentResponse {
 }
 
 export const FindInstrumentResponse = {
-  encode(
-    message: FindInstrumentResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: FindInstrumentResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.instruments) {
       InstrumentShort.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): FindInstrumentResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): FindInstrumentResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseFindInstrumentResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.instruments.push(
-            InstrumentShort.decode(reader, reader.uint32())
-          );
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          if (tag !== 10) {
+            break;
+          }
+
+          message.instruments.push(InstrumentShort.decode(reader, reader.uint32()));
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): FindInstrumentResponse {
     return {
-      instruments: Array.isArray(object?.instruments)
+      instruments: globalThis.Array.isArray(object?.instruments)
         ? object.instruments.map((e: any) => InstrumentShort.fromJSON(e))
         : [],
     };
@@ -10942,12 +12475,8 @@ export const FindInstrumentResponse = {
 
   toJSON(message: FindInstrumentResponse): unknown {
     const obj: any = {};
-    if (message.instruments) {
-      obj.instruments = message.instruments.map((e) =>
-        e ? InstrumentShort.toJSON(e) : undefined
-      );
-    } else {
-      obj.instruments = [];
+    if (message.instruments?.length) {
+      obj.instruments = message.instruments.map((e) => InstrumentShort.toJSON(e));
     }
     return obj;
   },
@@ -10975,10 +12504,7 @@ function createBaseInstrumentShort(): InstrumentShort {
 }
 
 export const InstrumentShort = {
-  encode(
-    message: InstrumentShort,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: InstrumentShort, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.isin !== "") {
       writer.uint32(10).string(message.isin);
     }
@@ -11013,16 +12539,10 @@ export const InstrumentShort = {
       writer.uint32(96).bool(message.forIisFlag);
     }
     if (message.first1minCandleDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.first1minCandleDate),
-        writer.uint32(210).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.first1minCandleDate), writer.uint32(210).fork()).ldelim();
     }
     if (message.first1dayCandleDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.first1dayCandleDate),
-        writer.uint32(218).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.first1dayCandleDate), writer.uint32(218).fork()).ldelim();
     }
     if (message.forQualInvestorFlag === true) {
       writer.uint32(224).bool(message.forQualInvestorFlag);
@@ -11037,136 +12557,210 @@ export const InstrumentShort = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): InstrumentShort {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseInstrumentShort();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.isin = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.figi = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.ticker = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.classCode = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag !== 42) {
+            break;
+          }
+
           message.instrumentType = reader.string();
-          break;
+          continue;
         case 6:
+          if (tag !== 50) {
+            break;
+          }
+
           message.name = reader.string();
-          break;
+          continue;
         case 7:
+          if (tag !== 58) {
+            break;
+          }
+
           message.uid = reader.string();
-          break;
+          continue;
         case 8:
+          if (tag !== 66) {
+            break;
+          }
+
           message.positionUid = reader.string();
-          break;
+          continue;
         case 10:
+          if (tag !== 80) {
+            break;
+          }
+
           message.instrumentKind = reader.int32() as any;
-          break;
+          continue;
         case 11:
+          if (tag !== 88) {
+            break;
+          }
+
           message.apiTradeAvailableFlag = reader.bool();
-          break;
+          continue;
         case 12:
+          if (tag !== 96) {
+            break;
+          }
+
           message.forIisFlag = reader.bool();
-          break;
+          continue;
         case 26:
-          message.first1minCandleDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 210) {
+            break;
+          }
+
+          message.first1minCandleDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 27:
-          message.first1dayCandleDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 218) {
+            break;
+          }
+
+          message.first1dayCandleDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 28:
+          if (tag !== 224) {
+            break;
+          }
+
           message.forQualInvestorFlag = reader.bool();
-          break;
+          continue;
         case 29:
+          if (tag !== 232) {
+            break;
+          }
+
           message.weekendFlag = reader.bool();
-          break;
+          continue;
         case 30:
+          if (tag !== 240) {
+            break;
+          }
+
           message.blockedTcaFlag = reader.bool();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): InstrumentShort {
     return {
-      isin: isSet(object.isin) ? String(object.isin) : "",
-      figi: isSet(object.figi) ? String(object.figi) : "",
-      ticker: isSet(object.ticker) ? String(object.ticker) : "",
-      classCode: isSet(object.classCode) ? String(object.classCode) : "",
-      instrumentType: isSet(object.instrumentType)
-        ? String(object.instrumentType)
-        : "",
-      name: isSet(object.name) ? String(object.name) : "",
-      uid: isSet(object.uid) ? String(object.uid) : "",
-      positionUid: isSet(object.positionUid) ? String(object.positionUid) : "",
-      instrumentKind: isSet(object.instrumentKind)
-        ? instrumentTypeFromJSON(object.instrumentKind)
-        : 0,
+      isin: isSet(object.isin) ? globalThis.String(object.isin) : "",
+      figi: isSet(object.figi) ? globalThis.String(object.figi) : "",
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
+      instrumentType: isSet(object.instrumentType) ? globalThis.String(object.instrumentType) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      uid: isSet(object.uid) ? globalThis.String(object.uid) : "",
+      positionUid: isSet(object.positionUid) ? globalThis.String(object.positionUid) : "",
+      instrumentKind: isSet(object.instrumentKind) ? instrumentTypeFromJSON(object.instrumentKind) : 0,
       apiTradeAvailableFlag: isSet(object.apiTradeAvailableFlag)
-        ? Boolean(object.apiTradeAvailableFlag)
+        ? globalThis.Boolean(object.apiTradeAvailableFlag)
         : false,
-      forIisFlag: isSet(object.forIisFlag) ? Boolean(object.forIisFlag) : false,
+      forIisFlag: isSet(object.forIisFlag) ? globalThis.Boolean(object.forIisFlag) : false,
       first1minCandleDate: isSet(object.first1minCandleDate)
         ? fromJsonTimestamp(object.first1minCandleDate)
         : undefined,
       first1dayCandleDate: isSet(object.first1dayCandleDate)
         ? fromJsonTimestamp(object.first1dayCandleDate)
         : undefined,
-      forQualInvestorFlag: isSet(object.forQualInvestorFlag)
-        ? Boolean(object.forQualInvestorFlag)
-        : false,
-      weekendFlag: isSet(object.weekendFlag)
-        ? Boolean(object.weekendFlag)
-        : false,
-      blockedTcaFlag: isSet(object.blockedTcaFlag)
-        ? Boolean(object.blockedTcaFlag)
-        : false,
+      forQualInvestorFlag: isSet(object.forQualInvestorFlag) ? globalThis.Boolean(object.forQualInvestorFlag) : false,
+      weekendFlag: isSet(object.weekendFlag) ? globalThis.Boolean(object.weekendFlag) : false,
+      blockedTcaFlag: isSet(object.blockedTcaFlag) ? globalThis.Boolean(object.blockedTcaFlag) : false,
     };
   },
 
   toJSON(message: InstrumentShort): unknown {
     const obj: any = {};
-    message.isin !== undefined && (obj.isin = message.isin);
-    message.figi !== undefined && (obj.figi = message.figi);
-    message.ticker !== undefined && (obj.ticker = message.ticker);
-    message.classCode !== undefined && (obj.classCode = message.classCode);
-    message.instrumentType !== undefined &&
-      (obj.instrumentType = message.instrumentType);
-    message.name !== undefined && (obj.name = message.name);
-    message.uid !== undefined && (obj.uid = message.uid);
-    message.positionUid !== undefined &&
-      (obj.positionUid = message.positionUid);
-    message.instrumentKind !== undefined &&
-      (obj.instrumentKind = instrumentTypeToJSON(message.instrumentKind));
-    message.apiTradeAvailableFlag !== undefined &&
-      (obj.apiTradeAvailableFlag = message.apiTradeAvailableFlag);
-    message.forIisFlag !== undefined && (obj.forIisFlag = message.forIisFlag);
-    message.first1minCandleDate !== undefined &&
-      (obj.first1minCandleDate = message.first1minCandleDate.toISOString());
-    message.first1dayCandleDate !== undefined &&
-      (obj.first1dayCandleDate = message.first1dayCandleDate.toISOString());
-    message.forQualInvestorFlag !== undefined &&
-      (obj.forQualInvestorFlag = message.forQualInvestorFlag);
-    message.weekendFlag !== undefined &&
-      (obj.weekendFlag = message.weekendFlag);
-    message.blockedTcaFlag !== undefined &&
-      (obj.blockedTcaFlag = message.blockedTcaFlag);
+    if (message.isin !== "") {
+      obj.isin = message.isin;
+    }
+    if (message.figi !== "") {
+      obj.figi = message.figi;
+    }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
+    }
+    if (message.instrumentType !== "") {
+      obj.instrumentType = message.instrumentType;
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.uid !== "") {
+      obj.uid = message.uid;
+    }
+    if (message.positionUid !== "") {
+      obj.positionUid = message.positionUid;
+    }
+    if (message.instrumentKind !== 0) {
+      obj.instrumentKind = instrumentTypeToJSON(message.instrumentKind);
+    }
+    if (message.apiTradeAvailableFlag === true) {
+      obj.apiTradeAvailableFlag = message.apiTradeAvailableFlag;
+    }
+    if (message.forIisFlag === true) {
+      obj.forIisFlag = message.forIisFlag;
+    }
+    if (message.first1minCandleDate !== undefined) {
+      obj.first1minCandleDate = message.first1minCandleDate.toISOString();
+    }
+    if (message.first1dayCandleDate !== undefined) {
+      obj.first1dayCandleDate = message.first1dayCandleDate.toISOString();
+    }
+    if (message.forQualInvestorFlag === true) {
+      obj.forQualInvestorFlag = message.forQualInvestorFlag;
+    }
+    if (message.weekendFlag === true) {
+      obj.weekendFlag = message.weekendFlag;
+    }
+    if (message.blockedTcaFlag === true) {
+      obj.blockedTcaFlag = message.blockedTcaFlag;
+    }
     return obj;
   },
 };
@@ -11176,24 +12770,22 @@ function createBaseGetBrandsRequest(): GetBrandsRequest {
 }
 
 export const GetBrandsRequest = {
-  encode(
-    _: GetBrandsRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(_: GetBrandsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetBrandsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetBrandsRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -11213,10 +12805,7 @@ function createBaseGetBrandRequest(): GetBrandRequest {
 }
 
 export const GetBrandRequest = {
-  encode(
-    message: GetBrandRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: GetBrandRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
     }
@@ -11224,32 +12813,37 @@ export const GetBrandRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetBrandRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetBrandRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.id = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): GetBrandRequest {
-    return {
-      id: isSet(object.id) ? String(object.id) : "",
-    };
+    return { id: isSet(object.id) ? globalThis.String(object.id) : "" };
   },
 
   toJSON(message: GetBrandRequest): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = message.id);
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
     return obj;
   },
 };
@@ -11259,10 +12853,7 @@ function createBaseGetBrandsResponse(): GetBrandsResponse {
 }
 
 export const GetBrandsResponse = {
-  encode(
-    message: GetBrandsResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: GetBrandsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.brands) {
       Brand.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -11270,37 +12861,36 @@ export const GetBrandsResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetBrandsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetBrandsResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.brands.push(Brand.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): GetBrandsResponse {
-    return {
-      brands: Array.isArray(object?.brands)
-        ? object.brands.map((e: any) => Brand.fromJSON(e))
-        : [],
-    };
+    return { brands: globalThis.Array.isArray(object?.brands) ? object.brands.map((e: any) => Brand.fromJSON(e)) : [] };
   },
 
   toJSON(message: GetBrandsResponse): unknown {
     const obj: any = {};
-    if (message.brands) {
-      obj.brands = message.brands.map((e) => (e ? Brand.toJSON(e) : undefined));
-    } else {
-      obj.brands = [];
+    if (message.brands?.length) {
+      obj.brands = message.brands.map((e) => Brand.toJSON(e));
     }
     return obj;
   },
@@ -11566,300 +13156,157 @@ export const InstrumentsServiceDefinition = {
   },
 } as const;
 
-export interface InstrumentsServiceServiceImplementation<CallContextExt = {}> {
+export interface InstrumentsServiceImplementation<CallContextExt = {}> {
   /** Метод получения расписания торгов торговых площадок. */
   tradingSchedules(
     request: TradingSchedulesRequest,
-    context: CallContext & CallContextExt
+    context: CallContext & CallContextExt,
   ): Promise<TradingSchedulesResponse>;
   /** Метод получения облигации по её идентификатору. */
-  bondBy(
-    request: InstrumentRequest,
-    context: CallContext & CallContextExt
-  ): Promise<BondResponse>;
+  bondBy(request: InstrumentRequest, context: CallContext & CallContextExt): Promise<BondResponse>;
   /** Метод получения списка облигаций. */
-  bonds(
-    request: InstrumentsRequest,
-    context: CallContext & CallContextExt
-  ): Promise<BondsResponse>;
+  bonds(request: InstrumentsRequest, context: CallContext & CallContextExt): Promise<BondsResponse>;
   /** Метод получения графика выплат купонов по облигации. */
   getBondCoupons(
     request: GetBondCouponsRequest,
-    context: CallContext & CallContextExt
+    context: CallContext & CallContextExt,
   ): Promise<GetBondCouponsResponse>;
   /** Метод получения валюты по её идентификатору. */
-  currencyBy(
-    request: InstrumentRequest,
-    context: CallContext & CallContextExt
-  ): Promise<CurrencyResponse>;
+  currencyBy(request: InstrumentRequest, context: CallContext & CallContextExt): Promise<CurrencyResponse>;
   /** Метод получения списка валют. */
-  currencies(
-    request: InstrumentsRequest,
-    context: CallContext & CallContextExt
-  ): Promise<CurrenciesResponse>;
+  currencies(request: InstrumentsRequest, context: CallContext & CallContextExt): Promise<CurrenciesResponse>;
   /** Метод получения инвестиционного фонда по его идентификатору. */
-  etfBy(
-    request: InstrumentRequest,
-    context: CallContext & CallContextExt
-  ): Promise<EtfResponse>;
+  etfBy(request: InstrumentRequest, context: CallContext & CallContextExt): Promise<EtfResponse>;
   /** Метод получения списка инвестиционных фондов. */
-  etfs(
-    request: InstrumentsRequest,
-    context: CallContext & CallContextExt
-  ): Promise<EtfsResponse>;
+  etfs(request: InstrumentsRequest, context: CallContext & CallContextExt): Promise<EtfsResponse>;
   /** Метод получения фьючерса по его идентификатору. */
-  futureBy(
-    request: InstrumentRequest,
-    context: CallContext & CallContextExt
-  ): Promise<FutureResponse>;
+  futureBy(request: InstrumentRequest, context: CallContext & CallContextExt): Promise<FutureResponse>;
   /** Метод получения списка фьючерсов. */
-  futures(
-    request: InstrumentsRequest,
-    context: CallContext & CallContextExt
-  ): Promise<FuturesResponse>;
+  futures(request: InstrumentsRequest, context: CallContext & CallContextExt): Promise<FuturesResponse>;
   /** Метод получения опциона по его идентификатору. */
-  optionBy(
-    request: InstrumentRequest,
-    context: CallContext & CallContextExt
-  ): Promise<OptionResponse>;
+  optionBy(request: InstrumentRequest, context: CallContext & CallContextExt): Promise<OptionResponse>;
   /**
    * Deprecated Метод получения списка опционов.
    *
    * @deprecated
    */
-  options(
-    request: InstrumentsRequest,
-    context: CallContext & CallContextExt
-  ): Promise<OptionsResponse>;
+  options(request: InstrumentsRequest, context: CallContext & CallContextExt): Promise<OptionsResponse>;
   /** Метод получения списка опционов. */
-  optionsBy(
-    request: FilterOptionsRequest,
-    context: CallContext & CallContextExt
-  ): Promise<OptionsResponse>;
+  optionsBy(request: FilterOptionsRequest, context: CallContext & CallContextExt): Promise<OptionsResponse>;
   /** Метод получения акции по её идентификатору. */
-  shareBy(
-    request: InstrumentRequest,
-    context: CallContext & CallContextExt
-  ): Promise<ShareResponse>;
+  shareBy(request: InstrumentRequest, context: CallContext & CallContextExt): Promise<ShareResponse>;
   /** Метод получения списка акций. */
-  shares(
-    request: InstrumentsRequest,
-    context: CallContext & CallContextExt
-  ): Promise<SharesResponse>;
+  shares(request: InstrumentsRequest, context: CallContext & CallContextExt): Promise<SharesResponse>;
   /** Метод получения накопленного купонного дохода по облигации. */
   getAccruedInterests(
     request: GetAccruedInterestsRequest,
-    context: CallContext & CallContextExt
+    context: CallContext & CallContextExt,
   ): Promise<GetAccruedInterestsResponse>;
   /** Метод получения размера гарантийного обеспечения по фьючерсам. */
   getFuturesMargin(
     request: GetFuturesMarginRequest,
-    context: CallContext & CallContextExt
+    context: CallContext & CallContextExt,
   ): Promise<GetFuturesMarginResponse>;
   /** Метод получения основной информации об инструменте. */
-  getInstrumentBy(
-    request: InstrumentRequest,
-    context: CallContext & CallContextExt
-  ): Promise<InstrumentResponse>;
+  getInstrumentBy(request: InstrumentRequest, context: CallContext & CallContextExt): Promise<InstrumentResponse>;
   /** Метод для получения событий выплаты дивидендов по инструменту. */
-  getDividends(
-    request: GetDividendsRequest,
-    context: CallContext & CallContextExt
-  ): Promise<GetDividendsResponse>;
+  getDividends(request: GetDividendsRequest, context: CallContext & CallContextExt): Promise<GetDividendsResponse>;
   /** Метод получения актива по его идентификатору. */
-  getAssetBy(
-    request: AssetRequest,
-    context: CallContext & CallContextExt
-  ): Promise<AssetResponse>;
+  getAssetBy(request: AssetRequest, context: CallContext & CallContextExt): Promise<AssetResponse>;
   /** Метод получения списка активов. Метод работает для всех инструментов, за исключением срочных - опционов и фьючерсов. */
-  getAssets(
-    request: AssetsRequest,
-    context: CallContext & CallContextExt
-  ): Promise<AssetsResponse>;
+  getAssets(request: AssetsRequest, context: CallContext & CallContextExt): Promise<AssetsResponse>;
   /** Метод получения списка избранных инструментов. */
-  getFavorites(
-    request: GetFavoritesRequest,
-    context: CallContext & CallContextExt
-  ): Promise<GetFavoritesResponse>;
+  getFavorites(request: GetFavoritesRequest, context: CallContext & CallContextExt): Promise<GetFavoritesResponse>;
   /** Метод редактирования списка избранных инструментов. */
-  editFavorites(
-    request: EditFavoritesRequest,
-    context: CallContext & CallContextExt
-  ): Promise<EditFavoritesResponse>;
+  editFavorites(request: EditFavoritesRequest, context: CallContext & CallContextExt): Promise<EditFavoritesResponse>;
   /** Метод получения списка стран. */
-  getCountries(
-    request: GetCountriesRequest,
-    context: CallContext & CallContextExt
-  ): Promise<GetCountriesResponse>;
+  getCountries(request: GetCountriesRequest, context: CallContext & CallContextExt): Promise<GetCountriesResponse>;
   /** Метод поиска инструмента. */
   findInstrument(
     request: FindInstrumentRequest,
-    context: CallContext & CallContextExt
+    context: CallContext & CallContextExt,
   ): Promise<FindInstrumentResponse>;
   /** Метод получения списка брендов. */
-  getBrands(
-    request: GetBrandsRequest,
-    context: CallContext & CallContextExt
-  ): Promise<GetBrandsResponse>;
+  getBrands(request: GetBrandsRequest, context: CallContext & CallContextExt): Promise<GetBrandsResponse>;
   /** Метод получения бренда по его идентификатору. */
-  getBrandBy(
-    request: GetBrandRequest,
-    context: CallContext & CallContextExt
-  ): Promise<Brand>;
+  getBrandBy(request: GetBrandRequest, context: CallContext & CallContextExt): Promise<Brand>;
 }
 
 export interface InstrumentsServiceClient<CallOptionsExt = {}> {
   /** Метод получения расписания торгов торговых площадок. */
   tradingSchedules(
     request: TradingSchedulesRequest,
-    options?: CallOptions & CallOptionsExt
+    options?: CallOptions & CallOptionsExt,
   ): Promise<TradingSchedulesResponse>;
   /** Метод получения облигации по её идентификатору. */
-  bondBy(
-    request: InstrumentRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<BondResponse>;
+  bondBy(request: InstrumentRequest, options?: CallOptions & CallOptionsExt): Promise<BondResponse>;
   /** Метод получения списка облигаций. */
-  bonds(
-    request: InstrumentsRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<BondsResponse>;
+  bonds(request: InstrumentsRequest, options?: CallOptions & CallOptionsExt): Promise<BondsResponse>;
   /** Метод получения графика выплат купонов по облигации. */
   getBondCoupons(
     request: GetBondCouponsRequest,
-    options?: CallOptions & CallOptionsExt
+    options?: CallOptions & CallOptionsExt,
   ): Promise<GetBondCouponsResponse>;
   /** Метод получения валюты по её идентификатору. */
-  currencyBy(
-    request: InstrumentRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<CurrencyResponse>;
+  currencyBy(request: InstrumentRequest, options?: CallOptions & CallOptionsExt): Promise<CurrencyResponse>;
   /** Метод получения списка валют. */
-  currencies(
-    request: InstrumentsRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<CurrenciesResponse>;
+  currencies(request: InstrumentsRequest, options?: CallOptions & CallOptionsExt): Promise<CurrenciesResponse>;
   /** Метод получения инвестиционного фонда по его идентификатору. */
-  etfBy(
-    request: InstrumentRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<EtfResponse>;
+  etfBy(request: InstrumentRequest, options?: CallOptions & CallOptionsExt): Promise<EtfResponse>;
   /** Метод получения списка инвестиционных фондов. */
-  etfs(
-    request: InstrumentsRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<EtfsResponse>;
+  etfs(request: InstrumentsRequest, options?: CallOptions & CallOptionsExt): Promise<EtfsResponse>;
   /** Метод получения фьючерса по его идентификатору. */
-  futureBy(
-    request: InstrumentRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<FutureResponse>;
+  futureBy(request: InstrumentRequest, options?: CallOptions & CallOptionsExt): Promise<FutureResponse>;
   /** Метод получения списка фьючерсов. */
-  futures(
-    request: InstrumentsRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<FuturesResponse>;
+  futures(request: InstrumentsRequest, options?: CallOptions & CallOptionsExt): Promise<FuturesResponse>;
   /** Метод получения опциона по его идентификатору. */
-  optionBy(
-    request: InstrumentRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<OptionResponse>;
+  optionBy(request: InstrumentRequest, options?: CallOptions & CallOptionsExt): Promise<OptionResponse>;
   /**
    * Deprecated Метод получения списка опционов.
    *
    * @deprecated
    */
-  options(
-    request: InstrumentsRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<OptionsResponse>;
+  options(request: InstrumentsRequest, options?: CallOptions & CallOptionsExt): Promise<OptionsResponse>;
   /** Метод получения списка опционов. */
-  optionsBy(
-    request: FilterOptionsRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<OptionsResponse>;
+  optionsBy(request: FilterOptionsRequest, options?: CallOptions & CallOptionsExt): Promise<OptionsResponse>;
   /** Метод получения акции по её идентификатору. */
-  shareBy(
-    request: InstrumentRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<ShareResponse>;
+  shareBy(request: InstrumentRequest, options?: CallOptions & CallOptionsExt): Promise<ShareResponse>;
   /** Метод получения списка акций. */
-  shares(
-    request: InstrumentsRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<SharesResponse>;
+  shares(request: InstrumentsRequest, options?: CallOptions & CallOptionsExt): Promise<SharesResponse>;
   /** Метод получения накопленного купонного дохода по облигации. */
   getAccruedInterests(
     request: GetAccruedInterestsRequest,
-    options?: CallOptions & CallOptionsExt
+    options?: CallOptions & CallOptionsExt,
   ): Promise<GetAccruedInterestsResponse>;
   /** Метод получения размера гарантийного обеспечения по фьючерсам. */
   getFuturesMargin(
     request: GetFuturesMarginRequest,
-    options?: CallOptions & CallOptionsExt
+    options?: CallOptions & CallOptionsExt,
   ): Promise<GetFuturesMarginResponse>;
   /** Метод получения основной информации об инструменте. */
-  getInstrumentBy(
-    request: InstrumentRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<InstrumentResponse>;
+  getInstrumentBy(request: InstrumentRequest, options?: CallOptions & CallOptionsExt): Promise<InstrumentResponse>;
   /** Метод для получения событий выплаты дивидендов по инструменту. */
-  getDividends(
-    request: GetDividendsRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<GetDividendsResponse>;
+  getDividends(request: GetDividendsRequest, options?: CallOptions & CallOptionsExt): Promise<GetDividendsResponse>;
   /** Метод получения актива по его идентификатору. */
-  getAssetBy(
-    request: AssetRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<AssetResponse>;
+  getAssetBy(request: AssetRequest, options?: CallOptions & CallOptionsExt): Promise<AssetResponse>;
   /** Метод получения списка активов. Метод работает для всех инструментов, за исключением срочных - опционов и фьючерсов. */
-  getAssets(
-    request: AssetsRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<AssetsResponse>;
+  getAssets(request: AssetsRequest, options?: CallOptions & CallOptionsExt): Promise<AssetsResponse>;
   /** Метод получения списка избранных инструментов. */
-  getFavorites(
-    request: GetFavoritesRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<GetFavoritesResponse>;
+  getFavorites(request: GetFavoritesRequest, options?: CallOptions & CallOptionsExt): Promise<GetFavoritesResponse>;
   /** Метод редактирования списка избранных инструментов. */
-  editFavorites(
-    request: EditFavoritesRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<EditFavoritesResponse>;
+  editFavorites(request: EditFavoritesRequest, options?: CallOptions & CallOptionsExt): Promise<EditFavoritesResponse>;
   /** Метод получения списка стран. */
-  getCountries(
-    request: GetCountriesRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<GetCountriesResponse>;
+  getCountries(request: GetCountriesRequest, options?: CallOptions & CallOptionsExt): Promise<GetCountriesResponse>;
   /** Метод поиска инструмента. */
   findInstrument(
     request: FindInstrumentRequest,
-    options?: CallOptions & CallOptionsExt
+    options?: CallOptions & CallOptionsExt,
   ): Promise<FindInstrumentResponse>;
   /** Метод получения списка брендов. */
-  getBrands(
-    request: GetBrandsRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<GetBrandsResponse>;
+  getBrands(request: GetBrandsRequest, options?: CallOptions & CallOptionsExt): Promise<GetBrandsResponse>;
   /** Метод получения бренда по его идентификатору. */
-  getBrandBy(
-    request: GetBrandRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<Brand>;
+  getBrandBy(request: GetBrandRequest, options?: CallOptions & CallOptionsExt): Promise<Brand>;
 }
-
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var globalThis: any = (() => {
-  if (typeof globalThis !== "undefined") return globalThis;
-  if (typeof self !== "undefined") return self;
-  if (typeof window !== "undefined") return window;
-  if (typeof global !== "undefined") return global;
-  throw "Unable to locate global object";
-})();
 
 function toTimestamp(date: Date): Timestamp {
   const seconds = date.getTime() / 1_000;
@@ -11868,23 +13315,23 @@ function toTimestamp(date: Date): Timestamp {
 }
 
 function fromTimestamp(t: Timestamp): Date {
-  let millis = t.seconds * 1_000;
-  millis += t.nanos / 1_000_000;
-  return new Date(millis);
+  let millis = (t.seconds || 0) * 1_000;
+  millis += (t.nanos || 0) / 1_000_000;
+  return new globalThis.Date(millis);
 }
 
 function fromJsonTimestamp(o: any): Date {
-  if (o instanceof Date) {
+  if (o instanceof globalThis.Date) {
     return o;
   } else if (typeof o === "string") {
-    return new Date(o);
+    return new globalThis.Date(o);
   } else {
     return fromTimestamp(Timestamp.fromJSON(o));
   }
 }
 
 function longToNumber(long: Long): number {
-  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+  if (long.gt(globalThis.Number.MAX_SAFE_INTEGER)) {
     throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
   }
   return long.toNumber();

@@ -1,8 +1,8 @@
 /* eslint-disable */
 import Long from "long";
+import type { CallContext, CallOptions } from "nice-grpc-common";
 import _m0 from "protobufjs/minimal.js";
-import { Quotation, MoneyValue } from "./common.js";
-import { CallContext, CallOptions } from "nice-grpc-common";
+import { MoneyValue, Quotation } from "./common.js";
 import { Timestamp } from "./google/protobuf/timestamp.js";
 
 export const protobufPackage = "tinkoff.public.invest.api.contract.v1";
@@ -61,9 +61,7 @@ export enum StopOrderExpirationType {
   UNRECOGNIZED = -1,
 }
 
-export function stopOrderExpirationTypeFromJSON(
-  object: any
-): StopOrderExpirationType {
+export function stopOrderExpirationTypeFromJSON(object: any): StopOrderExpirationType {
   switch (object) {
     case 0:
     case "STOP_ORDER_EXPIRATION_TYPE_UNSPECIFIED":
@@ -81,9 +79,7 @@ export function stopOrderExpirationTypeFromJSON(
   }
 }
 
-export function stopOrderExpirationTypeToJSON(
-  object: StopOrderExpirationType
-): string {
+export function stopOrderExpirationTypeToJSON(object: StopOrderExpirationType): string {
   switch (object) {
     case StopOrderExpirationType.STOP_ORDER_EXPIRATION_TYPE_UNSPECIFIED:
       return "STOP_ORDER_EXPIRATION_TYPE_UNSPECIFIED";
@@ -158,9 +154,13 @@ export interface PostStopOrderRequest {
   /** Количество лотов. */
   quantity: number;
   /** Цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
-  price?: Quotation;
+  price?:
+    | Quotation
+    | undefined;
   /** Стоп-цена заявки за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
-  stopPrice?: Quotation;
+  stopPrice?:
+    | Quotation
+    | undefined;
   /** Направление операции. */
   direction: StopOrderDirection;
   /** Номер счёта. */
@@ -170,7 +170,9 @@ export interface PostStopOrderRequest {
   /** Тип заявки. */
   stopOrderType: StopOrderType;
   /** Дата и время окончания действия стоп-заявки в часовом поясе UTC. **Для ExpirationType = GoodTillDate заполнение обязательно**. */
-  expireDate?: Date;
+  expireDate?:
+    | Date
+    | undefined;
   /** Идентификатор инструмента, принимает значения Figi или instrument_uid. */
   instrumentId: string;
 }
@@ -204,7 +206,7 @@ export interface CancelStopOrderRequest {
 /** Результат отмены выставленной стоп-заявки. */
 export interface CancelStopOrderResponse {
   /** Время отмены заявки в часовом поясе UTC. */
-  time?: Date;
+  time?: Date | undefined;
 }
 
 /** Информация о стоп-заявке. */
@@ -222,15 +224,25 @@ export interface StopOrder {
   /** Тип стоп-заявки. */
   orderType: StopOrderType;
   /** Дата и время выставления заявки в часовом поясе UTC. */
-  createDate?: Date;
+  createDate?:
+    | Date
+    | undefined;
   /** Дата и время конвертации стоп-заявки в биржевую в часовом поясе UTC. */
-  activationDateTime?: Date;
+  activationDateTime?:
+    | Date
+    | undefined;
   /** Дата и время снятия заявки в часовом поясе UTC. */
-  expirationTime?: Date;
+  expirationTime?:
+    | Date
+    | undefined;
   /** Цена заявки за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
-  price?: MoneyValue;
+  price?:
+    | MoneyValue
+    | undefined;
   /** Цена активации стоп-заявки за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
-  stopPrice?: MoneyValue;
+  stopPrice?:
+    | MoneyValue
+    | undefined;
   /** instrument_uid идентификатор инструмента. */
   instrumentUid: string;
 }
@@ -251,10 +263,7 @@ function createBasePostStopOrderRequest(): PostStopOrderRequest {
 }
 
 export const PostStopOrderRequest = {
-  encode(
-    message: PostStopOrderRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: PostStopOrderRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.figi !== "") {
       writer.uint32(10).string(message.figi);
     }
@@ -280,10 +289,7 @@ export const PostStopOrderRequest = {
       writer.uint32(64).int32(message.stopOrderType);
     }
     if (message.expireDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.expireDate),
-        writer.uint32(74).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.expireDate), writer.uint32(74).fork()).ldelim();
     }
     if (message.instrumentId !== "") {
       writer.uint32(82).string(message.instrumentId);
@@ -291,107 +297,139 @@ export const PostStopOrderRequest = {
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): PostStopOrderRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): PostStopOrderRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePostStopOrderRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.figi = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 16) {
+            break;
+          }
+
           message.quantity = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.price = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 4:
+          if (tag !== 34) {
+            break;
+          }
+
           message.stopPrice = Quotation.decode(reader, reader.uint32());
-          break;
+          continue;
         case 5:
+          if (tag !== 40) {
+            break;
+          }
+
           message.direction = reader.int32() as any;
-          break;
+          continue;
         case 6:
+          if (tag !== 50) {
+            break;
+          }
+
           message.accountId = reader.string();
-          break;
+          continue;
         case 7:
+          if (tag !== 56) {
+            break;
+          }
+
           message.expirationType = reader.int32() as any;
-          break;
+          continue;
         case 8:
+          if (tag !== 64) {
+            break;
+          }
+
           message.stopOrderType = reader.int32() as any;
-          break;
+          continue;
         case 9:
-          message.expireDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 74) {
+            break;
+          }
+
+          message.expireDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 10:
+          if (tag !== 82) {
+            break;
+          }
+
           message.instrumentId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): PostStopOrderRequest {
     return {
-      figi: isSet(object.figi) ? String(object.figi) : "",
-      quantity: isSet(object.quantity) ? Number(object.quantity) : 0,
+      figi: isSet(object.figi) ? globalThis.String(object.figi) : "",
+      quantity: isSet(object.quantity) ? globalThis.Number(object.quantity) : 0,
       price: isSet(object.price) ? Quotation.fromJSON(object.price) : undefined,
-      stopPrice: isSet(object.stopPrice)
-        ? Quotation.fromJSON(object.stopPrice)
-        : undefined,
-      direction: isSet(object.direction)
-        ? stopOrderDirectionFromJSON(object.direction)
-        : 0,
-      accountId: isSet(object.accountId) ? String(object.accountId) : "",
-      expirationType: isSet(object.expirationType)
-        ? stopOrderExpirationTypeFromJSON(object.expirationType)
-        : 0,
-      stopOrderType: isSet(object.stopOrderType)
-        ? stopOrderTypeFromJSON(object.stopOrderType)
-        : 0,
-      expireDate: isSet(object.expireDate)
-        ? fromJsonTimestamp(object.expireDate)
-        : undefined,
-      instrumentId: isSet(object.instrumentId)
-        ? String(object.instrumentId)
-        : "",
+      stopPrice: isSet(object.stopPrice) ? Quotation.fromJSON(object.stopPrice) : undefined,
+      direction: isSet(object.direction) ? stopOrderDirectionFromJSON(object.direction) : 0,
+      accountId: isSet(object.accountId) ? globalThis.String(object.accountId) : "",
+      expirationType: isSet(object.expirationType) ? stopOrderExpirationTypeFromJSON(object.expirationType) : 0,
+      stopOrderType: isSet(object.stopOrderType) ? stopOrderTypeFromJSON(object.stopOrderType) : 0,
+      expireDate: isSet(object.expireDate) ? fromJsonTimestamp(object.expireDate) : undefined,
+      instrumentId: isSet(object.instrumentId) ? globalThis.String(object.instrumentId) : "",
     };
   },
 
   toJSON(message: PostStopOrderRequest): unknown {
     const obj: any = {};
-    message.figi !== undefined && (obj.figi = message.figi);
-    message.quantity !== undefined &&
-      (obj.quantity = Math.round(message.quantity));
-    message.price !== undefined &&
-      (obj.price = message.price ? Quotation.toJSON(message.price) : undefined);
-    message.stopPrice !== undefined &&
-      (obj.stopPrice = message.stopPrice
-        ? Quotation.toJSON(message.stopPrice)
-        : undefined);
-    message.direction !== undefined &&
-      (obj.direction = stopOrderDirectionToJSON(message.direction));
-    message.accountId !== undefined && (obj.accountId = message.accountId);
-    message.expirationType !== undefined &&
-      (obj.expirationType = stopOrderExpirationTypeToJSON(
-        message.expirationType
-      ));
-    message.stopOrderType !== undefined &&
-      (obj.stopOrderType = stopOrderTypeToJSON(message.stopOrderType));
-    message.expireDate !== undefined &&
-      (obj.expireDate = message.expireDate.toISOString());
-    message.instrumentId !== undefined &&
-      (obj.instrumentId = message.instrumentId);
+    if (message.figi !== "") {
+      obj.figi = message.figi;
+    }
+    if (message.quantity !== 0) {
+      obj.quantity = Math.round(message.quantity);
+    }
+    if (message.price !== undefined) {
+      obj.price = Quotation.toJSON(message.price);
+    }
+    if (message.stopPrice !== undefined) {
+      obj.stopPrice = Quotation.toJSON(message.stopPrice);
+    }
+    if (message.direction !== 0) {
+      obj.direction = stopOrderDirectionToJSON(message.direction);
+    }
+    if (message.accountId !== "") {
+      obj.accountId = message.accountId;
+    }
+    if (message.expirationType !== 0) {
+      obj.expirationType = stopOrderExpirationTypeToJSON(message.expirationType);
+    }
+    if (message.stopOrderType !== 0) {
+      obj.stopOrderType = stopOrderTypeToJSON(message.stopOrderType);
+    }
+    if (message.expireDate !== undefined) {
+      obj.expireDate = message.expireDate.toISOString();
+    }
+    if (message.instrumentId !== "") {
+      obj.instrumentId = message.instrumentId;
+    }
     return obj;
   },
 };
@@ -401,47 +439,45 @@ function createBasePostStopOrderResponse(): PostStopOrderResponse {
 }
 
 export const PostStopOrderResponse = {
-  encode(
-    message: PostStopOrderResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: PostStopOrderResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.stopOrderId !== "") {
       writer.uint32(10).string(message.stopOrderId);
     }
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): PostStopOrderResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): PostStopOrderResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePostStopOrderResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.stopOrderId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): PostStopOrderResponse {
-    return {
-      stopOrderId: isSet(object.stopOrderId) ? String(object.stopOrderId) : "",
-    };
+    return { stopOrderId: isSet(object.stopOrderId) ? globalThis.String(object.stopOrderId) : "" };
   },
 
   toJSON(message: PostStopOrderResponse): unknown {
     const obj: any = {};
-    message.stopOrderId !== undefined &&
-      (obj.stopOrderId = message.stopOrderId);
+    if (message.stopOrderId !== "") {
+      obj.stopOrderId = message.stopOrderId;
+    }
     return obj;
   },
 };
@@ -451,46 +487,45 @@ function createBaseGetStopOrdersRequest(): GetStopOrdersRequest {
 }
 
 export const GetStopOrdersRequest = {
-  encode(
-    message: GetStopOrdersRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: GetStopOrdersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.accountId !== "") {
       writer.uint32(10).string(message.accountId);
     }
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): GetStopOrdersRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetStopOrdersRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetStopOrdersRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.accountId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): GetStopOrdersRequest {
-    return {
-      accountId: isSet(object.accountId) ? String(object.accountId) : "",
-    };
+    return { accountId: isSet(object.accountId) ? globalThis.String(object.accountId) : "" };
   },
 
   toJSON(message: GetStopOrdersRequest): unknown {
     const obj: any = {};
-    message.accountId !== undefined && (obj.accountId = message.accountId);
+    if (message.accountId !== "") {
+      obj.accountId = message.accountId;
+    }
     return obj;
   },
 };
@@ -500,40 +535,39 @@ function createBaseGetStopOrdersResponse(): GetStopOrdersResponse {
 }
 
 export const GetStopOrdersResponse = {
-  encode(
-    message: GetStopOrdersResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: GetStopOrdersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.stopOrders) {
       StopOrder.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): GetStopOrdersResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetStopOrdersResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetStopOrdersResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.stopOrders.push(StopOrder.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): GetStopOrdersResponse {
     return {
-      stopOrders: Array.isArray(object?.stopOrders)
+      stopOrders: globalThis.Array.isArray(object?.stopOrders)
         ? object.stopOrders.map((e: any) => StopOrder.fromJSON(e))
         : [],
     };
@@ -541,12 +575,8 @@ export const GetStopOrdersResponse = {
 
   toJSON(message: GetStopOrdersResponse): unknown {
     const obj: any = {};
-    if (message.stopOrders) {
-      obj.stopOrders = message.stopOrders.map((e) =>
-        e ? StopOrder.toJSON(e) : undefined
-      );
-    } else {
-      obj.stopOrders = [];
+    if (message.stopOrders?.length) {
+      obj.stopOrders = message.stopOrders.map((e) => StopOrder.toJSON(e));
     }
     return obj;
   },
@@ -557,10 +587,7 @@ function createBaseCancelStopOrderRequest(): CancelStopOrderRequest {
 }
 
 export const CancelStopOrderRequest = {
-  encode(
-    message: CancelStopOrderRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: CancelStopOrderRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.accountId !== "") {
       writer.uint32(10).string(message.accountId);
     }
@@ -570,42 +597,51 @@ export const CancelStopOrderRequest = {
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): CancelStopOrderRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): CancelStopOrderRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCancelStopOrderRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.accountId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 18) {
+            break;
+          }
+
           message.stopOrderId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): CancelStopOrderRequest {
     return {
-      accountId: isSet(object.accountId) ? String(object.accountId) : "",
-      stopOrderId: isSet(object.stopOrderId) ? String(object.stopOrderId) : "",
+      accountId: isSet(object.accountId) ? globalThis.String(object.accountId) : "",
+      stopOrderId: isSet(object.stopOrderId) ? globalThis.String(object.stopOrderId) : "",
     };
   },
 
   toJSON(message: CancelStopOrderRequest): unknown {
     const obj: any = {};
-    message.accountId !== undefined && (obj.accountId = message.accountId);
-    message.stopOrderId !== undefined &&
-      (obj.stopOrderId = message.stopOrderId);
+    if (message.accountId !== "") {
+      obj.accountId = message.accountId;
+    }
+    if (message.stopOrderId !== "") {
+      obj.stopOrderId = message.stopOrderId;
+    }
     return obj;
   },
 };
@@ -615,51 +651,45 @@ function createBaseCancelStopOrderResponse(): CancelStopOrderResponse {
 }
 
 export const CancelStopOrderResponse = {
-  encode(
-    message: CancelStopOrderResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: CancelStopOrderResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.time !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.time),
-        writer.uint32(10).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.time), writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): CancelStopOrderResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): CancelStopOrderResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCancelStopOrderResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.time = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          if (tag !== 10) {
+            break;
+          }
+
+          message.time = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): CancelStopOrderResponse {
-    return {
-      time: isSet(object.time) ? fromJsonTimestamp(object.time) : undefined,
-    };
+    return { time: isSet(object.time) ? fromJsonTimestamp(object.time) : undefined };
   },
 
   toJSON(message: CancelStopOrderResponse): unknown {
     const obj: any = {};
-    message.time !== undefined && (obj.time = message.time.toISOString());
+    if (message.time !== undefined) {
+      obj.time = message.time.toISOString();
+    }
     return obj;
   },
 };
@@ -682,10 +712,7 @@ function createBaseStopOrder(): StopOrder {
 }
 
 export const StopOrder = {
-  encode(
-    message: StopOrder,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: StopOrder, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.stopOrderId !== "") {
       writer.uint32(10).string(message.stopOrderId);
     }
@@ -705,22 +732,13 @@ export const StopOrder = {
       writer.uint32(48).int32(message.orderType);
     }
     if (message.createDate !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.createDate),
-        writer.uint32(58).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.createDate), writer.uint32(58).fork()).ldelim();
     }
     if (message.activationDateTime !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.activationDateTime),
-        writer.uint32(66).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.activationDateTime), writer.uint32(66).fork()).ldelim();
     }
     if (message.expirationTime !== undefined) {
-      Timestamp.encode(
-        toTimestamp(message.expirationTime),
-        writer.uint32(74).fork()
-      ).ldelim();
+      Timestamp.encode(toTimestamp(message.expirationTime), writer.uint32(74).fork()).ldelim();
     }
     if (message.price !== undefined) {
       MoneyValue.encode(message.price, writer.uint32(82).fork()).ldelim();
@@ -735,125 +753,160 @@ export const StopOrder = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): StopOrder {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseStopOrder();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag !== 10) {
+            break;
+          }
+
           message.stopOrderId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag !== 16) {
+            break;
+          }
+
           message.lotsRequested = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 3:
+          if (tag !== 26) {
+            break;
+          }
+
           message.figi = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag !== 32) {
+            break;
+          }
+
           message.direction = reader.int32() as any;
-          break;
+          continue;
         case 5:
+          if (tag !== 42) {
+            break;
+          }
+
           message.currency = reader.string();
-          break;
+          continue;
         case 6:
+          if (tag !== 48) {
+            break;
+          }
+
           message.orderType = reader.int32() as any;
-          break;
+          continue;
         case 7:
-          message.createDate = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 58) {
+            break;
+          }
+
+          message.createDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 8:
-          message.activationDateTime = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 66) {
+            break;
+          }
+
+          message.activationDateTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 9:
-          message.expirationTime = fromTimestamp(
-            Timestamp.decode(reader, reader.uint32())
-          );
-          break;
+          if (tag !== 74) {
+            break;
+          }
+
+          message.expirationTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
         case 10:
+          if (tag !== 82) {
+            break;
+          }
+
           message.price = MoneyValue.decode(reader, reader.uint32());
-          break;
+          continue;
         case 11:
+          if (tag !== 90) {
+            break;
+          }
+
           message.stopPrice = MoneyValue.decode(reader, reader.uint32());
-          break;
+          continue;
         case 12:
+          if (tag !== 98) {
+            break;
+          }
+
           message.instrumentUid = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): StopOrder {
     return {
-      stopOrderId: isSet(object.stopOrderId) ? String(object.stopOrderId) : "",
-      lotsRequested: isSet(object.lotsRequested)
-        ? Number(object.lotsRequested)
-        : 0,
-      figi: isSet(object.figi) ? String(object.figi) : "",
-      direction: isSet(object.direction)
-        ? stopOrderDirectionFromJSON(object.direction)
-        : 0,
-      currency: isSet(object.currency) ? String(object.currency) : "",
-      orderType: isSet(object.orderType)
-        ? stopOrderTypeFromJSON(object.orderType)
-        : 0,
-      createDate: isSet(object.createDate)
-        ? fromJsonTimestamp(object.createDate)
-        : undefined,
-      activationDateTime: isSet(object.activationDateTime)
-        ? fromJsonTimestamp(object.activationDateTime)
-        : undefined,
-      expirationTime: isSet(object.expirationTime)
-        ? fromJsonTimestamp(object.expirationTime)
-        : undefined,
-      price: isSet(object.price)
-        ? MoneyValue.fromJSON(object.price)
-        : undefined,
-      stopPrice: isSet(object.stopPrice)
-        ? MoneyValue.fromJSON(object.stopPrice)
-        : undefined,
-      instrumentUid: isSet(object.instrumentUid)
-        ? String(object.instrumentUid)
-        : "",
+      stopOrderId: isSet(object.stopOrderId) ? globalThis.String(object.stopOrderId) : "",
+      lotsRequested: isSet(object.lotsRequested) ? globalThis.Number(object.lotsRequested) : 0,
+      figi: isSet(object.figi) ? globalThis.String(object.figi) : "",
+      direction: isSet(object.direction) ? stopOrderDirectionFromJSON(object.direction) : 0,
+      currency: isSet(object.currency) ? globalThis.String(object.currency) : "",
+      orderType: isSet(object.orderType) ? stopOrderTypeFromJSON(object.orderType) : 0,
+      createDate: isSet(object.createDate) ? fromJsonTimestamp(object.createDate) : undefined,
+      activationDateTime: isSet(object.activationDateTime) ? fromJsonTimestamp(object.activationDateTime) : undefined,
+      expirationTime: isSet(object.expirationTime) ? fromJsonTimestamp(object.expirationTime) : undefined,
+      price: isSet(object.price) ? MoneyValue.fromJSON(object.price) : undefined,
+      stopPrice: isSet(object.stopPrice) ? MoneyValue.fromJSON(object.stopPrice) : undefined,
+      instrumentUid: isSet(object.instrumentUid) ? globalThis.String(object.instrumentUid) : "",
     };
   },
 
   toJSON(message: StopOrder): unknown {
     const obj: any = {};
-    message.stopOrderId !== undefined &&
-      (obj.stopOrderId = message.stopOrderId);
-    message.lotsRequested !== undefined &&
-      (obj.lotsRequested = Math.round(message.lotsRequested));
-    message.figi !== undefined && (obj.figi = message.figi);
-    message.direction !== undefined &&
-      (obj.direction = stopOrderDirectionToJSON(message.direction));
-    message.currency !== undefined && (obj.currency = message.currency);
-    message.orderType !== undefined &&
-      (obj.orderType = stopOrderTypeToJSON(message.orderType));
-    message.createDate !== undefined &&
-      (obj.createDate = message.createDate.toISOString());
-    message.activationDateTime !== undefined &&
-      (obj.activationDateTime = message.activationDateTime.toISOString());
-    message.expirationTime !== undefined &&
-      (obj.expirationTime = message.expirationTime.toISOString());
-    message.price !== undefined &&
-      (obj.price = message.price
-        ? MoneyValue.toJSON(message.price)
-        : undefined);
-    message.stopPrice !== undefined &&
-      (obj.stopPrice = message.stopPrice
-        ? MoneyValue.toJSON(message.stopPrice)
-        : undefined);
-    message.instrumentUid !== undefined &&
-      (obj.instrumentUid = message.instrumentUid);
+    if (message.stopOrderId !== "") {
+      obj.stopOrderId = message.stopOrderId;
+    }
+    if (message.lotsRequested !== 0) {
+      obj.lotsRequested = Math.round(message.lotsRequested);
+    }
+    if (message.figi !== "") {
+      obj.figi = message.figi;
+    }
+    if (message.direction !== 0) {
+      obj.direction = stopOrderDirectionToJSON(message.direction);
+    }
+    if (message.currency !== "") {
+      obj.currency = message.currency;
+    }
+    if (message.orderType !== 0) {
+      obj.orderType = stopOrderTypeToJSON(message.orderType);
+    }
+    if (message.createDate !== undefined) {
+      obj.createDate = message.createDate.toISOString();
+    }
+    if (message.activationDateTime !== undefined) {
+      obj.activationDateTime = message.activationDateTime.toISOString();
+    }
+    if (message.expirationTime !== undefined) {
+      obj.expirationTime = message.expirationTime.toISOString();
+    }
+    if (message.price !== undefined) {
+      obj.price = MoneyValue.toJSON(message.price);
+    }
+    if (message.stopPrice !== undefined) {
+      obj.stopPrice = MoneyValue.toJSON(message.stopPrice);
+    }
+    if (message.instrumentUid !== "") {
+      obj.instrumentUid = message.instrumentUid;
+    }
     return obj;
   },
 };
@@ -897,52 +950,29 @@ export const StopOrdersServiceDefinition = {
   },
 } as const;
 
-export interface StopOrdersServiceServiceImplementation<CallContextExt = {}> {
+export interface StopOrdersServiceImplementation<CallContextExt = {}> {
   /** Метод выставления стоп-заявки. */
-  postStopOrder(
-    request: PostStopOrderRequest,
-    context: CallContext & CallContextExt
-  ): Promise<PostStopOrderResponse>;
+  postStopOrder(request: PostStopOrderRequest, context: CallContext & CallContextExt): Promise<PostStopOrderResponse>;
   /** Метод получения списка активных стоп заявок по счёту. */
-  getStopOrders(
-    request: GetStopOrdersRequest,
-    context: CallContext & CallContextExt
-  ): Promise<GetStopOrdersResponse>;
+  getStopOrders(request: GetStopOrdersRequest, context: CallContext & CallContextExt): Promise<GetStopOrdersResponse>;
   /** Метод отмены стоп-заявки. */
   cancelStopOrder(
     request: CancelStopOrderRequest,
-    context: CallContext & CallContextExt
+    context: CallContext & CallContextExt,
   ): Promise<CancelStopOrderResponse>;
 }
 
 export interface StopOrdersServiceClient<CallOptionsExt = {}> {
   /** Метод выставления стоп-заявки. */
-  postStopOrder(
-    request: PostStopOrderRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<PostStopOrderResponse>;
+  postStopOrder(request: PostStopOrderRequest, options?: CallOptions & CallOptionsExt): Promise<PostStopOrderResponse>;
   /** Метод получения списка активных стоп заявок по счёту. */
-  getStopOrders(
-    request: GetStopOrdersRequest,
-    options?: CallOptions & CallOptionsExt
-  ): Promise<GetStopOrdersResponse>;
+  getStopOrders(request: GetStopOrdersRequest, options?: CallOptions & CallOptionsExt): Promise<GetStopOrdersResponse>;
   /** Метод отмены стоп-заявки. */
   cancelStopOrder(
     request: CancelStopOrderRequest,
-    options?: CallOptions & CallOptionsExt
+    options?: CallOptions & CallOptionsExt,
   ): Promise<CancelStopOrderResponse>;
 }
-
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var globalThis: any = (() => {
-  if (typeof globalThis !== "undefined") return globalThis;
-  if (typeof self !== "undefined") return self;
-  if (typeof window !== "undefined") return window;
-  if (typeof global !== "undefined") return global;
-  throw "Unable to locate global object";
-})();
 
 function toTimestamp(date: Date): Timestamp {
   const seconds = date.getTime() / 1_000;
@@ -951,23 +981,23 @@ function toTimestamp(date: Date): Timestamp {
 }
 
 function fromTimestamp(t: Timestamp): Date {
-  let millis = t.seconds * 1_000;
-  millis += t.nanos / 1_000_000;
-  return new Date(millis);
+  let millis = (t.seconds || 0) * 1_000;
+  millis += (t.nanos || 0) / 1_000_000;
+  return new globalThis.Date(millis);
 }
 
 function fromJsonTimestamp(o: any): Date {
-  if (o instanceof Date) {
+  if (o instanceof globalThis.Date) {
     return o;
   } else if (typeof o === "string") {
-    return new Date(o);
+    return new globalThis.Date(o);
   } else {
     return fromTimestamp(Timestamp.fromJSON(o));
   }
 }
 
 function longToNumber(long: Long): number {
-  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+  if (long.gt(globalThis.Number.MAX_SAFE_INTEGER)) {
     throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
   }
   return long.toNumber();

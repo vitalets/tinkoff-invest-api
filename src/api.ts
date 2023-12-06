@@ -76,11 +76,11 @@ export class TinkoffInvestApi {
   }
 
   private getOrCreateClient<T extends ServiceDefinition>(service: T) {
-    let client = this.clients.get(service)!;
+    let client = this.clients.get(service) as Client<T>;
     if (!client) {
       const defaultCallOptions = { '*': { metadata: this.metadata } };
       client = createClientFactory().use(errorMiddleware).create(service, this.channel, defaultCallOptions);
-      this.clients.set(service, client);
+      this.clients.set(service, client as Client<ServiceDefinition>);
     }
     return client as Client<T>;
   }
