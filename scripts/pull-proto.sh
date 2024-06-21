@@ -4,6 +4,6 @@
 
 set -euo pipefail
 
-wget "https://github.com/Tinkoff/investAPI/archive/master.zip" -O proto.zip
+wget "https://github.com/RussianInvestments/investAPI/archive/master.zip" -O proto.zip
 unzip -o proto.zip
 rm -f proto.zip

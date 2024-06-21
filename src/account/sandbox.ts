@@ -6,6 +6,7 @@ import { OperationsRequest, PortfolioRequest_CurrencyRequest } from '../generate
 import { PostOrderRequest } from '../generated/orders.js';
 import { SandboxPayInRequest } from '../generated/sandbox.js';
 import { OmitAccount, CommonAccountMethods } from './types.js';
+import {PriceType} from "../generated/common";
 
 export class SandboxAccount implements CommonAccountMethods {
   constructor(public api: TinkoffInvestApi, public accountId: string) {}
@@ -33,8 +34,8 @@ export class SandboxAccount implements CommonAccountMethods {
     return this.api.sandbox.getSandboxOrders({ accountId: this.accountId });
   }
 
-  async getOrderState(orderId: string) {
-    return this.api.sandbox.getSandboxOrderState({ accountId: this.accountId, orderId });
+  async getOrderState(orderId: string, priceType: PriceType = PriceType.PRICE_TYPE_UNSPECIFIED) {
+    return this.api.sandbox.getSandboxOrderState({ accountId: this.accountId, orderId, priceType });
   }
 
   async postOrder(request: OmitAccount<PostOrderRequest>) {

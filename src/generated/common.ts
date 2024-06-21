@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from "long";
-import _m0 from "protobufjs/minimal.js";
-import { Timestamp } from "./google/protobuf/timestamp.js";
+import _m0 from "protobufjs/minimal";
+import { Timestamp } from "./google/protobuf/timestamp";
 
 export const protobufPackage = "tinkoff.public.invest.api.contract.v1";
 
@@ -24,6 +24,10 @@ export enum InstrumentType {
   INSTRUMENT_TYPE_OPTION = 7,
   /** INSTRUMENT_TYPE_CLEARING_CERTIFICATE - Clearing certificate. */
   INSTRUMENT_TYPE_CLEARING_CERTIFICATE = 8,
+  /** INSTRUMENT_TYPE_INDEX - Индекс. */
+  INSTRUMENT_TYPE_INDEX = 9,
+  /** INSTRUMENT_TYPE_COMMODITY - Товар. */
+  INSTRUMENT_TYPE_COMMODITY = 10,
   UNRECOGNIZED = -1,
 }
 
@@ -56,6 +60,12 @@ export function instrumentTypeFromJSON(object: any): InstrumentType {
     case 8:
     case "INSTRUMENT_TYPE_CLEARING_CERTIFICATE":
       return InstrumentType.INSTRUMENT_TYPE_CLEARING_CERTIFICATE;
+    case 9:
+    case "INSTRUMENT_TYPE_INDEX":
+      return InstrumentType.INSTRUMENT_TYPE_INDEX;
+    case 10:
+    case "INSTRUMENT_TYPE_COMMODITY":
+      return InstrumentType.INSTRUMENT_TYPE_COMMODITY;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -83,6 +93,10 @@ export function instrumentTypeToJSON(object: InstrumentType): string {
       return "INSTRUMENT_TYPE_OPTION";
     case InstrumentType.INSTRUMENT_TYPE_CLEARING_CERTIFICATE:
       return "INSTRUMENT_TYPE_CLEARING_CERTIFICATE";
+    case InstrumentType.INSTRUMENT_TYPE_INDEX:
+      return "INSTRUMENT_TYPE_INDEX";
+    case InstrumentType.INSTRUMENT_TYPE_COMMODITY:
+      return "INSTRUMENT_TYPE_COMMODITY";
     case InstrumentType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -91,39 +105,39 @@ export function instrumentTypeToJSON(object: InstrumentType): string {
 
 /** Режим торгов инструмента */
 export enum SecurityTradingStatus {
-  /** SECURITY_TRADING_STATUS_UNSPECIFIED - Торговый статус не определён */
+  /** SECURITY_TRADING_STATUS_UNSPECIFIED - Торговый статус не определён. */
   SECURITY_TRADING_STATUS_UNSPECIFIED = 0,
-  /** SECURITY_TRADING_STATUS_NOT_AVAILABLE_FOR_TRADING - Недоступен для торгов */
+  /** SECURITY_TRADING_STATUS_NOT_AVAILABLE_FOR_TRADING - Недоступен для торгов. */
   SECURITY_TRADING_STATUS_NOT_AVAILABLE_FOR_TRADING = 1,
-  /** SECURITY_TRADING_STATUS_OPENING_PERIOD - Период открытия торгов */
+  /** SECURITY_TRADING_STATUS_OPENING_PERIOD - Период открытия торгов. */
   SECURITY_TRADING_STATUS_OPENING_PERIOD = 2,
-  /** SECURITY_TRADING_STATUS_CLOSING_PERIOD - Период закрытия торгов */
+  /** SECURITY_TRADING_STATUS_CLOSING_PERIOD - Период закрытия торгов. */
   SECURITY_TRADING_STATUS_CLOSING_PERIOD = 3,
-  /** SECURITY_TRADING_STATUS_BREAK_IN_TRADING - Перерыв в торговле */
+  /** SECURITY_TRADING_STATUS_BREAK_IN_TRADING - Перерыв в торговле. */
   SECURITY_TRADING_STATUS_BREAK_IN_TRADING = 4,
-  /** SECURITY_TRADING_STATUS_NORMAL_TRADING - Нормальная торговля */
+  /** SECURITY_TRADING_STATUS_NORMAL_TRADING - Нормальная торговля. */
   SECURITY_TRADING_STATUS_NORMAL_TRADING = 5,
-  /** SECURITY_TRADING_STATUS_CLOSING_AUCTION - Аукцион закрытия */
+  /** SECURITY_TRADING_STATUS_CLOSING_AUCTION - Аукцион закрытия. */
   SECURITY_TRADING_STATUS_CLOSING_AUCTION = 6,
-  /** SECURITY_TRADING_STATUS_DARK_POOL_AUCTION - Аукцион крупных пакетов */
+  /** SECURITY_TRADING_STATUS_DARK_POOL_AUCTION - Аукцион крупных пакетов. */
   SECURITY_TRADING_STATUS_DARK_POOL_AUCTION = 7,
-  /** SECURITY_TRADING_STATUS_DISCRETE_AUCTION - Дискретный аукцион */
+  /** SECURITY_TRADING_STATUS_DISCRETE_AUCTION - Дискретный аукцион. */
   SECURITY_TRADING_STATUS_DISCRETE_AUCTION = 8,
-  /** SECURITY_TRADING_STATUS_OPENING_AUCTION_PERIOD - Аукцион открытия */
+  /** SECURITY_TRADING_STATUS_OPENING_AUCTION_PERIOD - Аукцион открытия. */
   SECURITY_TRADING_STATUS_OPENING_AUCTION_PERIOD = 9,
-  /** SECURITY_TRADING_STATUS_TRADING_AT_CLOSING_AUCTION_PRICE - Период торгов по цене аукциона закрытия */
+  /** SECURITY_TRADING_STATUS_TRADING_AT_CLOSING_AUCTION_PRICE - Период торгов по цене аукциона закрытия. */
   SECURITY_TRADING_STATUS_TRADING_AT_CLOSING_AUCTION_PRICE = 10,
-  /** SECURITY_TRADING_STATUS_SESSION_ASSIGNED - Сессия назначена */
+  /** SECURITY_TRADING_STATUS_SESSION_ASSIGNED - Сессия назначена. */
   SECURITY_TRADING_STATUS_SESSION_ASSIGNED = 11,
-  /** SECURITY_TRADING_STATUS_SESSION_CLOSE - Сессия закрыта */
+  /** SECURITY_TRADING_STATUS_SESSION_CLOSE - Сессия закрыта. */
   SECURITY_TRADING_STATUS_SESSION_CLOSE = 12,
-  /** SECURITY_TRADING_STATUS_SESSION_OPEN - Сессия открыта */
+  /** SECURITY_TRADING_STATUS_SESSION_OPEN - Сессия открыта. */
   SECURITY_TRADING_STATUS_SESSION_OPEN = 13,
-  /** SECURITY_TRADING_STATUS_DEALER_NORMAL_TRADING - Доступна торговля в режиме внутренней ликвидности брокера */
+  /** SECURITY_TRADING_STATUS_DEALER_NORMAL_TRADING - Доступна торговля в режиме внутренней ликвидности брокера. */
   SECURITY_TRADING_STATUS_DEALER_NORMAL_TRADING = 14,
-  /** SECURITY_TRADING_STATUS_DEALER_BREAK_IN_TRADING - Перерыв торговли в режиме внутренней ликвидности брокера */
+  /** SECURITY_TRADING_STATUS_DEALER_BREAK_IN_TRADING - Перерыв торговли в режиме внутренней ликвидности брокера. */
   SECURITY_TRADING_STATUS_DEALER_BREAK_IN_TRADING = 15,
-  /** SECURITY_TRADING_STATUS_DEALER_NOT_AVAILABLE_FOR_TRADING - Недоступна торговля в режиме внутренней ликвидности брокера */
+  /** SECURITY_TRADING_STATUS_DEALER_NOT_AVAILABLE_FOR_TRADING - Недоступна торговля в режиме внутренней ликвидности брокера. */
   SECURITY_TRADING_STATUS_DEALER_NOT_AVAILABLE_FOR_TRADING = 16,
   UNRECOGNIZED = -1,
 }
@@ -230,28 +244,156 @@ export function securityTradingStatusToJSON(object: SecurityTradingStatus): stri
   }
 }
 
-/** Денежная сумма в определенной валюте */
+/** Тип цены. */
+export enum PriceType {
+  /** PRICE_TYPE_UNSPECIFIED - Значение не определено. */
+  PRICE_TYPE_UNSPECIFIED = 0,
+  /** PRICE_TYPE_POINT - Цена в пунктах (только для фьючерсов и облигаций). */
+  PRICE_TYPE_POINT = 1,
+  /** PRICE_TYPE_CURRENCY - Цена в валюте расчётов по инструменту. */
+  PRICE_TYPE_CURRENCY = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function priceTypeFromJSON(object: any): PriceType {
+  switch (object) {
+    case 0:
+    case "PRICE_TYPE_UNSPECIFIED":
+      return PriceType.PRICE_TYPE_UNSPECIFIED;
+    case 1:
+    case "PRICE_TYPE_POINT":
+      return PriceType.PRICE_TYPE_POINT;
+    case 2:
+    case "PRICE_TYPE_CURRENCY":
+      return PriceType.PRICE_TYPE_CURRENCY;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return PriceType.UNRECOGNIZED;
+  }
+}
+
+export function priceTypeToJSON(object: PriceType): string {
+  switch (object) {
+    case PriceType.PRICE_TYPE_UNSPECIFIED:
+      return "PRICE_TYPE_UNSPECIFIED";
+    case PriceType.PRICE_TYPE_POINT:
+      return "PRICE_TYPE_POINT";
+    case PriceType.PRICE_TYPE_CURRENCY:
+      return "PRICE_TYPE_CURRENCY";
+    case PriceType.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export enum ResultSubscriptionStatus {
+  /** RESULT_SUBSCRIPTION_STATUS_UNSPECIFIED - Статус подписки не определен. */
+  RESULT_SUBSCRIPTION_STATUS_UNSPECIFIED = 0,
+  /** RESULT_SUBSCRIPTION_STATUS_OK - Подписка успешно установлена. */
+  RESULT_SUBSCRIPTION_STATUS_OK = 1,
+  /** RESULT_SUBSCRIPTION_STATUS_ERROR - Ошибка подписки */
+  RESULT_SUBSCRIPTION_STATUS_ERROR = 13,
+  UNRECOGNIZED = -1,
+}
+
+export function resultSubscriptionStatusFromJSON(object: any): ResultSubscriptionStatus {
+  switch (object) {
+    case 0:
+    case "RESULT_SUBSCRIPTION_STATUS_UNSPECIFIED":
+      return ResultSubscriptionStatus.RESULT_SUBSCRIPTION_STATUS_UNSPECIFIED;
+    case 1:
+    case "RESULT_SUBSCRIPTION_STATUS_OK":
+      return ResultSubscriptionStatus.RESULT_SUBSCRIPTION_STATUS_OK;
+    case 13:
+    case "RESULT_SUBSCRIPTION_STATUS_ERROR":
+      return ResultSubscriptionStatus.RESULT_SUBSCRIPTION_STATUS_ERROR;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ResultSubscriptionStatus.UNRECOGNIZED;
+  }
+}
+
+export function resultSubscriptionStatusToJSON(object: ResultSubscriptionStatus): string {
+  switch (object) {
+    case ResultSubscriptionStatus.RESULT_SUBSCRIPTION_STATUS_UNSPECIFIED:
+      return "RESULT_SUBSCRIPTION_STATUS_UNSPECIFIED";
+    case ResultSubscriptionStatus.RESULT_SUBSCRIPTION_STATUS_OK:
+      return "RESULT_SUBSCRIPTION_STATUS_OK";
+    case ResultSubscriptionStatus.RESULT_SUBSCRIPTION_STATUS_ERROR:
+      return "RESULT_SUBSCRIPTION_STATUS_ERROR";
+    case ResultSubscriptionStatus.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+/** Денежная сумма в определённой валюте. */
 export interface MoneyValue {
-  /** строковый ISO-код валюты */
+  /** Строковый ISO-код валюты. */
   currency: string;
-  /** целая часть суммы, может быть отрицательным числом */
+  /** Целая часть суммы, может быть отрицательным числом. */
   units: number;
-  /** дробная часть суммы, может быть отрицательным числом */
+  /** Дробная часть суммы, может быть отрицательным числом. */
   nano: number;
 }
 
-/** Котировка — денежная сумма без указания валюты */
+/** Котировка — денежная сумма без указания валюты. */
 export interface Quotation {
-  /** целая часть суммы, может быть отрицательным числом */
+  /** Целая часть суммы, может быть отрицательным числом. */
   units: number;
-  /** дробная часть суммы, может быть отрицательным числом */
+  /** Дробная часть суммы, может быть отрицательным числом. */
   nano: number;
 }
 
 /** Проверка активности стрима. */
 export interface Ping {
   /** Время проверки. */
-  time?: Date | undefined;
+  time?:
+    | Date
+    | undefined;
+  /** Идентификатор соединения. */
+  streamId: string;
+}
+
+export interface Page {
+  /** Максимальное число возвращаемых записей. */
+  limit: number;
+  /** Порядковый номер страницы, начиная с 0. */
+  pageNumber: number;
+}
+
+export interface PageResponse {
+  /** Максимальное число возвращаемых записей. */
+  limit: number;
+  /** Порядковый номер страницы, начиная с 0. */
+  pageNumber: number;
+  /** Общее количество записей. */
+  totalCount: number;
+}
+
+export interface ResponseMetadata {
+  /** Идентификатор трекинга. */
+  trackingId: string;
+  /** Серверное время. */
+  serverTime?: Date | undefined;
+}
+
+export interface BrandData {
+  /** Логотип инструмента. Имя файла для получения логотипа. */
+  logoName: string;
+  /** Цвет бренда. */
+  logoBaseColor: string;
+  /** Цвет текста для цвета логотипа бренда. */
+  textColor: string;
+}
+
+export interface ErrorDetail {
+  /** Код ошибки. */
+  code: string;
+  /** Описание ошибки. */
+  message: string;
 }
 
 function createBaseMoneyValue(): MoneyValue {
@@ -397,13 +539,16 @@ export const Quotation = {
 };
 
 function createBasePing(): Ping {
-  return { time: undefined };
+  return { time: undefined, streamId: "" };
 }
 
 export const Ping = {
   encode(message: Ping, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.time !== undefined) {
       Timestamp.encode(toTimestamp(message.time), writer.uint32(10).fork()).ldelim();
+    }
+    if (message.streamId !== "") {
+      writer.uint32(18).string(message.streamId);
     }
     return writer;
   },
@@ -422,6 +567,13 @@ export const Ping = {
 
           message.time = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.streamId = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -432,13 +584,367 @@ export const Ping = {
   },
 
   fromJSON(object: any): Ping {
-    return { time: isSet(object.time) ? fromJsonTimestamp(object.time) : undefined };
+    return {
+      time: isSet(object.time) ? fromJsonTimestamp(object.time) : undefined,
+      streamId: isSet(object.streamId) ? globalThis.String(object.streamId) : "",
+    };
   },
 
   toJSON(message: Ping): unknown {
     const obj: any = {};
     if (message.time !== undefined) {
       obj.time = message.time.toISOString();
+    }
+    if (message.streamId !== "") {
+      obj.streamId = message.streamId;
+    }
+    return obj;
+  },
+};
+
+function createBasePage(): Page {
+  return { limit: 0, pageNumber: 0 };
+}
+
+export const Page = {
+  encode(message: Page, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.limit !== 0) {
+      writer.uint32(8).int32(message.limit);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(16).int32(message.pageNumber);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Page {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.limit = reader.int32();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.pageNumber = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Page {
+    return {
+      limit: isSet(object.limit) ? globalThis.Number(object.limit) : 0,
+      pageNumber: isSet(object.pageNumber) ? globalThis.Number(object.pageNumber) : 0,
+    };
+  },
+
+  toJSON(message: Page): unknown {
+    const obj: any = {};
+    if (message.limit !== 0) {
+      obj.limit = Math.round(message.limit);
+    }
+    if (message.pageNumber !== 0) {
+      obj.pageNumber = Math.round(message.pageNumber);
+    }
+    return obj;
+  },
+};
+
+function createBasePageResponse(): PageResponse {
+  return { limit: 0, pageNumber: 0, totalCount: 0 };
+}
+
+export const PageResponse = {
+  encode(message: PageResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.limit !== 0) {
+      writer.uint32(8).int32(message.limit);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(16).int32(message.pageNumber);
+    }
+    if (message.totalCount !== 0) {
+      writer.uint32(24).int32(message.totalCount);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): PageResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePageResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.limit = reader.int32();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.pageNumber = reader.int32();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.totalCount = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PageResponse {
+    return {
+      limit: isSet(object.limit) ? globalThis.Number(object.limit) : 0,
+      pageNumber: isSet(object.pageNumber) ? globalThis.Number(object.pageNumber) : 0,
+      totalCount: isSet(object.totalCount) ? globalThis.Number(object.totalCount) : 0,
+    };
+  },
+
+  toJSON(message: PageResponse): unknown {
+    const obj: any = {};
+    if (message.limit !== 0) {
+      obj.limit = Math.round(message.limit);
+    }
+    if (message.pageNumber !== 0) {
+      obj.pageNumber = Math.round(message.pageNumber);
+    }
+    if (message.totalCount !== 0) {
+      obj.totalCount = Math.round(message.totalCount);
+    }
+    return obj;
+  },
+};
+
+function createBaseResponseMetadata(): ResponseMetadata {
+  return { trackingId: "", serverTime: undefined };
+}
+
+export const ResponseMetadata = {
+  encode(message: ResponseMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.trackingId !== "") {
+      writer.uint32(338).string(message.trackingId);
+    }
+    if (message.serverTime !== undefined) {
+      Timestamp.encode(toTimestamp(message.serverTime), writer.uint32(346).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ResponseMetadata {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseResponseMetadata();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 42:
+          if (tag !== 338) {
+            break;
+          }
+
+          message.trackingId = reader.string();
+          continue;
+        case 43:
+          if (tag !== 346) {
+            break;
+          }
+
+          message.serverTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ResponseMetadata {
+    return {
+      trackingId: isSet(object.trackingId) ? globalThis.String(object.trackingId) : "",
+      serverTime: isSet(object.serverTime) ? fromJsonTimestamp(object.serverTime) : undefined,
+    };
+  },
+
+  toJSON(message: ResponseMetadata): unknown {
+    const obj: any = {};
+    if (message.trackingId !== "") {
+      obj.trackingId = message.trackingId;
+    }
+    if (message.serverTime !== undefined) {
+      obj.serverTime = message.serverTime.toISOString();
+    }
+    return obj;
+  },
+};
+
+function createBaseBrandData(): BrandData {
+  return { logoName: "", logoBaseColor: "", textColor: "" };
+}
+
+export const BrandData = {
+  encode(message: BrandData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.logoName !== "") {
+      writer.uint32(10).string(message.logoName);
+    }
+    if (message.logoBaseColor !== "") {
+      writer.uint32(18).string(message.logoBaseColor);
+    }
+    if (message.textColor !== "") {
+      writer.uint32(26).string(message.textColor);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): BrandData {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseBrandData();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.logoName = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.logoBaseColor = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.textColor = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): BrandData {
+    return {
+      logoName: isSet(object.logoName) ? globalThis.String(object.logoName) : "",
+      logoBaseColor: isSet(object.logoBaseColor) ? globalThis.String(object.logoBaseColor) : "",
+      textColor: isSet(object.textColor) ? globalThis.String(object.textColor) : "",
+    };
+  },
+
+  toJSON(message: BrandData): unknown {
+    const obj: any = {};
+    if (message.logoName !== "") {
+      obj.logoName = message.logoName;
+    }
+    if (message.logoBaseColor !== "") {
+      obj.logoBaseColor = message.logoBaseColor;
+    }
+    if (message.textColor !== "") {
+      obj.textColor = message.textColor;
+    }
+    return obj;
+  },
+};
+
+function createBaseErrorDetail(): ErrorDetail {
+  return { code: "", message: "" };
+}
+
+export const ErrorDetail = {
+  encode(message: ErrorDetail, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.code !== "") {
+      writer.uint32(10).string(message.code);
+    }
+    if (message.message !== "") {
+      writer.uint32(26).string(message.message);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ErrorDetail {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseErrorDetail();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.code = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.message = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ErrorDetail {
+    return {
+      code: isSet(object.code) ? globalThis.String(object.code) : "",
+      message: isSet(object.message) ? globalThis.String(object.message) : "",
+    };
+  },
+
+  toJSON(message: ErrorDetail): unknown {
+    const obj: any = {};
+    if (message.code !== "") {
+      obj.code = message.code;
+    }
+    if (message.message !== "") {
+      obj.message = message.message;
     }
     return obj;
   },

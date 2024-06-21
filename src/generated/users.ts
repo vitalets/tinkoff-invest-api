@@ -1,8 +1,8 @@
 /* eslint-disable */
 import type { CallContext, CallOptions } from "nice-grpc-common";
-import _m0 from "protobufjs/minimal.js";
-import { MoneyValue, Quotation } from "./common.js";
-import { Timestamp } from "./google/protobuf/timestamp.js";
+import _m0 from "protobufjs/minimal";
+import { MoneyValue, Quotation } from "./common";
+import { Timestamp } from "./google/protobuf/timestamp";
 
 export const protobufPackage = "tinkoff.public.invest.api.contract.v1";
 
@@ -10,12 +10,14 @@ export const protobufPackage = "tinkoff.public.invest.api.contract.v1";
 export enum AccountType {
   /** ACCOUNT_TYPE_UNSPECIFIED - Тип аккаунта не определён. */
   ACCOUNT_TYPE_UNSPECIFIED = 0,
-  /** ACCOUNT_TYPE_TINKOFF - Брокерский счёт Тинькофф. */
+  /** ACCOUNT_TYPE_TINKOFF - Брокерский счёт Т-Инвестиций. */
   ACCOUNT_TYPE_TINKOFF = 1,
-  /** ACCOUNT_TYPE_TINKOFF_IIS - ИИС счёт. */
+  /** ACCOUNT_TYPE_TINKOFF_IIS - ИИС. */
   ACCOUNT_TYPE_TINKOFF_IIS = 2,
   /** ACCOUNT_TYPE_INVEST_BOX - Инвесткопилка. */
   ACCOUNT_TYPE_INVEST_BOX = 3,
+  /** ACCOUNT_TYPE_INVEST_FUND - Фонд денежного рынка. */
+  ACCOUNT_TYPE_INVEST_FUND = 4,
   UNRECOGNIZED = -1,
 }
 
@@ -33,6 +35,9 @@ export function accountTypeFromJSON(object: any): AccountType {
     case 3:
     case "ACCOUNT_TYPE_INVEST_BOX":
       return AccountType.ACCOUNT_TYPE_INVEST_BOX;
+    case 4:
+    case "ACCOUNT_TYPE_INVEST_FUND":
+      return AccountType.ACCOUNT_TYPE_INVEST_FUND;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -50,6 +55,8 @@ export function accountTypeToJSON(object: AccountType): string {
       return "ACCOUNT_TYPE_TINKOFF_IIS";
     case AccountType.ACCOUNT_TYPE_INVEST_BOX:
       return "ACCOUNT_TYPE_INVEST_BOX";
+    case AccountType.ACCOUNT_TYPE_INVEST_FUND:
+      return "ACCOUNT_TYPE_INVEST_FUND";
     case AccountType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -112,9 +119,9 @@ export enum AccessLevel {
   ACCOUNT_ACCESS_LEVEL_UNSPECIFIED = 0,
   /** ACCOUNT_ACCESS_LEVEL_FULL_ACCESS - Полный доступ к счёту. */
   ACCOUNT_ACCESS_LEVEL_FULL_ACCESS = 1,
-  /** ACCOUNT_ACCESS_LEVEL_READ_ONLY - Доступ с уровнем прав "только чтение". */
+  /** ACCOUNT_ACCESS_LEVEL_READ_ONLY - Доступ с уровнем прав «только чтение». */
   ACCOUNT_ACCESS_LEVEL_READ_ONLY = 2,
-  /** ACCOUNT_ACCESS_LEVEL_NO_ACCESS - Доступ отсутствует. */
+  /** ACCOUNT_ACCESS_LEVEL_NO_ACCESS - Доступа нет. */
   ACCOUNT_ACCESS_LEVEL_NO_ACCESS = 3,
   UNRECOGNIZED = -1,
 }
@@ -188,7 +195,7 @@ export interface Account {
   accessLevel: AccessLevel;
 }
 
-/** Запрос маржинальных показателей по счёту */
+/** Запрос маржинальных показателей по счёту. */
 export interface GetMarginAttributesRequest {
   /** Идентификатор счёта пользователя. */
   accountId: string;
@@ -196,15 +203,15 @@ export interface GetMarginAttributesRequest {
 
 /** Маржинальные показатели по счёту. */
 export interface GetMarginAttributesResponse {
-  /** Ликвидная стоимость портфеля. Подробнее: [что такое ликвидный портфель?](https://help.tinkoff.ru/margin-trade/short/liquid-portfolio/). */
+  /** Ликвидная стоимость портфеля. [Подробнее про ликвидный портфель](https://help.tbank.ru/margin-trade/short/liquid-portfolio/). */
   liquidPortfolio?:
     | MoneyValue
     | undefined;
-  /** Начальная маржа — начальное обеспечение для совершения новой сделки. Подробнее: [начальная и минимальная маржа](https://help.tinkoff.ru/margin-trade/short/initial-and-maintenance-margin/). */
+  /** Начальная маржа — начальное обеспечение для совершения новой сделки. [Подробнее про начальную и минимальную маржу](https://help.tbank.ru/margin-trade/short/initial-and-maintenance-margin/). */
   startingMargin?:
     | MoneyValue
     | undefined;
-  /** Минимальная маржа — это минимальное обеспечение для поддержания позиции, которую вы уже открыли. Подробнее: [начальная и минимальная маржа](https://help.tinkoff.ru/margin-trade/short/initial-and-maintenance-margin/). */
+  /** Минимальная маржа — это минимальное обеспечение для поддержания позиции, которую вы уже открыли. [Подробнее про начальную и минимальную маржу](https://help.tbank.ru/margin-trade/short/initial-and-maintenance-margin/). */
   minimalMargin?:
     | MoneyValue
     | undefined;
@@ -216,7 +223,7 @@ export interface GetMarginAttributesResponse {
   amountOfMissingFunds?:
     | MoneyValue
     | undefined;
-  /** Скорректированная маржа.Начальная маржа, в которой плановые позиции рассчитываются с учётом активных заявок на покупку позиций лонг или продажу позиций шорт. */
+  /** Скорректированная маржа. Начальная маржа, в которой плановые позиции рассчитываются с учётом активных заявок на покупку позиций лонг или продажу позиций шорт. */
   correctedMargin?: MoneyValue | undefined;
 }
 
@@ -260,7 +267,7 @@ export interface GetInfoResponse {
   premStatus: boolean;
   /** Признак квалифицированного инвестора. */
   qualStatus: boolean;
-  /** Набор требующих тестирования инструментов и возможностей, с которыми может работать пользователь. [Подробнее](https://tinkoff.github.io/investAPI/faq_users/). */
+  /** Набор требующих тестирования инструментов и возможностей, с которыми может работать пользователь. [Подробнее](https://russianinvestments.github.io/investAPI/faq_users/). */
   qualifiedForWorkWith: string[];
   /** Наименование тарифа пользователя. */
   tariff: string;
@@ -1039,15 +1046,15 @@ export const GetInfoResponse = {
 };
 
 /**
- * Сервис предназначен для получения: </br> **1**.
- * списка счетов пользователя; </br> **2**. маржинальных показателей по счёту.
+ * С помощью сервиса можно получить: </br> 1.
+ * список счетов пользователя; </br> 2. маржинальные показатели по счёту.
  */
 export type UsersServiceDefinition = typeof UsersServiceDefinition;
 export const UsersServiceDefinition = {
   name: "UsersService",
   fullName: "tinkoff.public.invest.api.contract.v1.UsersService",
   methods: {
-    /** Метод получения счетов пользователя. */
+    /** Получить счета пользователя. */
     getAccounts: {
       name: "GetAccounts",
       requestType: GetAccountsRequest,
@@ -1056,7 +1063,7 @@ export const UsersServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Расчёт маржинальных показателей по счёту. */
+    /** Рассчитать маржинальные показатели по счёту. */
     getMarginAttributes: {
       name: "GetMarginAttributes",
       requestType: GetMarginAttributesRequest,
@@ -1065,7 +1072,7 @@ export const UsersServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Запрос тарифа пользователя. */
+    /** Запросить тариф пользователя. */
     getUserTariff: {
       name: "GetUserTariff",
       requestType: GetUserTariffRequest,
@@ -1074,7 +1081,7 @@ export const UsersServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Метод получения информации о пользователе. */
+    /** Получить информацию о пользователе. */
     getInfo: {
       name: "GetInfo",
       requestType: GetInfoRequest,
@@ -1087,30 +1094,30 @@ export const UsersServiceDefinition = {
 } as const;
 
 export interface UsersServiceImplementation<CallContextExt = {}> {
-  /** Метод получения счетов пользователя. */
+  /** Получить счета пользователя. */
   getAccounts(request: GetAccountsRequest, context: CallContext & CallContextExt): Promise<GetAccountsResponse>;
-  /** Расчёт маржинальных показателей по счёту. */
+  /** Рассчитать маржинальные показатели по счёту. */
   getMarginAttributes(
     request: GetMarginAttributesRequest,
     context: CallContext & CallContextExt,
   ): Promise<GetMarginAttributesResponse>;
-  /** Запрос тарифа пользователя. */
+  /** Запросить тариф пользователя. */
   getUserTariff(request: GetUserTariffRequest, context: CallContext & CallContextExt): Promise<GetUserTariffResponse>;
-  /** Метод получения информации о пользователе. */
+  /** Получить информацию о пользователе. */
   getInfo(request: GetInfoRequest, context: CallContext & CallContextExt): Promise<GetInfoResponse>;
 }
 
 export interface UsersServiceClient<CallOptionsExt = {}> {
-  /** Метод получения счетов пользователя. */
+  /** Получить счета пользователя. */
   getAccounts(request: GetAccountsRequest, options?: CallOptions & CallOptionsExt): Promise<GetAccountsResponse>;
-  /** Расчёт маржинальных показателей по счёту. */
+  /** Рассчитать маржинальные показатели по счёту. */
   getMarginAttributes(
     request: GetMarginAttributesRequest,
     options?: CallOptions & CallOptionsExt,
   ): Promise<GetMarginAttributesResponse>;
-  /** Запрос тарифа пользователя. */
+  /** Запросить тариф пользователя. */
   getUserTariff(request: GetUserTariffRequest, options?: CallOptions & CallOptionsExt): Promise<GetUserTariffResponse>;
-  /** Метод получения информации о пользователе. */
+  /** Получить информацию о пользователе. */
   getInfo(request: GetInfoRequest, options?: CallOptions & CallOptionsExt): Promise<GetInfoResponse>;
 }
 

@@ -488,7 +488,7 @@ Server-side stream обновлений информации по изменен
 | ----- | ---- | ----------- |
 | account_id |  [string](#string) | Идентификатор счёта клиента. |
 | from |  [google.protobuf.Timestamp](#googleprotobuftimestamp) | Начало периода (по UTC). |
-| to |  [google.protobuf.Timestamp](#googleprotobuftimestamp) | Окончание периода (по UTC). |
+| to |  [google.protobuf.Timestamp](#googleprotobuftimestamp) | Окончание периода (по UTC), как правило, возможно сформировать отчет по дату, на несколько дней меньше текущей. Начало и окончание периода должны быть в рамках одного календарного года. |
  <!-- end Fields -->
  <!-- end HasFields -->
 
@@ -781,7 +781,7 @@ Server-side stream обновлений информации по изменен
 | Name | Number | Description |
 | ---- | ------ | ----------- |
 | OPERATION_STATE_UNSPECIFIED | 0 | Статус операции не определён |
-| OPERATION_STATE_EXECUTED | 1 | Исполнена. |
+| OPERATION_STATE_EXECUTED | 1 | Исполнена частично или полностью. |
 | OPERATION_STATE_CANCELED | 2 | Отменена. |
 | OPERATION_STATE_PROGRESS | 3 | Исполняется. |
 
@@ -854,7 +854,8 @@ Server-side stream обновлений информации по изменен
 | OPERATION_TYPE_OVER_PLACEMENT | 61 | Размещение биржевого овернайта |
 | OPERATION_TYPE_OVER_COM | 62 | Списание комиссии |
 | OPERATION_TYPE_OVER_INCOME | 63 | Доход от оверанайта |
-| OPERATION_TYPE_OPTION_EXPIRATION | 64 | Экспирация |
+| OPERATION_TYPE_OPTION_EXPIRATION | 64 | Экспирация опциона |
+| OPERATION_TYPE_FUTURE_EXPIRATION | 65 | Экспирация фьючерса |
 
 
 
@@ -898,28 +899,6 @@ Server-side stream обновлений информации по изменен
  <!-- range .Enums -->
  <!-- range HasServices -->
  <!-- range .Files -->
-
-#### SecurityTradingStatus
-
-| Name | Number | Description |
-| ---- | ------ | ----------- |
-| SECURITY_TRADING_STATUS_UNSPECIFIED | 0 | Торговый статус не определён |
-| SECURITY_TRADING_STATUS_NOT_AVAILABLE_FOR_TRADING | 1 | Недоступен для торгов |
-| SECURITY_TRADING_STATUS_OPENING_PERIOD | 2 | Период открытия торгов |
-| SECURITY_TRADING_STATUS_CLOSING_PERIOD | 3 | Период закрытия торгов |
-| SECURITY_TRADING_STATUS_BREAK_IN_TRADING | 4 | Перерыв в торговле |
-| SECURITY_TRADING_STATUS_NORMAL_TRADING | 5 | Нормальная торговля |
-| SECURITY_TRADING_STATUS_CLOSING_AUCTION | 6 | Аукцион закрытия |
-| SECURITY_TRADING_STATUS_DARK_POOL_AUCTION | 7 | Аукцион крупных пакетов |
-| SECURITY_TRADING_STATUS_DISCRETE_AUCTION | 8 | Дискретный аукцион |
-| SECURITY_TRADING_STATUS_OPENING_AUCTION_PERIOD | 9 | Аукцион открытия |
-| SECURITY_TRADING_STATUS_TRADING_AT_CLOSING_AUCTION_PRICE | 10 | Период торгов по цене аукциона закрытия |
-| SECURITY_TRADING_STATUS_SESSION_ASSIGNED | 11 | Сессия назначена |
-| SECURITY_TRADING_STATUS_SESSION_CLOSE | 12 | Сессия закрыта |
-| SECURITY_TRADING_STATUS_SESSION_OPEN | 13 | Сессия открыта |
-| SECURITY_TRADING_STATUS_DEALER_NORMAL_TRADING | 14 |Доступна торговля в режиме внутренней ликвидности брокера |
-| SECURITY_TRADING_STATUS_DEALER_BREAK_IN_TRADING | 15 |Перерыв торговли в режиме внутренней ликвидности брокера |
-| SECURITY_TRADING_STATUS_DEALER_NOT_AVAILABLE_FOR_TRADING | 16 |Недоступна торговля в режиме внутренней ликвидности брокера |
 
 ### Нестандартные типы данных
 

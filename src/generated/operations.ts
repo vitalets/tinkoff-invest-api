@@ -1,9 +1,9 @@
 /* eslint-disable */
 import Long from "long";
 import type { CallContext, CallOptions } from "nice-grpc-common";
-import _m0 from "protobufjs/minimal.js";
-import { InstrumentType, instrumentTypeFromJSON, instrumentTypeToJSON, MoneyValue, Ping, Quotation } from "./common.js";
-import { Timestamp } from "./google/protobuf/timestamp.js";
+import _m0 from "protobufjs/minimal";
+import { InstrumentType, instrumentTypeFromJSON, instrumentTypeToJSON, MoneyValue, Ping, Quotation } from "./common";
+import { Timestamp } from "./google/protobuf/timestamp";
 
 export const protobufPackage = "tinkoff.public.invest.api.contract.v1";
 
@@ -11,7 +11,7 @@ export const protobufPackage = "tinkoff.public.invest.api.contract.v1";
 export enum OperationState {
   /** OPERATION_STATE_UNSPECIFIED - Статус операции не определён */
   OPERATION_STATE_UNSPECIFIED = 0,
-  /** OPERATION_STATE_EXECUTED - Исполнена. */
+  /** OPERATION_STATE_EXECUTED - Исполнена частично или полностью. */
   OPERATION_STATE_EXECUTED = 1,
   /** OPERATION_STATE_CANCELED - Отменена. */
   OPERATION_STATE_CANCELED = 2,
@@ -181,8 +181,10 @@ export enum OperationType {
   OPERATION_TYPE_OVER_COM = 62,
   /** OPERATION_TYPE_OVER_INCOME - Доход от оверанайта */
   OPERATION_TYPE_OVER_INCOME = 63,
-  /** OPERATION_TYPE_OPTION_EXPIRATION - Экспирация */
+  /** OPERATION_TYPE_OPTION_EXPIRATION - Экспирация опциона */
   OPERATION_TYPE_OPTION_EXPIRATION = 64,
+  /** OPERATION_TYPE_FUTURE_EXPIRATION - Экспирация фьючерса */
+  OPERATION_TYPE_FUTURE_EXPIRATION = 65,
   UNRECOGNIZED = -1,
 }
 
@@ -374,6 +376,9 @@ export function operationTypeFromJSON(object: any): OperationType {
     case 64:
     case "OPERATION_TYPE_OPTION_EXPIRATION":
       return OperationType.OPERATION_TYPE_OPTION_EXPIRATION;
+    case 65:
+    case "OPERATION_TYPE_FUTURE_EXPIRATION":
+      return OperationType.OPERATION_TYPE_FUTURE_EXPIRATION;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -507,6 +512,8 @@ export function operationTypeToJSON(object: OperationType): string {
       return "OPERATION_TYPE_OVER_INCOME";
     case OperationType.OPERATION_TYPE_OPTION_EXPIRATION:
       return "OPERATION_TYPE_OPTION_EXPIRATION";
+    case OperationType.OPERATION_TYPE_FUTURE_EXPIRATION:
+      return "OPERATION_TYPE_FUTURE_EXPIRATION";
     case OperationType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -626,9 +633,11 @@ export interface OperationsRequest {
     | Date
     | undefined;
   /** Статус запрашиваемых операций. */
-  state: OperationState;
+  state?:
+    | OperationState
+    | undefined;
   /** Figi-идентификатор инструмента для фильтрации. */
-  figi: string;
+  figi?: string | undefined;
 }
 
 /** Список операций. */
@@ -700,7 +709,7 @@ export interface PortfolioRequest {
   /** Идентификатор счёта пользователя. */
   accountId: string;
   /** Валюта, в которой требуется рассчитать портфель */
-  currency: PortfolioRequest_CurrencyRequest;
+  currency?: PortfolioRequest_CurrencyRequest | undefined;
 }
 
 export enum PortfolioRequest_CurrencyRequest {
@@ -1004,7 +1013,7 @@ export interface GetBrokerReportRequest {
   /** Идентификатор задачи формирования брокерского отчёта. */
   taskId: string;
   /** Номер страницы отчета (начинается с 1), значение по умолчанию: 0. */
-  page: number;
+  page?: number | undefined;
 }
 
 export interface GetBrokerReportResponse {
@@ -1122,7 +1131,7 @@ export interface GenerateDividendsForeignIssuerReportRequest {
   from?:
     | Date
     | undefined;
-  /** Окончание периода (по UTC). */
+  /** Окончание периода (по UTC), как правило, возможно сформировать отчет по дату, на несколько дней меньше текущей. Начало и окончание периода должны быть в рамках одного календарного года. */
   to?: Date | undefined;
 }
 
@@ -1131,7 +1140,7 @@ export interface GetDividendsForeignIssuerReportRequest {
   /** Идентификатор задачи формирования отчёта. */
   taskId: string;
   /** Номер страницы отчета (начинается с 0), значение по умолчанию: 0. */
-  page: number;
+  page?: number | undefined;
 }
 
 /** Объект результата задачи запуска формирования отчёта "Справка о доходах за пределами РФ". */
@@ -1231,7 +1240,9 @@ export interface GetOperationsByCursorRequest {
   /** Идентификатор счёта клиента. Обязательный параметр для данного метода, остальные параметры опциональны. */
   accountId: string;
   /** Идентификатор инструмента (Figi инструмента или uid инструмента) */
-  instrumentId: string;
+  instrumentId?:
+    | string
+    | undefined;
   /** Начало периода (по UTC). */
   from?:
     | Date
@@ -1241,19 +1252,29 @@ export interface GetOperationsByCursorRequest {
     | Date
     | undefined;
   /** Идентификатор элемента, с которого начать формировать ответ. */
-  cursor: string;
+  cursor?:
+    | string
+    | undefined;
   /** Лимит количества операций. По умолчанию устанавливается значение **100**, максимальное значение 1000. */
-  limit: number;
+  limit?:
+    | number
+    | undefined;
   /** Тип операции. Принимает значение из списка OperationType. */
   operationTypes: OperationType[];
   /** Статус запрашиваемых операций, возможные значения указаны в OperationState. */
-  state: OperationState;
+  state?:
+    | OperationState
+    | undefined;
   /** Флаг возвращать ли комиссии, по умолчанию false */
-  withoutCommissions: boolean;
+  withoutCommissions?:
+    | boolean
+    | undefined;
   /** Флаг получения ответа без массива сделок. */
-  withoutTrades: boolean;
+  withoutTrades?:
+    | boolean
+    | undefined;
   /** Флаг не показывать overnight операций. */
-  withoutOvernights: boolean;
+  withoutOvernights?: boolean | undefined;
 }
 
 /** Список операций по счёту с пагинацией. */
@@ -1430,7 +1451,7 @@ export interface PositionsMoney {
 }
 
 function createBaseOperationsRequest(): OperationsRequest {
-  return { accountId: "", from: undefined, to: undefined, state: 0, figi: "" };
+  return { accountId: "", from: undefined, to: undefined, state: undefined, figi: undefined };
 }
 
 export const OperationsRequest = {
@@ -1444,10 +1465,10 @@ export const OperationsRequest = {
     if (message.to !== undefined) {
       Timestamp.encode(toTimestamp(message.to), writer.uint32(26).fork()).ldelim();
     }
-    if (message.state !== 0) {
+    if (message.state !== undefined) {
       writer.uint32(32).int32(message.state);
     }
-    if (message.figi !== "") {
+    if (message.figi !== undefined) {
       writer.uint32(42).string(message.figi);
     }
     return writer;
@@ -1509,8 +1530,8 @@ export const OperationsRequest = {
       accountId: isSet(object.accountId) ? globalThis.String(object.accountId) : "",
       from: isSet(object.from) ? fromJsonTimestamp(object.from) : undefined,
       to: isSet(object.to) ? fromJsonTimestamp(object.to) : undefined,
-      state: isSet(object.state) ? operationStateFromJSON(object.state) : 0,
-      figi: isSet(object.figi) ? globalThis.String(object.figi) : "",
+      state: isSet(object.state) ? operationStateFromJSON(object.state) : undefined,
+      figi: isSet(object.figi) ? globalThis.String(object.figi) : undefined,
     };
   },
 
@@ -1525,10 +1546,10 @@ export const OperationsRequest = {
     if (message.to !== undefined) {
       obj.to = message.to.toISOString();
     }
-    if (message.state !== 0) {
+    if (message.state !== undefined) {
       obj.state = operationStateToJSON(message.state);
     }
-    if (message.figi !== "") {
+    if (message.figi !== undefined) {
       obj.figi = message.figi;
     }
     return obj;
@@ -1972,7 +1993,7 @@ export const OperationTrade = {
 };
 
 function createBasePortfolioRequest(): PortfolioRequest {
-  return { accountId: "", currency: 0 };
+  return { accountId: "", currency: undefined };
 }
 
 export const PortfolioRequest = {
@@ -1980,7 +2001,7 @@ export const PortfolioRequest = {
     if (message.accountId !== "") {
       writer.uint32(10).string(message.accountId);
     }
-    if (message.currency !== 0) {
+    if (message.currency !== undefined) {
       writer.uint32(16).int32(message.currency);
     }
     return writer;
@@ -2019,7 +2040,7 @@ export const PortfolioRequest = {
   fromJSON(object: any): PortfolioRequest {
     return {
       accountId: isSet(object.accountId) ? globalThis.String(object.accountId) : "",
-      currency: isSet(object.currency) ? portfolioRequest_CurrencyRequestFromJSON(object.currency) : 0,
+      currency: isSet(object.currency) ? portfolioRequest_CurrencyRequestFromJSON(object.currency) : undefined,
     };
   },
 
@@ -2028,7 +2049,7 @@ export const PortfolioRequest = {
     if (message.accountId !== "") {
       obj.accountId = message.accountId;
     }
-    if (message.currency !== 0) {
+    if (message.currency !== undefined) {
       obj.currency = portfolioRequest_CurrencyRequestToJSON(message.currency);
     }
     return obj;
@@ -3656,7 +3677,7 @@ export const GenerateBrokerReportResponse = {
 };
 
 function createBaseGetBrokerReportRequest(): GetBrokerReportRequest {
-  return { taskId: "", page: 0 };
+  return { taskId: "", page: undefined };
 }
 
 export const GetBrokerReportRequest = {
@@ -3664,7 +3685,7 @@ export const GetBrokerReportRequest = {
     if (message.taskId !== "") {
       writer.uint32(10).string(message.taskId);
     }
-    if (message.page !== 0) {
+    if (message.page !== undefined) {
       writer.uint32(16).int32(message.page);
     }
     return writer;
@@ -3703,7 +3724,7 @@ export const GetBrokerReportRequest = {
   fromJSON(object: any): GetBrokerReportRequest {
     return {
       taskId: isSet(object.taskId) ? globalThis.String(object.taskId) : "",
-      page: isSet(object.page) ? globalThis.Number(object.page) : 0,
+      page: isSet(object.page) ? globalThis.Number(object.page) : undefined,
     };
   },
 
@@ -3712,7 +3733,7 @@ export const GetBrokerReportRequest = {
     if (message.taskId !== "") {
       obj.taskId = message.taskId;
     }
-    if (message.page !== 0) {
+    if (message.page !== undefined) {
       obj.page = Math.round(message.page);
     }
     return obj;
@@ -4491,7 +4512,7 @@ export const GenerateDividendsForeignIssuerReportRequest = {
 };
 
 function createBaseGetDividendsForeignIssuerReportRequest(): GetDividendsForeignIssuerReportRequest {
-  return { taskId: "", page: 0 };
+  return { taskId: "", page: undefined };
 }
 
 export const GetDividendsForeignIssuerReportRequest = {
@@ -4499,7 +4520,7 @@ export const GetDividendsForeignIssuerReportRequest = {
     if (message.taskId !== "") {
       writer.uint32(10).string(message.taskId);
     }
-    if (message.page !== 0) {
+    if (message.page !== undefined) {
       writer.uint32(16).int32(message.page);
     }
     return writer;
@@ -4538,7 +4559,7 @@ export const GetDividendsForeignIssuerReportRequest = {
   fromJSON(object: any): GetDividendsForeignIssuerReportRequest {
     return {
       taskId: isSet(object.taskId) ? globalThis.String(object.taskId) : "",
-      page: isSet(object.page) ? globalThis.Number(object.page) : 0,
+      page: isSet(object.page) ? globalThis.Number(object.page) : undefined,
     };
   },
 
@@ -4547,7 +4568,7 @@ export const GetDividendsForeignIssuerReportRequest = {
     if (message.taskId !== "") {
       obj.taskId = message.taskId;
     }
-    if (message.page !== 0) {
+    if (message.page !== undefined) {
       obj.page = Math.round(message.page);
     }
     return obj;
@@ -5166,16 +5187,16 @@ export const AccountSubscriptionStatus = {
 function createBaseGetOperationsByCursorRequest(): GetOperationsByCursorRequest {
   return {
     accountId: "",
-    instrumentId: "",
+    instrumentId: undefined,
     from: undefined,
     to: undefined,
-    cursor: "",
-    limit: 0,
+    cursor: undefined,
+    limit: undefined,
     operationTypes: [],
-    state: 0,
-    withoutCommissions: false,
-    withoutTrades: false,
-    withoutOvernights: false,
+    state: undefined,
+    withoutCommissions: undefined,
+    withoutTrades: undefined,
+    withoutOvernights: undefined,
   };
 }
 
@@ -5184,7 +5205,7 @@ export const GetOperationsByCursorRequest = {
     if (message.accountId !== "") {
       writer.uint32(10).string(message.accountId);
     }
-    if (message.instrumentId !== "") {
+    if (message.instrumentId !== undefined) {
       writer.uint32(18).string(message.instrumentId);
     }
     if (message.from !== undefined) {
@@ -5193,10 +5214,10 @@ export const GetOperationsByCursorRequest = {
     if (message.to !== undefined) {
       Timestamp.encode(toTimestamp(message.to), writer.uint32(58).fork()).ldelim();
     }
-    if (message.cursor !== "") {
+    if (message.cursor !== undefined) {
       writer.uint32(90).string(message.cursor);
     }
-    if (message.limit !== 0) {
+    if (message.limit !== undefined) {
       writer.uint32(96).int32(message.limit);
     }
     writer.uint32(106).fork();
@@ -5204,16 +5225,16 @@ export const GetOperationsByCursorRequest = {
       writer.int32(v);
     }
     writer.ldelim();
-    if (message.state !== 0) {
+    if (message.state !== undefined) {
       writer.uint32(112).int32(message.state);
     }
-    if (message.withoutCommissions === true) {
+    if (message.withoutCommissions !== undefined) {
       writer.uint32(120).bool(message.withoutCommissions);
     }
-    if (message.withoutTrades === true) {
+    if (message.withoutTrades !== undefined) {
       writer.uint32(128).bool(message.withoutTrades);
     }
-    if (message.withoutOvernights === true) {
+    if (message.withoutOvernights !== undefined) {
       writer.uint32(136).bool(message.withoutOvernights);
     }
     return writer;
@@ -5325,18 +5346,18 @@ export const GetOperationsByCursorRequest = {
   fromJSON(object: any): GetOperationsByCursorRequest {
     return {
       accountId: isSet(object.accountId) ? globalThis.String(object.accountId) : "",
-      instrumentId: isSet(object.instrumentId) ? globalThis.String(object.instrumentId) : "",
+      instrumentId: isSet(object.instrumentId) ? globalThis.String(object.instrumentId) : undefined,
       from: isSet(object.from) ? fromJsonTimestamp(object.from) : undefined,
       to: isSet(object.to) ? fromJsonTimestamp(object.to) : undefined,
-      cursor: isSet(object.cursor) ? globalThis.String(object.cursor) : "",
-      limit: isSet(object.limit) ? globalThis.Number(object.limit) : 0,
+      cursor: isSet(object.cursor) ? globalThis.String(object.cursor) : undefined,
+      limit: isSet(object.limit) ? globalThis.Number(object.limit) : undefined,
       operationTypes: globalThis.Array.isArray(object?.operationTypes)
         ? object.operationTypes.map((e: any) => operationTypeFromJSON(e))
         : [],
-      state: isSet(object.state) ? operationStateFromJSON(object.state) : 0,
-      withoutCommissions: isSet(object.withoutCommissions) ? globalThis.Boolean(object.withoutCommissions) : false,
-      withoutTrades: isSet(object.withoutTrades) ? globalThis.Boolean(object.withoutTrades) : false,
-      withoutOvernights: isSet(object.withoutOvernights) ? globalThis.Boolean(object.withoutOvernights) : false,
+      state: isSet(object.state) ? operationStateFromJSON(object.state) : undefined,
+      withoutCommissions: isSet(object.withoutCommissions) ? globalThis.Boolean(object.withoutCommissions) : undefined,
+      withoutTrades: isSet(object.withoutTrades) ? globalThis.Boolean(object.withoutTrades) : undefined,
+      withoutOvernights: isSet(object.withoutOvernights) ? globalThis.Boolean(object.withoutOvernights) : undefined,
     };
   },
 
@@ -5345,7 +5366,7 @@ export const GetOperationsByCursorRequest = {
     if (message.accountId !== "") {
       obj.accountId = message.accountId;
     }
-    if (message.instrumentId !== "") {
+    if (message.instrumentId !== undefined) {
       obj.instrumentId = message.instrumentId;
     }
     if (message.from !== undefined) {
@@ -5354,25 +5375,25 @@ export const GetOperationsByCursorRequest = {
     if (message.to !== undefined) {
       obj.to = message.to.toISOString();
     }
-    if (message.cursor !== "") {
+    if (message.cursor !== undefined) {
       obj.cursor = message.cursor;
     }
-    if (message.limit !== 0) {
+    if (message.limit !== undefined) {
       obj.limit = Math.round(message.limit);
     }
     if (message.operationTypes?.length) {
       obj.operationTypes = message.operationTypes.map((e) => operationTypeToJSON(e));
     }
-    if (message.state !== 0) {
+    if (message.state !== undefined) {
       obj.state = operationStateToJSON(message.state);
     }
-    if (message.withoutCommissions === true) {
+    if (message.withoutCommissions !== undefined) {
       obj.withoutCommissions = message.withoutCommissions;
     }
-    if (message.withoutTrades === true) {
+    if (message.withoutTrades !== undefined) {
       obj.withoutTrades = message.withoutTrades;
     }
-    if (message.withoutOvernights === true) {
+    if (message.withoutOvernights !== undefined) {
       obj.withoutOvernights = message.withoutOvernights;
     }
     return obj;

@@ -8,12 +8,12 @@
 избытком, а на другом при нехватке средств и активной маржинальной торговле может 
 наступить маржин-колл. 
 
-##Поддерживаются ли сейчас мультисчета в TINKOFF INVEST API?
-Да, в TINKOFF INVEST API можно работать с несколькими счетами. Все ключевые методы принимают
+##Поддерживаются ли сейчас мультисчета в T-Invest API?
+Да, в T-Invest API можно работать с несколькими счетами. Все ключевые методы принимают
 на вход параметр *account_id* (идентификатор счёта).
 
 <script src="https://utteranc.es/client.js"
-        repo="https://github.com/Tinkoff/investAPI"
+        repo="https://github.com/RussianInvestments/investAPI"
         issue-term="title"
         label="documentation"
         theme="github-light"

@@ -5,6 +5,7 @@ import { TinkoffInvestApi } from '../api.js';
 import { OperationsRequest, PortfolioRequest_CurrencyRequest } from '../generated/operations.js';
 import { PostOrderRequest } from '../generated/orders.js';
 import { OmitAccount } from './types.js';
+import {PriceType} from "../generated/common";
 
 export class RealAccount {
   constructor(public api: TinkoffInvestApi, public accountId: string) {}
@@ -32,8 +33,8 @@ export class RealAccount {
     return this.api.orders.getOrders({ accountId: this.accountId });
   }
 
-  async getOrderState(orderId: string) {
-    return this.api.orders.getOrderState({ accountId: this.accountId, orderId });
+  async getOrderState(orderId: string, priceType: PriceType = PriceType.PRICE_TYPE_UNSPECIFIED) {
+    return this.api.orders.getOrderState({ accountId: this.accountId, orderId, priceType });
   }
 
   async postOrder(request: OmitAccount<PostOrderRequest>) {

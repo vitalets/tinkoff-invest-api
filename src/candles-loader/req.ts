@@ -131,10 +131,14 @@ export class CandlesReq {
   protected getCacheFileName() {
     const { isYearChunk, currentChunkDate } = this.dateIterator;
     const dateStr = formatDateUTC(currentChunkDate, isYearChunk ? 'YYYY' : 'YYYY-MM-DD');
+    const instrument = this.params.instrumentId || this.params.figi;
+    if (!instrument) {
+      throw new Error(`Нужно указать instrumentId или figi`);
+    }
     return path.join(
       this.options.cacheDir,
       'candles',
-      this.params.instrumentId || this.params.figi,
+      instrument,
       isYearChunk ? 'day' : candleIntervalToString(this.params.interval),
       `${dateStr}.json`
     );
