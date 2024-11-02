@@ -14,9 +14,9 @@
   "scripts": {
     "lint": "eslint src test --ext .ts",
     "tsc": "tsc --noEmit",
-    "check": "node --loader=ts-node/esm scripts/check.ts",
-    "check:d": "DEBUG=tinkoff-invest-api:* ts-node-esm scripts/check.ts",
-    "test": "mocha -n loader=ts-node/esm test/setup.ts test/specs/*.ts -t 7000",
+    "check": "tsx scripts/check.ts",
+    "check:d": "DEBUG=tinkoff-invest-api:* npm run check",
+    "test": "mocha --import=tsx/esm test/setup.ts test/specs/*.ts -t 7000",
     "test:d": "DEBUG=tinkoff-invest-api:* npm t",
     "test:modules": "node test/modules/test.cjs && node test/modules/test.mjs",
     "pull-proto": "./scripts/pull-proto.sh",
@@ -52,8 +52,8 @@
     "markdown-toc": "^1.2.0",
     "mocha": "^10.2.0",
     "np": "^9.1.0",
-    "ts-node": "^10.9.1",
     "ts-proto": "^1.165.0",
+    "tsx": "4.19.2",
     "typescript": "^5.3.2"
   },
   "author": "Vitaliy Potapov",

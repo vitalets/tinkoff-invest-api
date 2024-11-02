@@ -1,6 +1,6 @@
 /**
  * Текущие счета и позиции.
- * npx ts-node-esm scripts/show-accounts.ts
+ * npx tsx scripts/show-accounts.ts
  */
 import 'dotenv/config';
 import { RealAccount, SandboxAccount, TinkoffAccount, TinkoffInvestApi } from '../src/index.js';
