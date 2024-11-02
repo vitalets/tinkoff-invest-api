@@ -6,7 +6,7 @@ import { CandlesLoader } from '../../src/index.js';
 describe('candles-loader', () => {
 
   const cacheDir = 'test/.cache';
-  const figi = 'BBG00QPYJ5H0';
+  const figi = 'BBG004730N88';
   const candlesCacheDir = `${cacheDir}/candles/${figi}`;
 
   beforeEach(() => {
@@ -22,14 +22,14 @@ describe('candles-loader', () => {
       minCount: 33,
       to: new Date('2022-04-25T08:00:00.000Z')
     });
-    assert.equal(candles.length, 40);
-    assert.equal(candles[0].time?.toISOString(), '2022-04-22T07:00:00.000Z');
+    assert.equal(candles.length, 42);
+    assert.equal(candles[0].time?.toISOString(), '2022-04-22T06:45:00.000Z');
     assert.equal(candles.slice(-1)[0].time?.toISOString(), '2022-04-25T07:45:00.000Z');
     assert.deepEqual(await fg(`${candlesCacheDir}/**`), [
-      `test/.cache/candles/BBG00QPYJ5H0/15_min/2022-04-22.json`,
-      `test/.cache/candles/BBG00QPYJ5H0/15_min/2022-04-23.json`,
-      `test/.cache/candles/BBG00QPYJ5H0/15_min/2022-04-24.json`,
-      `test/.cache/candles/BBG00QPYJ5H0/15_min/2022-04-25.json`,
+      `test/.cache/candles/${figi}/15_min/2022-04-22.json`,
+      `test/.cache/candles/${figi}/15_min/2022-04-23.json`,
+      `test/.cache/candles/${figi}/15_min/2022-04-24.json`,
+      `test/.cache/candles/${figi}/15_min/2022-04-25.json`,
     ]);
   });
 
@@ -42,7 +42,7 @@ describe('candles-loader', () => {
       from: new Date('2022-04-25T10:00:00.000Z'),
       to: new Date('2022-04-26T08:00:00.000Z')
     });
-    assert.equal(candles.length, 28);
+    assert.equal(candles.length, 29);
     assert.equal(candles[0].time?.toISOString(), '2022-04-25T10:00:00.000Z');
     assert.equal(candles[candles.length - 1].time?.toISOString(), '2022-04-26T07:45:00.000Z');
   });

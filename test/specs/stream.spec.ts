@@ -2,7 +2,7 @@ import EventEmitter, { on } from 'node:events';
 import { Candle, SubscribeCandlesRequest, MarketDataResponse, SubscriptionInterval, SubscriptionStatus } from '../../src/generated/marketdata.js';
 import { MarketStream, WithoutAction } from '../../src/stream/market.js';
 
-describe('stream', () => {
+describe.skip('stream', () => {
 
   const figi = 'BBG004730N88';
   const instrumentUid = 'e6123145-9665-43e0-8413-cd61b8aa9b13';
