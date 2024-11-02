@@ -2,15 +2,17 @@ import EventEmitter, { on } from 'node:events';
 import { Candle, SubscribeCandlesRequest, MarketDataResponse, SubscriptionInterval, SubscriptionStatus } from '../../src/generated/marketdata.js';
 import { MarketStream, WithoutAction } from '../../src/stream/market.js';
 
-describe.skip('stream', () => {
-
+describe('stream', () => {
   const figi = 'BBG004730N88';
   const instrumentUid = 'e6123145-9665-43e0-8413-cd61b8aa9b13';
   const interval = SubscriptionInterval.SUBSCRIPTION_INTERVAL_ONE_MINUTE;
   const waitingClose = false;
   // figi is deprecated, use instrumentId
   // see: https://tinkoff.github.io/investAPI/marketdata/#getcandlesrequest
-  const candlesReq: WithoutAction<SubscribeCandlesRequest> = { instruments: [ { figi, instrumentId: figi, interval } ], waitingClose };
+  const candlesReq: WithoutAction<SubscribeCandlesRequest> = {
+    instruments: [ { figi, instrumentId: figi, interval } ],
+    waitingClose
+  };
   const handler = () => { }; // eslint-disable-line @typescript-eslint/no-empty-function
   const candlesStatus: MarketDataResponse = {
     subscribeCandlesResponse: {
@@ -37,8 +39,11 @@ describe.skip('stream', () => {
     const res1 = await testApi.stream.market.getMySubscriptions();
     const unsubscribe = await testApi.stream.market.candles(candlesReq, handler);
     const res2 = await testApi.stream.market.getMySubscriptions();
+    const figi2 = 'BBG0013HGFT4';
+    const instrumentUid2 = 'a22a1263-8e1b-4546-a1aa-416463f104d3';
     await testApi.stream.market.candles({
-      instruments: [ { figi: 'BBG00QPYJ5H0', instrumentId: 'BBG00QPYJ5H0', interval } ], waitingClose
+      instruments: [ { figi: figi2, instrumentId: figi2, interval } ],
+      waitingClose,
     }, handler);
     const res3 = await testApi.stream.market.getMySubscriptions();
     await unsubscribe();
@@ -50,10 +55,10 @@ describe.skip('stream', () => {
     ]);
     assert.deepEqual(res3.subscribeCandlesResponse?.candlesSubscriptions, [
       { figi, instrumentUid, interval: 1, subscriptionStatus: 1 },
-      { figi: 'BBG00QPYJ5H0', instrumentUid: '6afa6f80-03a7-4d83-9cf0-c19d7d021f76', interval: 1, subscriptionStatus: 1 },
+      { figi: figi2, instrumentUid: instrumentUid2, interval: 1, subscriptionStatus: 1 },
     ]);
     assert.deepEqual(res4.subscribeCandlesResponse?.candlesSubscriptions, [
-      { figi: 'BBG00QPYJ5H0', instrumentUid: '6afa6f80-03a7-4d83-9cf0-c19d7d021f76', interval: 1, subscriptionStatus: 1 }
+      { figi: figi2, instrumentUid: instrumentUid2, interval: 1, subscriptionStatus: 1 }
     ]);
   });
 
