@@ -53,7 +53,7 @@ describe('stream', () => {
     assert.deepEqual(res2.subscribeCandlesResponse?.candlesSubscriptions, [
       { figi, instrumentUid, interval: 1, subscriptionStatus: 1 }
     ]);
-    assert.deepEqual(res3.subscribeCandlesResponse?.candlesSubscriptions, [
+    assert.deepEqual(sortedSubscriptions(res3), [
       { figi, instrumentUid, interval: 1, subscriptionStatus: 1 },
       { figi: figi2, instrumentUid: instrumentUid2, interval: 1, subscriptionStatus: 1 },
     ]);
@@ -222,4 +222,8 @@ class MarketStreamEmulate extends MarketStream {
 function getNonEmptyKeys(obj: MarketDataResponse) {
   const keys = Object.keys(obj) as (keyof MarketDataResponse)[];
   return keys.filter(key => Boolean(obj[key]));
+}
+
+function sortedSubscriptions(res: MarketDataResponse) {
+  return res.subscribeCandlesResponse?.candlesSubscriptions?.sort((a, b) => b.figi.localeCompare(a.figi)) || [];
 }

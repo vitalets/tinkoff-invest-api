@@ -1,7 +1,15 @@
 /**
  * Tinkoff Invest API.
  */
-import { createChannel, createClientFactory, Client, Channel, Metadata, ChannelCredentials } from 'nice-grpc';
+import {
+  createChannel,
+  createClientFactory,
+  Client,
+  Channel,
+  Metadata,
+  ChannelCredentials,
+  ChannelOptions
+} from 'nice-grpc';
 import { errorMiddleware, TinkoffApiError } from './api-error.js';
 import { Helpers } from './helpers.js';
 import { MarketStream } from './stream/market.js';
@@ -23,11 +31,18 @@ export interface TinkoffInvestApiOptions {
   appName?: string;
   /** API endpoint */
   endpoint?: string;
+  /** Channel options */
+  channelOptions?: ChannelOptions;
 }
 
-const defaults: Required<Pick<TinkoffInvestApiOptions, 'appName' | 'endpoint' >> = {
+const defaults: Required<Pick<TinkoffInvestApiOptions, 'appName' | 'endpoint' | 'channelOptions' >> = {
   endpoint: 'invest-public-api.tinkoff.ru:443',
   appName: '',
+  // See: https://github.com/vitalets/tinkoff-invest-api/issues/23
+  channelOptions: {
+    'grpc.max_receive_message_length': 1024 * 1024 * 100,
+    'grpc.max_send_message_length': 1024 * 1024 * 100,
+  }
 };
 
 type ServiceDefinition = typeof InstrumentsServiceDefinition
@@ -41,7 +56,7 @@ type ServiceDefinition = typeof InstrumentsServiceDefinition
   | typeof UsersServiceDefinition;
 
 export class TinkoffInvestApi {
-  options: Required<TinkoffInvestApiOptions>;
+  options: TinkoffInvestApiOptions & typeof defaults;
   protected channel: Channel;
   protected metadata: Metadata;
   protected clients: Map<ServiceDefinition, Client<ServiceDefinition>> = new Map();
@@ -68,11 +83,11 @@ export class TinkoffInvestApi {
   isBacktest = false;
 
   private createChannel() {
-    const { endpoint } = this.options;
+    const { endpoint, channelOptions } = this.options;
     const credentials = /^localhost/i.test(endpoint)
       ? ChannelCredentials.createInsecure()
       : ChannelCredentials.createSsl();
-    return createChannel(endpoint, credentials);
+    return createChannel(endpoint, credentials, channelOptions);
   }
 
   private getOrCreateClient<T extends ServiceDefinition>(service: T) {
