@@ -1,10 +1,13 @@
 import EventEmitter, { on } from 'node:events';
 import { Candle, SubscribeCandlesRequest, MarketDataResponse, SubscriptionInterval, SubscriptionStatus } from '../../src/generated/marketdata.js';
 import { MarketStream, WithoutAction } from '../../src/stream/market.js';
+import { omits } from '../helpers';
 
 describe('stream', () => {
   const figi = 'BBG004730N88';
   const instrumentUid = 'e6123145-9665-43e0-8413-cd61b8aa9b13';
+  const streamId = 'd8993df6-4373-4253-8262-faa3df8a1ff2';
+  const subscriptionId = 'a1e8bae7-0e9e-4e43-b055-293566c595ab';
   const interval = SubscriptionInterval.SUBSCRIPTION_INTERVAL_ONE_MINUTE;
   const waitingClose = false;
   // figi is deprecated, use instrumentId
@@ -18,7 +21,7 @@ describe('stream', () => {
     subscribeCandlesResponse: {
       trackingId: 'xxx',
       candlesSubscriptions: [
-        { figi, instrumentUid: figi, interval, subscriptionStatus: SubscriptionStatus.SUBSCRIPTION_STATUS_SUCCESS }
+        { streamId, subscriptionId, figi, instrumentUid: figi, interval, subscriptionStatus: SubscriptionStatus.SUBSCRIPTION_STATUS_SUCCESS, waitingClose: false, candleSourceType: 0 }
       ]
     }
   };
@@ -50,15 +53,15 @@ describe('stream', () => {
     const res4 = await testApi.stream.market.getMySubscriptions();
     assert.deepEqual(getNonEmptyKeys(res1), []);
     assert.deepEqual(getNonEmptyKeys(res2), [ 'subscribeCandlesResponse' ]);
-    assert.deepEqual(res2.subscribeCandlesResponse?.candlesSubscriptions, [
-      { figi, instrumentUid, interval: 1, subscriptionStatus: 1 }
+    assert.deepEqual(omits(res2.subscribeCandlesResponse?.candlesSubscriptions ?? [], ['streamId', 'subscriptionId']), [
+      { figi, instrumentUid, interval: 1, subscriptionStatus: 1, waitingClose: false, candleSourceType: 0 },
     ]);
-    assert.deepEqual(sortedSubscriptions(res3), [
-      { figi, instrumentUid, interval: 1, subscriptionStatus: 1 },
-      { figi: figi2, instrumentUid: instrumentUid2, interval: 1, subscriptionStatus: 1 },
+    assert.deepEqual(omits(sortedSubscriptions(res3), ['streamId', 'subscriptionId']), [
+      { figi, instrumentUid, interval: 1, subscriptionStatus: 1, waitingClose: false, candleSourceType: 0 },
+      { figi: figi2, instrumentUid: instrumentUid2, interval: 1, subscriptionStatus: 1, waitingClose: false, candleSourceType: 0 },
     ]);
-    assert.deepEqual(res4.subscribeCandlesResponse?.candlesSubscriptions, [
-      { figi: figi2, instrumentUid: instrumentUid2, interval: 1, subscriptionStatus: 1 }
+    assert.deepEqual(omits(res4.subscribeCandlesResponse?.candlesSubscriptions ?? [], ['streamId', 'subscriptionId']), [
+      { figi: figi2, instrumentUid: instrumentUid2, interval: 1, subscriptionStatus: 1, waitingClose: false, candleSourceType: 0 },
     ]);
   });
 
@@ -72,18 +75,18 @@ describe('stream', () => {
     ]);
 
     // нужный figi и interval
-    const ownFigiAndInterval = { candle: { figi, instrumentUid: figi, interval, volume: 1 } };
+    const ownFigiAndInterval = { candle: { streamId, subscriptionId, figi, instrumentUid: figi, interval, volume: 1, waitingClose: false, candleSourceType: 0 } };
     await Promise.all([ stream.emulate(ownFigiAndInterval), waitMarketStreamEvent(stream, 'data') ]);
 
     assert.equal(calls.length, 1);
-    assert.deepEqual(calls[ 0 ], { figi, instrumentUid: figi, interval, volume: 1 });
+    assert.deepEqual(calls[ 0 ], { streamId, subscriptionId, figi, instrumentUid: figi, interval, volume: 1, waitingClose: false, candleSourceType: 0 });
 
     // другой figi
-    const anotherFigi = { candle: { figi: 'another_figi', instrumentUid: 'another_figi', interval, volume: 2 } };
+    const anotherFigi = { candle: { streamId, subscriptionId, figi: 'another_figi', instrumentUid: 'another_figi', interval, volume: 2, waitingClose: false, candleSourceType: 0 } };
     await Promise.all([ stream.emulate(anotherFigi), waitMarketStreamEvent(stream, 'data') ]);
 
     // другой interval
-    const anotherInterval = { candle: { figi, instrumentUid: figi, interval: 2, volume: 3 } };
+    const anotherInterval = { candle: { streamId, subscriptionId, figi, instrumentUid: figi, interval: 2, volume: 3, waitingClose: false, candleSourceType: 0 } };
     await Promise.all([ stream.emulate(anotherInterval), waitMarketStreamEvent(stream, 'data') ]);
 
     assert.equal(calls.length, 1);
@@ -106,8 +109,8 @@ describe('stream', () => {
     const data = await dataPromise;
     await testApi.stream.market.cancel();
     const closeError = await closePromise;
-    assert.deepEqual(data.subscribeCandlesResponse?.candlesSubscriptions, [
-      { figi, instrumentUid, interval: 1, subscriptionStatus: 1 }
+    assert.deepEqual(omits(data.subscribeCandlesResponse?.candlesSubscriptions ?? [], ['streamId', 'subscriptionId']), [
+      { figi, instrumentUid, interval: 1, subscriptionStatus: 1, waitingClose: false, candleSourceType: 0 },
     ]);
     assert.equal(testApi.stream.market.connected, false);
     assert.equal(closeError, undefined);
