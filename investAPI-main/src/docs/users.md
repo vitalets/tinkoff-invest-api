@@ -5,14 +5,14 @@
 
 
 ## UsersService
-Сервис предназначен для получения: </br> **1**.
-списка счетов пользователя; </br> **2**. маржинальных показателей по счёту.
+С помощью сервиса можно получить: </br> 1.
+список счетов пользователя; </br> 2. маржинальные показатели по счёту.
 
 ###Методы сервиса
 
 
 #### GetAccounts
-Метод получения счетов пользователя.
+Получить счета пользователя.
 
 - Тело запроса — [GetAccountsRequest](#getaccountsrequest)
 
@@ -20,7 +20,7 @@
 
 
 #### GetMarginAttributes
-Расчёт маржинальных показателей по счёту.
+Рассчитать маржинальные показатели по счёту.
 
 - Тело запроса — [GetMarginAttributesRequest](#getmarginattributesrequest)
 
@@ -28,7 +28,7 @@
 
 
 #### GetUserTariff
-Запрос тарифа пользователя.
+Запросить тариф пользователя.
 
 - Тело запроса — [GetUserTariffRequest](#getusertariffrequest)
 
@@ -36,7 +36,7 @@
 
 
 #### GetInfo
-Метод получения информации о пользователе.
+Получить информацию о пользователе.
 
 - Тело запроса — [GetInfoRequest](#getinforequest)
 
@@ -52,6 +52,11 @@
 #### GetAccountsRequest
 Запрос получения счетов пользователя.
 
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| status |  [AccountStatus](#accountstatus) | Статус счета. |
+ <!-- end Fields -->
  <!-- end HasFields -->
 
 
@@ -84,7 +89,7 @@
 
 
 #### GetMarginAttributesRequest
-Запрос маржинальных показателей по счёту
+Запрос маржинальных показателей по счёту.
 
 
 | Field | Type | Description |
@@ -100,12 +105,12 @@
 
 | Field | Type | Description |
 | ----- | ---- | ----------- |
-| liquid_portfolio |  [MoneyValue](#moneyvalue) | Ликвидная стоимость портфеля. Подробнее: [что такое ликвидный портфель?](https://help.tinkoff.ru/margin-trade/short/liquid-portfolio/). |
-| starting_margin |  [MoneyValue](#moneyvalue) | Начальная маржа — начальное обеспечение для совершения новой сделки. Подробнее: [начальная и минимальная маржа](https://help.tinkoff.ru/margin-trade/short/initial-and-maintenance-margin/). |
-| minimal_margin |  [MoneyValue](#moneyvalue) | Минимальная маржа — это минимальное обеспечение для поддержания позиции, которую вы уже открыли. Подробнее: [начальная и минимальная маржа](https://help.tinkoff.ru/margin-trade/short/initial-and-maintenance-margin/). |
+| liquid_portfolio |  [MoneyValue](#moneyvalue) | Ликвидная стоимость портфеля. [Подробнее про ликвидный портфель](https://help.tbank.ru/margin-trade/short/liquid-portfolio/). |
+| starting_margin |  [MoneyValue](#moneyvalue) | Начальная маржа — начальное обеспечение для совершения новой сделки. [Подробнее про начальную и минимальную маржу](https://help.tbank.ru/margin-trade/short/initial-and-maintenance-margin/). |
+| minimal_margin |  [MoneyValue](#moneyvalue) | Минимальная маржа — это минимальное обеспечение для поддержания позиции, которую вы уже открыли. [Подробнее про начальную и минимальную маржу](https://help.tbank.ru/margin-trade/short/initial-and-maintenance-margin/). |
 | funds_sufficiency_level |  [Quotation](#quotation) | Уровень достаточности средств. Соотношение стоимости ликвидного портфеля к начальной марже. |
 | amount_of_missing_funds |  [MoneyValue](#moneyvalue) | Объем недостающих средств. Разница между стартовой маржой и ликвидной стоимости портфеля. |
-| corrected_margin |  [MoneyValue](#moneyvalue) | Скорректированная маржа.Начальная маржа, в которой плановые позиции рассчитываются с учётом активных заявок на покупку позиций лонг или продажу позиций шорт. |
+| corrected_margin |  [MoneyValue](#moneyvalue) | Скорректированная маржа. Начальная маржа, в которой плановые позиции рассчитываются с учётом активных заявок на покупку позиций лонг или продажу позиций шорт. |
  <!-- end Fields -->
  <!-- end HasFields -->
 
@@ -167,7 +172,7 @@
 | ----- | ---- | ----------- |
 | prem_status |  [bool](#bool) | Признак премиум клиента. |
 | qual_status |  [bool](#bool) | Признак квалифицированного инвестора. |
-| qualified_for_work_with | Массив объектов [string](#string) | Набор требующих тестирования инструментов и возможностей, с которыми может работать пользователь. [Подробнее](https://tinkoff.github.io/investAPI/faq_users/). |
+| qualified_for_work_with | Массив объектов [string](#string) | Набор требующих тестирования инструментов и возможностей, с которыми может работать пользователь. [Подробнее](https://russianinvestments.github.io/investAPI/faq_users/). |
 | tariff |  [string](#string) | Наименование тарифа пользователя. |
  <!-- end Fields -->
  <!-- end HasFields -->
@@ -182,9 +187,10 @@
 | Name | Number | Description |
 | ---- | ------ | ----------- |
 | ACCOUNT_TYPE_UNSPECIFIED | 0 | Тип аккаунта не определён. |
-| ACCOUNT_TYPE_TINKOFF | 1 | Брокерский счёт Тинькофф. |
-| ACCOUNT_TYPE_TINKOFF_IIS | 2 | ИИС счёт. |
+| ACCOUNT_TYPE_TINKOFF | 1 | Брокерский счёт Т-Инвестиций. |
+| ACCOUNT_TYPE_TINKOFF_IIS | 2 | ИИС. |
 | ACCOUNT_TYPE_INVEST_BOX | 3 | Инвесткопилка. |
+| ACCOUNT_TYPE_INVEST_FUND | 4 | Фонд денежного рынка. |
 
 
 
@@ -198,6 +204,7 @@
 | ACCOUNT_STATUS_NEW | 1 | Новый, в процессе открытия. |
 | ACCOUNT_STATUS_OPEN | 2 | Открытый и активный счёт. |
 | ACCOUNT_STATUS_CLOSED | 3 | Закрытый счёт. |
+| ACCOUNT_STATUS_ALL | 4 | Все счета. |
 
 
 
@@ -209,35 +216,13 @@
 | ---- | ------ | ----------- |
 | ACCOUNT_ACCESS_LEVEL_UNSPECIFIED | 0 | Уровень доступа не определён. |
 | ACCOUNT_ACCESS_LEVEL_FULL_ACCESS | 1 | Полный доступ к счёту. |
-| ACCOUNT_ACCESS_LEVEL_READ_ONLY | 2 | Доступ с уровнем прав "только чтение". |
-| ACCOUNT_ACCESS_LEVEL_NO_ACCESS | 3 | Доступ отсутствует. |
+| ACCOUNT_ACCESS_LEVEL_READ_ONLY | 2 | Доступ с уровнем прав «только чтение». |
+| ACCOUNT_ACCESS_LEVEL_NO_ACCESS | 3 | Доступа нет. |
 
 
  <!-- range .Enums -->
  <!-- range HasServices -->
  <!-- range .Files -->
-
-#### SecurityTradingStatus
-
-| Name | Number | Description |
-| ---- | ------ | ----------- |
-| SECURITY_TRADING_STATUS_UNSPECIFIED | 0 | Торговый статус не определён |
-| SECURITY_TRADING_STATUS_NOT_AVAILABLE_FOR_TRADING | 1 | Недоступен для торгов |
-| SECURITY_TRADING_STATUS_OPENING_PERIOD | 2 | Период открытия торгов |
-| SECURITY_TRADING_STATUS_CLOSING_PERIOD | 3 | Период закрытия торгов |
-| SECURITY_TRADING_STATUS_BREAK_IN_TRADING | 4 | Перерыв в торговле |
-| SECURITY_TRADING_STATUS_NORMAL_TRADING | 5 | Нормальная торговля |
-| SECURITY_TRADING_STATUS_CLOSING_AUCTION | 6 | Аукцион закрытия |
-| SECURITY_TRADING_STATUS_DARK_POOL_AUCTION | 7 | Аукцион крупных пакетов |
-| SECURITY_TRADING_STATUS_DISCRETE_AUCTION | 8 | Дискретный аукцион |
-| SECURITY_TRADING_STATUS_OPENING_AUCTION_PERIOD | 9 | Аукцион открытия |
-| SECURITY_TRADING_STATUS_TRADING_AT_CLOSING_AUCTION_PRICE | 10 | Период торгов по цене аукциона закрытия |
-| SECURITY_TRADING_STATUS_SESSION_ASSIGNED | 11 | Сессия назначена |
-| SECURITY_TRADING_STATUS_SESSION_CLOSE | 12 | Сессия закрыта |
-| SECURITY_TRADING_STATUS_SESSION_OPEN | 13 | Сессия открыта |
-| SECURITY_TRADING_STATUS_DEALER_NORMAL_TRADING | 14 |Доступна торговля в режиме внутренней ликвидности брокера |
-| SECURITY_TRADING_STATUS_DEALER_BREAK_IN_TRADING | 15 |Перерыв торговли в режиме внутренней ликвидности брокера |
-| SECURITY_TRADING_STATUS_DEALER_NOT_AVAILABLE_FOR_TRADING | 16 |Недоступна торговля в режиме внутренней ликвидности брокера |
 
 ### Нестандартные типы данных
 

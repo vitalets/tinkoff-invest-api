@@ -134,7 +134,7 @@ export class CandlesReq {
     return path.join(
       this.options.cacheDir,
       'candles',
-      this.params.instrumentId || this.params.figi,
+      this.params.instrumentId || this.params.figi || '',
       isYearChunk ? 'day' : candleIntervalToString(this.params.interval),
       `${dateStr}.json`
     );
