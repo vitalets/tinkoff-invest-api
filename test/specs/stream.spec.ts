@@ -230,5 +230,5 @@ function getNonEmptyKeys(obj: MarketDataResponse) {
 function extractSubscriptions(res: MarketDataResponse) {
   const subscriptions = res.subscribeCandlesResponse?.candlesSubscriptions ?? [];
   subscriptions.sort((a, b) => b.figi.localeCompare(a.figi));
-  return omits(subscriptions, ['streamId', 'subscriptionId'])
+  return omits(subscriptions, ['streamId', 'subscriptionId']);
 }
