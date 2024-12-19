@@ -227,7 +227,7 @@ DEBUG=tinkoff-invest-api:* node robot.js
 ## История изменений
 
 #### 7.0.0
-* Обновление версии протокола до 1.24 ([#24](https://github.com/vitalets/tinkoff-invest-api/issues/24), @Jokky)
+* Обновление версии протокола до 1.24 ([#24](https://github.com/vitalets/tinkoff-invest-api/issues/24), [@Jokky](https://github.com/Jokky))
 
 ## Лицензия
 MIT @ [Vitaliy Potapov](https://github.com/vitalets)
