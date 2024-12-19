@@ -6,8 +6,8 @@ import { omits } from '../helpers';
 describe('stream', () => {
   const figi = 'BBG004730N88';
   const instrumentUid = 'e6123145-9665-43e0-8413-cd61b8aa9b13';
-  const streamId = 'd8993df6-4373-4253-8262-faa3df8a1ff2';
-  const subscriptionId = 'a1e8bae7-0e9e-4e43-b055-293566c595ab';
+  const streamId = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
+  const subscriptionId = 'yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy';
   const interval = SubscriptionInterval.SUBSCRIPTION_INTERVAL_ONE_MINUTE;
   const waitingClose = false;
   // figi is deprecated, use instrumentId
@@ -53,14 +53,14 @@ describe('stream', () => {
     const res4 = await testApi.stream.market.getMySubscriptions();
     assert.deepEqual(getNonEmptyKeys(res1), []);
     assert.deepEqual(getNonEmptyKeys(res2), [ 'subscribeCandlesResponse' ]);
-    assert.deepEqual(omits(res2.subscribeCandlesResponse?.candlesSubscriptions ?? [], ['streamId', 'subscriptionId']), [
+    assert.deepEqual(extractSubscriptions(res2), [
       { figi, instrumentUid, interval: 1, subscriptionStatus: 1, waitingClose: false, candleSourceType: 0 },
     ]);
-    assert.deepEqual(omits(sortedSubscriptions(res3), ['streamId', 'subscriptionId']), [
+    assert.deepEqual(extractSubscriptions(res3), [
       { figi, instrumentUid, interval: 1, subscriptionStatus: 1, waitingClose: false, candleSourceType: 0 },
       { figi: figi2, instrumentUid: instrumentUid2, interval: 1, subscriptionStatus: 1, waitingClose: false, candleSourceType: 0 },
     ]);
-    assert.deepEqual(omits(res4.subscribeCandlesResponse?.candlesSubscriptions ?? [], ['streamId', 'subscriptionId']), [
+    assert.deepEqual(extractSubscriptions(res4), [
       { figi: figi2, instrumentUid: instrumentUid2, interval: 1, subscriptionStatus: 1, waitingClose: false, candleSourceType: 0 },
     ]);
   });
@@ -109,7 +109,7 @@ describe('stream', () => {
     const data = await dataPromise;
     await testApi.stream.market.cancel();
     const closeError = await closePromise;
-    assert.deepEqual(omits(data.subscribeCandlesResponse?.candlesSubscriptions ?? [], ['streamId', 'subscriptionId']), [
+    assert.deepEqual(extractSubscriptions(data), [
       { figi, instrumentUid, interval: 1, subscriptionStatus: 1, waitingClose: false, candleSourceType: 0 },
     ]);
     assert.equal(testApi.stream.market.connected, false);
@@ -227,6 +227,8 @@ function getNonEmptyKeys(obj: MarketDataResponse) {
   return keys.filter(key => Boolean(obj[key]));
 }
 
-function sortedSubscriptions(res: MarketDataResponse) {
-  return res.subscribeCandlesResponse?.candlesSubscriptions?.sort((a, b) => b.figi.localeCompare(a.figi)) || [];
+function extractSubscriptions(res: MarketDataResponse) {
+  const subscriptions = res.subscribeCandlesResponse?.candlesSubscriptions ?? [];
+  subscriptions.sort((a, b) => b.figi.localeCompare(a.figi));
+  return omits(subscriptions, ['streamId', 'subscriptionId'])
 }
