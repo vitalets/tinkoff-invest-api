@@ -21,7 +21,7 @@
     "test:modules": "node test/modules/test.cjs && node test/modules/test.mjs",
     "pull-proto": "./scripts/pull-proto.sh",
     "compile-proto": "./scripts/compile-proto.sh",
-    "toc": "markdown-toc README.md -i",
+    "toc": "markdown-toc README.md -i --maxdepth 3",
     "build:esm": "rm -rf dist && tsc -p tsconfig.build.json",
     "build:cjs": "rm -rf cjs && tsc -p tsconfig.build.cjs.json && echo '{\"type\":\"commonjs\"}' > cjs/package.json",
     "build": "npm run build:esm && npm run build:cjs",
