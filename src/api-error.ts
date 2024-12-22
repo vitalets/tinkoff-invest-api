@@ -53,6 +53,6 @@ function buildTinkoffApiError({ path, code, details }: ClientError, metadata: Me
   error.envoyUpstreamServiceTime = metadata.get('x-envoy-upstream-service-time') || '';
   error.ratelimit = metadata.get('x-ratelimit-limit') || '';
   error.ratelimitRemaining = metadata.get('x-ratelimit-remaining') || '';
-  error.ratelimitReset = metadata.get('x-ratelimit-remaining') || '';
+  error.ratelimitReset = metadata.get('x-ratelimit-reset') || '';
   return error;
 }
