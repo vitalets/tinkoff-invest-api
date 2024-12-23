@@ -20,9 +20,9 @@ describe('instruments', () => {
     });
     await assert.rejects(promise, (error: TinkoffApiError) => {
       assert.match(error.message, /Instrument not found/);
-      assert.match(error.ratelimit, /\d+/)
-      assert.match(error.ratelimitRemaining, /\d+/)
-      assert.match(error.ratelimitReset, /\d+/)
+      assert.match(error.ratelimit, /\d+/);
+      assert.match(error.ratelimitRemaining, /\d+/);
+      assert.match(error.ratelimitReset, /\d+/);
       return true;
     });
   });
