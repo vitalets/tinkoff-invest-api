@@ -272,7 +272,7 @@ export function orderIdTypeToJSON(object: OrderIdType): string {
 export interface TradesStreamRequest {
   /** Идентификаторы счетов. */
   accounts: string[];
-  /** Задержка пинг сообщений milliseconds 5000-180000, default 120000 */
+  /** Задержка (пинг) сообщений: 5000–180 000 миллисекунд. Значение по умолчанию — 120 000. */
   pingDelayMs?: number | undefined;
 }
 
@@ -304,7 +304,7 @@ export interface OrderTrades {
   figi: string;
   /** Массив сделок. */
   trades: OrderTrade[];
-  /** Идентификатор счёта. */
+  /** Идентификатор счета. */
   accountId: string;
   /** UID идентификатор инструмента. */
   instrumentUid: string;
@@ -344,7 +344,7 @@ export interface PostOrderRequest {
     | undefined;
   /** Направление операции. */
   direction: OrderDirection;
-  /** Номер счёта. */
+  /** Номер счета. */
   accountId: string;
   /** Тип заявки. */
   orderType: OrderType;
@@ -356,6 +356,8 @@ export interface PostOrderRequest {
   timeInForce: TimeInForceType;
   /** Тип цены. */
   priceType: PriceType;
+  /** Согласие на выставление заявки, которая может привести к непокрытой позиции, по умолчанию false. */
+  confirmMarginTrade: boolean;
 }
 
 /** Информация о выставлении поручения. */
@@ -388,7 +390,7 @@ export interface PostOrderResponse {
   executedCommission?:
     | MoneyValue
     | undefined;
-  /** Значение НКД (накопленного купонного дохода) на дату. Подробнее: [НКД при выставлении торговых поручений](https://russianinvestments.github.io/investAPI/head-orders#coupon) */
+  /** Значение НКД (накопленного купонного дохода) на дату. Подробнее: [НКД при выставлении торговых поручений](./head-orders#coupon) */
   aciValue?:
     | MoneyValue
     | undefined;
@@ -410,6 +412,10 @@ export interface PostOrderResponse {
     | undefined;
   /** UID идентификатор инструмента. */
   instrumentUid: string;
+  /** Тикер инструмента. */
+  ticker: string;
+  /** Класс-код (секция торгов). */
+  classCode: string;
   /** Идентификатор ключа идемпотентности, переданный клиентом, в формате UID. Максимальная длина 36 символов. */
   orderRequestId: string;
   /** Метадата */
@@ -428,7 +434,7 @@ export interface PostOrderAsyncRequest {
     | undefined;
   /** Направление операции. */
   direction: OrderDirection;
-  /** Номер счёта. */
+  /** Номер счета. */
   accountId: string;
   /** Тип заявки. */
   orderType: OrderType;
@@ -439,7 +445,11 @@ export interface PostOrderAsyncRequest {
     | TimeInForceType
     | undefined;
   /** Тип цены. */
-  priceType?: PriceType | undefined;
+  priceType?:
+    | PriceType
+    | undefined;
+  /** Согласие на выставление заявки, которая может привести к непокрытой позиции, по умолчанию false. */
+  confirmMarginTrade: boolean;
 }
 
 /** Результат выставления асинхронного торгового поручения. */
@@ -454,7 +464,7 @@ export interface PostOrderAsyncResponse {
 
 /** Запрос отмены торгового поручения. */
 export interface CancelOrderRequest {
-  /** Номер счёта. */
+  /** Номер счета. */
   accountId: string;
   /** Идентификатор заявки. */
   orderId: string;
@@ -474,7 +484,7 @@ export interface CancelOrderResponse {
 
 /** Запрос получения статуса торгового поручения. */
 export interface GetOrderStateRequest {
-  /** Номер счёта. */
+  /** Номер счета. */
   accountId: string;
   /** Идентификатор заявки. */
   orderId: string;
@@ -486,8 +496,23 @@ export interface GetOrderStateRequest {
 
 /** Запрос получения списка активных торговых поручений. */
 export interface GetOrdersRequest {
-  /** Номер счёта. */
+  /** Номер счета. */
   accountId: string;
+  /** Дополнительные фильтры. */
+  advancedFilters?: GetOrdersRequest_GetOrdersRequestFilters | undefined;
+}
+
+export interface GetOrdersRequest_GetOrdersRequestFilters {
+  /** Дата и время, начиная с которой нужно получить информацию в часовом поясе UTC. Параметр применим только к ордерам, созданным сегодня. */
+  from?:
+    | Date
+    | undefined;
+  /** Дата и время, до которой нужно получить информацию в часовом поясе UTC. Параметр применим только к ордерам, созданным сегодня. */
+  to?:
+    | Date
+    | undefined;
+  /** Статусы заявок. */
+  executionStatus: OrderExecutionReportStatus[];
 }
 
 /** Список активных торговых поручений. */
@@ -556,6 +581,10 @@ export interface OrderState {
   instrumentUid: string;
   /** Идентификатор ключа идемпотентности, переданный клиентом, в формате UID. Максимальная длина 36 символов. */
   orderRequestId: string;
+  /** Тикер инструмента. */
+  ticker: string;
+  /** Класс-код (секция торгов). */
+  classCode: string;
 }
 
 /** Сделки в рамках торгового поручения. */
@@ -587,7 +616,11 @@ export interface ReplaceOrderRequest {
     | Quotation
     | undefined;
   /** Тип цены. */
-  priceType?: PriceType | undefined;
+  priceType?:
+    | PriceType
+    | undefined;
+  /** Согласие на выставление заявки, которая может привести к непокрытой позиции, по умолчанию false. */
+  confirmMarginTrade: boolean;
 }
 
 /** Запрос на расчет количества доступных для покупки/продажи лотов. Если не указывать цену инструмента, то расчет произведется по текущум ценам в стакане: по лучшему предложению для покупки и по лучшему спросу для продажи. */
@@ -706,13 +739,13 @@ export interface GetOrderPriceResponse_ExtraFuture {
 export interface OrderStateStreamRequest {
   /** Идентификаторы счетов. */
   accounts: string[];
-  /** Задержка пинг сообщений milliseconds 5000-180000, default 120000 */
-  pingDelayMs?: number | undefined;
+  /** Задержка (пинг) сообщений:  1000-120 000 миллисекунд. Значение по умолчанию — 120 000. */
+  pingDelayMillis?: number | undefined;
 }
 
 /** Информация по подпискам */
 export interface SubscriptionResponse {
-  /** Уникальный идентификатор запроса, подробнее: [tracking_id](https://russianinvestments.github.io/investAPI/grpc#tracking-id). */
+  /** Уникальный идентификатор запроса, подробнее: [tracking_id](./grpc#tracking-id). */
   trackingId: string;
   /** Статус подписки. */
   status: ResultSubscriptionStatus;
@@ -905,77 +938,77 @@ export function orderStateStreamResponse_StatusCauseInfoToJSON(
 
 /** Заявка */
 export interface OrderStateStreamResponse_OrderState {
-  /** Биржевой идентификатор заявки */
+  /** Биржевой идентификатор заявки. */
   orderId: string;
   /** Идентификатор ключа идемпотентности, переданный клиентом, в формате UID. Максимальная длина 36 символов. */
   orderRequestId?:
     | string
     | undefined;
-  /** Код клиента на бирже */
+  /** Код клиента на бирже. */
   clientCode: string;
-  /** Дата создания заявки */
+  /** Дата создания заявки. */
   createdAt?:
     | Date
     | undefined;
-  /** Статус заявки */
+  /** Статус заявки. */
   executionReportStatus: OrderExecutionReportStatus;
-  /** Дополнительная информация по статусу */
+  /** Дополнительная информация по статусу. */
   statusInfo?:
     | OrderStateStreamResponse_StatusCauseInfo
     | undefined;
-  /** Тикер инструмента */
+  /** Тикер инструмента. */
   ticker: string;
-  /** Класс-код (секция торгов) */
+  /** Класс-код (секция торгов). */
   classCode: string;
-  /** Лотность инструмента заявки */
+  /** Лотность инструмента заявки. */
   lotSize: number;
-  /** Направление заявки */
+  /** Направление заявки. */
   direction: OrderDirection;
-  /** Алгоритм исполнения поручения */
+  /** Алгоритм исполнения поручения. */
   timeInForce: TimeInForceType;
-  /** Тип заявки */
+  /** Тип заявки. */
   orderType: OrderType;
-  /** Номер счета */
+  /** Номер счета. */
   accountId: string;
-  /** Начальная цена заявки */
+  /** Начальная цена заявки. */
   initialOrderPrice?:
     | MoneyValue
     | undefined;
-  /** Цена выставления заявки */
+  /** Цена выставления заявки. */
   orderPrice?:
     | MoneyValue
     | undefined;
-  /** Предрассчитанная стоимость полной заявки */
+  /** Предрассчитанная стоимость полной заявки. */
   amount?:
     | MoneyValue
     | undefined;
-  /** Исполненная средняя цена одного инструмента в заявке */
+  /** Исполненная цена заявки. */
   executedOrderPrice?:
     | MoneyValue
     | undefined;
-  /** Валюта исполнения */
+  /** Валюта исполнения. */
   currency: string;
-  /** Запрошено лотов */
+  /** Запрошено лотов. */
   lotsRequested: number;
-  /** Исполнено лотов */
+  /** Исполнено лотов. */
   lotsExecuted: number;
-  /** Число неисполненных лотов по заявке */
+  /** Число неисполненных лотов по заявке. */
   lotsLeft: number;
-  /** Отмененные лоты */
+  /** Отмененные лоты. */
   lotsCancelled: number;
-  /** Спецсимвол */
+  /** Спецсимвол. */
   marker?:
     | OrderStateStreamResponse_MarkerType
     | undefined;
-  /** Список сделок */
+  /** Список сделок. */
   trades: OrderTrade[];
-  /** Время исполнения заявки */
+  /** Время исполнения заявки. */
   completionTime?:
     | Date
     | undefined;
-  /** Код биржи */
+  /** Код биржи. */
   exchange: string;
-  /** UID идентификатор инструмента */
+  /** UID идентификатор инструмента. */
   instrumentUid: string;
 }
 
@@ -1359,6 +1392,7 @@ function createBasePostOrderRequest(): PostOrderRequest {
     instrumentId: "",
     timeInForce: 0,
     priceType: 0,
+    confirmMarginTrade: false,
   };
 }
 
@@ -1393,6 +1427,9 @@ export const PostOrderRequest = {
     }
     if (message.priceType !== 0) {
       writer.uint32(80).int32(message.priceType);
+    }
+    if (message.confirmMarginTrade === true) {
+      writer.uint32(88).bool(message.confirmMarginTrade);
     }
     return writer;
   },
@@ -1474,6 +1511,13 @@ export const PostOrderRequest = {
 
           message.priceType = reader.int32() as any;
           continue;
+        case 11:
+          if (tag !== 88) {
+            break;
+          }
+
+          message.confirmMarginTrade = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1495,6 +1539,7 @@ export const PostOrderRequest = {
       instrumentId: isSet(object.instrumentId) ? globalThis.String(object.instrumentId) : "",
       timeInForce: isSet(object.timeInForce) ? timeInForceTypeFromJSON(object.timeInForce) : 0,
       priceType: isSet(object.priceType) ? priceTypeFromJSON(object.priceType) : 0,
+      confirmMarginTrade: isSet(object.confirmMarginTrade) ? globalThis.Boolean(object.confirmMarginTrade) : false,
     };
   },
 
@@ -1530,6 +1575,9 @@ export const PostOrderRequest = {
     if (message.priceType !== 0) {
       obj.priceType = priceTypeToJSON(message.priceType);
     }
+    if (message.confirmMarginTrade === true) {
+      obj.confirmMarginTrade = message.confirmMarginTrade;
+    }
     return obj;
   },
 };
@@ -1553,6 +1601,8 @@ function createBasePostOrderResponse(): PostOrderResponse {
     message: "",
     initialOrderPricePt: undefined,
     instrumentUid: "",
+    ticker: "",
+    classCode: "",
     orderRequestId: "",
     responseMetadata: undefined,
   };
@@ -1610,6 +1660,12 @@ export const PostOrderResponse = {
     }
     if (message.instrumentUid !== "") {
       writer.uint32(138).string(message.instrumentUid);
+    }
+    if (message.ticker !== "") {
+      writer.uint32(146).string(message.ticker);
+    }
+    if (message.classCode !== "") {
+      writer.uint32(154).string(message.classCode);
     }
     if (message.orderRequestId !== "") {
       writer.uint32(162).string(message.orderRequestId);
@@ -1746,6 +1802,20 @@ export const PostOrderResponse = {
 
           message.instrumentUid = reader.string();
           continue;
+        case 18:
+          if (tag !== 146) {
+            break;
+          }
+
+          message.ticker = reader.string();
+          continue;
+        case 19:
+          if (tag !== 154) {
+            break;
+          }
+
+          message.classCode = reader.string();
+          continue;
         case 20:
           if (tag !== 162) {
             break;
@@ -1794,6 +1864,8 @@ export const PostOrderResponse = {
         ? Quotation.fromJSON(object.initialOrderPricePt)
         : undefined,
       instrumentUid: isSet(object.instrumentUid) ? globalThis.String(object.instrumentUid) : "",
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
       orderRequestId: isSet(object.orderRequestId) ? globalThis.String(object.orderRequestId) : "",
       responseMetadata: isSet(object.responseMetadata) ? ResponseMetadata.fromJSON(object.responseMetadata) : undefined,
     };
@@ -1852,6 +1924,12 @@ export const PostOrderResponse = {
     if (message.instrumentUid !== "") {
       obj.instrumentUid = message.instrumentUid;
     }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
+    }
     if (message.orderRequestId !== "") {
       obj.orderRequestId = message.orderRequestId;
     }
@@ -1873,6 +1951,7 @@ function createBasePostOrderAsyncRequest(): PostOrderAsyncRequest {
     orderId: "",
     timeInForce: undefined,
     priceType: undefined,
+    confirmMarginTrade: false,
   };
 }
 
@@ -1904,6 +1983,9 @@ export const PostOrderAsyncRequest = {
     }
     if (message.priceType !== undefined) {
       writer.uint32(72).int32(message.priceType);
+    }
+    if (message.confirmMarginTrade === true) {
+      writer.uint32(80).bool(message.confirmMarginTrade);
     }
     return writer;
   },
@@ -1978,6 +2060,13 @@ export const PostOrderAsyncRequest = {
 
           message.priceType = reader.int32() as any;
           continue;
+        case 10:
+          if (tag !== 80) {
+            break;
+          }
+
+          message.confirmMarginTrade = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1998,6 +2087,7 @@ export const PostOrderAsyncRequest = {
       orderId: isSet(object.orderId) ? globalThis.String(object.orderId) : "",
       timeInForce: isSet(object.timeInForce) ? timeInForceTypeFromJSON(object.timeInForce) : undefined,
       priceType: isSet(object.priceType) ? priceTypeFromJSON(object.priceType) : undefined,
+      confirmMarginTrade: isSet(object.confirmMarginTrade) ? globalThis.Boolean(object.confirmMarginTrade) : false,
     };
   },
 
@@ -2029,6 +2119,9 @@ export const PostOrderAsyncRequest = {
     }
     if (message.priceType !== undefined) {
       obj.priceType = priceTypeToJSON(message.priceType);
+    }
+    if (message.confirmMarginTrade === true) {
+      obj.confirmMarginTrade = message.confirmMarginTrade;
     }
     return obj;
   },
@@ -2349,13 +2442,16 @@ export const GetOrderStateRequest = {
 };
 
 function createBaseGetOrdersRequest(): GetOrdersRequest {
-  return { accountId: "" };
+  return { accountId: "", advancedFilters: undefined };
 }
 
 export const GetOrdersRequest = {
   encode(message: GetOrdersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.accountId !== "") {
       writer.uint32(10).string(message.accountId);
+    }
+    if (message.advancedFilters !== undefined) {
+      GetOrdersRequest_GetOrdersRequestFilters.encode(message.advancedFilters, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -2374,6 +2470,13 @@ export const GetOrdersRequest = {
 
           message.accountId = reader.string();
           continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.advancedFilters = GetOrdersRequest_GetOrdersRequestFilters.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2384,13 +2487,113 @@ export const GetOrdersRequest = {
   },
 
   fromJSON(object: any): GetOrdersRequest {
-    return { accountId: isSet(object.accountId) ? globalThis.String(object.accountId) : "" };
+    return {
+      accountId: isSet(object.accountId) ? globalThis.String(object.accountId) : "",
+      advancedFilters: isSet(object.advancedFilters)
+        ? GetOrdersRequest_GetOrdersRequestFilters.fromJSON(object.advancedFilters)
+        : undefined,
+    };
   },
 
   toJSON(message: GetOrdersRequest): unknown {
     const obj: any = {};
     if (message.accountId !== "") {
       obj.accountId = message.accountId;
+    }
+    if (message.advancedFilters !== undefined) {
+      obj.advancedFilters = GetOrdersRequest_GetOrdersRequestFilters.toJSON(message.advancedFilters);
+    }
+    return obj;
+  },
+};
+
+function createBaseGetOrdersRequest_GetOrdersRequestFilters(): GetOrdersRequest_GetOrdersRequestFilters {
+  return { from: undefined, to: undefined, executionStatus: [] };
+}
+
+export const GetOrdersRequest_GetOrdersRequestFilters = {
+  encode(message: GetOrdersRequest_GetOrdersRequestFilters, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.from !== undefined) {
+      Timestamp.encode(toTimestamp(message.from), writer.uint32(10).fork()).ldelim();
+    }
+    if (message.to !== undefined) {
+      Timestamp.encode(toTimestamp(message.to), writer.uint32(18).fork()).ldelim();
+    }
+    writer.uint32(26).fork();
+    for (const v of message.executionStatus) {
+      writer.int32(v);
+    }
+    writer.ldelim();
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetOrdersRequest_GetOrdersRequestFilters {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetOrdersRequest_GetOrdersRequestFilters();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.from = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.to = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 3:
+          if (tag === 24) {
+            message.executionStatus.push(reader.int32() as any);
+
+            continue;
+          }
+
+          if (tag === 26) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.executionStatus.push(reader.int32() as any);
+            }
+
+            continue;
+          }
+
+          break;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetOrdersRequest_GetOrdersRequestFilters {
+    return {
+      from: isSet(object.from) ? fromJsonTimestamp(object.from) : undefined,
+      to: isSet(object.to) ? fromJsonTimestamp(object.to) : undefined,
+      executionStatus: globalThis.Array.isArray(object?.executionStatus)
+        ? object.executionStatus.map((e: any) => orderExecutionReportStatusFromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetOrdersRequest_GetOrdersRequestFilters): unknown {
+    const obj: any = {};
+    if (message.from !== undefined) {
+      obj.from = message.from.toISOString();
+    }
+    if (message.to !== undefined) {
+      obj.to = message.to.toISOString();
+    }
+    if (message.executionStatus?.length) {
+      obj.executionStatus = message.executionStatus.map((e) => orderExecutionReportStatusToJSON(e));
     }
     return obj;
   },
@@ -2468,6 +2671,8 @@ function createBaseOrderState(): OrderState {
     orderDate: undefined,
     instrumentUid: "",
     orderRequestId: "",
+    ticker: "",
+    classCode: "",
   };
 }
 
@@ -2532,6 +2737,12 @@ export const OrderState = {
     }
     if (message.orderRequestId !== "") {
       writer.uint32(162).string(message.orderRequestId);
+    }
+    if (message.ticker !== "") {
+      writer.uint32(170).string(message.ticker);
+    }
+    if (message.classCode !== "") {
+      writer.uint32(178).string(message.classCode);
     }
     return writer;
   },
@@ -2683,6 +2894,20 @@ export const OrderState = {
 
           message.orderRequestId = reader.string();
           continue;
+        case 21:
+          if (tag !== 170) {
+            break;
+          }
+
+          message.ticker = reader.string();
+          continue;
+        case 22:
+          if (tag !== 178) {
+            break;
+          }
+
+          message.classCode = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2720,6 +2945,8 @@ export const OrderState = {
       orderDate: isSet(object.orderDate) ? fromJsonTimestamp(object.orderDate) : undefined,
       instrumentUid: isSet(object.instrumentUid) ? globalThis.String(object.instrumentUid) : "",
       orderRequestId: isSet(object.orderRequestId) ? globalThis.String(object.orderRequestId) : "",
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
     };
   },
 
@@ -2784,6 +3011,12 @@ export const OrderState = {
     }
     if (message.orderRequestId !== "") {
       obj.orderRequestId = message.orderRequestId;
+    }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
     }
     return obj;
   },
@@ -2882,7 +3115,15 @@ export const OrderStage = {
 };
 
 function createBaseReplaceOrderRequest(): ReplaceOrderRequest {
-  return { accountId: "", orderId: "", idempotencyKey: "", quantity: 0, price: undefined, priceType: undefined };
+  return {
+    accountId: "",
+    orderId: "",
+    idempotencyKey: "",
+    quantity: 0,
+    price: undefined,
+    priceType: undefined,
+    confirmMarginTrade: false,
+  };
 }
 
 export const ReplaceOrderRequest = {
@@ -2904,6 +3145,9 @@ export const ReplaceOrderRequest = {
     }
     if (message.priceType !== undefined) {
       writer.uint32(104).int32(message.priceType);
+    }
+    if (message.confirmMarginTrade === true) {
+      writer.uint32(112).bool(message.confirmMarginTrade);
     }
     return writer;
   },
@@ -2957,6 +3201,13 @@ export const ReplaceOrderRequest = {
 
           message.priceType = reader.int32() as any;
           continue;
+        case 14:
+          if (tag !== 112) {
+            break;
+          }
+
+          message.confirmMarginTrade = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2974,6 +3225,7 @@ export const ReplaceOrderRequest = {
       quantity: isSet(object.quantity) ? globalThis.Number(object.quantity) : 0,
       price: isSet(object.price) ? Quotation.fromJSON(object.price) : undefined,
       priceType: isSet(object.priceType) ? priceTypeFromJSON(object.priceType) : undefined,
+      confirmMarginTrade: isSet(object.confirmMarginTrade) ? globalThis.Boolean(object.confirmMarginTrade) : false,
     };
   },
 
@@ -2996,6 +3248,9 @@ export const ReplaceOrderRequest = {
     }
     if (message.priceType !== undefined) {
       obj.priceType = priceTypeToJSON(message.priceType);
+    }
+    if (message.confirmMarginTrade === true) {
+      obj.confirmMarginTrade = message.confirmMarginTrade;
     }
     return obj;
   },
@@ -3718,7 +3973,7 @@ export const GetOrderPriceResponse_ExtraFuture = {
 };
 
 function createBaseOrderStateStreamRequest(): OrderStateStreamRequest {
-  return { accounts: [], pingDelayMs: undefined };
+  return { accounts: [], pingDelayMillis: undefined };
 }
 
 export const OrderStateStreamRequest = {
@@ -3726,8 +3981,8 @@ export const OrderStateStreamRequest = {
     for (const v of message.accounts) {
       writer.uint32(10).string(v!);
     }
-    if (message.pingDelayMs !== undefined) {
-      writer.uint32(120).int32(message.pingDelayMs);
+    if (message.pingDelayMillis !== undefined) {
+      writer.uint32(120).int32(message.pingDelayMillis);
     }
     return writer;
   },
@@ -3751,7 +4006,7 @@ export const OrderStateStreamRequest = {
             break;
           }
 
-          message.pingDelayMs = reader.int32();
+          message.pingDelayMillis = reader.int32();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -3765,7 +4020,7 @@ export const OrderStateStreamRequest = {
   fromJSON(object: any): OrderStateStreamRequest {
     return {
       accounts: globalThis.Array.isArray(object?.accounts) ? object.accounts.map((e: any) => globalThis.String(e)) : [],
-      pingDelayMs: isSet(object.pingDelayMs) ? globalThis.Number(object.pingDelayMs) : undefined,
+      pingDelayMillis: isSet(object.pingDelayMillis) ? globalThis.Number(object.pingDelayMillis) : undefined,
     };
   },
 
@@ -3774,8 +4029,8 @@ export const OrderStateStreamRequest = {
     if (message.accounts?.length) {
       obj.accounts = message.accounts;
     }
-    if (message.pingDelayMs !== undefined) {
-      obj.pingDelayMs = Math.round(message.pingDelayMs);
+    if (message.pingDelayMillis !== undefined) {
+      obj.pingDelayMillis = Math.round(message.pingDelayMillis);
     }
     return obj;
   },
@@ -4418,7 +4673,7 @@ export const OrdersStreamServiceDefinition = {
   name: "OrdersStreamService",
   fullName: "tinkoff.public.invest.api.contract.v1.OrdersStreamService",
   methods: {
-    /** Stream сделок пользователя */
+    /** TradesStream — стрим сделок пользователя */
     tradesStream: {
       name: "TradesStream",
       requestType: TradesStreamRequest,
@@ -4427,7 +4682,10 @@ export const OrdersStreamServiceDefinition = {
       responseStream: true,
       options: {},
     },
-    /** Stream поручений пользователя. Перед работой прочитайте [статью](https://russianinvestments.github.io/investAPI/orders_state_stream/). */
+    /**
+     * OrderStateStream — стрим поручений пользователя
+     * Перед работой прочитайте [статью](/invest/services/orders/orders_state_stream).
+     */
     orderStateStream: {
       name: "OrderStateStream",
       requestType: OrderStateStreamRequest,
@@ -4440,12 +4698,15 @@ export const OrdersStreamServiceDefinition = {
 } as const;
 
 export interface OrdersStreamServiceImplementation<CallContextExt = {}> {
-  /** Stream сделок пользователя */
+  /** TradesStream — стрим сделок пользователя */
   tradesStream(
     request: TradesStreamRequest,
     context: CallContext & CallContextExt,
   ): ServerStreamingMethodResult<TradesStreamResponse>;
-  /** Stream поручений пользователя. Перед работой прочитайте [статью](https://russianinvestments.github.io/investAPI/orders_state_stream/). */
+  /**
+   * OrderStateStream — стрим поручений пользователя
+   * Перед работой прочитайте [статью](/invest/services/orders/orders_state_stream).
+   */
   orderStateStream(
     request: OrderStateStreamRequest,
     context: CallContext & CallContextExt,
@@ -4453,12 +4714,15 @@ export interface OrdersStreamServiceImplementation<CallContextExt = {}> {
 }
 
 export interface OrdersStreamServiceClient<CallOptionsExt = {}> {
-  /** Stream сделок пользователя */
+  /** TradesStream — стрим сделок пользователя */
   tradesStream(
     request: TradesStreamRequest,
     options?: CallOptions & CallOptionsExt,
   ): AsyncIterable<TradesStreamResponse>;
-  /** Stream поручений пользователя. Перед работой прочитайте [статью](https://russianinvestments.github.io/investAPI/orders_state_stream/). */
+  /**
+   * OrderStateStream — стрим поручений пользователя
+   * Перед работой прочитайте [статью](/invest/services/orders/orders_state_stream).
+   */
   orderStateStream(
     request: OrderStateStreamRequest,
     options?: CallOptions & CallOptionsExt,
@@ -4466,16 +4730,16 @@ export interface OrdersStreamServiceClient<CallOptionsExt = {}> {
 }
 
 /**
- * Сервис предназначен для работы с торговыми поручениями:</br> **1**.
- * выставление;</br> **2**. отмена;</br> **3**. получение статуса;</br> **4**.
- * расчёт полной стоимости;</br> **5**. получение списка заявок.
+ * Сервис предназначен для работы с торговыми поручениями:<br/> **1**.
+ * выставление;<br/> **2**. отмена;<br/> **3**. получение статуса;<br/> **4**.
+ * расчет полной стоимости;<br/> **5**. получение списка заявок.
  */
 export type OrdersServiceDefinition = typeof OrdersServiceDefinition;
 export const OrdersServiceDefinition = {
   name: "OrdersService",
   fullName: "tinkoff.public.invest.api.contract.v1.OrdersService",
   methods: {
-    /** Метод выставления заявки. */
+    /** PostOrder — выставить заявку */
     postOrder: {
       name: "PostOrder",
       requestType: PostOrderRequest,
@@ -4484,7 +4748,10 @@ export const OrdersServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Асинхронный метод выставления заявки. */
+    /**
+     * PostOrderAsync — выставить заявку асинхронным методом
+     * Особенности работы приведены в [статье](/invest/services/orders/async).
+     */
     postOrderAsync: {
       name: "PostOrderAsync",
       requestType: PostOrderAsyncRequest,
@@ -4493,7 +4760,7 @@ export const OrdersServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Метод отмены биржевой заявки. */
+    /** CancelOrder — отменить заявку */
     cancelOrder: {
       name: "CancelOrder",
       requestType: CancelOrderRequest,
@@ -4502,7 +4769,7 @@ export const OrdersServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Метод получения статуса торгового поручения. */
+    /** GetOrderState — получить статус торгового поручения */
     getOrderState: {
       name: "GetOrderState",
       requestType: GetOrderStateRequest,
@@ -4511,7 +4778,7 @@ export const OrdersServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Метод получения списка активных заявок по счёту. */
+    /** GetOrders — получить список активных заявок по счету */
     getOrders: {
       name: "GetOrders",
       requestType: GetOrdersRequest,
@@ -4520,7 +4787,7 @@ export const OrdersServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Метод изменения выставленной заявки. */
+    /** ReplaceOrder — изменить выставленную заявку */
     replaceOrder: {
       name: "ReplaceOrder",
       requestType: ReplaceOrderRequest,
@@ -4529,7 +4796,7 @@ export const OrdersServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** расчет количества доступных для покупки/продажи лотов */
+    /** GetMaxLots — расчет количества доступных для покупки/продажи лотов */
     getMaxLots: {
       name: "GetMaxLots",
       requestType: GetMaxLotsRequest,
@@ -4538,7 +4805,7 @@ export const OrdersServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Метод получения предварительной стоимости для лимитной заявки */
+    /** GetOrderPrice — получить предварительную стоимость для лимитной заявки */
     getOrderPrice: {
       name: "GetOrderPrice",
       requestType: GetOrderPriceRequest,
@@ -4551,46 +4818,52 @@ export const OrdersServiceDefinition = {
 } as const;
 
 export interface OrdersServiceImplementation<CallContextExt = {}> {
-  /** Метод выставления заявки. */
+  /** PostOrder — выставить заявку */
   postOrder(request: PostOrderRequest, context: CallContext & CallContextExt): Promise<PostOrderResponse>;
-  /** Асинхронный метод выставления заявки. */
+  /**
+   * PostOrderAsync — выставить заявку асинхронным методом
+   * Особенности работы приведены в [статье](/invest/services/orders/async).
+   */
   postOrderAsync(
     request: PostOrderAsyncRequest,
     context: CallContext & CallContextExt,
   ): Promise<PostOrderAsyncResponse>;
-  /** Метод отмены биржевой заявки. */
+  /** CancelOrder — отменить заявку */
   cancelOrder(request: CancelOrderRequest, context: CallContext & CallContextExt): Promise<CancelOrderResponse>;
-  /** Метод получения статуса торгового поручения. */
+  /** GetOrderState — получить статус торгового поручения */
   getOrderState(request: GetOrderStateRequest, context: CallContext & CallContextExt): Promise<OrderState>;
-  /** Метод получения списка активных заявок по счёту. */
+  /** GetOrders — получить список активных заявок по счету */
   getOrders(request: GetOrdersRequest, context: CallContext & CallContextExt): Promise<GetOrdersResponse>;
-  /** Метод изменения выставленной заявки. */
+  /** ReplaceOrder — изменить выставленную заявку */
   replaceOrder(request: ReplaceOrderRequest, context: CallContext & CallContextExt): Promise<PostOrderResponse>;
-  /** расчет количества доступных для покупки/продажи лотов */
+  /** GetMaxLots — расчет количества доступных для покупки/продажи лотов */
   getMaxLots(request: GetMaxLotsRequest, context: CallContext & CallContextExt): Promise<GetMaxLotsResponse>;
-  /** Метод получения предварительной стоимости для лимитной заявки */
+  /** GetOrderPrice — получить предварительную стоимость для лимитной заявки */
   getOrderPrice(request: GetOrderPriceRequest, context: CallContext & CallContextExt): Promise<GetOrderPriceResponse>;
 }
 
 export interface OrdersServiceClient<CallOptionsExt = {}> {
-  /** Метод выставления заявки. */
+  /** PostOrder — выставить заявку */
   postOrder(request: PostOrderRequest, options?: CallOptions & CallOptionsExt): Promise<PostOrderResponse>;
-  /** Асинхронный метод выставления заявки. */
+  /**
+   * PostOrderAsync — выставить заявку асинхронным методом
+   * Особенности работы приведены в [статье](/invest/services/orders/async).
+   */
   postOrderAsync(
     request: PostOrderAsyncRequest,
     options?: CallOptions & CallOptionsExt,
   ): Promise<PostOrderAsyncResponse>;
-  /** Метод отмены биржевой заявки. */
+  /** CancelOrder — отменить заявку */
   cancelOrder(request: CancelOrderRequest, options?: CallOptions & CallOptionsExt): Promise<CancelOrderResponse>;
-  /** Метод получения статуса торгового поручения. */
+  /** GetOrderState — получить статус торгового поручения */
   getOrderState(request: GetOrderStateRequest, options?: CallOptions & CallOptionsExt): Promise<OrderState>;
-  /** Метод получения списка активных заявок по счёту. */
+  /** GetOrders — получить список активных заявок по счету */
   getOrders(request: GetOrdersRequest, options?: CallOptions & CallOptionsExt): Promise<GetOrdersResponse>;
-  /** Метод изменения выставленной заявки. */
+  /** ReplaceOrder — изменить выставленную заявку */
   replaceOrder(request: ReplaceOrderRequest, options?: CallOptions & CallOptionsExt): Promise<PostOrderResponse>;
-  /** расчет количества доступных для покупки/продажи лотов */
+  /** GetMaxLots — расчет количества доступных для покупки/продажи лотов */
   getMaxLots(request: GetMaxLotsRequest, options?: CallOptions & CallOptionsExt): Promise<GetMaxLotsResponse>;
-  /** Метод получения предварительной стоимости для лимитной заявки */
+  /** GetOrderPrice — получить предварительную стоимость для лимитной заявки */
   getOrderPrice(request: GetOrderPriceRequest, options?: CallOptions & CallOptionsExt): Promise<GetOrderPriceResponse>;
 }
 

@@ -17,7 +17,7 @@ export const protobufPackage = "tinkoff.public.invest.api.contract.v1";
 
 /** Статус запрашиваемых операций. */
 export enum OperationState {
-  /** OPERATION_STATE_UNSPECIFIED - Статус операции не определён. */
+  /** OPERATION_STATE_UNSPECIFIED - Статус операции не определен. */
   OPERATION_STATE_UNSPECIFIED = 0,
   /** OPERATION_STATE_EXECUTED - Исполнена частично или полностью. */
   OPERATION_STATE_EXECUTED = 1,
@@ -67,9 +67,9 @@ export function operationStateToJSON(object: OperationState): string {
 
 /** Тип операции. */
 export enum OperationType {
-  /** OPERATION_TYPE_UNSPECIFIED - Тип операции не определён. */
+  /** OPERATION_TYPE_UNSPECIFIED - Тип операции не определен. */
   OPERATION_TYPE_UNSPECIFIED = 0,
-  /** OPERATION_TYPE_INPUT - Пополнение брокерского счёта. */
+  /** OPERATION_TYPE_INPUT - Пополнение брокерского счета. */
   OPERATION_TYPE_INPUT = 1,
   /** OPERATION_TYPE_BOND_TAX - Удержание НДФЛ по купонам. */
   OPERATION_TYPE_BOND_TAX = 2,
@@ -91,7 +91,7 @@ export enum OperationType {
   OPERATION_TYPE_BOND_REPAYMENT = 10,
   /** OPERATION_TYPE_TAX_CORRECTION - Корректировка налога. */
   OPERATION_TYPE_TAX_CORRECTION = 11,
-  /** OPERATION_TYPE_SERVICE_FEE - Удержание комиссии за обслуживание брокерского счёта. */
+  /** OPERATION_TYPE_SERVICE_FEE - Удержание комиссии за обслуживание брокерского счета. */
   OPERATION_TYPE_SERVICE_FEE = 12,
   /** OPERATION_TYPE_BENEFIT_TAX - Удержание налога за материальную выгоду. */
   OPERATION_TYPE_BENEFIT_TAX = 13,
@@ -127,9 +127,9 @@ export enum OperationType {
   OPERATION_TYPE_DELIVERY_BUY = 28,
   /** OPERATION_TYPE_DELIVERY_SELL - Продажа в рамках экспирации фьючерсного контракта. */
   OPERATION_TYPE_DELIVERY_SELL = 29,
-  /** OPERATION_TYPE_TRACK_MFEE - Комиссия за управление по счёту автоследования. */
+  /** OPERATION_TYPE_TRACK_MFEE - Комиссия за управление по счету автоследования. */
   OPERATION_TYPE_TRACK_MFEE = 30,
-  /** OPERATION_TYPE_TRACK_PFEE - Комиссия за результат по счёту автоследования. */
+  /** OPERATION_TYPE_TRACK_PFEE - Комиссия за результат по счету автоследования. */
   OPERATION_TYPE_TRACK_PFEE = 31,
   /** OPERATION_TYPE_TAX_PROGRESSIVE - Удержание налога по ставке 15%. */
   OPERATION_TYPE_TAX_PROGRESSIVE = 32,
@@ -159,7 +159,7 @@ export enum OperationType {
   OPERATION_TYPE_TAX_CORRECTION_COUPON = 44,
   /** OPERATION_TYPE_CASH_FEE - Комиссия за валютный остаток. */
   OPERATION_TYPE_CASH_FEE = 45,
-  /** OPERATION_TYPE_OUT_FEE - Комиссия за вывод валюты с брокерского счёта. */
+  /** OPERATION_TYPE_OUT_FEE - Комиссия за вывод валюты с брокерского счета. */
   OPERATION_TYPE_OUT_FEE = 46,
   /** OPERATION_TYPE_OUT_STAMP_DUTY - Гербовый сбор. */
   OPERATION_TYPE_OUT_STAMP_DUTY = 47,
@@ -175,13 +175,13 @@ export enum OperationType {
   OPERATION_TYPE_OUTPUT_PENALTY = 55,
   /** OPERATION_TYPE_ADVICE_FEE - Списание оплаты за сервис Советов. */
   OPERATION_TYPE_ADVICE_FEE = 56,
-  /** OPERATION_TYPE_TRANS_IIS_BS - Перевод ценных бумаг с ИИС на брокерский счёт. */
+  /** OPERATION_TYPE_TRANS_IIS_BS - Перевод ценных бумаг с ИИС на брокерский счет. */
   OPERATION_TYPE_TRANS_IIS_BS = 57,
-  /** OPERATION_TYPE_TRANS_BS_BS - Перевод ценных бумаг с одного брокерского счёта на другой. */
+  /** OPERATION_TYPE_TRANS_BS_BS - Перевод ценных бумаг с одного брокерского счета на другой. */
   OPERATION_TYPE_TRANS_BS_BS = 58,
-  /** OPERATION_TYPE_OUT_MULTI - Вывод денежных средств со счёта. */
+  /** OPERATION_TYPE_OUT_MULTI - Вывод денежных средств со счета. */
   OPERATION_TYPE_OUT_MULTI = 59,
-  /** OPERATION_TYPE_INP_MULTI - Пополнение денежных средств со счёта. */
+  /** OPERATION_TYPE_INP_MULTI - Пополнение денежных средств со счета. */
   OPERATION_TYPE_INP_MULTI = 60,
   /** OPERATION_TYPE_OVER_PLACEMENT - Размещение биржевого овернайта. */
   OPERATION_TYPE_OVER_PLACEMENT = 61,
@@ -530,11 +530,11 @@ export function operationTypeToJSON(object: OperationType): string {
 
 /** Результат подписки. */
 export enum PortfolioSubscriptionStatus {
-  /** PORTFOLIO_SUBSCRIPTION_STATUS_UNSPECIFIED - Тип не определён. */
+  /** PORTFOLIO_SUBSCRIPTION_STATUS_UNSPECIFIED - Тип не определен. */
   PORTFOLIO_SUBSCRIPTION_STATUS_UNSPECIFIED = 0,
   /** PORTFOLIO_SUBSCRIPTION_STATUS_SUCCESS - Успешно. */
   PORTFOLIO_SUBSCRIPTION_STATUS_SUCCESS = 1,
-  /** PORTFOLIO_SUBSCRIPTION_STATUS_ACCOUNT_NOT_FOUND - Счёт не найден или недостаточно прав. */
+  /** PORTFOLIO_SUBSCRIPTION_STATUS_ACCOUNT_NOT_FOUND - Счет не найден или недостаточно прав. */
   PORTFOLIO_SUBSCRIPTION_STATUS_ACCOUNT_NOT_FOUND = 2,
   /** PORTFOLIO_SUBSCRIPTION_STATUS_INTERNAL_ERROR - Произошла ошибка. */
   PORTFOLIO_SUBSCRIPTION_STATUS_INTERNAL_ERROR = 3,
@@ -580,11 +580,11 @@ export function portfolioSubscriptionStatusToJSON(object: PortfolioSubscriptionS
 
 /** Результат подписки. */
 export enum PositionsAccountSubscriptionStatus {
-  /** POSITIONS_SUBSCRIPTION_STATUS_UNSPECIFIED - Тип не определён. */
+  /** POSITIONS_SUBSCRIPTION_STATUS_UNSPECIFIED - Тип не определен. */
   POSITIONS_SUBSCRIPTION_STATUS_UNSPECIFIED = 0,
   /** POSITIONS_SUBSCRIPTION_STATUS_SUCCESS - Успешно. */
   POSITIONS_SUBSCRIPTION_STATUS_SUCCESS = 1,
-  /** POSITIONS_SUBSCRIPTION_STATUS_ACCOUNT_NOT_FOUND - Счёт не найден или недостаточно прав. */
+  /** POSITIONS_SUBSCRIPTION_STATUS_ACCOUNT_NOT_FOUND - Счет не найден или недостаточно прав. */
   POSITIONS_SUBSCRIPTION_STATUS_ACCOUNT_NOT_FOUND = 2,
   /** POSITIONS_SUBSCRIPTION_STATUS_INTERNAL_ERROR - Произошла ошибка. */
   POSITIONS_SUBSCRIPTION_STATUS_INTERNAL_ERROR = 3,
@@ -628,9 +628,9 @@ export function positionsAccountSubscriptionStatusToJSON(object: PositionsAccoun
   }
 }
 
-/** Запрос получения списка операций по счёту. */
+/** Запрос получения списка операций по счету. */
 export interface OperationsRequest {
-  /** Идентификатор счёта клиента. */
+  /** Идентификатор счета клиента. */
   accountId: string;
   /** Начало периода по UTC. */
   from?:
@@ -678,7 +678,7 @@ export interface Operation {
   quantityRest: number;
   /** FIGI-идентификатор инструмента, связанного с операцией. */
   figi: string;
-  /** Тип инструмента. Возможные значения: </br></br>`bond` — облигация; </br>`share` — акция; </br>`currency` — валюта; </br>`etf` — фонд; </br>`futures` — фьючерс. */
+  /** Тип инструмента. Возможные значения: <br/><br/>`bond` — облигация; <br/>`share` — акция; <br/>`currency` — валюта; <br/>`etf` — фонд; <br/>`futures` — фьючерс. */
   instrumentType: string;
   /** Дата и время операции в формате часовом поясе UTC. */
   date?:
@@ -714,9 +714,9 @@ export interface OperationTrade {
   price?: MoneyValue | undefined;
 }
 
-/** Запрос получения текущего портфеля по счёту. */
+/** Запрос получения текущего портфеля по счету. */
 export interface PortfolioRequest {
-  /** Идентификатор счёта пользователя. */
+  /** Идентификатор счета пользователя. */
   accountId: string;
   /** Валюта, в которой нужно рассчитать портфель. */
   currency?: PortfolioRequest_CurrencyRequest | undefined;
@@ -764,7 +764,7 @@ export function portfolioRequest_CurrencyRequestToJSON(object: PortfolioRequest_
   }
 }
 
-/** Текущий портфель по счёту. */
+/** Текущий портфель по счету. */
 export interface PortfolioResponse {
   /** Общая стоимость акций в портфеле. */
   totalAmountShares?:
@@ -792,7 +792,7 @@ export interface PortfolioResponse {
     | undefined;
   /** Список позиций портфеля. */
   positions: PortfolioPosition[];
-  /** Идентификатор счёта пользователя. */
+  /** Идентификатор счета пользователя. */
   accountId: string;
   /** Общая стоимость опционов в портфеле. */
   totalAmountOptions?:
@@ -808,21 +808,21 @@ export interface PortfolioResponse {
     | undefined;
   /** Массив виртуальных позиций портфеля. */
   virtualPositions: VirtualPortfolioPosition[];
-  /** Рассчитанная доходность портфеля за день в рублях */
+  /** Рассчитанная доходность портфеля за день в рублях. */
   dailyYield?:
     | MoneyValue
     | undefined;
-  /** Относительная доходность в день в % */
+  /** Относительная доходность в день в %. */
   dailyYieldRelative?: Quotation | undefined;
 }
 
-/** Запрос позиций портфеля по счёту. */
+/** Запрос позиций портфеля по счету. */
 export interface PositionsRequest {
-  /** Идентификатор счёта пользователя. */
+  /** Идентификатор счета пользователя. */
   accountId: string;
 }
 
-/** Список позиций по счёту. */
+/** Список позиций по счету. */
 export interface PositionsResponse {
   /** Массив валютных позиций портфеля. */
   money: MoneyValue[];
@@ -842,7 +842,7 @@ export interface PositionsResponse {
 
 /** Запрос доступного остатка для вывода. */
 export interface WithdrawLimitsRequest {
-  /** Идентификатор счёта пользователя. */
+  /** Идентификатор счета пользователя. */
   accountId: string;
 }
 
@@ -866,7 +866,7 @@ export interface PortfolioPosition {
   quantity?:
     | Quotation
     | undefined;
-  /** Средневзвешенная цена позиции. Для пересчёта возможна задержка до одной секунды. */
+  /** Средневзвешенная цена позиции. Для пересчета возможна задержка до одной секунды. */
   averagePositionPrice?:
     | MoneyValue
     | undefined;
@@ -879,7 +879,7 @@ export interface PortfolioPosition {
     | MoneyValue
     | undefined;
   /**
-   * Deprecated Средняя цена позиции в пунктах (для фьючерсов). Для пересчёта возможна задержка до одной секунды.
+   * Deprecated Средняя цена позиции в пунктах (для фьючерсов). Для пересчета возможна задержка до одной секунды.
    *
    * @deprecated
    */
@@ -890,7 +890,7 @@ export interface PortfolioPosition {
   currentPrice?:
     | MoneyValue
     | undefined;
-  /** Средняя цена позиции по методу FIFO. Для пересчёта возможна задержка до одной секунды. */
+  /** Средняя цена позиции по методу FIFO. Для пересчета возможна задержка до одной секунды. */
   averagePositionPriceFifo?:
     | MoneyValue
     | undefined;
@@ -920,8 +920,14 @@ export interface PortfolioPosition {
   expectedYieldFifo?:
     | Quotation
     | undefined;
-  /** Рассчитанная доходность портфеля за день */
-  dailyYield?: MoneyValue | undefined;
+  /** Рассчитанная доходность портфеля за день. */
+  dailyYield?:
+    | MoneyValue
+    | undefined;
+  /** Тикер инструмента. */
+  ticker: string;
+  /** Класс-код (секция торгов). */
+  classCode: string;
 }
 
 export interface VirtualPortfolioPosition {
@@ -937,7 +943,7 @@ export interface VirtualPortfolioPosition {
   quantity?:
     | Quotation
     | undefined;
-  /** Средневзвешенная цена позиции. Для пересчёта возможна задержка до одной секунды. */
+  /** Средневзвешенная цена позиции. Для пересчета возможна задержка до одной секунды. */
   averagePositionPrice?:
     | MoneyValue
     | undefined;
@@ -957,12 +963,18 @@ export interface VirtualPortfolioPosition {
   currentPrice?:
     | MoneyValue
     | undefined;
-  /** Средняя цена позиции по методу FIFO. Для пересчёта возможна задержка до одной секунды. */
+  /** Средняя цена позиции по методу FIFO. Для пересчета возможна задержка до одной секунды. */
   averagePositionPriceFifo?:
     | MoneyValue
     | undefined;
-  /** Рассчитанная доходность портфеля за день */
-  dailyYield?: MoneyValue | undefined;
+  /** Рассчитанная доходность портфеля за день. */
+  dailyYield?:
+    | MoneyValue
+    | undefined;
+  /** Тикер инструмента. */
+  ticker: string;
+  /** Класс-код (секция торгов). */
+  classCode: string;
 }
 
 /** Баланс позиции ценной бумаги. */
@@ -977,6 +989,10 @@ export interface PositionsSecurities {
   positionUid: string;
   /** Уникальный идентификатор инструмента. */
   instrumentUid: string;
+  /** Тикер инструмента. */
+  ticker: string;
+  /** Класс-код (секция торгов). */
+  classCode: string;
   /** Заблокировано на бирже. */
   exchangeBlocked: boolean;
   /** Тип инструмента. */
@@ -995,6 +1011,10 @@ export interface PositionsFutures {
   positionUid: string;
   /** Уникальный идентификатор  инструмента. */
   instrumentUid: string;
+  /** Тикер инструмента. */
+  ticker: string;
+  /** Класс-код (секция торгов). */
+  classCode: string;
 }
 
 /** Баланс опциона. */
@@ -1003,6 +1023,10 @@ export interface PositionsOptions {
   positionUid: string;
   /** Уникальный идентификатор  инструмента. */
   instrumentUid: string;
+  /** Тикер инструмента. */
+  ticker: string;
+  /** Класс-код (секция торгов). */
+  classCode: string;
   /** Количество бумаг, заблокированных выставленными заявками. */
   blocked: number;
   /** Текущий незаблокированный баланс. */
@@ -1020,7 +1044,7 @@ export interface BrokerReportResponse {
 }
 
 export interface GenerateBrokerReportRequest {
-  /** Идентификатор счёта клиента. */
+  /** Идентификатор счета клиента. */
   accountId: string;
   /** Начало периода по UTC. */
   from?:
@@ -1031,22 +1055,22 @@ export interface GenerateBrokerReportRequest {
 }
 
 export interface GenerateBrokerReportResponse {
-  /** Идентификатор задачи формирования брокерского отчёта. */
+  /** Идентификатор задачи формирования брокерского отчета. */
   taskId: string;
 }
 
 export interface GetBrokerReportRequest {
-  /** Идентификатор задачи формирования брокерского отчёта. */
+  /** Идентификатор задачи формирования брокерского отчета. */
   taskId: string;
-  /** Номер страницы отчёта, начинается с 1. Значение по умолчанию — 0. */
+  /** Номер страницы отчета, начинается с 1. Значение по умолчанию — 0. */
   page?: number | undefined;
 }
 
 export interface GetBrokerReportResponse {
   brokerReport: BrokerReport[];
-  /** Количество записей в отчёте. */
+  /** Количество записей в отчете. */
   itemsCount: number;
-  /** Количество страниц с данными отчёта, начинается с 0. */
+  /** Количество страниц с данными отчета, начинается с 0. */
   pagesCount: number;
   /** Текущая страница, начинается с 0. */
   page: number;
@@ -1071,7 +1095,7 @@ export interface BrokerReport {
   classCode: string;
   /** Вид сделки. */
   direction: string;
-  /** Сокращённое наименование актива. */
+  /** Сокращенное наименование актива. */
   name: string;
   /** Код актива. */
   ticker: string;
@@ -1111,7 +1135,7 @@ export interface BrokerReport {
     | undefined;
   /** Контрагент или брокерарокер. */
   party: string;
-  /** Дата расчётов по UTC. */
+  /** Дата расчетов по UTC. */
   clearValueDate?:
     | Date
     | undefined;
@@ -1127,65 +1151,65 @@ export interface BrokerReport {
   separateAgreementNumber: string;
   /** Дата договора. */
   separateAgreementDate: string;
-  /** Тип расчёта по сделке. */
+  /** Тип расчета по сделке. */
   deliveryType: string;
 }
 
 export interface GetDividendsForeignIssuerRequest {
-  /** Объект запроса формирования отчёта. */
+  /** Объект запроса формирования отчета. */
   generateDivForeignIssuerReport?:
     | GenerateDividendsForeignIssuerReportRequest
     | undefined;
-  /** Объект запроса сформированного отчёта. */
+  /** Объект запроса сформированного отчета. */
   getDivForeignIssuerReport?: GetDividendsForeignIssuerReportRequest | undefined;
 }
 
 export interface GetDividendsForeignIssuerResponse {
-  /** Объект результата задачи запуска формирования отчёта. */
+  /** Объект результата задачи запуска формирования отчета. */
   generateDivForeignIssuerReportResponse?:
     | GenerateDividendsForeignIssuerReportResponse
     | undefined;
-  /** Отчёт «Справка о доходах за пределами РФ». */
+  /** Отчет «Справка о доходах за пределами РФ». */
   divForeignIssuerReport?: GetDividendsForeignIssuerReportResponse | undefined;
 }
 
-/** Объект запроса формирования отчёта «Справка о доходах за пределами РФ». */
+/** Объект запроса формирования отчета «Справка о доходах за пределами РФ». */
 export interface GenerateDividendsForeignIssuerReportRequest {
-  /** Идентификатор счёта клиента. */
+  /** Идентификатор счета клиента. */
   accountId: string;
   /** Начало периода по UTC. */
   from?:
     | Date
     | undefined;
-  /** Окончание периода по UTC. Как правило, можно сформировать отчёт по дату на несколько дней меньше текущей. Начало и окончание периода должны быть в рамках одного календарного года. */
+  /** Окончание периода по UTC. Как правило, можно сформировать отчет по дату на несколько дней меньше текущей. Начало и окончание периода должны быть в рамках одного календарного года. */
   to?: Date | undefined;
 }
 
-/** Объект запроса сформированного отчёта «Справка о доходах за пределами РФ». */
+/** Объект запроса сформированного отчета «Справка о доходах за пределами РФ». */
 export interface GetDividendsForeignIssuerReportRequest {
-  /** Идентификатор задачи формирования отчёта. */
+  /** Идентификатор задачи формирования отчета. */
   taskId: string;
   /** Номер страницы отчета (начинается с 0), значение по умолчанию: 0. */
   page?: number | undefined;
 }
 
-/** Объект результата задачи запуска формирования отчёта «Справка о доходах за пределами РФ». */
+/** Объект результата задачи запуска формирования отчета «Справка о доходах за пределами РФ». */
 export interface GenerateDividendsForeignIssuerReportResponse {
-  /** Идентификатор задачи формирования отчёта. */
+  /** Идентификатор задачи формирования отчета. */
   taskId: string;
 }
 
 export interface GetDividendsForeignIssuerReportResponse {
   dividendsForeignIssuerReport: DividendsForeignIssuerReport[];
-  /** Количество записей в отчёте. */
+  /** Количество записей в отчете. */
   itemsCount: number;
-  /** Количество страниц с данными отчёта, начинается с 0. */
+  /** Количество страниц с данными отчета, начинается с 0. */
   pagesCount: number;
   /** Текущая страница, начинается с 0. */
   page: number;
 }
 
-/** Отчёт «Справка о доходах за пределами РФ». */
+/** Отчет «Справка о доходах за пределами РФ». */
 export interface DividendsForeignIssuerReport {
   /** Дата фиксации реестра. */
   recordDate?:
@@ -1207,7 +1231,7 @@ export interface DividendsForeignIssuerReport {
   dividend?:
     | Quotation
     | undefined;
-  /** Комиссия внешних платёжных агентов. */
+  /** Комиссия внешних платежных агентов. */
   externalCommission?:
     | Quotation
     | undefined;
@@ -1229,7 +1253,7 @@ export interface DividendsForeignIssuerReport {
 
 /** Запрос установки stream-соединения. */
 export interface PortfolioStreamRequest {
-  /** Массив идентификаторов счётов пользователя. */
+  /** Массив идентификаторов счетов пользователя. */
   accounts: string[];
   /** Запрос настройки пинга. */
   pingSettings?: PingDelaySettings | undefined;
@@ -1253,23 +1277,23 @@ export interface PortfolioStreamResponse {
 export interface PortfolioSubscriptionResult {
   /** Массив счетов клиента. */
   accounts: AccountSubscriptionStatus[];
-  /** Уникальный идентификатор запроса, подробнее: [tracking_id](https://russianinvestments.github.io/investAPI/grpc#tracking-id). */
+  /** Уникальный идентификатор запроса, подробнее: [tracking_id](/invest/intro/developer/protocols/grpc#tracking-id). */
   trackingId: string;
   /** Идентификатор открытого соединения */
   streamId: string;
 }
 
-/** Счёт клиента. */
+/** Счет клиента. */
 export interface AccountSubscriptionStatus {
-  /** Идентификатор счёта. */
+  /** Идентификатор счета. */
   accountId: string;
   /** Результат подписки. */
   subscriptionStatus: PortfolioSubscriptionStatus;
 }
 
-/** Запрос списка операций по счёту с пагинацией. */
+/** Запрос списка операций по счету с пагинацией. */
 export interface GetOperationsByCursorRequest {
-  /** Идентификатор счёта клиента, обязательный параметр. Остальные параметры опциональны. */
+  /** Идентификатор счета клиента, обязательный параметр. Остальные параметры опциональны. */
   accountId: string;
   /** Идентификатор инструмента — FIGI или UID инструмента. */
   instrumentId?:
@@ -1309,7 +1333,7 @@ export interface GetOperationsByCursorRequest {
   withoutOvernights?: boolean | undefined;
 }
 
-/** Список операций по счёту с пагинацией. */
+/** Список операций по счету с пагинацией. */
 export interface GetOperationsByCursorResponse {
   /** Признак, есть ли следующий элемент. */
   hasNext: boolean;
@@ -1323,7 +1347,7 @@ export interface GetOperationsByCursorResponse {
 export interface OperationItem {
   /** Курсор. */
   cursor: string;
-  /** Номер счёта клиента. */
+  /** Номер счета клиента. */
   brokerAccountId: string;
   /** Идентификатор операции, может меняться с течением времени. */
   id: string;
@@ -1351,6 +1375,10 @@ export interface OperationItem {
   instrumentKind: InstrumentType;
   /** Уникальный идентификатор позиции. */
   positionUid: string;
+  /** Тикер инструмента. */
+  ticker: string;
+  /** Класс-код (секция торгов). */
+  classCode: string;
   /** Сумма операции. */
   payment?:
     | MoneyValue
@@ -1426,7 +1454,7 @@ export interface OperationItemTrade {
 
 /** Запрос установки stream-соединения позиций. */
 export interface PositionsStreamRequest {
-  /** Массив идентификаторов счётов пользователя. */
+  /** Массив идентификаторов счетов пользователя. */
   accounts: string[];
   /** Получение состояния позиций на момент подключения. */
   withInitialPositions: boolean;
@@ -1456,15 +1484,15 @@ export interface PositionsStreamResponse {
 export interface PositionsSubscriptionResult {
   /** Массив счетов клиента. */
   accounts: PositionsSubscriptionStatus[];
-  /** Уникальный идентификатор запроса, подробнее: [tracking_id](https://russianinvestments.github.io/investAPI/grpc#tracking-id). */
+  /** Уникальный идентификатор запроса, подробнее: [tracking_id](/invest/intro/developer/protocols/grpc#tracking-id). */
   trackingId: string;
   /** Идентификатор открытого соединения */
   streamId: string;
 }
 
-/** Счёт клиента. */
+/** Счет клиента. */
 export interface PositionsSubscriptionStatus {
-  /** Идентификатор счёта. */
+  /** Идентификатор счета. */
   accountId: string;
   /** Результат подписки. */
   subscriptionStatus: PositionsAccountSubscriptionStatus;
@@ -1472,7 +1500,7 @@ export interface PositionsSubscriptionStatus {
 
 /** Данные о позиции портфеля. */
 export interface PositionData {
-  /** Идентификатор счёта. */
+  /** Идентификатор счета. */
   accountId: string;
   /** Массив валютных позиций портфеля. */
   money: PositionsMoney[];
@@ -2726,6 +2754,8 @@ function createBasePortfolioPosition(): PortfolioPosition {
     varMargin: undefined,
     expectedYieldFifo: undefined,
     dailyYield: undefined,
+    ticker: "",
+    classCode: "",
   };
 }
 
@@ -2781,6 +2811,12 @@ export const PortfolioPosition = {
     }
     if (message.dailyYield !== undefined) {
       MoneyValue.encode(message.dailyYield, writer.uint32(250).fork()).ldelim();
+    }
+    if (message.ticker !== "") {
+      writer.uint32(258).string(message.ticker);
+    }
+    if (message.classCode !== "") {
+      writer.uint32(266).string(message.classCode);
     }
     return writer;
   },
@@ -2911,6 +2947,20 @@ export const PortfolioPosition = {
 
           message.dailyYield = MoneyValue.decode(reader, reader.uint32());
           continue;
+        case 32:
+          if (tag !== 258) {
+            break;
+          }
+
+          message.ticker = reader.string();
+          continue;
+        case 33:
+          if (tag !== 266) {
+            break;
+          }
+
+          message.classCode = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2945,6 +2995,8 @@ export const PortfolioPosition = {
       varMargin: isSet(object.varMargin) ? MoneyValue.fromJSON(object.varMargin) : undefined,
       expectedYieldFifo: isSet(object.expectedYieldFifo) ? Quotation.fromJSON(object.expectedYieldFifo) : undefined,
       dailyYield: isSet(object.dailyYield) ? MoneyValue.fromJSON(object.dailyYield) : undefined,
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
     };
   },
 
@@ -3001,6 +3053,12 @@ export const PortfolioPosition = {
     if (message.dailyYield !== undefined) {
       obj.dailyYield = MoneyValue.toJSON(message.dailyYield);
     }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
+    }
     return obj;
   },
 };
@@ -3019,6 +3077,8 @@ function createBaseVirtualPortfolioPosition(): VirtualPortfolioPosition {
     currentPrice: undefined,
     averagePositionPriceFifo: undefined,
     dailyYield: undefined,
+    ticker: "",
+    classCode: "",
   };
 }
 
@@ -3059,6 +3119,12 @@ export const VirtualPortfolioPosition = {
     }
     if (message.dailyYield !== undefined) {
       MoneyValue.encode(message.dailyYield, writer.uint32(250).fork()).ldelim();
+    }
+    if (message.ticker !== "") {
+      writer.uint32(258).string(message.ticker);
+    }
+    if (message.classCode !== "") {
+      writer.uint32(266).string(message.classCode);
     }
     return writer;
   },
@@ -3154,6 +3220,20 @@ export const VirtualPortfolioPosition = {
 
           message.dailyYield = MoneyValue.decode(reader, reader.uint32());
           continue;
+        case 32:
+          if (tag !== 258) {
+            break;
+          }
+
+          message.ticker = reader.string();
+          continue;
+        case 33:
+          if (tag !== 266) {
+            break;
+          }
+
+          message.classCode = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3181,6 +3261,8 @@ export const VirtualPortfolioPosition = {
         ? MoneyValue.fromJSON(object.averagePositionPriceFifo)
         : undefined,
       dailyYield: isSet(object.dailyYield) ? MoneyValue.fromJSON(object.dailyYield) : undefined,
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
     };
   },
 
@@ -3222,6 +3304,12 @@ export const VirtualPortfolioPosition = {
     if (message.dailyYield !== undefined) {
       obj.dailyYield = MoneyValue.toJSON(message.dailyYield);
     }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
+    }
     return obj;
   },
 };
@@ -3233,6 +3321,8 @@ function createBasePositionsSecurities(): PositionsSecurities {
     balance: 0,
     positionUid: "",
     instrumentUid: "",
+    ticker: "",
+    classCode: "",
     exchangeBlocked: false,
     instrumentType: "",
   };
@@ -3254,6 +3344,12 @@ export const PositionsSecurities = {
     }
     if (message.instrumentUid !== "") {
       writer.uint32(42).string(message.instrumentUid);
+    }
+    if (message.ticker !== "") {
+      writer.uint32(50).string(message.ticker);
+    }
+    if (message.classCode !== "") {
+      writer.uint32(58).string(message.classCode);
     }
     if (message.exchangeBlocked === true) {
       writer.uint32(88).bool(message.exchangeBlocked);
@@ -3306,6 +3402,20 @@ export const PositionsSecurities = {
 
           message.instrumentUid = reader.string();
           continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.ticker = reader.string();
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.classCode = reader.string();
+          continue;
         case 11:
           if (tag !== 88) {
             break;
@@ -3336,6 +3446,8 @@ export const PositionsSecurities = {
       balance: isSet(object.balance) ? globalThis.Number(object.balance) : 0,
       positionUid: isSet(object.positionUid) ? globalThis.String(object.positionUid) : "",
       instrumentUid: isSet(object.instrumentUid) ? globalThis.String(object.instrumentUid) : "",
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
       exchangeBlocked: isSet(object.exchangeBlocked) ? globalThis.Boolean(object.exchangeBlocked) : false,
       instrumentType: isSet(object.instrumentType) ? globalThis.String(object.instrumentType) : "",
     };
@@ -3358,6 +3470,12 @@ export const PositionsSecurities = {
     if (message.instrumentUid !== "") {
       obj.instrumentUid = message.instrumentUid;
     }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
+    }
     if (message.exchangeBlocked === true) {
       obj.exchangeBlocked = message.exchangeBlocked;
     }
@@ -3369,7 +3487,7 @@ export const PositionsSecurities = {
 };
 
 function createBasePositionsFutures(): PositionsFutures {
-  return { figi: "", blocked: 0, balance: 0, positionUid: "", instrumentUid: "" };
+  return { figi: "", blocked: 0, balance: 0, positionUid: "", instrumentUid: "", ticker: "", classCode: "" };
 }
 
 export const PositionsFutures = {
@@ -3388,6 +3506,12 @@ export const PositionsFutures = {
     }
     if (message.instrumentUid !== "") {
       writer.uint32(42).string(message.instrumentUid);
+    }
+    if (message.ticker !== "") {
+      writer.uint32(50).string(message.ticker);
+    }
+    if (message.classCode !== "") {
+      writer.uint32(58).string(message.classCode);
     }
     return writer;
   },
@@ -3434,6 +3558,20 @@ export const PositionsFutures = {
 
           message.instrumentUid = reader.string();
           continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.ticker = reader.string();
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.classCode = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3450,6 +3588,8 @@ export const PositionsFutures = {
       balance: isSet(object.balance) ? globalThis.Number(object.balance) : 0,
       positionUid: isSet(object.positionUid) ? globalThis.String(object.positionUid) : "",
       instrumentUid: isSet(object.instrumentUid) ? globalThis.String(object.instrumentUid) : "",
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
     };
   },
 
@@ -3470,12 +3610,18 @@ export const PositionsFutures = {
     if (message.instrumentUid !== "") {
       obj.instrumentUid = message.instrumentUid;
     }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
+    }
     return obj;
   },
 };
 
 function createBasePositionsOptions(): PositionsOptions {
-  return { positionUid: "", instrumentUid: "", blocked: 0, balance: 0 };
+  return { positionUid: "", instrumentUid: "", ticker: "", classCode: "", blocked: 0, balance: 0 };
 }
 
 export const PositionsOptions = {
@@ -3485,6 +3631,12 @@ export const PositionsOptions = {
     }
     if (message.instrumentUid !== "") {
       writer.uint32(18).string(message.instrumentUid);
+    }
+    if (message.ticker !== "") {
+      writer.uint32(26).string(message.ticker);
+    }
+    if (message.classCode !== "") {
+      writer.uint32(34).string(message.classCode);
     }
     if (message.blocked !== 0) {
       writer.uint32(88).int64(message.blocked);
@@ -3516,6 +3668,20 @@ export const PositionsOptions = {
 
           message.instrumentUid = reader.string();
           continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.ticker = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.classCode = reader.string();
+          continue;
         case 11:
           if (tag !== 88) {
             break;
@@ -3543,6 +3709,8 @@ export const PositionsOptions = {
     return {
       positionUid: isSet(object.positionUid) ? globalThis.String(object.positionUid) : "",
       instrumentUid: isSet(object.instrumentUid) ? globalThis.String(object.instrumentUid) : "",
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
       blocked: isSet(object.blocked) ? globalThis.Number(object.blocked) : 0,
       balance: isSet(object.balance) ? globalThis.Number(object.balance) : 0,
     };
@@ -3555,6 +3723,12 @@ export const PositionsOptions = {
     }
     if (message.instrumentUid !== "") {
       obj.instrumentUid = message.instrumentUid;
+    }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
     }
     if (message.blocked !== 0) {
       obj.blocked = Math.round(message.blocked);
@@ -5688,6 +5862,8 @@ function createBaseOperationItem(): OperationItem {
     instrumentType: "",
     instrumentKind: 0,
     positionUid: "",
+    ticker: "",
+    classCode: "",
     payment: undefined,
     price: undefined,
     commission: undefined,
@@ -5748,6 +5924,12 @@ export const OperationItem = {
     }
     if (message.positionUid !== "") {
       writer.uint32(282).string(message.positionUid);
+    }
+    if (message.ticker !== "") {
+      writer.uint32(290).string(message.ticker);
+    }
+    if (message.classCode !== "") {
+      writer.uint32(298).string(message.classCode);
     }
     if (message.payment !== undefined) {
       MoneyValue.encode(message.payment, writer.uint32(330).fork()).ldelim();
@@ -5899,6 +6081,20 @@ export const OperationItem = {
 
           message.positionUid = reader.string();
           continue;
+        case 36:
+          if (tag !== 290) {
+            break;
+          }
+
+          message.ticker = reader.string();
+          continue;
+        case 37:
+          if (tag !== 298) {
+            break;
+          }
+
+          message.classCode = reader.string();
+          continue;
         case 41:
           if (tag !== 330) {
             break;
@@ -6022,6 +6218,8 @@ export const OperationItem = {
       instrumentType: isSet(object.instrumentType) ? globalThis.String(object.instrumentType) : "",
       instrumentKind: isSet(object.instrumentKind) ? instrumentTypeFromJSON(object.instrumentKind) : 0,
       positionUid: isSet(object.positionUid) ? globalThis.String(object.positionUid) : "",
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
       payment: isSet(object.payment) ? MoneyValue.fromJSON(object.payment) : undefined,
       price: isSet(object.price) ? MoneyValue.fromJSON(object.price) : undefined,
       commission: isSet(object.commission) ? MoneyValue.fromJSON(object.commission) : undefined,
@@ -6084,6 +6282,12 @@ export const OperationItem = {
     }
     if (message.positionUid !== "") {
       obj.positionUid = message.positionUid;
+    }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
     }
     if (message.payment !== undefined) {
       obj.payment = MoneyValue.toJSON(message.payment);
@@ -6880,9 +7084,9 @@ export const ChildOperationItem = {
 };
 
 /**
- * С помощью методов сервиса можно получить:</br></br> **1**. Список операций по счёту.</br> **2**.
- * Портфель по счёту.</br> **3**. Позиции ценных бумаг на счёте.</br> **4**.
- * Доступный остаток для вывода средств.</br> **5**. Различные отчёты.
+ * С помощью методов сервиса можно получить:<br/><br/> **1**. Список операций по счету.<br/> **2**.
+ * Портфель по счету.<br/> **3**. Позиции ценных бумаг на счете.<br/> **4**.
+ * Доступный остаток для вывода средств.<br/> **5**. Различные отчеты.
  */
 export type OperationsServiceDefinition = typeof OperationsServiceDefinition;
 export const OperationsServiceDefinition = {
@@ -6890,8 +7094,8 @@ export const OperationsServiceDefinition = {
   fullName: "tinkoff.public.invest.api.contract.v1.OperationsService",
   methods: {
     /**
-     * Получить список операций по счёту. При работе с методом учитывайте
-     * [особенности взаимодействия](/investAPI/operations_problems).
+     * GetOperations — список операций по счету
+     * При работе с методом учитывайте [особенности взаимодействия](/invest/services/operations/operations_problems).
      */
     getOperations: {
       name: "GetOperations",
@@ -6901,7 +7105,7 @@ export const OperationsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить портфель по счёту. */
+    /** GetPortfolio — портфель по счету */
     getPortfolio: {
       name: "GetPortfolio",
       requestType: PortfolioRequest,
@@ -6910,7 +7114,7 @@ export const OperationsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить список позиций по счёту. */
+    /** GetPositions — список позиций по счету */
     getPositions: {
       name: "GetPositions",
       requestType: PositionsRequest,
@@ -6919,7 +7123,7 @@ export const OperationsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить доступный остаток для вывода средств. */
+    /** GetWithdrawLimits — доступный остаток для вывода средств */
     getWithdrawLimits: {
       name: "GetWithdrawLimits",
       requestType: WithdrawLimitsRequest,
@@ -6928,7 +7132,7 @@ export const OperationsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить брокерский отчёт. */
+    /** GetBrokerReport — брокерский отчет. */
     getBrokerReport: {
       name: "GetBrokerReport",
       requestType: BrokerReportRequest,
@@ -6937,7 +7141,7 @@ export const OperationsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить отчёт «Справка о доходах за пределами РФ». */
+    /** GetDividendsForeignIssuer — отчет «Справка о доходах за пределами РФ» */
     getDividendsForeignIssuer: {
       name: "GetDividendsForeignIssuer",
       requestType: GetDividendsForeignIssuerRequest,
@@ -6947,8 +7151,8 @@ export const OperationsServiceDefinition = {
       options: {},
     },
     /**
-     * Получить список операций по счёту с пагинацией. При работе с методом учитывайте
-     * [особенности взаимодействия](/investAPI/operations_problems).
+     * GetOperationsByCursor — список операций по счету с пагинацией
+     * При работе с методом учитывайте [особенности взаимодействия](/invest/services/operations/operations_problems).
      */
     getOperationsByCursor: {
       name: "GetOperationsByCursor",
@@ -6963,29 +7167,29 @@ export const OperationsServiceDefinition = {
 
 export interface OperationsServiceImplementation<CallContextExt = {}> {
   /**
-   * Получить список операций по счёту. При работе с методом учитывайте
-   * [особенности взаимодействия](/investAPI/operations_problems).
+   * GetOperations — список операций по счету
+   * При работе с методом учитывайте [особенности взаимодействия](/invest/services/operations/operations_problems).
    */
   getOperations(request: OperationsRequest, context: CallContext & CallContextExt): Promise<OperationsResponse>;
-  /** Получить портфель по счёту. */
+  /** GetPortfolio — портфель по счету */
   getPortfolio(request: PortfolioRequest, context: CallContext & CallContextExt): Promise<PortfolioResponse>;
-  /** Получить список позиций по счёту. */
+  /** GetPositions — список позиций по счету */
   getPositions(request: PositionsRequest, context: CallContext & CallContextExt): Promise<PositionsResponse>;
-  /** Получить доступный остаток для вывода средств. */
+  /** GetWithdrawLimits — доступный остаток для вывода средств */
   getWithdrawLimits(
     request: WithdrawLimitsRequest,
     context: CallContext & CallContextExt,
   ): Promise<WithdrawLimitsResponse>;
-  /** Получить брокерский отчёт. */
+  /** GetBrokerReport — брокерский отчет. */
   getBrokerReport(request: BrokerReportRequest, context: CallContext & CallContextExt): Promise<BrokerReportResponse>;
-  /** Получить отчёт «Справка о доходах за пределами РФ». */
+  /** GetDividendsForeignIssuer — отчет «Справка о доходах за пределами РФ» */
   getDividendsForeignIssuer(
     request: GetDividendsForeignIssuerRequest,
     context: CallContext & CallContextExt,
   ): Promise<GetDividendsForeignIssuerResponse>;
   /**
-   * Получить список операций по счёту с пагинацией. При работе с методом учитывайте
-   * [особенности взаимодействия](/investAPI/operations_problems).
+   * GetOperationsByCursor — список операций по счету с пагинацией
+   * При работе с методом учитывайте [особенности взаимодействия](/invest/services/operations/operations_problems).
    */
   getOperationsByCursor(
     request: GetOperationsByCursorRequest,
@@ -6995,29 +7199,29 @@ export interface OperationsServiceImplementation<CallContextExt = {}> {
 
 export interface OperationsServiceClient<CallOptionsExt = {}> {
   /**
-   * Получить список операций по счёту. При работе с методом учитывайте
-   * [особенности взаимодействия](/investAPI/operations_problems).
+   * GetOperations — список операций по счету
+   * При работе с методом учитывайте [особенности взаимодействия](/invest/services/operations/operations_problems).
    */
   getOperations(request: OperationsRequest, options?: CallOptions & CallOptionsExt): Promise<OperationsResponse>;
-  /** Получить портфель по счёту. */
+  /** GetPortfolio — портфель по счету */
   getPortfolio(request: PortfolioRequest, options?: CallOptions & CallOptionsExt): Promise<PortfolioResponse>;
-  /** Получить список позиций по счёту. */
+  /** GetPositions — список позиций по счету */
   getPositions(request: PositionsRequest, options?: CallOptions & CallOptionsExt): Promise<PositionsResponse>;
-  /** Получить доступный остаток для вывода средств. */
+  /** GetWithdrawLimits — доступный остаток для вывода средств */
   getWithdrawLimits(
     request: WithdrawLimitsRequest,
     options?: CallOptions & CallOptionsExt,
   ): Promise<WithdrawLimitsResponse>;
-  /** Получить брокерский отчёт. */
+  /** GetBrokerReport — брокерский отчет. */
   getBrokerReport(request: BrokerReportRequest, options?: CallOptions & CallOptionsExt): Promise<BrokerReportResponse>;
-  /** Получить отчёт «Справка о доходах за пределами РФ». */
+  /** GetDividendsForeignIssuer — отчет «Справка о доходах за пределами РФ» */
   getDividendsForeignIssuer(
     request: GetDividendsForeignIssuerRequest,
     options?: CallOptions & CallOptionsExt,
   ): Promise<GetDividendsForeignIssuerResponse>;
   /**
-   * Получить список операций по счёту с пагинацией. При работе с методом учитывайте
-   * [особенности взаимодействия](/investAPI/operations_problems).
+   * GetOperationsByCursor — список операций по счету с пагинацией
+   * При работе с методом учитывайте [особенности взаимодействия](/invest/services/operations/operations_problems).
    */
   getOperationsByCursor(
     request: GetOperationsByCursorRequest,
@@ -7030,7 +7234,7 @@ export const OperationsStreamServiceDefinition = {
   name: "OperationsStreamService",
   fullName: "tinkoff.public.invest.api.contract.v1.OperationsStreamService",
   methods: {
-    /** Server-side stream обновлений портфеля. */
+    /** PortfolioStream — стрим обновлений портфеля */
     portfolioStream: {
       name: "PortfolioStream",
       requestType: PortfolioStreamRequest,
@@ -7039,7 +7243,7 @@ export const OperationsStreamServiceDefinition = {
       responseStream: true,
       options: {},
     },
-    /** Server-side stream обновлений информации по изменению позиций портфеля. */
+    /** PositionsStream — стрим обновлений информации по изменению позиций портфеля */
     positionsStream: {
       name: "PositionsStream",
       requestType: PositionsStreamRequest,
@@ -7052,12 +7256,12 @@ export const OperationsStreamServiceDefinition = {
 } as const;
 
 export interface OperationsStreamServiceImplementation<CallContextExt = {}> {
-  /** Server-side stream обновлений портфеля. */
+  /** PortfolioStream — стрим обновлений портфеля */
   portfolioStream(
     request: PortfolioStreamRequest,
     context: CallContext & CallContextExt,
   ): ServerStreamingMethodResult<PortfolioStreamResponse>;
-  /** Server-side stream обновлений информации по изменению позиций портфеля. */
+  /** PositionsStream — стрим обновлений информации по изменению позиций портфеля */
   positionsStream(
     request: PositionsStreamRequest,
     context: CallContext & CallContextExt,
@@ -7065,12 +7269,12 @@ export interface OperationsStreamServiceImplementation<CallContextExt = {}> {
 }
 
 export interface OperationsStreamServiceClient<CallOptionsExt = {}> {
-  /** Server-side stream обновлений портфеля. */
+  /** PortfolioStream — стрим обновлений портфеля */
   portfolioStream(
     request: PortfolioStreamRequest,
     options?: CallOptions & CallOptionsExt,
   ): AsyncIterable<PortfolioStreamResponse>;
-  /** Server-side stream обновлений информации по изменению позиций портфеля. */
+  /** PositionsStream — стрим обновлений информации по изменению позиций портфеля */
   positionsStream(
     request: PositionsStreamRequest,
     options?: CallOptions & CallOptionsExt,

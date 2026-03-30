@@ -20,7 +20,7 @@ export const protobufPackage = "tinkoff.public.invest.api.contract.v1";
 
 /** Тип операции со списком подписок. */
 export enum SubscriptionAction {
-  /** SUBSCRIPTION_ACTION_UNSPECIFIED - Статус подписки не определён. */
+  /** SUBSCRIPTION_ACTION_UNSPECIFIED - Статус подписки не определен. */
   SUBSCRIPTION_ACTION_UNSPECIFIED = 0,
   /** SUBSCRIPTION_ACTION_SUBSCRIBE - Подписаться. */
   SUBSCRIPTION_ACTION_SUBSCRIBE = 1,
@@ -63,7 +63,7 @@ export function subscriptionActionToJSON(object: SubscriptionAction): string {
 
 /** Интервал свечи. */
 export enum SubscriptionInterval {
-  /** SUBSCRIPTION_INTERVAL_UNSPECIFIED - Интервал свечи не определён. */
+  /** SUBSCRIPTION_INTERVAL_UNSPECIFIED - Интервал свечи не определен. */
   SUBSCRIPTION_INTERVAL_UNSPECIFIED = 0,
   /** SUBSCRIPTION_INTERVAL_ONE_MINUTE - Минутные свечи. */
   SUBSCRIPTION_INTERVAL_ONE_MINUTE = 1,
@@ -77,7 +77,7 @@ export enum SubscriptionInterval {
   SUBSCRIPTION_INTERVAL_ONE_DAY = 5,
   /** SUBSCRIPTION_INTERVAL_2_MIN - Двухминутные свечи. */
   SUBSCRIPTION_INTERVAL_2_MIN = 6,
-  /** SUBSCRIPTION_INTERVAL_3_MIN - Трёхминутные свечи. */
+  /** SUBSCRIPTION_INTERVAL_3_MIN - Трехминутные свечи. */
   SUBSCRIPTION_INTERVAL_3_MIN = 7,
   /** SUBSCRIPTION_INTERVAL_10_MIN - Десятиминутные свечи. */
   SUBSCRIPTION_INTERVAL_10_MIN = 8,
@@ -85,7 +85,7 @@ export enum SubscriptionInterval {
   SUBSCRIPTION_INTERVAL_30_MIN = 9,
   /** SUBSCRIPTION_INTERVAL_2_HOUR - Двухчасовые свечи. */
   SUBSCRIPTION_INTERVAL_2_HOUR = 10,
-  /** SUBSCRIPTION_INTERVAL_4_HOUR - Четырёхчасовые свечи. */
+  /** SUBSCRIPTION_INTERVAL_4_HOUR - Четырехчасовые свечи. */
   SUBSCRIPTION_INTERVAL_4_HOUR = 11,
   /** SUBSCRIPTION_INTERVAL_WEEK - Недельные свечи. */
   SUBSCRIPTION_INTERVAL_WEEK = 12,
@@ -183,19 +183,19 @@ export function subscriptionIntervalToJSON(object: SubscriptionInterval): string
 
 /** Результат подписки. */
 export enum SubscriptionStatus {
-  /** SUBSCRIPTION_STATUS_UNSPECIFIED - Статус подписки не определён. */
+  /** SUBSCRIPTION_STATUS_UNSPECIFIED - Статус подписки не определен. */
   SUBSCRIPTION_STATUS_UNSPECIFIED = 0,
   /** SUBSCRIPTION_STATUS_SUCCESS - Успешно. */
   SUBSCRIPTION_STATUS_SUCCESS = 1,
   /** SUBSCRIPTION_STATUS_INSTRUMENT_NOT_FOUND - Инструмент не найден. */
   SUBSCRIPTION_STATUS_INSTRUMENT_NOT_FOUND = 2,
-  /** SUBSCRIPTION_STATUS_SUBSCRIPTION_ACTION_IS_INVALID - Некорректный статус подписки. [Список возможных значений](https://russianinvestments.github.io/investAPI/marketdata#subscriptionaction). */
+  /** SUBSCRIPTION_STATUS_SUBSCRIPTION_ACTION_IS_INVALID - Некорректный статус подписки. [Список возможных значений](./marketdata#subscriptionaction). */
   SUBSCRIPTION_STATUS_SUBSCRIPTION_ACTION_IS_INVALID = 3,
   /** SUBSCRIPTION_STATUS_DEPTH_IS_INVALID - Некорректная глубина стакана. Доступные значения — 1, 10, 20, 30, 40, 50. */
   SUBSCRIPTION_STATUS_DEPTH_IS_INVALID = 4,
-  /** SUBSCRIPTION_STATUS_INTERVAL_IS_INVALID - Некорректный интервал свечей. [Список возможных значений](https://russianinvestments.github.io/investAPI/marketdata#subscriptioninterval). */
+  /** SUBSCRIPTION_STATUS_INTERVAL_IS_INVALID - Некорректный интервал свечей. [Список возможных значений](./marketdata#subscriptioninterval). */
   SUBSCRIPTION_STATUS_INTERVAL_IS_INVALID = 5,
-  /** SUBSCRIPTION_STATUS_LIMIT_IS_EXCEEDED - Превышен лимит на общее количество подписок в рамках стрима. [Лимитная политика](https://russianinvestments.github.io/investAPI/limits/). */
+  /** SUBSCRIPTION_STATUS_LIMIT_IS_EXCEEDED - Превышен лимит на общее количество подписок в рамках стрима. [Лимитная политика](./limits/). */
   SUBSCRIPTION_STATUS_LIMIT_IS_EXCEEDED = 6,
   /** SUBSCRIPTION_STATUS_INTERNAL_ERROR - Внутренняя ошибка сервиса. */
   SUBSCRIPTION_STATUS_INTERNAL_ERROR = 7,
@@ -203,7 +203,7 @@ export enum SubscriptionStatus {
   SUBSCRIPTION_STATUS_TOO_MANY_REQUESTS = 8,
   /** SUBSCRIPTION_STATUS_SUBSCRIPTION_NOT_FOUND - Активная подписка не найдена. Ошибка может возникнуть только при отписке от несуществующей подписки. */
   SUBSCRIPTION_STATUS_SUBSCRIPTION_NOT_FOUND = 9,
-  /** SUBSCRIPTION_STATUS_SOURCE_IS_INVALID - Указан некорректный источник */
+  /** SUBSCRIPTION_STATUS_SOURCE_IS_INVALID - Указан некорректный источник. */
   SUBSCRIPTION_STATUS_SOURCE_IS_INVALID = 10,
   UNRECOGNIZED = -1,
 }
@@ -375,34 +375,40 @@ export function tradeDirectionToJSON(object: TradeDirection): string {
 
 /** Интервал свечей. Максимальное значение интервала приведено ориентировочно, может отличаться в большую сторону в зависимости от параметров запроса. */
 export enum CandleInterval {
-  /** CANDLE_INTERVAL_UNSPECIFIED - Интервал не определён. */
+  /** CANDLE_INTERVAL_UNSPECIFIED - Интервал не определен. */
   CANDLE_INTERVAL_UNSPECIFIED = 0,
-  /** CANDLE_INTERVAL_1_MIN - От 1 минуты до 1 дня (лимит 2400). */
+  /** CANDLE_INTERVAL_1_MIN - От 1 минуты до 1 дня. Максимальное значение `limit` — 2400. */
   CANDLE_INTERVAL_1_MIN = 1,
-  /** CANDLE_INTERVAL_5_MIN - От 5 минут до недели (лимит 2400). */
+  /** CANDLE_INTERVAL_5_MIN - От 5 минут до недели. Максимальное значение `limit` — 2400. */
   CANDLE_INTERVAL_5_MIN = 2,
-  /** CANDLE_INTERVAL_15_MIN - От 15 минут до 3 недель (лимит 2400). */
+  /** CANDLE_INTERVAL_15_MIN - От 15 минут до 3 недель. Максимальное значение `limit` — 2400. */
   CANDLE_INTERVAL_15_MIN = 3,
-  /** CANDLE_INTERVAL_HOUR - От 1 часа до 3 месяцев (лимит 2400). */
+  /** CANDLE_INTERVAL_HOUR - От 1 часа до 3 месяцев. Максимальное значение `limit` — 2400. */
   CANDLE_INTERVAL_HOUR = 4,
-  /** CANDLE_INTERVAL_DAY - От 1 дня до 6 лет (лимит 2400). */
+  /** CANDLE_INTERVAL_DAY - От 1 дня до 6 лет. Максимальное значение `limit` — 2400. */
   CANDLE_INTERVAL_DAY = 5,
-  /** CANDLE_INTERVAL_2_MIN - От 2 минут до 1 дня (лимит 1200). */
+  /** CANDLE_INTERVAL_2_MIN - От 2 минут до 1 дня. Максимальное значение `limit` — 1200. */
   CANDLE_INTERVAL_2_MIN = 6,
-  /** CANDLE_INTERVAL_3_MIN - От 3 минут до 1 дня (лимит 750). */
+  /** CANDLE_INTERVAL_3_MIN - От 3 минут до 1 дня. Максимальное значение `limit` — 750. */
   CANDLE_INTERVAL_3_MIN = 7,
-  /** CANDLE_INTERVAL_10_MIN - От 10 минут до недели (лимит 1200). */
+  /** CANDLE_INTERVAL_10_MIN - От 10 минут до недели. Максимальное значение `limit` — 1200. */
   CANDLE_INTERVAL_10_MIN = 8,
-  /** CANDLE_INTERVAL_30_MIN - От 30 минут до 3 недель (лимит 1200). */
+  /** CANDLE_INTERVAL_30_MIN - От 30 минут до 3 недель. Максимальное значение `limit` — 1200. */
   CANDLE_INTERVAL_30_MIN = 9,
-  /** CANDLE_INTERVAL_2_HOUR - От 2 часов до 3 месяцев (лимит 2400). */
+  /** CANDLE_INTERVAL_2_HOUR - От 2 часов до 3 месяцев. Максимальное значение `limit` — 2400. */
   CANDLE_INTERVAL_2_HOUR = 10,
-  /** CANDLE_INTERVAL_4_HOUR - От 4 часов до 3 месяцев (лимит 700). */
+  /** CANDLE_INTERVAL_4_HOUR - От 4 часов до 3 месяцев. Максимальное значение `limit` — 700. */
   CANDLE_INTERVAL_4_HOUR = 11,
-  /** CANDLE_INTERVAL_WEEK - От 1 недели до 5 лет (лимит 300). */
+  /** CANDLE_INTERVAL_WEEK - От 1 недели до 5 лет. Максимальное значение `limit` — 300. */
   CANDLE_INTERVAL_WEEK = 12,
-  /** CANDLE_INTERVAL_MONTH - От 1 месяца до 10 лет (лимит 120). */
+  /** CANDLE_INTERVAL_MONTH - От 1 месяца до 10 лет. Максимальное значение `limit` — 120. */
   CANDLE_INTERVAL_MONTH = 13,
+  /** CANDLE_INTERVAL_5_SEC - От 5 секунд до 200 минут. Максимальное значение `limit` — 2500. */
+  CANDLE_INTERVAL_5_SEC = 14,
+  /** CANDLE_INTERVAL_10_SEC - От 10 секунд до 200 минут. Максимальное значение `limit` — 1250. */
+  CANDLE_INTERVAL_10_SEC = 15,
+  /** CANDLE_INTERVAL_30_SEC - От 30 секунд до 20 часов. Максимальное значение `limit` — 2500. */
+  CANDLE_INTERVAL_30_SEC = 16,
   UNRECOGNIZED = -1,
 }
 
@@ -450,6 +456,15 @@ export function candleIntervalFromJSON(object: any): CandleInterval {
     case 13:
     case "CANDLE_INTERVAL_MONTH":
       return CandleInterval.CANDLE_INTERVAL_MONTH;
+    case 14:
+    case "CANDLE_INTERVAL_5_SEC":
+      return CandleInterval.CANDLE_INTERVAL_5_SEC;
+    case 15:
+    case "CANDLE_INTERVAL_10_SEC":
+      return CandleInterval.CANDLE_INTERVAL_10_SEC;
+    case 16:
+    case "CANDLE_INTERVAL_30_SEC":
+      return CandleInterval.CANDLE_INTERVAL_30_SEC;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -487,6 +502,12 @@ export function candleIntervalToJSON(object: CandleInterval): string {
       return "CANDLE_INTERVAL_WEEK";
     case CandleInterval.CANDLE_INTERVAL_MONTH:
       return "CANDLE_INTERVAL_MONTH";
+    case CandleInterval.CANDLE_INTERVAL_5_SEC:
+      return "CANDLE_INTERVAL_5_SEC";
+    case CandleInterval.CANDLE_INTERVAL_10_SEC:
+      return "CANDLE_INTERVAL_10_SEC";
+    case CandleInterval.CANDLE_INTERVAL_30_SEC:
+      return "CANDLE_INTERVAL_30_SEC";
     case CandleInterval.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -494,7 +515,7 @@ export function candleIntervalToJSON(object: CandleInterval): string {
 }
 
 export enum CandleSource {
-  /** CANDLE_SOURCE_UNSPECIFIED - Источник свечей не определён. */
+  /** CANDLE_SOURCE_UNSPECIFIED - Источник свечей не определен. */
   CANDLE_SOURCE_UNSPECIFIED = 0,
   /** CANDLE_SOURCE_EXCHANGE - Биржевые свечи. */
   CANDLE_SOURCE_EXCHANGE = 1,
@@ -535,8 +556,85 @@ export function candleSourceToJSON(object: CandleSource): string {
   }
 }
 
+export enum MarketValueType {
+  /** INSTRUMENT_VALUE_UNSPECIFIED - Не определен. */
+  INSTRUMENT_VALUE_UNSPECIFIED = 0,
+  /** INSTRUMENT_VALUE_LAST_PRICE - Последняя биржевая цена. */
+  INSTRUMENT_VALUE_LAST_PRICE = 1,
+  /** INSTRUMENT_VALUE_LAST_PRICE_DEALER - Последняя цена дилера. */
+  INSTRUMENT_VALUE_LAST_PRICE_DEALER = 2,
+  /** INSTRUMENT_VALUE_CLOSE_PRICE - Цена закрытия. */
+  INSTRUMENT_VALUE_CLOSE_PRICE = 3,
+  /** INSTRUMENT_VALUE_EVENING_SESSION_PRICE - Цена последней сделки с вечерней сессии. */
+  INSTRUMENT_VALUE_EVENING_SESSION_PRICE = 4,
+  /** INSTRUMENT_VALUE_OPEN_INTEREST - Открытый интерес, возвращается только для фьючерсов. */
+  INSTRUMENT_VALUE_OPEN_INTEREST = 5,
+  /** INSTRUMENT_VALUE_THEOR_PRICE - Теоретическая цена, возвращается только для опционов. */
+  INSTRUMENT_VALUE_THEOR_PRICE = 6,
+  /** INSTRUMENT_VALUE_YIELD - Доходность */
+  INSTRUMENT_VALUE_YIELD = 7,
+  UNRECOGNIZED = -1,
+}
+
+export function marketValueTypeFromJSON(object: any): MarketValueType {
+  switch (object) {
+    case 0:
+    case "INSTRUMENT_VALUE_UNSPECIFIED":
+      return MarketValueType.INSTRUMENT_VALUE_UNSPECIFIED;
+    case 1:
+    case "INSTRUMENT_VALUE_LAST_PRICE":
+      return MarketValueType.INSTRUMENT_VALUE_LAST_PRICE;
+    case 2:
+    case "INSTRUMENT_VALUE_LAST_PRICE_DEALER":
+      return MarketValueType.INSTRUMENT_VALUE_LAST_PRICE_DEALER;
+    case 3:
+    case "INSTRUMENT_VALUE_CLOSE_PRICE":
+      return MarketValueType.INSTRUMENT_VALUE_CLOSE_PRICE;
+    case 4:
+    case "INSTRUMENT_VALUE_EVENING_SESSION_PRICE":
+      return MarketValueType.INSTRUMENT_VALUE_EVENING_SESSION_PRICE;
+    case 5:
+    case "INSTRUMENT_VALUE_OPEN_INTEREST":
+      return MarketValueType.INSTRUMENT_VALUE_OPEN_INTEREST;
+    case 6:
+    case "INSTRUMENT_VALUE_THEOR_PRICE":
+      return MarketValueType.INSTRUMENT_VALUE_THEOR_PRICE;
+    case 7:
+    case "INSTRUMENT_VALUE_YIELD":
+      return MarketValueType.INSTRUMENT_VALUE_YIELD;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return MarketValueType.UNRECOGNIZED;
+  }
+}
+
+export function marketValueTypeToJSON(object: MarketValueType): string {
+  switch (object) {
+    case MarketValueType.INSTRUMENT_VALUE_UNSPECIFIED:
+      return "INSTRUMENT_VALUE_UNSPECIFIED";
+    case MarketValueType.INSTRUMENT_VALUE_LAST_PRICE:
+      return "INSTRUMENT_VALUE_LAST_PRICE";
+    case MarketValueType.INSTRUMENT_VALUE_LAST_PRICE_DEALER:
+      return "INSTRUMENT_VALUE_LAST_PRICE_DEALER";
+    case MarketValueType.INSTRUMENT_VALUE_CLOSE_PRICE:
+      return "INSTRUMENT_VALUE_CLOSE_PRICE";
+    case MarketValueType.INSTRUMENT_VALUE_EVENING_SESSION_PRICE:
+      return "INSTRUMENT_VALUE_EVENING_SESSION_PRICE";
+    case MarketValueType.INSTRUMENT_VALUE_OPEN_INTEREST:
+      return "INSTRUMENT_VALUE_OPEN_INTEREST";
+    case MarketValueType.INSTRUMENT_VALUE_THEOR_PRICE:
+      return "INSTRUMENT_VALUE_THEOR_PRICE";
+    case MarketValueType.INSTRUMENT_VALUE_YIELD:
+      return "INSTRUMENT_VALUE_YIELD";
+    case MarketValueType.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
 export enum OrderBookType {
-  /** ORDERBOOK_TYPE_UNSPECIFIED - Не определён. */
+  /** ORDERBOOK_TYPE_UNSPECIFIED - Не определен. */
   ORDERBOOK_TYPE_UNSPECIFIED = 0,
   /** ORDERBOOK_TYPE_EXCHANGE - Биржевой стакан. */
   ORDERBOOK_TYPE_EXCHANGE = 1,
@@ -627,7 +725,7 @@ export function lastPriceTypeToJSON(object: LastPriceType): string {
   }
 }
 
-/** Запрос подписки или отписки на определённые биржевые данные. */
+/** Запрос подписки или отписки на определенные биржевые данные. */
 export interface MarketDataRequest {
   /** Запрос подписки на свечи. */
   subscribeCandlesRequest?:
@@ -729,7 +827,11 @@ export interface MarketDataResponse {
     | SubscribeLastPriceResponse
     | undefined;
   /** Цена последней сделки. */
-  lastPrice?: LastPrice | undefined;
+  lastPrice?:
+    | LastPrice
+    | undefined;
+  /** Открытый интерес. */
+  openInterest?: OpenInterest | undefined;
 }
 
 /** subscribeCandles | Изменения статуса подписки на свечи. */
@@ -752,15 +854,15 @@ export interface CandleInstrument {
    * @deprecated
    */
   figi: string;
-  /** Интервал свечей. Двухчасовые и четырёхчасовые свечи в стриме отсчитываются с 0:00 по UTC. */
+  /** Интервал свечей. Двухчасовые и четырехчасовые свечи в стриме отсчитываются с 0:00 по UTC. */
   interval: SubscriptionInterval;
-  /** Идентификатор инструмента. Принимает значение `figi` или `instrument_uid`. */
+  /** Идентификатор инструмента. Принимает значение `figi`, `instrument_uid` или `ticker + '_' + class_code`. */
   instrumentId: string;
 }
 
 /** Результат изменения статус подписки на свечи. */
 export interface SubscribeCandlesResponse {
-  /** Уникальный идентификатор запроса. [Подробнее](https://russianinvestments.github.io/investAPI/grpc#tracking-id). */
+  /** Уникальный идентификатор запроса. [Подробнее](./grpc#tracking-id). */
   trackingId: string;
   /** Массив статусов подписки на свечи. */
   candlesSubscriptions: CandleSubscription[];
@@ -782,8 +884,16 @@ export interface CandleSubscription {
   streamId: string;
   /** Идентификатор подписки в формате `UUID`. */
   subscriptionId: string;
+  /** Действие подписки. */
+  subscriptionAction: SubscriptionAction;
   /** Источник свечей. */
-  candleSourceType?: GetCandlesRequest_CandleSource | undefined;
+  candleSourceType?:
+    | GetCandlesRequest_CandleSource
+    | undefined;
+  /** Тикер инструмента. */
+  ticker: string;
+  /** Класс-код (секция торгов). */
+  classCode: string;
 }
 
 /** Запрос на изменение статуса подписки на стаканы. */
@@ -804,15 +914,15 @@ export interface OrderBookInstrument {
   figi: string;
   /** Глубина стакана. */
   depth: number;
-  /** Идентификатор инструмента. Принимает значение `figi` или `instrument_uid`. */
+  /** Идентификатор инструмента. Принимает значение `figi`, `instrument_uid` или `ticker + '_' + class_code`. */
   instrumentId: string;
-  /** Тип стакана. По умолчанию ORDERBOOK_TYPE_ALL - стакан биржевой и дилера. */
+  /** Тип стакана. Значение по умолчанию — `ORDERBOOK_TYPE_ALL`, стакан биржевой и дилера. */
   orderBookType: OrderBookType;
 }
 
 /** Результат изменения статуса подписки на стаканы. */
 export interface SubscribeOrderBookResponse {
-  /** Уникальный идентификатор запроса. [Подробнее](https://russianinvestments.github.io/investAPI/grpc#tracking-id). */
+  /** Уникальный идентификатор запроса. [Подробнее](./grpc#tracking-id). */
   trackingId: string;
   /** Массив статусов подписки на стаканы. */
   orderBookSubscriptions: OrderBookSubscription[];
@@ -834,6 +944,12 @@ export interface OrderBookSubscription {
   subscriptionId: string;
   /** Тип стакана. */
   orderBookType: OrderBookType;
+  /** Действие подписки. */
+  subscriptionAction: SubscriptionAction;
+  /** Тикер инструмента. */
+  ticker: string;
+  /** Класс-код (секция торгов). */
+  classCode: string;
 }
 
 /** Изменение статуса подписки на поток обезличенных сделок. */
@@ -842,8 +958,10 @@ export interface SubscribeTradesRequest {
   subscriptionAction: SubscriptionAction;
   /** Массив инструментов для подписки на поток обезличенных сделок. */
   instruments: TradeInstrument[];
-  /** Тип источника сделок. По умолчанию TRADE_SOURCE_ALL - все сделки. */
+  /** Тип источника сделок. Значение по умолчанию — `TRADE_SOURCE_ALL`, все сделки. */
   tradeSource: TradeSourceType;
+  /** Флаг открытого интереса. **true** - в стриме дополнительно передается информация об открытом интересе для фьючерсов */
+  withOpenInterest: boolean;
 }
 
 /** Запрос подписки на поток обезличенных сделок. */
@@ -854,13 +972,13 @@ export interface TradeInstrument {
    * @deprecated
    */
   figi: string;
-  /** Идентификатор инструмента. Принимает значение `figi` или `instrument_uid`. */
+  /** Идентификатор инструмента. Принимает значение `figi`, `instrument_uid` или `ticker + '_' + class_code`. */
   instrumentId: string;
 }
 
 /** Результат изменения статуса подписки на поток обезличенных сделок. */
 export interface SubscribeTradesResponse {
-  /** Уникальный идентификатор запроса. [Подробнее](https://russianinvestments.github.io/investAPI/grpc#tracking-id). */
+  /** Уникальный идентификатор запроса. [Подробнее](./grpc#tracking-id). */
   trackingId: string;
   /** Массив статусов подписки на поток сделок. */
   tradeSubscriptions: TradeSubscription[];
@@ -880,6 +998,14 @@ export interface TradeSubscription {
   streamId: string;
   /** Идентификатор подписки в формате UUID. */
   subscriptionId: string;
+  /** Флаг открытого интереса. **true** - в стриме дополнительно передается информация об открытом интересе для фьючерсов */
+  withOpenInterest: boolean;
+  /** Действие подписки. */
+  subscriptionAction: SubscriptionAction;
+  /** Тикер инструмента. */
+  ticker: string;
+  /** Класс-код (секция торгов). */
+  classCode: string;
 }
 
 /** Изменение статуса подписки на торговый статус инструмента. */
@@ -898,13 +1024,13 @@ export interface InfoInstrument {
    * @deprecated
    */
   figi: string;
-  /** Идентификатор инструмента. Принимает значение `figi` или `instrument_uid`. */
+  /** Идентификатор инструмента. Принимает значение `figi`, `instrument_uid` или `ticker + '_' + class_code`. */
   instrumentId: string;
 }
 
 /** Результат изменения статуса подписки на торговый статус. */
 export interface SubscribeInfoResponse {
-  /** Уникальный идентификатор запроса. [Подробнее](https://russianinvestments.github.io/investAPI/grpc#tracking-id). */
+  /** Уникальный идентификатор запроса. [Подробнее](./grpc#tracking-id). */
   trackingId: string;
   /** Массив статусов подписки на торговый статус. */
   infoSubscriptions: InfoSubscription[];
@@ -922,6 +1048,12 @@ export interface InfoSubscription {
   streamId: string;
   /** Идентификатор подписки в формате UUID. */
   subscriptionId: string;
+  /** Действие подписки. */
+  subscriptionAction: SubscriptionAction;
+  /** Тикер инструмента. */
+  ticker: string;
+  /** Класс-код (секция торгов). */
+  classCode: string;
 }
 
 /** Изменение статуса подписки на цену последней сделки по инструменту. */
@@ -940,13 +1072,13 @@ export interface LastPriceInstrument {
    * @deprecated
    */
   figi: string;
-  /** Идентификатор инструмента. Принимает значение `figi` или `instrument_uid`. */
+  /** Идентификатор инструмента. Принимает значение `figi`, `instrument_uid` или `ticker + '_' + class_code`. */
   instrumentId: string;
 }
 
 /** Результат изменения статуса подписки на цену последней сделки. */
 export interface SubscribeLastPriceResponse {
-  /** Уникальный идентификатор запроса. [Подробнее](https://russianinvestments.github.io/investAPI/grpc#tracking-id). */
+  /** Уникальный идентификатор запроса. [Подробнее](./grpc#tracking-id). */
   trackingId: string;
   /** Массив статусов подписки на цену последней сделки. */
   lastPriceSubscriptions: LastPriceSubscription[];
@@ -964,6 +1096,12 @@ export interface LastPriceSubscription {
   streamId: string;
   /** Идентификатор подписки в формате `UUID`. */
   subscriptionId: string;
+  /** Действие подписки. */
+  subscriptionAction: SubscriptionAction;
+  /** Тикер инструмента. */
+  ticker: string;
+  /** Класс-код (секция торгов). */
+  classCode: string;
 }
 
 /** Пакет свечей в рамках стрима. */
@@ -972,23 +1110,23 @@ export interface Candle {
   figi: string;
   /** Интервал свечи. */
   interval: SubscriptionInterval;
-  /** Цена открытия за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](https://russianinvestments.github.io/investAPI/faq_marketdata/#_15). */
+  /** Цена открытия за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](./faq_marketdata/#_15). */
   open?:
     | Quotation
     | undefined;
-  /** Максимальная цена за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](https://russianinvestments.github.io/investAPI/faq_marketdata/#_15). */
+  /** Максимальная цена за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](./faq_marketdata/#_15). */
   high?:
     | Quotation
     | undefined;
-  /** Минимальная цена за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](https://russianinvestments.github.io/investAPI/faq_marketdata/#_15). */
+  /** Минимальная цена за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](./faq_marketdata/#_15). */
   low?:
     | Quotation
     | undefined;
-  /** Цена закрытия за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](https://russianinvestments.github.io/investAPI/faq_marketdata/#_15). */
+  /** Цена закрытия за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](./faq_marketdata/#_15). */
   close?:
     | Quotation
     | undefined;
-  /** Объём сделок в лотах. */
+  /** Объем сделок в лотах. */
   volume: number;
   /** Время начала интервала свечи по UTC. */
   time?:
@@ -1000,7 +1138,15 @@ export interface Candle {
     | undefined;
   /** UID инструмента. */
   instrumentUid: string;
-  /** Источник свечей */
+  /** Тикер инструмента. */
+  ticker: string;
+  /** Класс-код (секция торгов). */
+  classCode: string;
+  /** Объем торгов на покупку. */
+  volumeBuy: number;
+  /** Объём торгов на продажу. */
+  volumeSell: number;
+  /** Источник свечей. */
   candleSourceType: CandleSource;
 }
 
@@ -1020,11 +1166,11 @@ export interface OrderBook {
   time?:
     | Date
     | undefined;
-  /** Верхний лимит цены за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](https://russianinvestments.github.io/investAPI/faq_marketdata/#_15). */
+  /** Верхний лимит цены за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](./faq_marketdata/#_15). */
   limitUp?:
     | Quotation
     | undefined;
-  /** Нижний лимит цены за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](https://russianinvestments.github.io/investAPI/faq_marketdata/#_15). */
+  /** Нижний лимит цены за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](./faq_marketdata/#_15). */
   limitDown?:
     | Quotation
     | undefined;
@@ -1032,11 +1178,15 @@ export interface OrderBook {
   instrumentUid: string;
   /** Тип стакана. */
   orderBookType: OrderBookType;
+  /** Тикер инструмента. */
+  ticker: string;
+  /** Класс-код (секция торгов). */
+  classCode: string;
 }
 
 /** Массив предложений/спроса. */
 export interface Order {
-  /** Цена за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](https://russianinvestments.github.io/investAPI/faq_marketdata/#_15). */
+  /** Цена за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](./faq_marketdata/#_15). */
   price?:
     | Quotation
     | undefined;
@@ -1050,7 +1200,7 @@ export interface Trade {
   figi: string;
   /** Направление сделки. */
   direction: TradeDirection;
-  /** Цена за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](https://russianinvestments.github.io/investAPI/faq_marketdata/#_15). */
+  /** Цена за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](./faq_marketdata/#_15). */
   price?:
     | Quotation
     | undefined;
@@ -1064,6 +1214,10 @@ export interface Trade {
   instrumentUid: string;
   /** Тип источника сделки. */
   tradeSource: TradeSourceType;
+  /** Тикер инструмента. */
+  ticker: string;
+  /** Класс-код (секция торгов). */
+  classCode: string;
 }
 
 /** Пакет изменения торгового статуса. */
@@ -1082,6 +1236,10 @@ export interface TradingStatus {
   marketOrderAvailableFlag: boolean;
   /** UID инструмента. */
   instrumentUid: string;
+  /** Тикер инструмента. */
+  ticker: string;
+  /** Класс-код (секция торгов). */
+  classCode: string;
 }
 
 /** Запрос исторических свечей. */
@@ -1104,7 +1262,7 @@ export interface GetCandlesRequest {
     | undefined;
   /** Интервал запрошенных свечей. */
   interval: CandleInterval;
-  /** Идентификатор инструмента. Принимает значение `figi` или `instrument_uid`. */
+  /** Идентификатор инструмента. Принимает значение `figi`, `instrument_uid` или `ticker + '_' + class_code`. */
   instrumentId?:
     | string
     | undefined;
@@ -1166,32 +1324,36 @@ export interface GetCandlesResponse {
 
 /** Информация о свече. */
 export interface HistoricCandle {
-  /** Цена открытия за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](https://russianinvestments.github.io/investAPI/faq_marketdata/#_15). */
+  /** Цена открытия за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](./faq_marketdata/#_15). */
   open?:
     | Quotation
     | undefined;
-  /** Максимальная цена за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](https://russianinvestments.github.io/investAPI/faq_marketdata/#_15). */
+  /** Максимальная цена за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](./faq_marketdata/#_15). */
   high?:
     | Quotation
     | undefined;
-  /** Минимальная цена за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](https://russianinvestments.github.io/investAPI/faq_marketdata/#_15). */
+  /** Минимальная цена за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](./faq_marketdata/#_15). */
   low?:
     | Quotation
     | undefined;
-  /** Цена закрытия за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](https://russianinvestments.github.io/investAPI/faq_marketdata/#_15). */
+  /** Цена закрытия за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](./faq_marketdata/#_15). */
   close?:
     | Quotation
     | undefined;
-  /** Объём торгов в лотах. */
+  /** Объем торгов в лотах. */
   volume: number;
   /** Время свечи в часовом поясе UTC. */
   time?:
     | Date
     | undefined;
-  /** Признак завершённости свечи. **false** — свеча за текущие интервал ещё сформирована не полностью. */
+  /** Признак завершенности свечи. **false** — свеча за текущие интервал еще сформирована не полностью. */
   isComplete: boolean;
   /** Тип источника свечи */
-  candleSourceType: CandleSource;
+  candleSource: CandleSource;
+  /** Объем торгов на покупку. */
+  volumeBuy: number;
+  /** Объём торгов на продажу. */
+  volumeSell: number;
 }
 
 /** Запрос получения цен последних сделок. */
@@ -1202,7 +1364,7 @@ export interface GetLastPricesRequest {
    * @deprecated
    */
   figi: string[];
-  /** Массив идентификаторов инструмента. Принимает значения `figi` или `instrument_uid`. */
+  /** Массив идентификаторов инструмента. Принимает значения `figi`, `instrument_uid` или `ticker + '_' + class_code`. */
   instrumentId: string[];
   /** Тип запрашиваемой последней цены. */
   lastPriceType: LastPriceType;
@@ -1220,7 +1382,7 @@ export interface GetLastPricesResponse {
 export interface LastPrice {
   /** FIGI инструмента. */
   figi: string;
-  /** Цена последней сделки за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](https://russianinvestments.github.io/investAPI/faq_marketdata/#_15). */
+  /** Цена последней сделки за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](./faq_marketdata/#_15). */
   price?:
     | Quotation
     | undefined;
@@ -1228,10 +1390,29 @@ export interface LastPrice {
   time?:
     | Date
     | undefined;
+  /** Тикер инструмента. */
+  ticker: string;
+  /** Класс-код (секция торгов). */
+  classCode: string;
   /** UID инструмента. */
   instrumentUid: string;
   /** Тип последней цены. */
   lastPriceType: LastPriceType;
+}
+
+export interface OpenInterest {
+  /** UID инструмента. */
+  instrumentUid: string;
+  /** Время получения открытого интереса в часовом поясе UTC по времени биржи. */
+  time?:
+    | Date
+    | undefined;
+  /** Открытый интерес. */
+  openInterest: number;
+  /** Тикер инструмента. */
+  ticker: string;
+  /** Класс-код (секция торгов). */
+  classCode: string;
 }
 
 /** Запрос стакана. */
@@ -1246,7 +1427,7 @@ export interface GetOrderBookRequest {
     | undefined;
   /** Глубина стакана. */
   depth: number;
-  /** Идентификатор инструмента. Принимает значение `figi` или `instrument_uid`. */
+  /** Идентификатор инструмента. Принимает значение `figi`, `instrument_uid` или `ticker + '_' + class_code`. */
   instrumentId?: string | undefined;
 }
 
@@ -1260,22 +1441,28 @@ export interface GetOrderBookResponse {
   bids: Order[];
   /** Множество пар значений на продажу. */
   asks: Order[];
-  /** Цена последней сделки за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](https://russianinvestments.github.io/investAPI/faq_marketdata/#_15). */
+  /** Цена последней сделки за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](./faq_marketdata/#_15). */
   lastPrice?:
     | Quotation
     | undefined;
-  /** Цена закрытия за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](https://russianinvestments.github.io/investAPI/faq_marketdata/#_15). */
+  /** Цена закрытия за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](./faq_marketdata/#_15). */
   closePrice?:
     | Quotation
     | undefined;
-  /** Верхний лимит цены за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](https://russianinvestments.github.io/investAPI/faq_marketdata/#_15). */
+  /** Верхний лимит цены за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](./faq_marketdata/#_15). */
   limitUp?:
     | Quotation
     | undefined;
-  /** Нижний лимит цены за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](https://russianinvestments.github.io/investAPI/faq_marketdata/#_15). */
+  /** Нижний лимит цены за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](./faq_marketdata/#_15). */
   limitDown?:
     | Quotation
     | undefined;
+  /** UID инструмента. */
+  instrumentUid: string;
+  /** Тикер инструмента. */
+  ticker: string;
+  /** Класс-код (секция торгов). */
+  classCode: string;
   /** Время получения цены последней сделки. */
   lastPriceTs?:
     | Date
@@ -1285,11 +1472,7 @@ export interface GetOrderBookResponse {
     | Date
     | undefined;
   /** Время формирования стакана на бирже. */
-  orderbookTs?:
-    | Date
-    | undefined;
-  /** UID инструмента. */
-  instrumentUid: string;
+  orderbookTs?: Date | undefined;
 }
 
 /** Запрос получения торгового статуса. */
@@ -1302,13 +1485,13 @@ export interface GetTradingStatusRequest {
   figi?:
     | string
     | undefined;
-  /** Идентификатор инструмента. Принимает значение `figi` или `instrument_uid`. */
+  /** Идентификатор инструмента. Принимает значение `figi`, `instrument_uid` или `ticker + '_' + class_code` */
   instrumentId?: string | undefined;
 }
 
 /** Запрос получения торгового статуса. */
 export interface GetTradingStatusesRequest {
-  /** Идентификатор инструмента. Принимает значение `figi` или `instrument_uid`. */
+  /** Идентификатор инструмента. Принимает значение `figi`, `instrument_uid` или `ticker + '_' + class_code` */
   instrumentId: string[];
 }
 
@@ -1336,6 +1519,10 @@ export interface GetTradingStatusResponse {
   bestpriceOrderAvailableFlag: boolean;
   /** Признак доступности только заявки по лучшей цене. */
   onlyBestPrice: boolean;
+  /** Тикер инструмента. */
+  ticker: string;
+  /** Класс-код (секция торгов). */
+  classCode: string;
 }
 
 /** Запрос обезличенных сделок за последний час. */
@@ -1356,11 +1543,11 @@ export interface GetLastTradesRequest {
   to?:
     | Date
     | undefined;
-  /** Идентификатор инструмента. Принимает значение `figi` или `instrument_uid`. */
+  /** Идентификатор инструмента. Принимает значение `figi`, `instrument_uid` или `ticker + '_' + class_code` */
   instrumentId?:
     | string
     | undefined;
-  /** Тип источника сделок. По умолчанию TRADE_SOURCE_ALL - все сделки. */
+  /** Тип источника сделок. Значение по умолчанию — `TRADE_SOURCE_ALL`, все сделки. */
   tradeSource: TradeSourceType;
 }
 
@@ -1384,7 +1571,7 @@ export interface GetClosePricesRequest {
 
 /** Запрос цен закрытия торговой сессии по инструменту. */
 export interface InstrumentClosePriceRequest {
-  /** Идентификатор инструмента. Принимает значение `figi` или `instrument_uid`. */
+  /** Идентификатор инструмента. Принимает значение `figi`, `instrument_uid` или `ticker + '_' + class_code` */
   instrumentId: string;
 }
 
@@ -1400,6 +1587,10 @@ export interface InstrumentClosePriceResponse {
   figi: string;
   /** UID инструмента. */
   instrumentUid: string;
+  /** Тикер инструмента. */
+  ticker: string;
+  /** Класс-код (секция торгов). */
+  classCode: string;
   /** Цена закрытия торговой сессии. */
   price?:
     | Quotation
@@ -1409,7 +1600,11 @@ export interface InstrumentClosePriceResponse {
     | Quotation
     | undefined;
   /** Дата совершения торгов. */
-  time?: Date | undefined;
+  time?:
+    | Date
+    | undefined;
+  /** Дата цены закрытия вечерней сессии. */
+  eveningSessionPriceTime?: Date | undefined;
 }
 
 export interface GetTechAnalysisRequest {
@@ -1427,7 +1622,7 @@ export interface GetTechAnalysisRequest {
     | undefined;
   /** Интервал, за который рассчитывается индикатор. */
   interval: GetTechAnalysisRequest_IndicatorInterval;
-  /** Тип цены, который используется при расчёте индикатора. */
+  /** Тип цены, который используется при расчете индикатора. */
   typeOfPrice: GetTechAnalysisRequest_TypeOfPrice;
   /** Торговый период, за который рассчитывается индикатор. */
   length: number;
@@ -1441,7 +1636,7 @@ export interface GetTechAnalysisRequest {
 
 /** Интервал свечи. */
 export enum GetTechAnalysisRequest_IndicatorInterval {
-  /** INDICATOR_INTERVAL_UNSPECIFIED - Интервал не определён. */
+  /** INDICATOR_INTERVAL_UNSPECIFIED - Интервал не определен. */
   INDICATOR_INTERVAL_UNSPECIFIED = 0,
   /** INDICATOR_INTERVAL_ONE_MINUTE - 1 минута. */
   INDICATOR_INTERVAL_ONE_MINUTE = 1,
@@ -1627,7 +1822,7 @@ export function getTechAnalysisRequest_TypeOfPriceToJSON(object: GetTechAnalysis
 }
 
 export enum GetTechAnalysisRequest_IndicatorType {
-  /** INDICATOR_TYPE_UNSPECIFIED - Не определён. */
+  /** INDICATOR_TYPE_UNSPECIFIED - Не определен. */
   INDICATOR_TYPE_UNSPECIFIED = 0,
   /** INDICATOR_TYPE_BB - Bollinger Bands — линия Боллинжера. */
   INDICATOR_TYPE_BB = 1,
@@ -1731,6 +1926,42 @@ export interface GetTechAnalysisResponse_TechAnalysisItem {
     | undefined;
   /** Значение линии MACD. */
   macd?: Quotation | undefined;
+}
+
+export interface GetMarketValuesRequest {
+  /** Массив идентификаторов инструментов. Принимает значения `figi`, `instrument_uid` или `ticker + '_' + class_code`. */
+  instrumentId: string[];
+  /** Массив запрашиваемых параметров. */
+  values: MarketValueType[];
+}
+
+export interface GetMarketValuesResponse {
+  /** Массив значений параметров. */
+  instruments: MarketValueInstrument[];
+}
+
+export interface MarketValueInstrument {
+  /** Идентификатор инструмента. */
+  instrumentUid: string;
+  /** Массив параметров инструмента. */
+  values: MarketValue[];
+  /** Тикер инструмента. */
+  ticker: string;
+  /** Класс-код (секция торгов). */
+  classCode: string;
+}
+
+export interface MarketValue {
+  /** Тип параметра. */
+  type?:
+    | MarketValueType
+    | undefined;
+  /** Значение. */
+  value?:
+    | Quotation
+    | undefined;
+  /** Дата и время. */
+  time?: Date | undefined;
 }
 
 function createBaseMarketDataRequest(): MarketDataRequest {
@@ -2052,6 +2283,7 @@ function createBaseMarketDataResponse(): MarketDataResponse {
     ping: undefined,
     subscribeLastPriceResponse: undefined,
     lastPrice: undefined,
+    openInterest: undefined,
   };
 }
 
@@ -2089,6 +2321,9 @@ export const MarketDataResponse = {
     }
     if (message.lastPrice !== undefined) {
       LastPrice.encode(message.lastPrice, writer.uint32(90).fork()).ldelim();
+    }
+    if (message.openInterest !== undefined) {
+      OpenInterest.encode(message.openInterest, writer.uint32(98).fork()).ldelim();
     }
     return writer;
   },
@@ -2177,6 +2412,13 @@ export const MarketDataResponse = {
 
           message.lastPrice = LastPrice.decode(reader, reader.uint32());
           continue;
+        case 12:
+          if (tag !== 98) {
+            break;
+          }
+
+          message.openInterest = OpenInterest.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2209,6 +2451,7 @@ export const MarketDataResponse = {
         ? SubscribeLastPriceResponse.fromJSON(object.subscribeLastPriceResponse)
         : undefined,
       lastPrice: isSet(object.lastPrice) ? LastPrice.fromJSON(object.lastPrice) : undefined,
+      openInterest: isSet(object.openInterest) ? OpenInterest.fromJSON(object.openInterest) : undefined,
     };
   },
 
@@ -2246,6 +2489,9 @@ export const MarketDataResponse = {
     }
     if (message.lastPrice !== undefined) {
       obj.lastPrice = LastPrice.toJSON(message.lastPrice);
+    }
+    if (message.openInterest !== undefined) {
+      obj.openInterest = OpenInterest.toJSON(message.openInterest);
     }
     return obj;
   },
@@ -2500,7 +2746,10 @@ function createBaseCandleSubscription(): CandleSubscription {
     waitingClose: false,
     streamId: "",
     subscriptionId: "",
+    subscriptionAction: 0,
     candleSourceType: undefined,
+    ticker: "",
+    classCode: "",
   };
 }
 
@@ -2527,8 +2776,17 @@ export const CandleSubscription = {
     if (message.subscriptionId !== "") {
       writer.uint32(58).string(message.subscriptionId);
     }
+    if (message.subscriptionAction !== 0) {
+      writer.uint32(64).int32(message.subscriptionAction);
+    }
     if (message.candleSourceType !== undefined) {
       writer.uint32(72).int32(message.candleSourceType);
+    }
+    if (message.ticker !== "") {
+      writer.uint32(82).string(message.ticker);
+    }
+    if (message.classCode !== "") {
+      writer.uint32(90).string(message.classCode);
     }
     return writer;
   },
@@ -2589,12 +2847,33 @@ export const CandleSubscription = {
 
           message.subscriptionId = reader.string();
           continue;
+        case 8:
+          if (tag !== 64) {
+            break;
+          }
+
+          message.subscriptionAction = reader.int32() as any;
+          continue;
         case 9:
           if (tag !== 72) {
             break;
           }
 
           message.candleSourceType = reader.int32() as any;
+          continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.ticker = reader.string();
+          continue;
+        case 11:
+          if (tag !== 90) {
+            break;
+          }
+
+          message.classCode = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -2614,9 +2893,12 @@ export const CandleSubscription = {
       waitingClose: isSet(object.waitingClose) ? globalThis.Boolean(object.waitingClose) : false,
       streamId: isSet(object.streamId) ? globalThis.String(object.streamId) : "",
       subscriptionId: isSet(object.subscriptionId) ? globalThis.String(object.subscriptionId) : "",
+      subscriptionAction: isSet(object.subscriptionAction) ? subscriptionActionFromJSON(object.subscriptionAction) : 0,
       candleSourceType: isSet(object.candleSourceType)
         ? getCandlesRequest_CandleSourceFromJSON(object.candleSourceType)
         : undefined,
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
     };
   },
 
@@ -2643,8 +2925,17 @@ export const CandleSubscription = {
     if (message.subscriptionId !== "") {
       obj.subscriptionId = message.subscriptionId;
     }
+    if (message.subscriptionAction !== 0) {
+      obj.subscriptionAction = subscriptionActionToJSON(message.subscriptionAction);
+    }
     if (message.candleSourceType !== undefined) {
       obj.candleSourceType = getCandlesRequest_CandleSourceToJSON(message.candleSourceType);
+    }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
     }
     return obj;
   },
@@ -2883,6 +3174,9 @@ function createBaseOrderBookSubscription(): OrderBookSubscription {
     streamId: "",
     subscriptionId: "",
     orderBookType: 0,
+    subscriptionAction: 0,
+    ticker: "",
+    classCode: "",
   };
 }
 
@@ -2908,6 +3202,15 @@ export const OrderBookSubscription = {
     }
     if (message.orderBookType !== 0) {
       writer.uint32(56).int32(message.orderBookType);
+    }
+    if (message.subscriptionAction !== 0) {
+      writer.uint32(64).int32(message.subscriptionAction);
+    }
+    if (message.ticker !== "") {
+      writer.uint32(74).string(message.ticker);
+    }
+    if (message.classCode !== "") {
+      writer.uint32(82).string(message.classCode);
     }
     return writer;
   },
@@ -2968,6 +3271,27 @@ export const OrderBookSubscription = {
 
           message.orderBookType = reader.int32() as any;
           continue;
+        case 8:
+          if (tag !== 64) {
+            break;
+          }
+
+          message.subscriptionAction = reader.int32() as any;
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.ticker = reader.string();
+          continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.classCode = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2986,6 +3310,9 @@ export const OrderBookSubscription = {
       streamId: isSet(object.streamId) ? globalThis.String(object.streamId) : "",
       subscriptionId: isSet(object.subscriptionId) ? globalThis.String(object.subscriptionId) : "",
       orderBookType: isSet(object.orderBookType) ? orderBookTypeFromJSON(object.orderBookType) : 0,
+      subscriptionAction: isSet(object.subscriptionAction) ? subscriptionActionFromJSON(object.subscriptionAction) : 0,
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
     };
   },
 
@@ -3012,12 +3339,21 @@ export const OrderBookSubscription = {
     if (message.orderBookType !== 0) {
       obj.orderBookType = orderBookTypeToJSON(message.orderBookType);
     }
+    if (message.subscriptionAction !== 0) {
+      obj.subscriptionAction = subscriptionActionToJSON(message.subscriptionAction);
+    }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
+    }
     return obj;
   },
 };
 
 function createBaseSubscribeTradesRequest(): SubscribeTradesRequest {
-  return { subscriptionAction: 0, instruments: [], tradeSource: 0 };
+  return { subscriptionAction: 0, instruments: [], tradeSource: 0, withOpenInterest: false };
 }
 
 export const SubscribeTradesRequest = {
@@ -3030,6 +3366,9 @@ export const SubscribeTradesRequest = {
     }
     if (message.tradeSource !== 0) {
       writer.uint32(24).int32(message.tradeSource);
+    }
+    if (message.withOpenInterest === true) {
+      writer.uint32(32).bool(message.withOpenInterest);
     }
     return writer;
   },
@@ -3062,6 +3401,13 @@ export const SubscribeTradesRequest = {
 
           message.tradeSource = reader.int32() as any;
           continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.withOpenInterest = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3078,6 +3424,7 @@ export const SubscribeTradesRequest = {
         ? object.instruments.map((e: any) => TradeInstrument.fromJSON(e))
         : [],
       tradeSource: isSet(object.tradeSource) ? tradeSourceTypeFromJSON(object.tradeSource) : 0,
+      withOpenInterest: isSet(object.withOpenInterest) ? globalThis.Boolean(object.withOpenInterest) : false,
     };
   },
 
@@ -3091,6 +3438,9 @@ export const SubscribeTradesRequest = {
     }
     if (message.tradeSource !== 0) {
       obj.tradeSource = tradeSourceTypeToJSON(message.tradeSource);
+    }
+    if (message.withOpenInterest === true) {
+      obj.withOpenInterest = message.withOpenInterest;
     }
     return obj;
   },
@@ -3241,7 +3591,17 @@ export const SubscribeTradesResponse = {
 };
 
 function createBaseTradeSubscription(): TradeSubscription {
-  return { figi: "", subscriptionStatus: 0, instrumentUid: "", streamId: "", subscriptionId: "" };
+  return {
+    figi: "",
+    subscriptionStatus: 0,
+    instrumentUid: "",
+    streamId: "",
+    subscriptionId: "",
+    withOpenInterest: false,
+    subscriptionAction: 0,
+    ticker: "",
+    classCode: "",
+  };
 }
 
 export const TradeSubscription = {
@@ -3260,6 +3620,18 @@ export const TradeSubscription = {
     }
     if (message.subscriptionId !== "") {
       writer.uint32(42).string(message.subscriptionId);
+    }
+    if (message.withOpenInterest === true) {
+      writer.uint32(48).bool(message.withOpenInterest);
+    }
+    if (message.subscriptionAction !== 0) {
+      writer.uint32(56).int32(message.subscriptionAction);
+    }
+    if (message.ticker !== "") {
+      writer.uint32(66).string(message.ticker);
+    }
+    if (message.classCode !== "") {
+      writer.uint32(74).string(message.classCode);
     }
     return writer;
   },
@@ -3306,6 +3678,34 @@ export const TradeSubscription = {
 
           message.subscriptionId = reader.string();
           continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.withOpenInterest = reader.bool();
+          continue;
+        case 7:
+          if (tag !== 56) {
+            break;
+          }
+
+          message.subscriptionAction = reader.int32() as any;
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.ticker = reader.string();
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.classCode = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3322,6 +3722,10 @@ export const TradeSubscription = {
       instrumentUid: isSet(object.instrumentUid) ? globalThis.String(object.instrumentUid) : "",
       streamId: isSet(object.streamId) ? globalThis.String(object.streamId) : "",
       subscriptionId: isSet(object.subscriptionId) ? globalThis.String(object.subscriptionId) : "",
+      withOpenInterest: isSet(object.withOpenInterest) ? globalThis.Boolean(object.withOpenInterest) : false,
+      subscriptionAction: isSet(object.subscriptionAction) ? subscriptionActionFromJSON(object.subscriptionAction) : 0,
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
     };
   },
 
@@ -3341,6 +3745,18 @@ export const TradeSubscription = {
     }
     if (message.subscriptionId !== "") {
       obj.subscriptionId = message.subscriptionId;
+    }
+    if (message.withOpenInterest === true) {
+      obj.withOpenInterest = message.withOpenInterest;
+    }
+    if (message.subscriptionAction !== 0) {
+      obj.subscriptionAction = subscriptionActionToJSON(message.subscriptionAction);
+    }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
     }
     return obj;
   },
@@ -3543,7 +3959,16 @@ export const SubscribeInfoResponse = {
 };
 
 function createBaseInfoSubscription(): InfoSubscription {
-  return { figi: "", subscriptionStatus: 0, instrumentUid: "", streamId: "", subscriptionId: "" };
+  return {
+    figi: "",
+    subscriptionStatus: 0,
+    instrumentUid: "",
+    streamId: "",
+    subscriptionId: "",
+    subscriptionAction: 0,
+    ticker: "",
+    classCode: "",
+  };
 }
 
 export const InfoSubscription = {
@@ -3562,6 +3987,15 @@ export const InfoSubscription = {
     }
     if (message.subscriptionId !== "") {
       writer.uint32(42).string(message.subscriptionId);
+    }
+    if (message.subscriptionAction !== 0) {
+      writer.uint32(48).int32(message.subscriptionAction);
+    }
+    if (message.ticker !== "") {
+      writer.uint32(58).string(message.ticker);
+    }
+    if (message.classCode !== "") {
+      writer.uint32(66).string(message.classCode);
     }
     return writer;
   },
@@ -3608,6 +4042,27 @@ export const InfoSubscription = {
 
           message.subscriptionId = reader.string();
           continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.subscriptionAction = reader.int32() as any;
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.ticker = reader.string();
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.classCode = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3624,6 +4079,9 @@ export const InfoSubscription = {
       instrumentUid: isSet(object.instrumentUid) ? globalThis.String(object.instrumentUid) : "",
       streamId: isSet(object.streamId) ? globalThis.String(object.streamId) : "",
       subscriptionId: isSet(object.subscriptionId) ? globalThis.String(object.subscriptionId) : "",
+      subscriptionAction: isSet(object.subscriptionAction) ? subscriptionActionFromJSON(object.subscriptionAction) : 0,
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
     };
   },
 
@@ -3643,6 +4101,15 @@ export const InfoSubscription = {
     }
     if (message.subscriptionId !== "") {
       obj.subscriptionId = message.subscriptionId;
+    }
+    if (message.subscriptionAction !== 0) {
+      obj.subscriptionAction = subscriptionActionToJSON(message.subscriptionAction);
+    }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
     }
     return obj;
   },
@@ -3845,7 +4312,16 @@ export const SubscribeLastPriceResponse = {
 };
 
 function createBaseLastPriceSubscription(): LastPriceSubscription {
-  return { figi: "", subscriptionStatus: 0, instrumentUid: "", streamId: "", subscriptionId: "" };
+  return {
+    figi: "",
+    subscriptionStatus: 0,
+    instrumentUid: "",
+    streamId: "",
+    subscriptionId: "",
+    subscriptionAction: 0,
+    ticker: "",
+    classCode: "",
+  };
 }
 
 export const LastPriceSubscription = {
@@ -3864,6 +4340,15 @@ export const LastPriceSubscription = {
     }
     if (message.subscriptionId !== "") {
       writer.uint32(42).string(message.subscriptionId);
+    }
+    if (message.subscriptionAction !== 0) {
+      writer.uint32(48).int32(message.subscriptionAction);
+    }
+    if (message.ticker !== "") {
+      writer.uint32(58).string(message.ticker);
+    }
+    if (message.classCode !== "") {
+      writer.uint32(66).string(message.classCode);
     }
     return writer;
   },
@@ -3910,6 +4395,27 @@ export const LastPriceSubscription = {
 
           message.subscriptionId = reader.string();
           continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.subscriptionAction = reader.int32() as any;
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.ticker = reader.string();
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.classCode = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3926,6 +4432,9 @@ export const LastPriceSubscription = {
       instrumentUid: isSet(object.instrumentUid) ? globalThis.String(object.instrumentUid) : "",
       streamId: isSet(object.streamId) ? globalThis.String(object.streamId) : "",
       subscriptionId: isSet(object.subscriptionId) ? globalThis.String(object.subscriptionId) : "",
+      subscriptionAction: isSet(object.subscriptionAction) ? subscriptionActionFromJSON(object.subscriptionAction) : 0,
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
     };
   },
 
@@ -3946,6 +4455,15 @@ export const LastPriceSubscription = {
     if (message.subscriptionId !== "") {
       obj.subscriptionId = message.subscriptionId;
     }
+    if (message.subscriptionAction !== 0) {
+      obj.subscriptionAction = subscriptionActionToJSON(message.subscriptionAction);
+    }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
+    }
     return obj;
   },
 };
@@ -3962,6 +4480,10 @@ function createBaseCandle(): Candle {
     time: undefined,
     lastTradeTs: undefined,
     instrumentUid: "",
+    ticker: "",
+    classCode: "",
+    volumeBuy: 0,
+    volumeSell: 0,
     candleSourceType: 0,
   };
 }
@@ -3997,6 +4519,18 @@ export const Candle = {
     }
     if (message.instrumentUid !== "") {
       writer.uint32(82).string(message.instrumentUid);
+    }
+    if (message.ticker !== "") {
+      writer.uint32(90).string(message.ticker);
+    }
+    if (message.classCode !== "") {
+      writer.uint32(98).string(message.classCode);
+    }
+    if (message.volumeBuy !== 0) {
+      writer.uint32(104).int64(message.volumeBuy);
+    }
+    if (message.volumeSell !== 0) {
+      writer.uint32(112).int64(message.volumeSell);
     }
     if (message.candleSourceType !== 0) {
       writer.uint32(152).int32(message.candleSourceType);
@@ -4081,6 +4615,34 @@ export const Candle = {
 
           message.instrumentUid = reader.string();
           continue;
+        case 11:
+          if (tag !== 90) {
+            break;
+          }
+
+          message.ticker = reader.string();
+          continue;
+        case 12:
+          if (tag !== 98) {
+            break;
+          }
+
+          message.classCode = reader.string();
+          continue;
+        case 13:
+          if (tag !== 104) {
+            break;
+          }
+
+          message.volumeBuy = longToNumber(reader.int64() as Long);
+          continue;
+        case 14:
+          if (tag !== 112) {
+            break;
+          }
+
+          message.volumeSell = longToNumber(reader.int64() as Long);
+          continue;
         case 19:
           if (tag !== 152) {
             break;
@@ -4109,6 +4671,10 @@ export const Candle = {
       time: isSet(object.time) ? fromJsonTimestamp(object.time) : undefined,
       lastTradeTs: isSet(object.lastTradeTs) ? fromJsonTimestamp(object.lastTradeTs) : undefined,
       instrumentUid: isSet(object.instrumentUid) ? globalThis.String(object.instrumentUid) : "",
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
+      volumeBuy: isSet(object.volumeBuy) ? globalThis.Number(object.volumeBuy) : 0,
+      volumeSell: isSet(object.volumeSell) ? globalThis.Number(object.volumeSell) : 0,
       candleSourceType: isSet(object.candleSourceType) ? candleSourceFromJSON(object.candleSourceType) : 0,
     };
   },
@@ -4145,6 +4711,18 @@ export const Candle = {
     if (message.instrumentUid !== "") {
       obj.instrumentUid = message.instrumentUid;
     }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
+    }
+    if (message.volumeBuy !== 0) {
+      obj.volumeBuy = Math.round(message.volumeBuy);
+    }
+    if (message.volumeSell !== 0) {
+      obj.volumeSell = Math.round(message.volumeSell);
+    }
     if (message.candleSourceType !== 0) {
       obj.candleSourceType = candleSourceToJSON(message.candleSourceType);
     }
@@ -4164,6 +4742,8 @@ function createBaseOrderBook(): OrderBook {
     limitDown: undefined,
     instrumentUid: "",
     orderBookType: 0,
+    ticker: "",
+    classCode: "",
   };
 }
 
@@ -4198,6 +4778,12 @@ export const OrderBook = {
     }
     if (message.orderBookType !== 0) {
       writer.uint32(80).int32(message.orderBookType);
+    }
+    if (message.ticker !== "") {
+      writer.uint32(90).string(message.ticker);
+    }
+    if (message.classCode !== "") {
+      writer.uint32(98).string(message.classCode);
     }
     return writer;
   },
@@ -4279,6 +4865,20 @@ export const OrderBook = {
 
           message.orderBookType = reader.int32() as any;
           continue;
+        case 11:
+          if (tag !== 90) {
+            break;
+          }
+
+          message.ticker = reader.string();
+          continue;
+        case 12:
+          if (tag !== 98) {
+            break;
+          }
+
+          message.classCode = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -4300,6 +4900,8 @@ export const OrderBook = {
       limitDown: isSet(object.limitDown) ? Quotation.fromJSON(object.limitDown) : undefined,
       instrumentUid: isSet(object.instrumentUid) ? globalThis.String(object.instrumentUid) : "",
       orderBookType: isSet(object.orderBookType) ? orderBookTypeFromJSON(object.orderBookType) : 0,
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
     };
   },
 
@@ -4334,6 +4936,12 @@ export const OrderBook = {
     }
     if (message.orderBookType !== 0) {
       obj.orderBookType = orderBookTypeToJSON(message.orderBookType);
+    }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
     }
     return obj;
   },
@@ -4404,7 +5012,17 @@ export const Order = {
 };
 
 function createBaseTrade(): Trade {
-  return { figi: "", direction: 0, price: undefined, quantity: 0, time: undefined, instrumentUid: "", tradeSource: 0 };
+  return {
+    figi: "",
+    direction: 0,
+    price: undefined,
+    quantity: 0,
+    time: undefined,
+    instrumentUid: "",
+    tradeSource: 0,
+    ticker: "",
+    classCode: "",
+  };
 }
 
 export const Trade = {
@@ -4429,6 +5047,12 @@ export const Trade = {
     }
     if (message.tradeSource !== 0) {
       writer.uint32(56).int32(message.tradeSource);
+    }
+    if (message.ticker !== "") {
+      writer.uint32(66).string(message.ticker);
+    }
+    if (message.classCode !== "") {
+      writer.uint32(74).string(message.classCode);
     }
     return writer;
   },
@@ -4489,6 +5113,20 @@ export const Trade = {
 
           message.tradeSource = reader.int32() as any;
           continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.ticker = reader.string();
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.classCode = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -4507,6 +5145,8 @@ export const Trade = {
       time: isSet(object.time) ? fromJsonTimestamp(object.time) : undefined,
       instrumentUid: isSet(object.instrumentUid) ? globalThis.String(object.instrumentUid) : "",
       tradeSource: isSet(object.tradeSource) ? tradeSourceTypeFromJSON(object.tradeSource) : 0,
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
     };
   },
 
@@ -4533,6 +5173,12 @@ export const Trade = {
     if (message.tradeSource !== 0) {
       obj.tradeSource = tradeSourceTypeToJSON(message.tradeSource);
     }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
+    }
     return obj;
   },
 };
@@ -4545,6 +5191,8 @@ function createBaseTradingStatus(): TradingStatus {
     limitOrderAvailableFlag: false,
     marketOrderAvailableFlag: false,
     instrumentUid: "",
+    ticker: "",
+    classCode: "",
   };
 }
 
@@ -4567,6 +5215,12 @@ export const TradingStatus = {
     }
     if (message.instrumentUid !== "") {
       writer.uint32(50).string(message.instrumentUid);
+    }
+    if (message.ticker !== "") {
+      writer.uint32(58).string(message.ticker);
+    }
+    if (message.classCode !== "") {
+      writer.uint32(66).string(message.classCode);
     }
     return writer;
   },
@@ -4620,6 +5274,20 @@ export const TradingStatus = {
 
           message.instrumentUid = reader.string();
           continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.ticker = reader.string();
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.classCode = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -4641,6 +5309,8 @@ export const TradingStatus = {
         ? globalThis.Boolean(object.marketOrderAvailableFlag)
         : false,
       instrumentUid: isSet(object.instrumentUid) ? globalThis.String(object.instrumentUid) : "",
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
     };
   },
 
@@ -4663,6 +5333,12 @@ export const TradingStatus = {
     }
     if (message.instrumentUid !== "") {
       obj.instrumentUid = message.instrumentUid;
+    }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
     }
     return obj;
   },
@@ -4873,7 +5549,9 @@ function createBaseHistoricCandle(): HistoricCandle {
     volume: 0,
     time: undefined,
     isComplete: false,
-    candleSourceType: 0,
+    candleSource: 0,
+    volumeBuy: 0,
+    volumeSell: 0,
   };
 }
 
@@ -4900,8 +5578,14 @@ export const HistoricCandle = {
     if (message.isComplete === true) {
       writer.uint32(56).bool(message.isComplete);
     }
-    if (message.candleSourceType !== 0) {
-      writer.uint32(72).int32(message.candleSourceType);
+    if (message.candleSource !== 0) {
+      writer.uint32(72).int32(message.candleSource);
+    }
+    if (message.volumeBuy !== 0) {
+      writer.uint32(80).int64(message.volumeBuy);
+    }
+    if (message.volumeSell !== 0) {
+      writer.uint32(88).int64(message.volumeSell);
     }
     return writer;
   },
@@ -4967,7 +5651,21 @@ export const HistoricCandle = {
             break;
           }
 
-          message.candleSourceType = reader.int32() as any;
+          message.candleSource = reader.int32() as any;
+          continue;
+        case 10:
+          if (tag !== 80) {
+            break;
+          }
+
+          message.volumeBuy = longToNumber(reader.int64() as Long);
+          continue;
+        case 11:
+          if (tag !== 88) {
+            break;
+          }
+
+          message.volumeSell = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -4987,7 +5685,9 @@ export const HistoricCandle = {
       volume: isSet(object.volume) ? globalThis.Number(object.volume) : 0,
       time: isSet(object.time) ? fromJsonTimestamp(object.time) : undefined,
       isComplete: isSet(object.isComplete) ? globalThis.Boolean(object.isComplete) : false,
-      candleSourceType: isSet(object.candleSourceType) ? candleSourceFromJSON(object.candleSourceType) : 0,
+      candleSource: isSet(object.candleSource) ? candleSourceFromJSON(object.candleSource) : 0,
+      volumeBuy: isSet(object.volumeBuy) ? globalThis.Number(object.volumeBuy) : 0,
+      volumeSell: isSet(object.volumeSell) ? globalThis.Number(object.volumeSell) : 0,
     };
   },
 
@@ -5014,8 +5714,14 @@ export const HistoricCandle = {
     if (message.isComplete === true) {
       obj.isComplete = message.isComplete;
     }
-    if (message.candleSourceType !== 0) {
-      obj.candleSourceType = candleSourceToJSON(message.candleSourceType);
+    if (message.candleSource !== 0) {
+      obj.candleSource = candleSourceToJSON(message.candleSource);
+    }
+    if (message.volumeBuy !== 0) {
+      obj.volumeBuy = Math.round(message.volumeBuy);
+    }
+    if (message.volumeSell !== 0) {
+      obj.volumeSell = Math.round(message.volumeSell);
     }
     return obj;
   },
@@ -5168,7 +5874,15 @@ export const GetLastPricesResponse = {
 };
 
 function createBaseLastPrice(): LastPrice {
-  return { figi: "", price: undefined, time: undefined, instrumentUid: "", lastPriceType: 0 };
+  return {
+    figi: "",
+    price: undefined,
+    time: undefined,
+    ticker: "",
+    classCode: "",
+    instrumentUid: "",
+    lastPriceType: 0,
+  };
 }
 
 export const LastPrice = {
@@ -5181,6 +5895,12 @@ export const LastPrice = {
     }
     if (message.time !== undefined) {
       Timestamp.encode(toTimestamp(message.time), writer.uint32(26).fork()).ldelim();
+    }
+    if (message.ticker !== "") {
+      writer.uint32(74).string(message.ticker);
+    }
+    if (message.classCode !== "") {
+      writer.uint32(82).string(message.classCode);
     }
     if (message.instrumentUid !== "") {
       writer.uint32(90).string(message.instrumentUid);
@@ -5219,6 +5939,20 @@ export const LastPrice = {
 
           message.time = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.ticker = reader.string();
+          continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.classCode = reader.string();
+          continue;
         case 11:
           if (tag !== 90) {
             break;
@@ -5247,6 +5981,8 @@ export const LastPrice = {
       figi: isSet(object.figi) ? globalThis.String(object.figi) : "",
       price: isSet(object.price) ? Quotation.fromJSON(object.price) : undefined,
       time: isSet(object.time) ? fromJsonTimestamp(object.time) : undefined,
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
       instrumentUid: isSet(object.instrumentUid) ? globalThis.String(object.instrumentUid) : "",
       lastPriceType: isSet(object.lastPriceType) ? lastPriceTypeFromJSON(object.lastPriceType) : 0,
     };
@@ -5263,11 +5999,123 @@ export const LastPrice = {
     if (message.time !== undefined) {
       obj.time = message.time.toISOString();
     }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
+    }
     if (message.instrumentUid !== "") {
       obj.instrumentUid = message.instrumentUid;
     }
     if (message.lastPriceType !== 0) {
       obj.lastPriceType = lastPriceTypeToJSON(message.lastPriceType);
+    }
+    return obj;
+  },
+};
+
+function createBaseOpenInterest(): OpenInterest {
+  return { instrumentUid: "", time: undefined, openInterest: 0, ticker: "", classCode: "" };
+}
+
+export const OpenInterest = {
+  encode(message: OpenInterest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.instrumentUid !== "") {
+      writer.uint32(10).string(message.instrumentUid);
+    }
+    if (message.time !== undefined) {
+      Timestamp.encode(toTimestamp(message.time), writer.uint32(18).fork()).ldelim();
+    }
+    if (message.openInterest !== 0) {
+      writer.uint32(24).int64(message.openInterest);
+    }
+    if (message.ticker !== "") {
+      writer.uint32(34).string(message.ticker);
+    }
+    if (message.classCode !== "") {
+      writer.uint32(42).string(message.classCode);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): OpenInterest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseOpenInterest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.instrumentUid = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.time = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.openInterest = longToNumber(reader.int64() as Long);
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.ticker = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.classCode = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): OpenInterest {
+    return {
+      instrumentUid: isSet(object.instrumentUid) ? globalThis.String(object.instrumentUid) : "",
+      time: isSet(object.time) ? fromJsonTimestamp(object.time) : undefined,
+      openInterest: isSet(object.openInterest) ? globalThis.Number(object.openInterest) : 0,
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
+    };
+  },
+
+  toJSON(message: OpenInterest): unknown {
+    const obj: any = {};
+    if (message.instrumentUid !== "") {
+      obj.instrumentUid = message.instrumentUid;
+    }
+    if (message.time !== undefined) {
+      obj.time = message.time.toISOString();
+    }
+    if (message.openInterest !== 0) {
+      obj.openInterest = Math.round(message.openInterest);
+    }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
     }
     return obj;
   },
@@ -5361,10 +6209,12 @@ function createBaseGetOrderBookResponse(): GetOrderBookResponse {
     closePrice: undefined,
     limitUp: undefined,
     limitDown: undefined,
+    instrumentUid: "",
+    ticker: "",
+    classCode: "",
     lastPriceTs: undefined,
     closePriceTs: undefined,
     orderbookTs: undefined,
-    instrumentUid: "",
   };
 }
 
@@ -5394,6 +6244,15 @@ export const GetOrderBookResponse = {
     if (message.limitDown !== undefined) {
       Quotation.encode(message.limitDown, writer.uint32(66).fork()).ldelim();
     }
+    if (message.instrumentUid !== "") {
+      writer.uint32(74).string(message.instrumentUid);
+    }
+    if (message.ticker !== "") {
+      writer.uint32(82).string(message.ticker);
+    }
+    if (message.classCode !== "") {
+      writer.uint32(90).string(message.classCode);
+    }
     if (message.lastPriceTs !== undefined) {
       Timestamp.encode(toTimestamp(message.lastPriceTs), writer.uint32(170).fork()).ldelim();
     }
@@ -5402,9 +6261,6 @@ export const GetOrderBookResponse = {
     }
     if (message.orderbookTs !== undefined) {
       Timestamp.encode(toTimestamp(message.orderbookTs), writer.uint32(186).fork()).ldelim();
-    }
-    if (message.instrumentUid !== "") {
-      writer.uint32(74).string(message.instrumentUid);
     }
     return writer;
   },
@@ -5472,6 +6328,27 @@ export const GetOrderBookResponse = {
 
           message.limitDown = Quotation.decode(reader, reader.uint32());
           continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.instrumentUid = reader.string();
+          continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.ticker = reader.string();
+          continue;
+        case 11:
+          if (tag !== 90) {
+            break;
+          }
+
+          message.classCode = reader.string();
+          continue;
         case 21:
           if (tag !== 170) {
             break;
@@ -5493,13 +6370,6 @@ export const GetOrderBookResponse = {
 
           message.orderbookTs = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
-        case 9:
-          if (tag !== 74) {
-            break;
-          }
-
-          message.instrumentUid = reader.string();
-          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -5519,10 +6389,12 @@ export const GetOrderBookResponse = {
       closePrice: isSet(object.closePrice) ? Quotation.fromJSON(object.closePrice) : undefined,
       limitUp: isSet(object.limitUp) ? Quotation.fromJSON(object.limitUp) : undefined,
       limitDown: isSet(object.limitDown) ? Quotation.fromJSON(object.limitDown) : undefined,
+      instrumentUid: isSet(object.instrumentUid) ? globalThis.String(object.instrumentUid) : "",
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
       lastPriceTs: isSet(object.lastPriceTs) ? fromJsonTimestamp(object.lastPriceTs) : undefined,
       closePriceTs: isSet(object.closePriceTs) ? fromJsonTimestamp(object.closePriceTs) : undefined,
       orderbookTs: isSet(object.orderbookTs) ? fromJsonTimestamp(object.orderbookTs) : undefined,
-      instrumentUid: isSet(object.instrumentUid) ? globalThis.String(object.instrumentUid) : "",
     };
   },
 
@@ -5552,6 +6424,15 @@ export const GetOrderBookResponse = {
     if (message.limitDown !== undefined) {
       obj.limitDown = Quotation.toJSON(message.limitDown);
     }
+    if (message.instrumentUid !== "") {
+      obj.instrumentUid = message.instrumentUid;
+    }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
+    }
     if (message.lastPriceTs !== undefined) {
       obj.lastPriceTs = message.lastPriceTs.toISOString();
     }
@@ -5560,9 +6441,6 @@ export const GetOrderBookResponse = {
     }
     if (message.orderbookTs !== undefined) {
       obj.orderbookTs = message.orderbookTs.toISOString();
-    }
-    if (message.instrumentUid !== "") {
-      obj.instrumentUid = message.instrumentUid;
     }
     return obj;
   },
@@ -5746,6 +6624,8 @@ function createBaseGetTradingStatusResponse(): GetTradingStatusResponse {
     instrumentUid: "",
     bestpriceOrderAvailableFlag: false,
     onlyBestPrice: false,
+    ticker: "",
+    classCode: "",
   };
 }
 
@@ -5774,6 +6654,12 @@ export const GetTradingStatusResponse = {
     }
     if (message.onlyBestPrice === true) {
       writer.uint32(72).bool(message.onlyBestPrice);
+    }
+    if (message.ticker !== "") {
+      writer.uint32(82).string(message.ticker);
+    }
+    if (message.classCode !== "") {
+      writer.uint32(90).string(message.classCode);
     }
     return writer;
   },
@@ -5841,6 +6727,20 @@ export const GetTradingStatusResponse = {
 
           message.onlyBestPrice = reader.bool();
           continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.ticker = reader.string();
+          continue;
+        case 11:
+          if (tag !== 90) {
+            break;
+          }
+
+          message.classCode = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -5868,6 +6768,8 @@ export const GetTradingStatusResponse = {
         ? globalThis.Boolean(object.bestpriceOrderAvailableFlag)
         : false,
       onlyBestPrice: isSet(object.onlyBestPrice) ? globalThis.Boolean(object.onlyBestPrice) : false,
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
     };
   },
 
@@ -5896,6 +6798,12 @@ export const GetTradingStatusResponse = {
     }
     if (message.onlyBestPrice === true) {
       obj.onlyBestPrice = message.onlyBestPrice;
+    }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
     }
     return obj;
   },
@@ -6257,7 +7165,16 @@ export const GetClosePricesResponse = {
 };
 
 function createBaseInstrumentClosePriceResponse(): InstrumentClosePriceResponse {
-  return { figi: "", instrumentUid: "", price: undefined, eveningSessionPrice: undefined, time: undefined };
+  return {
+    figi: "",
+    instrumentUid: "",
+    ticker: "",
+    classCode: "",
+    price: undefined,
+    eveningSessionPrice: undefined,
+    time: undefined,
+    eveningSessionPriceTime: undefined,
+  };
 }
 
 export const InstrumentClosePriceResponse = {
@@ -6268,6 +7185,12 @@ export const InstrumentClosePriceResponse = {
     if (message.instrumentUid !== "") {
       writer.uint32(18).string(message.instrumentUid);
     }
+    if (message.ticker !== "") {
+      writer.uint32(26).string(message.ticker);
+    }
+    if (message.classCode !== "") {
+      writer.uint32(34).string(message.classCode);
+    }
     if (message.price !== undefined) {
       Quotation.encode(message.price, writer.uint32(90).fork()).ldelim();
     }
@@ -6276,6 +7199,9 @@ export const InstrumentClosePriceResponse = {
     }
     if (message.time !== undefined) {
       Timestamp.encode(toTimestamp(message.time), writer.uint32(170).fork()).ldelim();
+    }
+    if (message.eveningSessionPriceTime !== undefined) {
+      Timestamp.encode(toTimestamp(message.eveningSessionPriceTime), writer.uint32(186).fork()).ldelim();
     }
     return writer;
   },
@@ -6301,6 +7227,20 @@ export const InstrumentClosePriceResponse = {
 
           message.instrumentUid = reader.string();
           continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.ticker = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.classCode = reader.string();
+          continue;
         case 11:
           if (tag !== 90) {
             break;
@@ -6322,6 +7262,13 @@ export const InstrumentClosePriceResponse = {
 
           message.time = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
+        case 23:
+          if (tag !== 186) {
+            break;
+          }
+
+          message.eveningSessionPriceTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -6335,11 +7282,16 @@ export const InstrumentClosePriceResponse = {
     return {
       figi: isSet(object.figi) ? globalThis.String(object.figi) : "",
       instrumentUid: isSet(object.instrumentUid) ? globalThis.String(object.instrumentUid) : "",
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
       price: isSet(object.price) ? Quotation.fromJSON(object.price) : undefined,
       eveningSessionPrice: isSet(object.eveningSessionPrice)
         ? Quotation.fromJSON(object.eveningSessionPrice)
         : undefined,
       time: isSet(object.time) ? fromJsonTimestamp(object.time) : undefined,
+      eveningSessionPriceTime: isSet(object.eveningSessionPriceTime)
+        ? fromJsonTimestamp(object.eveningSessionPriceTime)
+        : undefined,
     };
   },
 
@@ -6351,6 +7303,12 @@ export const InstrumentClosePriceResponse = {
     if (message.instrumentUid !== "") {
       obj.instrumentUid = message.instrumentUid;
     }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
+    }
     if (message.price !== undefined) {
       obj.price = Quotation.toJSON(message.price);
     }
@@ -6359,6 +7317,9 @@ export const InstrumentClosePriceResponse = {
     }
     if (message.time !== undefined) {
       obj.time = message.time.toISOString();
+    }
+    if (message.eveningSessionPriceTime !== undefined) {
+      obj.eveningSessionPriceTime = message.eveningSessionPriceTime.toISOString();
     }
     return obj;
   },
@@ -6849,13 +7810,313 @@ export const GetTechAnalysisResponse_TechAnalysisItem = {
   },
 };
 
-/** Сервис для получения биржевой информации:</br> 1. Свечи.</br> 2. Стаканы.</br> 3. Торговые статусы.</br> 4. Лента сделок. */
+function createBaseGetMarketValuesRequest(): GetMarketValuesRequest {
+  return { instrumentId: [], values: [] };
+}
+
+export const GetMarketValuesRequest = {
+  encode(message: GetMarketValuesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.instrumentId) {
+      writer.uint32(10).string(v!);
+    }
+    writer.uint32(18).fork();
+    for (const v of message.values) {
+      writer.int32(v);
+    }
+    writer.ldelim();
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetMarketValuesRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetMarketValuesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.instrumentId.push(reader.string());
+          continue;
+        case 2:
+          if (tag === 16) {
+            message.values.push(reader.int32() as any);
+
+            continue;
+          }
+
+          if (tag === 18) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.values.push(reader.int32() as any);
+            }
+
+            continue;
+          }
+
+          break;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetMarketValuesRequest {
+    return {
+      instrumentId: globalThis.Array.isArray(object?.instrumentId)
+        ? object.instrumentId.map((e: any) => globalThis.String(e))
+        : [],
+      values: globalThis.Array.isArray(object?.values) ? object.values.map((e: any) => marketValueTypeFromJSON(e)) : [],
+    };
+  },
+
+  toJSON(message: GetMarketValuesRequest): unknown {
+    const obj: any = {};
+    if (message.instrumentId?.length) {
+      obj.instrumentId = message.instrumentId;
+    }
+    if (message.values?.length) {
+      obj.values = message.values.map((e) => marketValueTypeToJSON(e));
+    }
+    return obj;
+  },
+};
+
+function createBaseGetMarketValuesResponse(): GetMarketValuesResponse {
+  return { instruments: [] };
+}
+
+export const GetMarketValuesResponse = {
+  encode(message: GetMarketValuesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.instruments) {
+      MarketValueInstrument.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetMarketValuesResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetMarketValuesResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.instruments.push(MarketValueInstrument.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetMarketValuesResponse {
+    return {
+      instruments: globalThis.Array.isArray(object?.instruments)
+        ? object.instruments.map((e: any) => MarketValueInstrument.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetMarketValuesResponse): unknown {
+    const obj: any = {};
+    if (message.instruments?.length) {
+      obj.instruments = message.instruments.map((e) => MarketValueInstrument.toJSON(e));
+    }
+    return obj;
+  },
+};
+
+function createBaseMarketValueInstrument(): MarketValueInstrument {
+  return { instrumentUid: "", values: [], ticker: "", classCode: "" };
+}
+
+export const MarketValueInstrument = {
+  encode(message: MarketValueInstrument, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.instrumentUid !== "") {
+      writer.uint32(10).string(message.instrumentUid);
+    }
+    for (const v of message.values) {
+      MarketValue.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.ticker !== "") {
+      writer.uint32(26).string(message.ticker);
+    }
+    if (message.classCode !== "") {
+      writer.uint32(34).string(message.classCode);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MarketValueInstrument {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMarketValueInstrument();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.instrumentUid = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.values.push(MarketValue.decode(reader, reader.uint32()));
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.ticker = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.classCode = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MarketValueInstrument {
+    return {
+      instrumentUid: isSet(object.instrumentUid) ? globalThis.String(object.instrumentUid) : "",
+      values: globalThis.Array.isArray(object?.values) ? object.values.map((e: any) => MarketValue.fromJSON(e)) : [],
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
+    };
+  },
+
+  toJSON(message: MarketValueInstrument): unknown {
+    const obj: any = {};
+    if (message.instrumentUid !== "") {
+      obj.instrumentUid = message.instrumentUid;
+    }
+    if (message.values?.length) {
+      obj.values = message.values.map((e) => MarketValue.toJSON(e));
+    }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
+    }
+    return obj;
+  },
+};
+
+function createBaseMarketValue(): MarketValue {
+  return { type: undefined, value: undefined, time: undefined };
+}
+
+export const MarketValue = {
+  encode(message: MarketValue, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.type !== undefined) {
+      writer.uint32(8).int32(message.type);
+    }
+    if (message.value !== undefined) {
+      Quotation.encode(message.value, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.time !== undefined) {
+      Timestamp.encode(toTimestamp(message.time), writer.uint32(26).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MarketValue {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMarketValue();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.type = reader.int32() as any;
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.value = Quotation.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.time = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MarketValue {
+    return {
+      type: isSet(object.type) ? marketValueTypeFromJSON(object.type) : undefined,
+      value: isSet(object.value) ? Quotation.fromJSON(object.value) : undefined,
+      time: isSet(object.time) ? fromJsonTimestamp(object.time) : undefined,
+    };
+  },
+
+  toJSON(message: MarketValue): unknown {
+    const obj: any = {};
+    if (message.type !== undefined) {
+      obj.type = marketValueTypeToJSON(message.type);
+    }
+    if (message.value !== undefined) {
+      obj.value = Quotation.toJSON(message.value);
+    }
+    if (message.time !== undefined) {
+      obj.time = message.time.toISOString();
+    }
+    return obj;
+  },
+};
+
+/** Сервис для получения биржевой информации:<br/> 1. Свечи.<br/> 2. Стаканы.<br/> 3. Торговые статусы.<br/> 4. Лента сделок. */
 export type MarketDataServiceDefinition = typeof MarketDataServiceDefinition;
 export const MarketDataServiceDefinition = {
   name: "MarketDataService",
   fullName: "tinkoff.public.invest.api.contract.v1.MarketDataService",
   methods: {
-    /** Запросить исторические свечи по инструменту. */
+    /** GetCandles — исторические свечи по инструменту */
     getCandles: {
       name: "GetCandles",
       requestType: GetCandlesRequest,
@@ -6864,7 +8125,7 @@ export const MarketDataServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Запросить цены последних сделок по инструментам. */
+    /** GetLastPrices — цены последних сделок по инструментам */
     getLastPrices: {
       name: "GetLastPrices",
       requestType: GetLastPricesRequest,
@@ -6873,7 +8134,7 @@ export const MarketDataServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить стакан по инструменту. */
+    /** GetOrderBook — стакан по инструменту */
     getOrderBook: {
       name: "GetOrderBook",
       requestType: GetOrderBookRequest,
@@ -6882,7 +8143,7 @@ export const MarketDataServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Запросить статус торгов по инструментам. */
+    /** GetTradingStatus — статус торгов по инструменту */
     getTradingStatus: {
       name: "GetTradingStatus",
       requestType: GetTradingStatusRequest,
@@ -6891,7 +8152,7 @@ export const MarketDataServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Запросить статус торгов по инструментам. */
+    /** GetTradingStatuses — статус торгов по инструментам */
     getTradingStatuses: {
       name: "GetTradingStatuses",
       requestType: GetTradingStatusesRequest,
@@ -6900,7 +8161,10 @@ export const MarketDataServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Запросить обезличенные сделки за последний час. */
+    /**
+     * GetLastTrades — обезличенные сделки
+     * Обезличенные сделки по инструменту. Метод гарантирует получение информации за последний час.
+     */
     getLastTrades: {
       name: "GetLastTrades",
       requestType: GetLastTradesRequest,
@@ -6909,7 +8173,7 @@ export const MarketDataServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Запросить цены закрытия торговой сессии по инструментам. */
+    /** GetClosePrices — цены закрытия торговой сессии по инструментам */
     getClosePrices: {
       name: "GetClosePrices",
       requestType: GetClosePricesRequest,
@@ -6918,7 +8182,7 @@ export const MarketDataServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить технические индикаторы по инструменту. */
+    /** GetTechAnalysis — технические индикаторы по инструменту */
     getTechAnalysis: {
       name: "GetTechAnalysis",
       requestType: GetTechAnalysisRequest,
@@ -6927,69 +8191,94 @@ export const MarketDataServiceDefinition = {
       responseStream: false,
       options: {},
     },
+    /** GetMarketValues — рыночные данные по инструментам */
+    getMarketValues: {
+      name: "GetMarketValues",
+      requestType: GetMarketValuesRequest,
+      requestStream: false,
+      responseType: GetMarketValuesResponse,
+      responseStream: false,
+      options: {},
+    },
   },
 } as const;
 
 export interface MarketDataServiceImplementation<CallContextExt = {}> {
-  /** Запросить исторические свечи по инструменту. */
+  /** GetCandles — исторические свечи по инструменту */
   getCandles(request: GetCandlesRequest, context: CallContext & CallContextExt): Promise<GetCandlesResponse>;
-  /** Запросить цены последних сделок по инструментам. */
+  /** GetLastPrices — цены последних сделок по инструментам */
   getLastPrices(request: GetLastPricesRequest, context: CallContext & CallContextExt): Promise<GetLastPricesResponse>;
-  /** Получить стакан по инструменту. */
+  /** GetOrderBook — стакан по инструменту */
   getOrderBook(request: GetOrderBookRequest, context: CallContext & CallContextExt): Promise<GetOrderBookResponse>;
-  /** Запросить статус торгов по инструментам. */
+  /** GetTradingStatus — статус торгов по инструменту */
   getTradingStatus(
     request: GetTradingStatusRequest,
     context: CallContext & CallContextExt,
   ): Promise<GetTradingStatusResponse>;
-  /** Запросить статус торгов по инструментам. */
+  /** GetTradingStatuses — статус торгов по инструментам */
   getTradingStatuses(
     request: GetTradingStatusesRequest,
     context: CallContext & CallContextExt,
   ): Promise<GetTradingStatusesResponse>;
-  /** Запросить обезличенные сделки за последний час. */
+  /**
+   * GetLastTrades — обезличенные сделки
+   * Обезличенные сделки по инструменту. Метод гарантирует получение информации за последний час.
+   */
   getLastTrades(request: GetLastTradesRequest, context: CallContext & CallContextExt): Promise<GetLastTradesResponse>;
-  /** Запросить цены закрытия торговой сессии по инструментам. */
+  /** GetClosePrices — цены закрытия торговой сессии по инструментам */
   getClosePrices(
     request: GetClosePricesRequest,
     context: CallContext & CallContextExt,
   ): Promise<GetClosePricesResponse>;
-  /** Получить технические индикаторы по инструменту. */
+  /** GetTechAnalysis — технические индикаторы по инструменту */
   getTechAnalysis(
     request: GetTechAnalysisRequest,
     context: CallContext & CallContextExt,
   ): Promise<GetTechAnalysisResponse>;
+  /** GetMarketValues — рыночные данные по инструментам */
+  getMarketValues(
+    request: GetMarketValuesRequest,
+    context: CallContext & CallContextExt,
+  ): Promise<GetMarketValuesResponse>;
 }
 
 export interface MarketDataServiceClient<CallOptionsExt = {}> {
-  /** Запросить исторические свечи по инструменту. */
+  /** GetCandles — исторические свечи по инструменту */
   getCandles(request: GetCandlesRequest, options?: CallOptions & CallOptionsExt): Promise<GetCandlesResponse>;
-  /** Запросить цены последних сделок по инструментам. */
+  /** GetLastPrices — цены последних сделок по инструментам */
   getLastPrices(request: GetLastPricesRequest, options?: CallOptions & CallOptionsExt): Promise<GetLastPricesResponse>;
-  /** Получить стакан по инструменту. */
+  /** GetOrderBook — стакан по инструменту */
   getOrderBook(request: GetOrderBookRequest, options?: CallOptions & CallOptionsExt): Promise<GetOrderBookResponse>;
-  /** Запросить статус торгов по инструментам. */
+  /** GetTradingStatus — статус торгов по инструменту */
   getTradingStatus(
     request: GetTradingStatusRequest,
     options?: CallOptions & CallOptionsExt,
   ): Promise<GetTradingStatusResponse>;
-  /** Запросить статус торгов по инструментам. */
+  /** GetTradingStatuses — статус торгов по инструментам */
   getTradingStatuses(
     request: GetTradingStatusesRequest,
     options?: CallOptions & CallOptionsExt,
   ): Promise<GetTradingStatusesResponse>;
-  /** Запросить обезличенные сделки за последний час. */
+  /**
+   * GetLastTrades — обезличенные сделки
+   * Обезличенные сделки по инструменту. Метод гарантирует получение информации за последний час.
+   */
   getLastTrades(request: GetLastTradesRequest, options?: CallOptions & CallOptionsExt): Promise<GetLastTradesResponse>;
-  /** Запросить цены закрытия торговой сессии по инструментам. */
+  /** GetClosePrices — цены закрытия торговой сессии по инструментам */
   getClosePrices(
     request: GetClosePricesRequest,
     options?: CallOptions & CallOptionsExt,
   ): Promise<GetClosePricesResponse>;
-  /** Получить технические индикаторы по инструменту. */
+  /** GetTechAnalysis — технические индикаторы по инструменту */
   getTechAnalysis(
     request: GetTechAnalysisRequest,
     options?: CallOptions & CallOptionsExt,
   ): Promise<GetTechAnalysisResponse>;
+  /** GetMarketValues — рыночные данные по инструментам */
+  getMarketValues(
+    request: GetMarketValuesRequest,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<GetMarketValuesResponse>;
 }
 
 export type MarketDataStreamServiceDefinition = typeof MarketDataStreamServiceDefinition;
@@ -6997,7 +8286,7 @@ export const MarketDataStreamServiceDefinition = {
   name: "MarketDataStreamService",
   fullName: "tinkoff.public.invest.api.contract.v1.MarketDataStreamService",
   methods: {
-    /** Bidirectional-стрим предоставления биржевой информации. */
+    /** MarketDataStream — bidirectional стрим предоставления биржевой информации */
     marketDataStream: {
       name: "MarketDataStream",
       requestType: MarketDataRequest,
@@ -7006,7 +8295,7 @@ export const MarketDataStreamServiceDefinition = {
       responseStream: true,
       options: {},
     },
-    /** Server-side стрим предоставления биржевой информации. */
+    /** MarketDataServerSideStream — server-side стрим предоставления биржевой информации */
     marketDataServerSideStream: {
       name: "MarketDataServerSideStream",
       requestType: MarketDataServerSideStreamRequest,
@@ -7019,12 +8308,12 @@ export const MarketDataStreamServiceDefinition = {
 } as const;
 
 export interface MarketDataStreamServiceImplementation<CallContextExt = {}> {
-  /** Bidirectional-стрим предоставления биржевой информации. */
+  /** MarketDataStream — bidirectional стрим предоставления биржевой информации */
   marketDataStream(
     request: AsyncIterable<MarketDataRequest>,
     context: CallContext & CallContextExt,
   ): ServerStreamingMethodResult<MarketDataResponse>;
-  /** Server-side стрим предоставления биржевой информации. */
+  /** MarketDataServerSideStream — server-side стрим предоставления биржевой информации */
   marketDataServerSideStream(
     request: MarketDataServerSideStreamRequest,
     context: CallContext & CallContextExt,
@@ -7032,12 +8321,12 @@ export interface MarketDataStreamServiceImplementation<CallContextExt = {}> {
 }
 
 export interface MarketDataStreamServiceClient<CallOptionsExt = {}> {
-  /** Bidirectional-стрим предоставления биржевой информации. */
+  /** MarketDataStream — bidirectional стрим предоставления биржевой информации */
   marketDataStream(
     request: AsyncIterable<MarketDataRequest>,
     options?: CallOptions & CallOptionsExt,
   ): AsyncIterable<MarketDataResponse>;
-  /** Server-side стрим предоставления биржевой информации. */
+  /** MarketDataServerSideStream — server-side стрим предоставления биржевой информации */
   marketDataServerSideStream(
     request: MarketDataServerSideStreamRequest,
     options?: CallOptions & CallOptionsExt,

@@ -13,20 +13,32 @@ import "google/protobuf/timestamp.proto";
 import "google/api/field_behavior.proto";
 import "common.proto";
 
-service UsersService { /*С помощью сервиса можно получить: </br> 1.
-                       список счетов пользователя; </br> 2. маржинальные показатели по счёту.*/
+service UsersService { /*С помощью сервиса можно получить: <br/> 1.
+                       список счетов пользователя; <br/> 2. маржинальные показатели по счeту.*/
 
-  //Получить счета пользователя.
+  //GetAccounts — счета пользователя
+  //Получить список счетов.
   rpc GetAccounts (GetAccountsRequest) returns (GetAccountsResponse);
 
-  //Рассчитать маржинальные показатели по счёту.
+  //GetMarginAttributes — маржинальные показатели по счeту
+  //Метод позволяет получить маржинальные показатели и ликвидность по заданному счeту.
   rpc GetMarginAttributes (GetMarginAttributesRequest) returns (GetMarginAttributesResponse);
 
-  //Запросить тариф пользователя.
+  //GetUserTariff — тариф пользователя
+  //Получить информацию о текущих лимитах на подклчение, согласно текущему тарифу пользователя.
   rpc GetUserTariff (GetUserTariffRequest) returns (GetUserTariffResponse);
 
-  //Получить информацию о пользователе.
+  //GetInfo — информация о пользователе
+  //Получить информацию о пользователе: тариф, признак квалификации, пройденные тесты и др.
   rpc GetInfo (GetInfoRequest) returns (GetInfoResponse);
+
+  //GetBankAccounts — банковские счета пользователя
+  //Получить список счетов пользователя, в том числе и банковских.
+  rpc GetBankAccounts(GetBankAccountsRequest) returns (GetBankAccountsResponse);
+
+  //CurrencyTransfer — перевод денежных средств между счетами
+  //Перевести денежные средства между брокерскими счетами
+  rpc CurrencyTransfer(CurrencyTransferRequest) returns (CurrencyTransferResponse);
 }
 
 //Запрос получения счетов пользователя.
@@ -40,66 +52,68 @@ message GetAccountsResponse {
   repeated Account accounts = 1;
 }
 
-//Информация о счёте.
+//Информация о счeте.
 message Account {
 
-  // Идентификатор счёта.
+  // Идентификатор счeта.
   string id = 1;
 
-  // Тип счёта.
+  // Тип счeта.
   AccountType type = 2;
 
-  // Название счёта.
+  // Название счeта.
   string name = 3;
 
-  // Статус счёта.
+  // Статус счeта.
   AccountStatus status = 4;
 
-  // Дата открытия счёта в часовом поясе UTC.
+  // Дата открытия счeта в часовом поясе UTC.
   google.protobuf.Timestamp opened_date = 5;
 
-  // Дата закрытия счёта в часовом поясе UTC.
+  // Дата закрытия счeта в часовом поясе UTC.
   google.protobuf.Timestamp closed_date = 6;
 
-  // Уровень доступа к текущему счёту (определяется токеном).
+  // Уровень доступа к текущему счeту (определяется токеном).
   AccessLevel access_level = 7;
 }
 
-//Тип счёта.
+//Тип счeта.
 enum AccountType {
-  ACCOUNT_TYPE_UNSPECIFIED = 0; //Тип аккаунта не определён.
-  ACCOUNT_TYPE_TINKOFF = 1; //Брокерский счёт Т-Инвестиций.
+  ACCOUNT_TYPE_UNSPECIFIED = 0; //Тип аккаунта не определeн.
+  ACCOUNT_TYPE_TINKOFF = 1; //Брокерский счeт Т-Инвестиций.
   ACCOUNT_TYPE_TINKOFF_IIS = 2; //ИИС.
   ACCOUNT_TYPE_INVEST_BOX = 3; //Инвесткопилка.
   ACCOUNT_TYPE_INVEST_FUND = 4; //Фонд денежного рынка.
+  ACCOUNT_TYPE_DEBIT = 5; //Дебетовый карточный счeт.
+  ACCOUNT_TYPE_SAVING = 6; //Накопительный счeт.
 }
 
-//Статус счёта.
+//Статус счeта.
 enum AccountStatus {
-  ACCOUNT_STATUS_UNSPECIFIED = 0; //Статус счёта не определён.
+  ACCOUNT_STATUS_UNSPECIFIED = 0; //Статус счeта не определeн.
   ACCOUNT_STATUS_NEW = 1; //Новый, в процессе открытия.
-  ACCOUNT_STATUS_OPEN = 2; //Открытый и активный счёт.
-  ACCOUNT_STATUS_CLOSED = 3; //Закрытый счёт.
+  ACCOUNT_STATUS_OPEN = 2; //Открытый и активный счeт.
+  ACCOUNT_STATUS_CLOSED = 3; //Закрытый счeт.
   ACCOUNT_STATUS_ALL = 4; //Все счета.
 }
 
-//Запрос маржинальных показателей по счёту.
+//Запрос маржинальных показателей по счeту.
 message GetMarginAttributesRequest {
 
-  // Идентификатор счёта пользователя.
+  // Идентификатор счeта пользователя.
   string account_id = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
-//Маржинальные показатели по счёту.
+//Маржинальные показатели по счeту.
 message GetMarginAttributesResponse {
 
-  // Ликвидная стоимость портфеля. [Подробнее про ликвидный портфель](https://help.tbank.ru/margin-trade/short/liquid-portfolio/).
+  // Ликвидная стоимость портфеля. [Подробнее про ликвидный портфель](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q4).
   MoneyValue liquid_portfolio = 1;
 
-  // Начальная маржа — начальное обеспечение для совершения новой сделки. [Подробнее про начальную и минимальную маржу](https://help.tbank.ru/margin-trade/short/initial-and-maintenance-margin/).
+  // Начальная маржа — начальное обеспечение для совершения новой сделки. [Подробнее про начальную и минимальную маржу](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q6).
   MoneyValue starting_margin = 2;
 
-  // Минимальная маржа — это минимальное обеспечение для поддержания позиции, которую вы уже открыли. [Подробнее про начальную и минимальную маржу](https://help.tbank.ru/margin-trade/short/initial-and-maintenance-margin/).
+  // Минимальная маржа — это минимальное обеспечение для поддержания позиции, которую вы уже открыли. [Подробнее про начальную и минимальную маржу](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q6).
   MoneyValue minimal_margin = 3;
 
   // Уровень достаточности средств. Соотношение стоимости ликвидного портфеля к начальной марже.
@@ -108,7 +122,7 @@ message GetMarginAttributesResponse {
   // Объем недостающих средств. Разница между стартовой маржой и ликвидной стоимости портфеля.
   MoneyValue amount_of_missing_funds = 5;
 
-  // Скорректированная маржа. Начальная маржа, в которой плановые позиции рассчитываются с учётом активных заявок на покупку позиций лонг или продажу позиций шорт.
+  // Скорректированная маржа. Начальная маржа, в которой плановые позиции рассчитываются с учeтом активных заявок на покупку позиций лонг или продажу позиций шорт.
   MoneyValue corrected_margin = 6;
 }
 
@@ -126,6 +140,7 @@ message GetUserTariffResponse {
 message UnaryLimit {
   int32 limit_per_minute = 1; //Количество unary-запросов в минуту.
   repeated string methods = 2; //Названия методов.
+  optional int32 limit_per_second = 3; //Количество unary-запросов в секунду.
 }
 
 //Лимит stream-соединений.
@@ -143,14 +158,45 @@ message GetInfoRequest {
 message GetInfoResponse {
   bool prem_status = 1; //Признак премиум клиента.
   bool qual_status = 2; //Признак квалифицированного инвестора.
-  repeated string qualified_for_work_with = 3; //Набор требующих тестирования инструментов и возможностей, с которыми может работать пользователь. [Подробнее](https://russianinvestments.github.io/investAPI/faq_users/).
+  repeated string qualified_for_work_with = 3; //Набор требующих тестирования инструментов и возможностей, с которыми может работать пользователь. [Подробнее](/invest/services/accounts/faq_users).
   string tariff = 4; //Наименование тарифа пользователя.
+  string user_id = 9; //Идентификатор пользователя.
+  string risk_level_code = 12; // Категория риска.
 }
 
-//Уровень доступа к счёту.
+//Уровень доступа к счeту.
 enum AccessLevel {
-  ACCOUNT_ACCESS_LEVEL_UNSPECIFIED = 0; //Уровень доступа не определён.
-  ACCOUNT_ACCESS_LEVEL_FULL_ACCESS = 1; //Полный доступ к счёту.
+  ACCOUNT_ACCESS_LEVEL_UNSPECIFIED = 0; //Уровень доступа не определeн.
+  ACCOUNT_ACCESS_LEVEL_FULL_ACCESS = 1; //Полный доступ к счeту.
   ACCOUNT_ACCESS_LEVEL_READ_ONLY = 2; //Доступ с уровнем прав «только чтение».
   ACCOUNT_ACCESS_LEVEL_NO_ACCESS = 3; //Доступа нет.
+}
+
+//Запрос списка банковских счетов пользователя.
+message GetBankAccountsRequest {
+}
+
+//Список банковских счетов пользователя.
+message GetBankAccountsResponse {
+  repeated BankAccount bank_accounts = 1; //Массив банковских счетов.
+}
+
+//Банковский счeт.
+message BankAccount {
+  string id = 1; //Идентификатор счeта.
+  string name = 2; //Название счeта.
+  repeated MoneyValue money = 3; //Список валютных позиций на счeте.
+  google.protobuf.Timestamp opened_date = 4; //Дата открытия счeта в часовом поясе UTC.
+  AccountType type = 5; //Тип счeта.
+}
+
+message CurrencyTransferRequest {
+  string from_account_id = 1 [(google.api.field_behavior) = REQUIRED]; // Номер счета списания.
+  string to_account_id = 2 [(google.api.field_behavior) = REQUIRED]; // Номер счета зачисления.
+  MoneyValue amount = 3 [(google.api.field_behavior) = REQUIRED]; // Сумма перевода с указанием валюты.
+  string transaction_id = 4; // Идентификатор запроса выставления поручения для целей идемпотентности в формате UUID.
+}
+
+message CurrencyTransferResponse {
+
 }
