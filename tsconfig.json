@@ -3,6 +3,7 @@
     "target": "es2020",
     "module": "ESNext",
     "moduleResolution": "node",
+    "skipLibCheck": true,
     "strict": true,
     "useUnknownInCatchVariables": false,
     "forceConsistentCasingInFileNames": true,
