@@ -51,6 +51,9 @@ jobs:
       - run: npm run tsc
       - run: npm run build
       - run: npm run test:modules
+      - run: npm test
+        env:
+          TINKOFF_API_TOKEN: ${{ secrets.TINKOFF_API_TOKEN }}
 
       - uses: vitalets/npm-release@v1
         with:

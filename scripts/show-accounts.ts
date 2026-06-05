@@ -1,8 +1,7 @@
 /**
  * Текущие счета и позиции.
- * npx tsx scripts/show-accounts.ts
+ * NODE_OPTIONS=--env-file=.env npx tsx scripts/show-accounts.ts
  */
-import 'dotenv/config';
 import { RealAccount, SandboxAccount, TinkoffAccount, TinkoffInvestApi } from '../src/index.js';
 import { Operation, OperationState, PortfolioPosition, PortfolioResponse } from '../src/generated/operations.js';
 import { Account } from '../src/generated/users.js';

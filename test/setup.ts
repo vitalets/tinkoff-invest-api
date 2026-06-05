@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import assert from 'assert';
 import { TinkoffInvestApi } from '../src/index.js';
 

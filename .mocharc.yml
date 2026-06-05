@@ -1,0 +1,4 @@
+import: tsx/esm
+file: test/setup.ts
+spec: test/specs/*.ts
+timeout: 7000
