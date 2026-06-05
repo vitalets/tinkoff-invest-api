@@ -1,9 +1,10 @@
 #!/bin/bash
-# Update proto files from https://github.com/RussianInvestments/investAPI
+# Update proto files from https://opensource.tbank.ru/invest/invest-contracts
 # Usage: ./scripts/pull-proto.sh
 
 set -euo pipefail
 
-wget "https://github.com/RussianInvestments/investAPI/archive/master.zip" -O proto.zip
+rm -rf invest-contracts-master
+wget "https://opensource.tbank.ru/invest/invest-contracts/-/archive/master/invest-contracts-master.zip" -O proto.zip
 unzip -o proto.zip
 rm -f proto.zip

@@ -1,5 +1,7 @@
 # tinkoff-invest-api
-Node.js SDK для работы с [Tinkoff Invest API](https://tinkoff.github.io/investAPI/).
+Node.js SDK для работы с [T-Invest API](https://developer.tbank.ru/invest/intro/intro).
+
+> Т-Инвестиции выпустили [официальный SDK для JavaScript](https://opensource.tbank.ru/invest/invest-js). Сначала рекомендуем посмотреть его: возможно, официальный SDK уже актуален и покрывает ваши потребности. Если нет - добро пожаловать 🙂
 
 <!-- toc -->
 
@@ -30,7 +32,7 @@ import { TinkoffInvestApi } from 'tinkoff-invest-api';
 // создать клиента с заданным токеном доступа
 const api = new TinkoffInvestApi({ token: '<your-token>' });
 ```
-Как получить токен доступа описано [тут](https://tinkoff.github.io/investAPI/token/).
+Как получить токен доступа описано [тут](https://developer.tbank.ru/invest/docs/intro/token).
 
 ### Unary-запросы
 ```ts
@@ -225,6 +227,11 @@ DEBUG=tinkoff-invest-api:* node robot.js
 ```
 
 ## История изменений
+
+#### 7.1.0
+* Обновлён источник proto-контрактов: [opensource.tbank.ru/invest/invest-contracts](https://opensource.tbank.ru/invest/invest-contracts)
+* Обновлена версия протокола до 1.49
+* Добавлены новые значения перечислений: `INSTRUMENT_TYPE_DFA`, `SECURITY_TRADING_STATUS_STABILIZATION_AUCTION`, новые типы операций
 
 #### 7.0.1
 * Исправлена опечатка при получении лимитов ([#14](https://github.com/vitalets/tinkoff-invest-api/issues/14), [#26](https://github.com/vitalets/tinkoff-invest-api/pull/26), [@devoln](https://github.com/devoln))

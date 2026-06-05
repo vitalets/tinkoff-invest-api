@@ -12,6 +12,8 @@ npm-debug.log
 /dist
 /cjs
 .cache
+/invest-contracts-master
+/invest-contracts-master
 /todo.txt
 /scripts/check.ts
 

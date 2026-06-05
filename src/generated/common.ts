@@ -28,6 +28,8 @@ export enum InstrumentType {
   INSTRUMENT_TYPE_INDEX = 9,
   /** INSTRUMENT_TYPE_COMMODITY - Товар. */
   INSTRUMENT_TYPE_COMMODITY = 10,
+  /** INSTRUMENT_TYPE_DFA - Цифровой актив. */
+  INSTRUMENT_TYPE_DFA = 11,
   UNRECOGNIZED = -1,
 }
 
@@ -66,6 +68,9 @@ export function instrumentTypeFromJSON(object: any): InstrumentType {
     case 10:
     case "INSTRUMENT_TYPE_COMMODITY":
       return InstrumentType.INSTRUMENT_TYPE_COMMODITY;
+    case 11:
+    case "INSTRUMENT_TYPE_DFA":
+      return InstrumentType.INSTRUMENT_TYPE_DFA;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -97,6 +102,8 @@ export function instrumentTypeToJSON(object: InstrumentType): string {
       return "INSTRUMENT_TYPE_INDEX";
     case InstrumentType.INSTRUMENT_TYPE_COMMODITY:
       return "INSTRUMENT_TYPE_COMMODITY";
+    case InstrumentType.INSTRUMENT_TYPE_DFA:
+      return "INSTRUMENT_TYPE_DFA";
     case InstrumentType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -182,6 +189,8 @@ export enum SecurityTradingStatus {
   SECURITY_TRADING_STATUS_DEALER_BREAK_IN_TRADING = 15,
   /** SECURITY_TRADING_STATUS_DEALER_NOT_AVAILABLE_FOR_TRADING - Недоступна торговля в режиме внутренней ликвидности брокера. */
   SECURITY_TRADING_STATUS_DEALER_NOT_AVAILABLE_FOR_TRADING = 16,
+  /** SECURITY_TRADING_STATUS_STABILIZATION_AUCTION - Аукцион обновления цен. */
+  SECURITY_TRADING_STATUS_STABILIZATION_AUCTION = 17,
   UNRECOGNIZED = -1,
 }
 
@@ -238,6 +247,9 @@ export function securityTradingStatusFromJSON(object: any): SecurityTradingStatu
     case 16:
     case "SECURITY_TRADING_STATUS_DEALER_NOT_AVAILABLE_FOR_TRADING":
       return SecurityTradingStatus.SECURITY_TRADING_STATUS_DEALER_NOT_AVAILABLE_FOR_TRADING;
+    case 17:
+    case "SECURITY_TRADING_STATUS_STABILIZATION_AUCTION":
+      return SecurityTradingStatus.SECURITY_TRADING_STATUS_STABILIZATION_AUCTION;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -281,6 +293,8 @@ export function securityTradingStatusToJSON(object: SecurityTradingStatus): stri
       return "SECURITY_TRADING_STATUS_DEALER_BREAK_IN_TRADING";
     case SecurityTradingStatus.SECURITY_TRADING_STATUS_DEALER_NOT_AVAILABLE_FOR_TRADING:
       return "SECURITY_TRADING_STATUS_DEALER_NOT_AVAILABLE_FOR_TRADING";
+    case SecurityTradingStatus.SECURITY_TRADING_STATUS_STABILIZATION_AUCTION:
+      return "SECURITY_TRADING_STATUS_STABILIZATION_AUCTION";
     case SecurityTradingStatus.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";

@@ -16,6 +16,7 @@ import {
   resultSubscriptionStatusToJSON,
 } from "./common.js";
 import { Timestamp } from "./google/protobuf/timestamp.js";
+import { StopOrderStatusOption, stopOrderStatusOptionFromJSON, stopOrderStatusOptionToJSON } from "./stoporders.js";
 
 export const protobufPackage = "tinkoff.public.invest.api.contract.v1";
 
@@ -350,7 +351,7 @@ export interface PostOrderRequest {
   orderType: OrderType;
   /** Идентификатор запроса выставления поручения для целей идемпотентности в формате UID. Максимальная длина 36 символов. */
   orderId: string;
-  /** Идентификатор инструмента, принимает значения Figi или Instrument_uid. */
+  /** Идентификатор инструмента. Принимает значение `figi`, `instrument_uid` или `ticker + '_' + class_code`. */
   instrumentId: string;
   /** Алгоритм исполнения поручения, применяется только к лимитной заявке. */
   timeInForce: TimeInForceType;
@@ -424,7 +425,7 @@ export interface PostOrderResponse {
 
 /** Запрос выставления асинхронного торгового поручения. */
 export interface PostOrderAsyncRequest {
-  /** Идентификатор инструмента, принимает значения Figi или Instrument_uid. */
+  /** Идентификатор инструмента. Принимает значение `figi`, `instrument_uid` или `ticker + '_' + class_code`. */
   instrumentId: string;
   /** Количество лотов. */
   quantity: number;
@@ -605,6 +606,10 @@ export interface OrderStage {
 export interface ReplaceOrderRequest {
   /** Номер счета. */
   accountId: string;
+  /** Тип идентификатора заявки. */
+  orderIdType?:
+    | OrderIdType
+    | undefined;
   /** Идентификатор заявки на бирже. */
   orderId: string;
   /** Новый идентификатор запроса выставления поручения для целей идемпотентности. Максимальная длина 36 символов. Перезатирает старый ключ. */
@@ -627,7 +632,7 @@ export interface ReplaceOrderRequest {
 export interface GetMaxLotsRequest {
   /** Номер счета */
   accountId: string;
-  /** Идентификатор инструмента, принимает значения Figi или instrument_uid */
+  /** Идентификатор инструмента. Принимает значение `figi`, `instrument_uid` или `ticker + '_' + class_code`. */
   instrumentId: string;
   /** Цена инструмента */
   price?: Quotation | undefined;
@@ -673,7 +678,7 @@ export interface GetMaxLotsResponse_SellLimitsView {
 export interface GetOrderPriceRequest {
   /** Номер счета */
   accountId: string;
-  /** Идентификатор инструмента, принимает значения Figi или instrument_uid */
+  /** Идентификатор инструмента. Принимает значение `figi`, `instrument_uid` или `ticker + '_' + class_code`. */
   instrumentId: string;
   /** Цена инструмента */
   price?:
@@ -767,7 +772,11 @@ export interface OrderStateStreamResponse {
     | Ping
     | undefined;
   /** Ответ на запрос на подписку. */
-  subscription?: SubscriptionResponse | undefined;
+  subscription?:
+    | SubscriptionResponse
+    | undefined;
+  /** Стоп-ордер. */
+  stopOrderState?: OrderStateStreamResponse_StopOrderState | undefined;
 }
 
 /** Маркер */
@@ -970,6 +979,8 @@ export interface OrderStateStreamResponse_OrderState {
   orderType: OrderType;
   /** Номер счета. */
   accountId: string;
+  /** Идентификатор торгового поручения. */
+  tradeOrderId: string;
   /** Начальная цена заявки. */
   initialOrderPrice?:
     | MoneyValue
@@ -1010,6 +1021,38 @@ export interface OrderStateStreamResponse_OrderState {
   exchange: string;
   /** UID идентификатор инструмента. */
   instrumentUid: string;
+}
+
+/** Стоп-ордер */
+export interface OrderStateStreamResponse_StopOrderState {
+  /** Идентификатор стоп-заявки. */
+  stopOrderId: string;
+  /** Номер счёта. */
+  accountId: string;
+  /** Дата создания заявки. */
+  createdAt?:
+    | Date
+    | undefined;
+  /** Направление заявки. */
+  direction: OrderDirection;
+  /** Цена заявки. */
+  price?:
+    | MoneyValue
+    | undefined;
+  /** Цена активации стоп-заявки. */
+  stopPrice?:
+    | MoneyValue
+    | undefined;
+  /** Тип дочерней биржевой заявки. */
+  orderType: OrderType;
+  /** UID идентификатор инструмента. */
+  instrumentUid: string;
+  /** Тикер инструмента. */
+  ticker: string;
+  /** Класс-код. */
+  classCode: string;
+  /** Состояние заявки. */
+  status: StopOrderStatusOption;
 }
 
 function createBaseTradesStreamRequest(): TradesStreamRequest {
@@ -3117,6 +3160,7 @@ export const OrderStage = {
 function createBaseReplaceOrderRequest(): ReplaceOrderRequest {
   return {
     accountId: "",
+    orderIdType: undefined,
     orderId: "",
     idempotencyKey: "",
     quantity: 0,
@@ -3130,6 +3174,9 @@ export const ReplaceOrderRequest = {
   encode(message: ReplaceOrderRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.accountId !== "") {
       writer.uint32(10).string(message.accountId);
+    }
+    if (message.orderIdType !== undefined) {
+      writer.uint32(40).int32(message.orderIdType);
     }
     if (message.orderId !== "") {
       writer.uint32(50).string(message.orderId);
@@ -3165,6 +3212,13 @@ export const ReplaceOrderRequest = {
           }
 
           message.accountId = reader.string();
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.orderIdType = reader.int32() as any;
           continue;
         case 6:
           if (tag !== 50) {
@@ -3220,6 +3274,7 @@ export const ReplaceOrderRequest = {
   fromJSON(object: any): ReplaceOrderRequest {
     return {
       accountId: isSet(object.accountId) ? globalThis.String(object.accountId) : "",
+      orderIdType: isSet(object.orderIdType) ? orderIdTypeFromJSON(object.orderIdType) : undefined,
       orderId: isSet(object.orderId) ? globalThis.String(object.orderId) : "",
       idempotencyKey: isSet(object.idempotencyKey) ? globalThis.String(object.idempotencyKey) : "",
       quantity: isSet(object.quantity) ? globalThis.Number(object.quantity) : 0,
@@ -3233,6 +3288,9 @@ export const ReplaceOrderRequest = {
     const obj: any = {};
     if (message.accountId !== "") {
       obj.accountId = message.accountId;
+    }
+    if (message.orderIdType !== undefined) {
+      obj.orderIdType = orderIdTypeToJSON(message.orderIdType);
     }
     if (message.orderId !== "") {
       obj.orderId = message.orderId;
@@ -4143,7 +4201,7 @@ export const SubscriptionResponse = {
 };
 
 function createBaseOrderStateStreamResponse(): OrderStateStreamResponse {
-  return { orderState: undefined, ping: undefined, subscription: undefined };
+  return { orderState: undefined, ping: undefined, subscription: undefined, stopOrderState: undefined };
 }
 
 export const OrderStateStreamResponse = {
@@ -4156,6 +4214,9 @@ export const OrderStateStreamResponse = {
     }
     if (message.subscription !== undefined) {
       SubscriptionResponse.encode(message.subscription, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.stopOrderState !== undefined) {
+      OrderStateStreamResponse_StopOrderState.encode(message.stopOrderState, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -4188,6 +4249,13 @@ export const OrderStateStreamResponse = {
 
           message.subscription = SubscriptionResponse.decode(reader, reader.uint32());
           continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.stopOrderState = OrderStateStreamResponse_StopOrderState.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -4204,6 +4272,9 @@ export const OrderStateStreamResponse = {
         : undefined,
       ping: isSet(object.ping) ? Ping.fromJSON(object.ping) : undefined,
       subscription: isSet(object.subscription) ? SubscriptionResponse.fromJSON(object.subscription) : undefined,
+      stopOrderState: isSet(object.stopOrderState)
+        ? OrderStateStreamResponse_StopOrderState.fromJSON(object.stopOrderState)
+        : undefined,
     };
   },
 
@@ -4217,6 +4288,9 @@ export const OrderStateStreamResponse = {
     }
     if (message.subscription !== undefined) {
       obj.subscription = SubscriptionResponse.toJSON(message.subscription);
+    }
+    if (message.stopOrderState !== undefined) {
+      obj.stopOrderState = OrderStateStreamResponse_StopOrderState.toJSON(message.stopOrderState);
     }
     return obj;
   },
@@ -4237,6 +4311,7 @@ function createBaseOrderStateStreamResponse_OrderState(): OrderStateStreamRespon
     timeInForce: 0,
     orderType: 0,
     accountId: "",
+    tradeOrderId: "",
     initialOrderPrice: undefined,
     orderPrice: undefined,
     amount: undefined,
@@ -4294,6 +4369,9 @@ export const OrderStateStreamResponse_OrderState = {
     }
     if (message.accountId !== "") {
       writer.uint32(106).string(message.accountId);
+    }
+    if (message.tradeOrderId !== "") {
+      writer.uint32(114).string(message.tradeOrderId);
     }
     if (message.initialOrderPrice !== undefined) {
       MoneyValue.encode(message.initialOrderPrice, writer.uint32(178).fork()).ldelim();
@@ -4438,6 +4516,13 @@ export const OrderStateStreamResponse_OrderState = {
 
           message.accountId = reader.string();
           continue;
+        case 14:
+          if (tag !== 114) {
+            break;
+          }
+
+          message.tradeOrderId = reader.string();
+          continue;
         case 22:
           if (tag !== 178) {
             break;
@@ -4564,6 +4649,7 @@ export const OrderStateStreamResponse_OrderState = {
       timeInForce: isSet(object.timeInForce) ? timeInForceTypeFromJSON(object.timeInForce) : 0,
       orderType: isSet(object.orderType) ? orderTypeFromJSON(object.orderType) : 0,
       accountId: isSet(object.accountId) ? globalThis.String(object.accountId) : "",
+      tradeOrderId: isSet(object.tradeOrderId) ? globalThis.String(object.tradeOrderId) : "",
       initialOrderPrice: isSet(object.initialOrderPrice) ? MoneyValue.fromJSON(object.initialOrderPrice) : undefined,
       orderPrice: isSet(object.orderPrice) ? MoneyValue.fromJSON(object.orderPrice) : undefined,
       amount: isSet(object.amount) ? MoneyValue.fromJSON(object.amount) : undefined,
@@ -4622,6 +4708,9 @@ export const OrderStateStreamResponse_OrderState = {
     if (message.accountId !== "") {
       obj.accountId = message.accountId;
     }
+    if (message.tradeOrderId !== "") {
+      obj.tradeOrderId = message.tradeOrderId;
+    }
     if (message.initialOrderPrice !== undefined) {
       obj.initialOrderPrice = MoneyValue.toJSON(message.initialOrderPrice);
     }
@@ -4663,6 +4752,208 @@ export const OrderStateStreamResponse_OrderState = {
     }
     if (message.instrumentUid !== "") {
       obj.instrumentUid = message.instrumentUid;
+    }
+    return obj;
+  },
+};
+
+function createBaseOrderStateStreamResponse_StopOrderState(): OrderStateStreamResponse_StopOrderState {
+  return {
+    stopOrderId: "",
+    accountId: "",
+    createdAt: undefined,
+    direction: 0,
+    price: undefined,
+    stopPrice: undefined,
+    orderType: 0,
+    instrumentUid: "",
+    ticker: "",
+    classCode: "",
+    status: 0,
+  };
+}
+
+export const OrderStateStreamResponse_StopOrderState = {
+  encode(message: OrderStateStreamResponse_StopOrderState, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.stopOrderId !== "") {
+      writer.uint32(10).string(message.stopOrderId);
+    }
+    if (message.accountId !== "") {
+      writer.uint32(18).string(message.accountId);
+    }
+    if (message.createdAt !== undefined) {
+      Timestamp.encode(toTimestamp(message.createdAt), writer.uint32(26).fork()).ldelim();
+    }
+    if (message.direction !== 0) {
+      writer.uint32(32).int32(message.direction);
+    }
+    if (message.price !== undefined) {
+      MoneyValue.encode(message.price, writer.uint32(42).fork()).ldelim();
+    }
+    if (message.stopPrice !== undefined) {
+      MoneyValue.encode(message.stopPrice, writer.uint32(50).fork()).ldelim();
+    }
+    if (message.orderType !== 0) {
+      writer.uint32(56).int32(message.orderType);
+    }
+    if (message.instrumentUid !== "") {
+      writer.uint32(66).string(message.instrumentUid);
+    }
+    if (message.ticker !== "") {
+      writer.uint32(74).string(message.ticker);
+    }
+    if (message.classCode !== "") {
+      writer.uint32(82).string(message.classCode);
+    }
+    if (message.status !== 0) {
+      writer.uint32(88).int32(message.status);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): OrderStateStreamResponse_StopOrderState {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseOrderStateStreamResponse_StopOrderState();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.stopOrderId = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.accountId = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.createdAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.direction = reader.int32() as any;
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.price = MoneyValue.decode(reader, reader.uint32());
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.stopPrice = MoneyValue.decode(reader, reader.uint32());
+          continue;
+        case 7:
+          if (tag !== 56) {
+            break;
+          }
+
+          message.orderType = reader.int32() as any;
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.instrumentUid = reader.string();
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.ticker = reader.string();
+          continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.classCode = reader.string();
+          continue;
+        case 11:
+          if (tag !== 88) {
+            break;
+          }
+
+          message.status = reader.int32() as any;
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): OrderStateStreamResponse_StopOrderState {
+    return {
+      stopOrderId: isSet(object.stopOrderId) ? globalThis.String(object.stopOrderId) : "",
+      accountId: isSet(object.accountId) ? globalThis.String(object.accountId) : "",
+      createdAt: isSet(object.createdAt) ? fromJsonTimestamp(object.createdAt) : undefined,
+      direction: isSet(object.direction) ? orderDirectionFromJSON(object.direction) : 0,
+      price: isSet(object.price) ? MoneyValue.fromJSON(object.price) : undefined,
+      stopPrice: isSet(object.stopPrice) ? MoneyValue.fromJSON(object.stopPrice) : undefined,
+      orderType: isSet(object.orderType) ? orderTypeFromJSON(object.orderType) : 0,
+      instrumentUid: isSet(object.instrumentUid) ? globalThis.String(object.instrumentUid) : "",
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
+      status: isSet(object.status) ? stopOrderStatusOptionFromJSON(object.status) : 0,
+    };
+  },
+
+  toJSON(message: OrderStateStreamResponse_StopOrderState): unknown {
+    const obj: any = {};
+    if (message.stopOrderId !== "") {
+      obj.stopOrderId = message.stopOrderId;
+    }
+    if (message.accountId !== "") {
+      obj.accountId = message.accountId;
+    }
+    if (message.createdAt !== undefined) {
+      obj.createdAt = message.createdAt.toISOString();
+    }
+    if (message.direction !== 0) {
+      obj.direction = orderDirectionToJSON(message.direction);
+    }
+    if (message.price !== undefined) {
+      obj.price = MoneyValue.toJSON(message.price);
+    }
+    if (message.stopPrice !== undefined) {
+      obj.stopPrice = MoneyValue.toJSON(message.stopPrice);
+    }
+    if (message.orderType !== 0) {
+      obj.orderType = orderTypeToJSON(message.orderType);
+    }
+    if (message.instrumentUid !== "") {
+      obj.instrumentUid = message.instrumentUid;
+    }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
+    }
+    if (message.status !== 0) {
+      obj.status = stopOrderStatusOptionToJSON(message.status);
     }
     return obj;
   },

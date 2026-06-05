@@ -193,6 +193,16 @@ export enum OperationType {
   OPERATION_TYPE_OPTION_EXPIRATION = 64,
   /** OPERATION_TYPE_FUTURE_EXPIRATION - Экспирация фьючерса. */
   OPERATION_TYPE_FUTURE_EXPIRATION = 65,
+  /** OPERATION_TYPE_OTHER_FEE - Прочие комиссии; */
+  OPERATION_TYPE_OTHER_FEE = 66,
+  /** OPERATION_TYPE_OTHER - Операция по счету; */
+  OPERATION_TYPE_OTHER = 67,
+  /** OPERATION_TYPE_DFA_REDEMPTION - погашение ЦФА-токена; */
+  OPERATION_TYPE_DFA_REDEMPTION = 68,
+  /** OPERATION_TYPE_PRIMARY_ORDER - отмена заявки на первичное размещение по ЦФА; */
+  OPERATION_TYPE_PRIMARY_ORDER = 69,
+  /** OPERATION_TYPE_FUNDING - Списание фандинга. */
+  OPERATION_TYPE_FUNDING = 70,
   UNRECOGNIZED = -1,
 }
 
@@ -387,6 +397,21 @@ export function operationTypeFromJSON(object: any): OperationType {
     case 65:
     case "OPERATION_TYPE_FUTURE_EXPIRATION":
       return OperationType.OPERATION_TYPE_FUTURE_EXPIRATION;
+    case 66:
+    case "OPERATION_TYPE_OTHER_FEE":
+      return OperationType.OPERATION_TYPE_OTHER_FEE;
+    case 67:
+    case "OPERATION_TYPE_OTHER":
+      return OperationType.OPERATION_TYPE_OTHER;
+    case 68:
+    case "OPERATION_TYPE_DFA_REDEMPTION":
+      return OperationType.OPERATION_TYPE_DFA_REDEMPTION;
+    case 69:
+    case "OPERATION_TYPE_PRIMARY_ORDER":
+      return OperationType.OPERATION_TYPE_PRIMARY_ORDER;
+    case 70:
+    case "OPERATION_TYPE_FUNDING":
+      return OperationType.OPERATION_TYPE_FUNDING;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -522,6 +547,16 @@ export function operationTypeToJSON(object: OperationType): string {
       return "OPERATION_TYPE_OPTION_EXPIRATION";
     case OperationType.OPERATION_TYPE_FUTURE_EXPIRATION:
       return "OPERATION_TYPE_FUTURE_EXPIRATION";
+    case OperationType.OPERATION_TYPE_OTHER_FEE:
+      return "OPERATION_TYPE_OTHER_FEE";
+    case OperationType.OPERATION_TYPE_OTHER:
+      return "OPERATION_TYPE_OTHER";
+    case OperationType.OPERATION_TYPE_DFA_REDEMPTION:
+      return "OPERATION_TYPE_DFA_REDEMPTION";
+    case OperationType.OPERATION_TYPE_PRIMARY_ORDER:
+      return "OPERATION_TYPE_PRIMARY_ORDER";
+    case OperationType.OPERATION_TYPE_FUNDING:
+      return "OPERATION_TYPE_FUNDING";
     case OperationType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -623,6 +658,56 @@ export function positionsAccountSubscriptionStatusToJSON(object: PositionsAccoun
     case PositionsAccountSubscriptionStatus.POSITIONS_SUBSCRIPTION_STATUS_INTERNAL_ERROR:
       return "POSITIONS_SUBSCRIPTION_STATUS_INTERNAL_ERROR";
     case PositionsAccountSubscriptionStatus.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+/** Результат подписки. */
+export enum OperationsAccountSubscriptionStatus {
+  /** OPERATIONS_SUBSCRIPTION_STATUS_UNSPECIFIED - Тип не определен. */
+  OPERATIONS_SUBSCRIPTION_STATUS_UNSPECIFIED = 0,
+  /** OPERATIONS_SUBSCRIPTION_STATUS_SUCCESS - Успешно. */
+  OPERATIONS_SUBSCRIPTION_STATUS_SUCCESS = 1,
+  /** OPERATIONS_SUBSCRIPTION_STATUS_ACCOUNT_NOT_FOUND - Счет не найден или недостаточно прав. */
+  OPERATIONS_SUBSCRIPTION_STATUS_ACCOUNT_NOT_FOUND = 2,
+  /** OPERATIONS_SUBSCRIPTION_STATUS_INTERNAL_ERROR - Произошла ошибка. */
+  OPERATIONS_SUBSCRIPTION_STATUS_INTERNAL_ERROR = 3,
+  UNRECOGNIZED = -1,
+}
+
+export function operationsAccountSubscriptionStatusFromJSON(object: any): OperationsAccountSubscriptionStatus {
+  switch (object) {
+    case 0:
+    case "OPERATIONS_SUBSCRIPTION_STATUS_UNSPECIFIED":
+      return OperationsAccountSubscriptionStatus.OPERATIONS_SUBSCRIPTION_STATUS_UNSPECIFIED;
+    case 1:
+    case "OPERATIONS_SUBSCRIPTION_STATUS_SUCCESS":
+      return OperationsAccountSubscriptionStatus.OPERATIONS_SUBSCRIPTION_STATUS_SUCCESS;
+    case 2:
+    case "OPERATIONS_SUBSCRIPTION_STATUS_ACCOUNT_NOT_FOUND":
+      return OperationsAccountSubscriptionStatus.OPERATIONS_SUBSCRIPTION_STATUS_ACCOUNT_NOT_FOUND;
+    case 3:
+    case "OPERATIONS_SUBSCRIPTION_STATUS_INTERNAL_ERROR":
+      return OperationsAccountSubscriptionStatus.OPERATIONS_SUBSCRIPTION_STATUS_INTERNAL_ERROR;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return OperationsAccountSubscriptionStatus.UNRECOGNIZED;
+  }
+}
+
+export function operationsAccountSubscriptionStatusToJSON(object: OperationsAccountSubscriptionStatus): string {
+  switch (object) {
+    case OperationsAccountSubscriptionStatus.OPERATIONS_SUBSCRIPTION_STATUS_UNSPECIFIED:
+      return "OPERATIONS_SUBSCRIPTION_STATUS_UNSPECIFIED";
+    case OperationsAccountSubscriptionStatus.OPERATIONS_SUBSCRIPTION_STATUS_SUCCESS:
+      return "OPERATIONS_SUBSCRIPTION_STATUS_SUCCESS";
+    case OperationsAccountSubscriptionStatus.OPERATIONS_SUBSCRIPTION_STATUS_ACCOUNT_NOT_FOUND:
+      return "OPERATIONS_SUBSCRIPTION_STATUS_ACCOUNT_NOT_FOUND";
+    case OperationsAccountSubscriptionStatus.OPERATIONS_SUBSCRIPTION_STATUS_INTERNAL_ERROR:
+      return "OPERATIONS_SUBSCRIPTION_STATUS_INTERNAL_ERROR";
+    case OperationsAccountSubscriptionStatus.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
   }
@@ -813,7 +898,11 @@ export interface PortfolioResponse {
     | MoneyValue
     | undefined;
   /** Относительная доходность в день в %. */
-  dailyYieldRelative?: Quotation | undefined;
+  dailyYieldRelative?:
+    | Quotation
+    | undefined;
+  /** Общая стоимость смарт-активов в портфеле в рублях. */
+  totalAmountDfa?: MoneyValue | undefined;
 }
 
 /** Запрос позиций портфеля по счету. */
@@ -928,6 +1017,8 @@ export interface PortfolioPosition {
   ticker: string;
   /** Класс-код (секция торгов). */
   classCode: string;
+  /** Вариационная маржа (расчетная). */
+  varMarginSettled?: MoneyValue | undefined;
 }
 
 export interface VirtualPortfolioPosition {
@@ -1074,6 +1165,8 @@ export interface GetBrokerReportResponse {
   pagesCount: number;
   /** Текущая страница, начинается с 0. */
   page: number;
+  /** Идентификатор задачи формирования брокерского отчета. */
+  taskId: string;
 }
 
 export interface BrokerReport {
@@ -1295,7 +1388,7 @@ export interface AccountSubscriptionStatus {
 export interface GetOperationsByCursorRequest {
   /** Идентификатор счета клиента, обязательный параметр. Остальные параметры опциональны. */
   accountId: string;
-  /** Идентификатор инструмента — FIGI или UID инструмента. */
+  /** Идентификатор инструмента. Принимает значение `figi`, `instrument_uid` или `ticker + '_' + class_code`. */
   instrumentId?:
     | string
     | undefined;
@@ -1527,6 +1620,76 @@ export interface PositionsMoney {
 export interface ChildOperationItem {
   /** Уникальный идентификатор инструмента. */
   instrumentUid: string;
+  /** Сумма операции. */
+  payment?: MoneyValue | undefined;
+}
+
+/** Запрос установки stream-соединения операций. */
+export interface OperationsStreamRequest {
+  /** Массив идентификаторов счетов пользователя. */
+  accounts: string[];
+  /** Запрос настройки пинга. */
+  pingSettings?: PingDelaySettings | undefined;
+}
+
+/** Информация по операциям. */
+export interface OperationsStreamResponse {
+  /** Объект результата подписки. */
+  subscriptions?:
+    | OperationsSubscriptionResult
+    | undefined;
+  /** Объект стриминга операций. */
+  operation?:
+    | OperationData
+    | undefined;
+  /** Проверка активности стрима. */
+  ping?: Ping | undefined;
+}
+
+/** Объект результата подписки. */
+export interface OperationsSubscriptionResult {
+  /** Массив счетов клиента. */
+  accounts: string[];
+  /** Результат подписки. */
+  subscriptionStatus: OperationsAccountSubscriptionStatus;
+  /** Уникальный идентификатор запроса, подробнее: [tracking_id](/invest/intro/developer/protocols/grpc#tracking-id). */
+  trackingId: string;
+  /** Идентификатор открытого соединения */
+  streamId: string;
+}
+
+/** Данные об операции. */
+export interface OperationData {
+  /** Идентификатор счета. */
+  brokerAccountId: string;
+  /** Номер поручения. */
+  id: string;
+  /** Номер родительского поручения. */
+  parentOperationId: string;
+  /** Название инструмента. */
+  name: string;
+  /** Дата. */
+  date?:
+    | Date
+    | undefined;
+  /** Тип операции. */
+  type: OperationType;
+  /** Статус поручения. */
+  state: OperationState;
+  /** Уникальный идентификатор инструмента. */
+  instrumentUid: string;
+  /** FIGI-идентификатор инструмента. */
+  figi: string;
+  /** Тип инструмента. */
+  instrumentType: string;
+  /** Тип инструмента. */
+  instrumentKind: InstrumentType;
+  /** Идентификатор позиции. */
+  positionUid: string;
+  /** Тикер инструмента. */
+  ticker: string;
+  /** Класс-код (секция торгов). */
+  classCode: string;
   /** Сумма операции. */
   payment?: MoneyValue | undefined;
 }
@@ -2170,6 +2333,7 @@ function createBasePortfolioResponse(): PortfolioResponse {
     virtualPositions: [],
     dailyYield: undefined,
     dailyYieldRelative: undefined,
+    totalAmountDfa: undefined,
   };
 }
 
@@ -2216,6 +2380,9 @@ export const PortfolioResponse = {
     }
     if (message.dailyYieldRelative !== undefined) {
       Quotation.encode(message.dailyYieldRelative, writer.uint32(130).fork()).ldelim();
+    }
+    if (message.totalAmountDfa !== undefined) {
+      MoneyValue.encode(message.totalAmountDfa, writer.uint32(138).fork()).ldelim();
     }
     return writer;
   },
@@ -2325,6 +2492,13 @@ export const PortfolioResponse = {
 
           message.dailyYieldRelative = Quotation.decode(reader, reader.uint32());
           continue;
+        case 17:
+          if (tag !== 138) {
+            break;
+          }
+
+          message.totalAmountDfa = MoneyValue.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2358,6 +2532,7 @@ export const PortfolioResponse = {
         : [],
       dailyYield: isSet(object.dailyYield) ? MoneyValue.fromJSON(object.dailyYield) : undefined,
       dailyYieldRelative: isSet(object.dailyYieldRelative) ? Quotation.fromJSON(object.dailyYieldRelative) : undefined,
+      totalAmountDfa: isSet(object.totalAmountDfa) ? MoneyValue.fromJSON(object.totalAmountDfa) : undefined,
     };
   },
 
@@ -2404,6 +2579,9 @@ export const PortfolioResponse = {
     }
     if (message.dailyYieldRelative !== undefined) {
       obj.dailyYieldRelative = Quotation.toJSON(message.dailyYieldRelative);
+    }
+    if (message.totalAmountDfa !== undefined) {
+      obj.totalAmountDfa = MoneyValue.toJSON(message.totalAmountDfa);
     }
     return obj;
   },
@@ -2756,6 +2934,7 @@ function createBasePortfolioPosition(): PortfolioPosition {
     dailyYield: undefined,
     ticker: "",
     classCode: "",
+    varMarginSettled: undefined,
   };
 }
 
@@ -2817,6 +2996,9 @@ export const PortfolioPosition = {
     }
     if (message.classCode !== "") {
       writer.uint32(266).string(message.classCode);
+    }
+    if (message.varMarginSettled !== undefined) {
+      MoneyValue.encode(message.varMarginSettled, writer.uint32(274).fork()).ldelim();
     }
     return writer;
   },
@@ -2961,6 +3143,13 @@ export const PortfolioPosition = {
 
           message.classCode = reader.string();
           continue;
+        case 34:
+          if (tag !== 274) {
+            break;
+          }
+
+          message.varMarginSettled = MoneyValue.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2997,6 +3186,7 @@ export const PortfolioPosition = {
       dailyYield: isSet(object.dailyYield) ? MoneyValue.fromJSON(object.dailyYield) : undefined,
       ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
       classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
+      varMarginSettled: isSet(object.varMarginSettled) ? MoneyValue.fromJSON(object.varMarginSettled) : undefined,
     };
   },
 
@@ -3058,6 +3248,9 @@ export const PortfolioPosition = {
     }
     if (message.classCode !== "") {
       obj.classCode = message.classCode;
+    }
+    if (message.varMarginSettled !== undefined) {
+      obj.varMarginSettled = MoneyValue.toJSON(message.varMarginSettled);
     }
     return obj;
   },
@@ -4067,7 +4260,7 @@ export const GetBrokerReportRequest = {
 };
 
 function createBaseGetBrokerReportResponse(): GetBrokerReportResponse {
-  return { brokerReport: [], itemsCount: 0, pagesCount: 0, page: 0 };
+  return { brokerReport: [], itemsCount: 0, pagesCount: 0, page: 0, taskId: "" };
 }
 
 export const GetBrokerReportResponse = {
@@ -4083,6 +4276,9 @@ export const GetBrokerReportResponse = {
     }
     if (message.page !== 0) {
       writer.uint32(32).int32(message.page);
+    }
+    if (message.taskId !== "") {
+      writer.uint32(42).string(message.taskId);
     }
     return writer;
   },
@@ -4122,6 +4318,13 @@ export const GetBrokerReportResponse = {
 
           message.page = reader.int32();
           continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.taskId = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -4139,6 +4342,7 @@ export const GetBrokerReportResponse = {
       itemsCount: isSet(object.itemsCount) ? globalThis.Number(object.itemsCount) : 0,
       pagesCount: isSet(object.pagesCount) ? globalThis.Number(object.pagesCount) : 0,
       page: isSet(object.page) ? globalThis.Number(object.page) : 0,
+      taskId: isSet(object.taskId) ? globalThis.String(object.taskId) : "",
     };
   },
 
@@ -4155,6 +4359,9 @@ export const GetBrokerReportResponse = {
     }
     if (message.page !== 0) {
       obj.page = Math.round(message.page);
+    }
+    if (message.taskId !== "") {
+      obj.taskId = message.taskId;
     }
     return obj;
   },
@@ -7083,6 +7290,506 @@ export const ChildOperationItem = {
   },
 };
 
+function createBaseOperationsStreamRequest(): OperationsStreamRequest {
+  return { accounts: [], pingSettings: undefined };
+}
+
+export const OperationsStreamRequest = {
+  encode(message: OperationsStreamRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.accounts) {
+      writer.uint32(10).string(v!);
+    }
+    if (message.pingSettings !== undefined) {
+      PingDelaySettings.encode(message.pingSettings, writer.uint32(122).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): OperationsStreamRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseOperationsStreamRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.accounts.push(reader.string());
+          continue;
+        case 15:
+          if (tag !== 122) {
+            break;
+          }
+
+          message.pingSettings = PingDelaySettings.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): OperationsStreamRequest {
+    return {
+      accounts: globalThis.Array.isArray(object?.accounts) ? object.accounts.map((e: any) => globalThis.String(e)) : [],
+      pingSettings: isSet(object.pingSettings) ? PingDelaySettings.fromJSON(object.pingSettings) : undefined,
+    };
+  },
+
+  toJSON(message: OperationsStreamRequest): unknown {
+    const obj: any = {};
+    if (message.accounts?.length) {
+      obj.accounts = message.accounts;
+    }
+    if (message.pingSettings !== undefined) {
+      obj.pingSettings = PingDelaySettings.toJSON(message.pingSettings);
+    }
+    return obj;
+  },
+};
+
+function createBaseOperationsStreamResponse(): OperationsStreamResponse {
+  return { subscriptions: undefined, operation: undefined, ping: undefined };
+}
+
+export const OperationsStreamResponse = {
+  encode(message: OperationsStreamResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.subscriptions !== undefined) {
+      OperationsSubscriptionResult.encode(message.subscriptions, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.operation !== undefined) {
+      OperationData.encode(message.operation, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.ping !== undefined) {
+      Ping.encode(message.ping, writer.uint32(26).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): OperationsStreamResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseOperationsStreamResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.subscriptions = OperationsSubscriptionResult.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.operation = OperationData.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.ping = Ping.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): OperationsStreamResponse {
+    return {
+      subscriptions: isSet(object.subscriptions)
+        ? OperationsSubscriptionResult.fromJSON(object.subscriptions)
+        : undefined,
+      operation: isSet(object.operation) ? OperationData.fromJSON(object.operation) : undefined,
+      ping: isSet(object.ping) ? Ping.fromJSON(object.ping) : undefined,
+    };
+  },
+
+  toJSON(message: OperationsStreamResponse): unknown {
+    const obj: any = {};
+    if (message.subscriptions !== undefined) {
+      obj.subscriptions = OperationsSubscriptionResult.toJSON(message.subscriptions);
+    }
+    if (message.operation !== undefined) {
+      obj.operation = OperationData.toJSON(message.operation);
+    }
+    if (message.ping !== undefined) {
+      obj.ping = Ping.toJSON(message.ping);
+    }
+    return obj;
+  },
+};
+
+function createBaseOperationsSubscriptionResult(): OperationsSubscriptionResult {
+  return { accounts: [], subscriptionStatus: 0, trackingId: "", streamId: "" };
+}
+
+export const OperationsSubscriptionResult = {
+  encode(message: OperationsSubscriptionResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.accounts) {
+      writer.uint32(10).string(v!);
+    }
+    if (message.subscriptionStatus !== 0) {
+      writer.uint32(16).int32(message.subscriptionStatus);
+    }
+    if (message.trackingId !== "") {
+      writer.uint32(58).string(message.trackingId);
+    }
+    if (message.streamId !== "") {
+      writer.uint32(66).string(message.streamId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): OperationsSubscriptionResult {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseOperationsSubscriptionResult();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.accounts.push(reader.string());
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.subscriptionStatus = reader.int32() as any;
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.trackingId = reader.string();
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.streamId = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): OperationsSubscriptionResult {
+    return {
+      accounts: globalThis.Array.isArray(object?.accounts) ? object.accounts.map((e: any) => globalThis.String(e)) : [],
+      subscriptionStatus: isSet(object.subscriptionStatus)
+        ? operationsAccountSubscriptionStatusFromJSON(object.subscriptionStatus)
+        : 0,
+      trackingId: isSet(object.trackingId) ? globalThis.String(object.trackingId) : "",
+      streamId: isSet(object.streamId) ? globalThis.String(object.streamId) : "",
+    };
+  },
+
+  toJSON(message: OperationsSubscriptionResult): unknown {
+    const obj: any = {};
+    if (message.accounts?.length) {
+      obj.accounts = message.accounts;
+    }
+    if (message.subscriptionStatus !== 0) {
+      obj.subscriptionStatus = operationsAccountSubscriptionStatusToJSON(message.subscriptionStatus);
+    }
+    if (message.trackingId !== "") {
+      obj.trackingId = message.trackingId;
+    }
+    if (message.streamId !== "") {
+      obj.streamId = message.streamId;
+    }
+    return obj;
+  },
+};
+
+function createBaseOperationData(): OperationData {
+  return {
+    brokerAccountId: "",
+    id: "",
+    parentOperationId: "",
+    name: "",
+    date: undefined,
+    type: 0,
+    state: 0,
+    instrumentUid: "",
+    figi: "",
+    instrumentType: "",
+    instrumentKind: 0,
+    positionUid: "",
+    ticker: "",
+    classCode: "",
+    payment: undefined,
+  };
+}
+
+export const OperationData = {
+  encode(message: OperationData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.brokerAccountId !== "") {
+      writer.uint32(10).string(message.brokerAccountId);
+    }
+    if (message.id !== "") {
+      writer.uint32(18).string(message.id);
+    }
+    if (message.parentOperationId !== "") {
+      writer.uint32(26).string(message.parentOperationId);
+    }
+    if (message.name !== "") {
+      writer.uint32(34).string(message.name);
+    }
+    if (message.date !== undefined) {
+      Timestamp.encode(toTimestamp(message.date), writer.uint32(42).fork()).ldelim();
+    }
+    if (message.type !== 0) {
+      writer.uint32(48).int32(message.type);
+    }
+    if (message.state !== 0) {
+      writer.uint32(56).int32(message.state);
+    }
+    if (message.instrumentUid !== "") {
+      writer.uint32(66).string(message.instrumentUid);
+    }
+    if (message.figi !== "") {
+      writer.uint32(74).string(message.figi);
+    }
+    if (message.instrumentType !== "") {
+      writer.uint32(82).string(message.instrumentType);
+    }
+    if (message.instrumentKind !== 0) {
+      writer.uint32(88).int32(message.instrumentKind);
+    }
+    if (message.positionUid !== "") {
+      writer.uint32(98).string(message.positionUid);
+    }
+    if (message.ticker !== "") {
+      writer.uint32(106).string(message.ticker);
+    }
+    if (message.classCode !== "") {
+      writer.uint32(114).string(message.classCode);
+    }
+    if (message.payment !== undefined) {
+      MoneyValue.encode(message.payment, writer.uint32(122).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): OperationData {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseOperationData();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.brokerAccountId = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.parentOperationId = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.type = reader.int32() as any;
+          continue;
+        case 7:
+          if (tag !== 56) {
+            break;
+          }
+
+          message.state = reader.int32() as any;
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.instrumentUid = reader.string();
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.figi = reader.string();
+          continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.instrumentType = reader.string();
+          continue;
+        case 11:
+          if (tag !== 88) {
+            break;
+          }
+
+          message.instrumentKind = reader.int32() as any;
+          continue;
+        case 12:
+          if (tag !== 98) {
+            break;
+          }
+
+          message.positionUid = reader.string();
+          continue;
+        case 13:
+          if (tag !== 106) {
+            break;
+          }
+
+          message.ticker = reader.string();
+          continue;
+        case 14:
+          if (tag !== 114) {
+            break;
+          }
+
+          message.classCode = reader.string();
+          continue;
+        case 15:
+          if (tag !== 122) {
+            break;
+          }
+
+          message.payment = MoneyValue.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): OperationData {
+    return {
+      brokerAccountId: isSet(object.brokerAccountId) ? globalThis.String(object.brokerAccountId) : "",
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      parentOperationId: isSet(object.parentOperationId) ? globalThis.String(object.parentOperationId) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      date: isSet(object.date) ? fromJsonTimestamp(object.date) : undefined,
+      type: isSet(object.type) ? operationTypeFromJSON(object.type) : 0,
+      state: isSet(object.state) ? operationStateFromJSON(object.state) : 0,
+      instrumentUid: isSet(object.instrumentUid) ? globalThis.String(object.instrumentUid) : "",
+      figi: isSet(object.figi) ? globalThis.String(object.figi) : "",
+      instrumentType: isSet(object.instrumentType) ? globalThis.String(object.instrumentType) : "",
+      instrumentKind: isSet(object.instrumentKind) ? instrumentTypeFromJSON(object.instrumentKind) : 0,
+      positionUid: isSet(object.positionUid) ? globalThis.String(object.positionUid) : "",
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
+      payment: isSet(object.payment) ? MoneyValue.fromJSON(object.payment) : undefined,
+    };
+  },
+
+  toJSON(message: OperationData): unknown {
+    const obj: any = {};
+    if (message.brokerAccountId !== "") {
+      obj.brokerAccountId = message.brokerAccountId;
+    }
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.parentOperationId !== "") {
+      obj.parentOperationId = message.parentOperationId;
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.date !== undefined) {
+      obj.date = message.date.toISOString();
+    }
+    if (message.type !== 0) {
+      obj.type = operationTypeToJSON(message.type);
+    }
+    if (message.state !== 0) {
+      obj.state = operationStateToJSON(message.state);
+    }
+    if (message.instrumentUid !== "") {
+      obj.instrumentUid = message.instrumentUid;
+    }
+    if (message.figi !== "") {
+      obj.figi = message.figi;
+    }
+    if (message.instrumentType !== "") {
+      obj.instrumentType = message.instrumentType;
+    }
+    if (message.instrumentKind !== 0) {
+      obj.instrumentKind = instrumentTypeToJSON(message.instrumentKind);
+    }
+    if (message.positionUid !== "") {
+      obj.positionUid = message.positionUid;
+    }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
+    }
+    if (message.payment !== undefined) {
+      obj.payment = MoneyValue.toJSON(message.payment);
+    }
+    return obj;
+  },
+};
+
 /**
  * С помощью методов сервиса можно получить:<br/><br/> **1**. Список операций по счету.<br/> **2**.
  * Портфель по счету.<br/> **3**. Позиции ценных бумаг на счете.<br/> **4**.
@@ -7094,7 +7801,7 @@ export const OperationsServiceDefinition = {
   fullName: "tinkoff.public.invest.api.contract.v1.OperationsService",
   methods: {
     /**
-     * GetOperations — список операций по счету
+     * Deprecated GetOperations — список операций по счету
      * При работе с методом учитывайте [особенности взаимодействия](/invest/services/operations/operations_problems).
      */
     getOperations: {
@@ -7167,7 +7874,7 @@ export const OperationsServiceDefinition = {
 
 export interface OperationsServiceImplementation<CallContextExt = {}> {
   /**
-   * GetOperations — список операций по счету
+   * Deprecated GetOperations — список операций по счету
    * При работе с методом учитывайте [особенности взаимодействия](/invest/services/operations/operations_problems).
    */
   getOperations(request: OperationsRequest, context: CallContext & CallContextExt): Promise<OperationsResponse>;
@@ -7199,7 +7906,7 @@ export interface OperationsServiceImplementation<CallContextExt = {}> {
 
 export interface OperationsServiceClient<CallOptionsExt = {}> {
   /**
-   * GetOperations — список операций по счету
+   * Deprecated GetOperations — список операций по счету
    * При работе с методом учитывайте [особенности взаимодействия](/invest/services/operations/operations_problems).
    */
   getOperations(request: OperationsRequest, options?: CallOptions & CallOptionsExt): Promise<OperationsResponse>;
@@ -7252,6 +7959,15 @@ export const OperationsStreamServiceDefinition = {
       responseStream: true,
       options: {},
     },
+    /** OperationsStream — стрим обновлений операций */
+    operationsStream: {
+      name: "OperationsStream",
+      requestType: OperationsStreamRequest,
+      requestStream: false,
+      responseType: OperationsStreamResponse,
+      responseStream: true,
+      options: {},
+    },
   },
 } as const;
 
@@ -7266,6 +7982,11 @@ export interface OperationsStreamServiceImplementation<CallContextExt = {}> {
     request: PositionsStreamRequest,
     context: CallContext & CallContextExt,
   ): ServerStreamingMethodResult<PositionsStreamResponse>;
+  /** OperationsStream — стрим обновлений операций */
+  operationsStream(
+    request: OperationsStreamRequest,
+    context: CallContext & CallContextExt,
+  ): ServerStreamingMethodResult<OperationsStreamResponse>;
 }
 
 export interface OperationsStreamServiceClient<CallOptionsExt = {}> {
@@ -7279,6 +8000,11 @@ export interface OperationsStreamServiceClient<CallOptionsExt = {}> {
     request: PositionsStreamRequest,
     options?: CallOptions & CallOptionsExt,
   ): AsyncIterable<PositionsStreamResponse>;
+  /** OperationsStream — стрим обновлений операций */
+  operationsStream(
+    request: OperationsStreamRequest,
+    options?: CallOptions & CallOptionsExt,
+  ): AsyncIterable<OperationsStreamResponse>;
 }
 
 function toTimestamp(date: Date): Timestamp {

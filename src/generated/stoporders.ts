@@ -411,7 +411,7 @@ export interface PostStopOrderRequest {
   expireDate?:
     | Date
     | undefined;
-  /** Идентификатор инструмента. Принимает значение `figi` или `instrument_uid`. */
+  /** Идентификатор инструмента. Принимает значение `figi`, `instrument_uid` или `ticker + '_' + class_code`. */
   instrumentId: string;
   /** Тип дочерней биржевой заявки. */
   exchangeOrderType: ExchangeOrderType;
@@ -427,6 +427,8 @@ export interface PostStopOrderRequest {
   orderId: string;
   /** Согласие на выставление заявки, которая может привести к непокрытой позиции, по умолчанию false. */
   confirmMarginTrade: boolean;
+  /** Признак необходимости моментальной активации, используется только для трейлинг-стопа. */
+  instantExecution?: boolean | undefined;
 }
 
 export interface PostStopOrderRequest_TrailingData {
@@ -454,7 +456,7 @@ export interface PostStopOrderResponse {
   responseMetadata?: ResponseMetadata | undefined;
 }
 
-/** Запрос получения списка активных стоп-заявок. */
+/** Запрос получения списка стоп-заявок. */
 export interface GetStopOrdersRequest {
   /** Идентификатор счета клиента. */
   accountId: string;
@@ -468,7 +470,7 @@ export interface GetStopOrdersRequest {
   to?: Date | undefined;
 }
 
-/** Список активных стоп-заявок. */
+/** Список стоп-заявок. */
 export interface GetStopOrdersResponse {
   /** Массив стоп-заявок по счету. */
   stopOrders: StopOrder[];
@@ -542,6 +544,8 @@ export interface StopOrder {
   ticker: string;
   /** Класс-код (секция торгов). */
   classCode: string;
+  /** Признак необходимости моментальной активации, используется только для трейлинг-стопа. */
+  instantExecution: boolean;
 }
 
 export interface StopOrder_TrailingData {
@@ -585,6 +589,7 @@ function createBasePostStopOrderRequest(): PostStopOrderRequest {
     priceType: 0,
     orderId: "",
     confirmMarginTrade: false,
+    instantExecution: undefined,
   };
 }
 
@@ -637,6 +642,9 @@ export const PostStopOrderRequest = {
     }
     if (message.confirmMarginTrade === true) {
       writer.uint32(128).bool(message.confirmMarginTrade);
+    }
+    if (message.instantExecution !== undefined) {
+      writer.uint32(136).bool(message.instantExecution);
     }
     return writer;
   },
@@ -760,6 +768,13 @@ export const PostStopOrderRequest = {
 
           message.confirmMarginTrade = reader.bool();
           continue;
+        case 17:
+          if (tag !== 136) {
+            break;
+          }
+
+          message.instantExecution = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -789,6 +804,7 @@ export const PostStopOrderRequest = {
       priceType: isSet(object.priceType) ? priceTypeFromJSON(object.priceType) : 0,
       orderId: isSet(object.orderId) ? globalThis.String(object.orderId) : "",
       confirmMarginTrade: isSet(object.confirmMarginTrade) ? globalThis.Boolean(object.confirmMarginTrade) : false,
+      instantExecution: isSet(object.instantExecution) ? globalThis.Boolean(object.instantExecution) : undefined,
     };
   },
 
@@ -841,6 +857,9 @@ export const PostStopOrderRequest = {
     }
     if (message.confirmMarginTrade === true) {
       obj.confirmMarginTrade = message.confirmMarginTrade;
+    }
+    if (message.instantExecution !== undefined) {
+      obj.instantExecution = message.instantExecution;
     }
     return obj;
   },
@@ -1293,6 +1312,7 @@ function createBaseStopOrder(): StopOrder {
     exchangeOrderId: undefined,
     ticker: "",
     classCode: "",
+    instantExecution: false,
   };
 }
 
@@ -1354,6 +1374,9 @@ export const StopOrder = {
     }
     if (message.classCode !== "") {
       writer.uint32(154).string(message.classCode);
+    }
+    if (message.instantExecution === true) {
+      writer.uint32(160).bool(message.instantExecution);
     }
     return writer;
   },
@@ -1498,6 +1521,13 @@ export const StopOrder = {
 
           message.classCode = reader.string();
           continue;
+        case 20:
+          if (tag !== 160) {
+            break;
+          }
+
+          message.instantExecution = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1528,6 +1558,7 @@ export const StopOrder = {
       exchangeOrderId: isSet(object.exchangeOrderId) ? globalThis.String(object.exchangeOrderId) : undefined,
       ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
       classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
+      instantExecution: isSet(object.instantExecution) ? globalThis.Boolean(object.instantExecution) : false,
     };
   },
 
@@ -1589,6 +1620,9 @@ export const StopOrder = {
     }
     if (message.classCode !== "") {
       obj.classCode = message.classCode;
+    }
+    if (message.instantExecution === true) {
+      obj.instantExecution = message.instantExecution;
     }
     return obj;
   },
@@ -1751,7 +1785,7 @@ export const StopOrdersServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** GetStopOrders — получить список активных стоп-заявок по счету */
+    /** GetStopOrders — получить список стоп-заявок по счету */
     getStopOrders: {
       name: "GetStopOrders",
       requestType: GetStopOrdersRequest,
@@ -1775,7 +1809,7 @@ export const StopOrdersServiceDefinition = {
 export interface StopOrdersServiceImplementation<CallContextExt = {}> {
   /** PostStopOrder — выставить стоп-заявку */
   postStopOrder(request: PostStopOrderRequest, context: CallContext & CallContextExt): Promise<PostStopOrderResponse>;
-  /** GetStopOrders — получить список активных стоп-заявок по счету */
+  /** GetStopOrders — получить список стоп-заявок по счету */
   getStopOrders(request: GetStopOrdersRequest, context: CallContext & CallContextExt): Promise<GetStopOrdersResponse>;
   /** CancelStopOrder — отменить стоп-заявку */
   cancelStopOrder(
@@ -1787,7 +1821,7 @@ export interface StopOrdersServiceImplementation<CallContextExt = {}> {
 export interface StopOrdersServiceClient<CallOptionsExt = {}> {
   /** PostStopOrder — выставить стоп-заявку */
   postStopOrder(request: PostStopOrderRequest, options?: CallOptions & CallOptionsExt): Promise<PostStopOrderResponse>;
-  /** GetStopOrders — получить список активных стоп-заявок по счету */
+  /** GetStopOrders — получить список стоп-заявок по счету */
   getStopOrders(request: GetStopOrdersRequest, options?: CallOptions & CallOptionsExt): Promise<GetStopOrdersResponse>;
   /** CancelStopOrder — отменить стоп-заявку */
   cancelStopOrder(

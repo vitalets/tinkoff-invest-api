@@ -275,7 +275,7 @@ export function optionSettlementTypeToJSON(object: OptionSettlementType): string
   }
 }
 
-/** Тип идентификатора инструмента. [Подробнее об идентификации инструментов](./faq_identification/). */
+/** Тип идентификатора инструмента. [Подробнее об идентификации инструментов](/invest/intro/intro/faq_identification). */
 export enum InstrumentIdType {
   /** INSTRUMENT_ID_UNSPECIFIED - Значение не определено. */
   INSTRUMENT_ID_UNSPECIFIED = 0,
@@ -287,6 +287,8 @@ export enum InstrumentIdType {
   INSTRUMENT_ID_TYPE_UID = 3,
   /** INSTRUMENT_ID_TYPE_POSITION_UID - Идентификатор позиции. */
   INSTRUMENT_ID_TYPE_POSITION_UID = 4,
+  /** INSTRUMENT_ID_TYPE_ID - Универсальный тип идентификатора инструмента. */
+  INSTRUMENT_ID_TYPE_ID = 5,
   UNRECOGNIZED = -1,
 }
 
@@ -307,6 +309,9 @@ export function instrumentIdTypeFromJSON(object: any): InstrumentIdType {
     case 4:
     case "INSTRUMENT_ID_TYPE_POSITION_UID":
       return InstrumentIdType.INSTRUMENT_ID_TYPE_POSITION_UID;
+    case 5:
+    case "INSTRUMENT_ID_TYPE_ID":
+      return InstrumentIdType.INSTRUMENT_ID_TYPE_ID;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -326,6 +331,8 @@ export function instrumentIdTypeToJSON(object: InstrumentIdType): string {
       return "INSTRUMENT_ID_TYPE_UID";
     case InstrumentIdType.INSTRUMENT_ID_TYPE_POSITION_UID:
       return "INSTRUMENT_ID_TYPE_POSITION_UID";
+    case InstrumentIdType.INSTRUMENT_ID_TYPE_ID:
+      return "INSTRUMENT_ID_TYPE_ID";
     case InstrumentIdType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -824,7 +831,7 @@ export interface TradingDay {
 
 /** Запрос получения инструмента по идентификатору. */
 export interface InstrumentRequest {
-  /** Тип идентификатора инструмента. Возможные значения — `figi`, `ticker`. [Подробнее об идентификации инструментов](./faq_identification/). */
+  /** Тип идентификатора инструмента. Возможные значения — `figi`, `ticker`. [Подробнее об идентификации инструментов](/invest/intro/intro/faq_identification). */
   idType: InstrumentIdType;
   /** Идентификатор `class_code`. Обязательный, если `id_type = ticker`. */
   classCode?:
@@ -851,7 +858,21 @@ export interface FilterOptionsRequest {
     | string
     | undefined;
   /** Идентификатор позиции базового актива опциона. */
-  basicAssetPositionUid?: string | undefined;
+  basicAssetPositionUid?:
+    | string
+    | undefined;
+  /** Идентификатор базового инструмента, принимает значение принимает значения figi, instrument_uid или ticker+"_"+classCode. */
+  basicInstrumentId?: string | undefined;
+}
+
+/** Запрос получения актуальных новостей */
+export interface NewsRequest {
+  /** Идентификатор элемента, с которого начать формировать ответ. */
+  cursor?:
+    | number
+    | undefined;
+  /** Лимит количества новостей в ответе. По умолчанию 1000. */
+  limit?: number | undefined;
 }
 
 /** Информация об облигации. */
@@ -882,7 +903,7 @@ export interface GetBondCouponsRequest {
   to?:
     | Date
     | undefined;
-  /** Идентификатор инструмента — `figi` или `instrument_uid`. */
+  /** Идентификатор инструмента. Принимает значение `figi`, `instrument_uid` или `ticker + '_' + class_code`. */
   instrumentId: string;
 }
 
@@ -969,7 +990,7 @@ export interface GetBondEventsResponse {
 }
 
 export interface GetBondEventsResponse_BondEvent {
-  /** Идентификатор инструмента. */
+  /** Идентификатор инструмента. Принимает значение `figi`, `instrument_uid` или `ticker + '_' + class_code`. */
   instrumentId: string;
   /** Номер события для данного типа события. */
   eventNumber: number;
@@ -1283,6 +1304,64 @@ export interface StructuredNotesResponse {
   instruments: StructuredNote[];
 }
 
+/** Данные по актуальным новостям. */
+export interface NewsResponse {
+  /** Признак, есть ли еще новости. */
+  hasNext: boolean;
+  /** Следующий курсор. */
+  nextCursor?:
+    | number
+    | undefined;
+  /** Массив новостей. */
+  items: NewsItem[];
+}
+
+/** Объект новости. */
+export interface NewsItem {
+  /** Уникальный идентификатор новости. */
+  id: number;
+  /** Источник новости. */
+  source: string;
+  /** Заголовок новости. */
+  title: string;
+  /** Содержание новости. */
+  content: string;
+  /** Обобщенная информация. */
+  summary?:
+    | string
+    | undefined;
+  /** Табличные данные. */
+  tables: Table[];
+  /** Инструменты из новости. */
+  instrumentId: NewsInstrument[];
+  /** Флаг, указывающий, важная ли новость. */
+  priority: boolean;
+  /** Время новости. */
+  ts?: Date | undefined;
+}
+
+/** Объект табличных данных. */
+export interface Table {
+  /** Таблица. */
+  table: string;
+}
+
+/** Объект инструмента из новости. */
+export interface NewsInstrument {
+  /** Информация по инструменту. */
+  instrument?: NewsInstrumentInfo | undefined;
+}
+
+/** Объект информации по инструменту из новости. */
+export interface NewsInstrumentInfo {
+  /** Уникальный идентификатор инструмента. */
+  instrumentUid: string;
+  /** Тикер инструмента. */
+  ticker: string;
+  /** Класс-код (секция торгов). */
+  classCode: string;
+}
+
 /** Объект передачи информации об облигации. */
 export interface Bond {
   /** FIGI-идентификатор инструмента. */
@@ -1435,7 +1514,7 @@ export interface Bond {
     | undefined;
   /** Тип облигации. */
   bondType: BondType;
-  /** Дата погашения облигации. */
+  /** Дата оферты. */
   callDate?:
     | Date
     | undefined;
@@ -1531,6 +1610,8 @@ export interface Currency {
   positionUid: string;
   /** Тесты, которые необходимо пройти клиенту, чтобы совершать сделки по инструменту. */
   requiredTests: string[];
+  /** Уникальный идентификатор актива. */
+  assetUid: string;
   /** Признак доступности для ИИС. */
   forIisFlag: boolean;
   /** Флаг, отображающий доступность торговли инструментом только для квалифицированных инвесторов. */
@@ -2275,7 +2356,7 @@ export interface GetAccruedInterestsRequest {
   to?:
     | Date
     | undefined;
-  /** Идентификатор инструмента — `figi` или `instrument_uid`. */
+  /** Идентификатор инструмента. Принимает значение `figi`, `instrument_uid` или `ticker + '_' + class_code`. */
   instrumentId: string;
 }
 
@@ -2311,7 +2392,7 @@ export interface GetFuturesMarginRequest {
    * @deprecated
    */
   figi: string;
-  /** Идентификатор инструмента — `figi` или `instrument_uid`. */
+  /** Идентификатор инструмента. Принимает значение `figi`, `instrument_uid` или `ticker + '_' + class_code`. */
   instrumentId: string;
 }
 
@@ -2467,7 +2548,7 @@ export interface GetDividendsRequest {
   to?:
     | Date
     | undefined;
-  /** Идентификатор инструмента — `figi` или `instrument_uid`. */
+  /** Идентификатор инструмента. Принимает значение `figi`, `instrument_uid` или `ticker + '_' + class_code`. */
   instrumentId: string;
 }
 
@@ -3100,6 +3181,16 @@ export interface IndicativeResponse {
   buyAvailableFlag: boolean;
   /** Признак доступности для продажи. */
   sellAvailableFlag: boolean;
+  /** Состав индекса. */
+  indexComposition: IndexInstrument[];
+}
+
+/** Инструмент в составе индекса */
+export interface IndexInstrument {
+  /** Идентификатор инструмента. */
+  uid: string;
+  /** Вес инструмента в составе индекса в %. */
+  weight?: Quotation | undefined;
 }
 
 /** Данные о стране. */
@@ -3327,7 +3418,7 @@ export interface GetAssetFundamentalsResponse_StatisticResponse {
 
 /** Запрос отчетов эмитентов */
 export interface GetAssetReportsRequest {
-  /** Идентификатор инструмента в формате UID. */
+  /** Идентификатор инструмента. Принимает значение `figi`, `instrument_uid` или `ticker + '_' + class_code`. */
   instrumentId: string;
   /** Начало запрашиваемого периода по UTC. */
   from?:
@@ -3466,7 +3557,7 @@ export interface GetConsensusForecastsResponse_ConsensusForecastsItem {
 
 /** Запрос прогнозов инвестдомов. */
 export interface GetForecastRequest {
-  /** Идентификатор инструмента. */
+  /** Идентификатор инструмента. Принимает значение `figi`, `instrument_uid` или `ticker + '_' + class_code`. */
   instrumentId: string;
 }
 
@@ -3550,7 +3641,7 @@ export interface GetForecastResponse_ConsensusItem {
 
 /** Запрос ставок риска */
 export interface RiskRatesRequest {
-  /** Идентификаторы инструментов. */
+  /** Идентификатор инструмента. Принимает значение `figi`, `instrument_uid` или `ticker + '_' + class_code`. */
   instrumentId: string[];
 }
 
@@ -3602,8 +3693,11 @@ export interface TradingInterval_TimeInterval {
 
 /** Запрос сделок по инсайдерам */
 export interface GetInsiderDealsRequest {
+  /** Идентификатор инструмента. Принимает значение `figi`, `instrument_uid` или `ticker + '_' + class_code`. */
   instrumentId: string;
+  /** Количество выводимых записей в ответе, не больше 100. */
   limit: number;
+  /** Курсор. */
   nextCursor?: string | undefined;
 }
 
@@ -3702,6 +3796,102 @@ export interface GetInsiderDealsResponse_InsiderDeal {
   isOptionExecution: boolean;
   /** Дата раскрытия сделки. */
   disclosureDate?: Date | undefined;
+}
+
+/** Запрос цифровых активов */
+export interface DfasRequest {
+}
+
+/** Цифровой актив */
+export interface DfaResponse {
+  /** Уникальный идентификатор инструмента. */
+  uid: string;
+  /** Тикер инструмента. */
+  ticker: string;
+  /** Название инструмента. */
+  name: string;
+  /** Уникальный идентификатор позиции. */
+  positionUid: string;
+  /** Шаг цены. */
+  minPriceIncrement?:
+    | Quotation
+    | undefined;
+  /** Количество лотов. */
+  lot: number;
+  /** Номинал. */
+  nominal?:
+    | MoneyValue
+    | undefined;
+  /** Валюта. */
+  currency: string;
+  /** Дата погашения ЦФА в формате UTC. */
+  maturityDate?:
+    | Date
+    | undefined;
+  /** Признак доступности для операций шорт. */
+  shortEnabledFlag: boolean;
+  /** Признак доступности торгов по бумаге через API. */
+  apiTradeAvailableFlag: boolean;
+  /** Признак доступности для покупки. */
+  buyAvailableFlag: boolean;
+  /** Признак доступности для продажи. */
+  sellAvailableFlag: boolean;
+  /** Признак доступности выставления лимитной заявки по инструменту. */
+  limitOrderAvailableFlag: boolean;
+  /** Признак доступности выставления рыночной заявки по инструменту. */
+  marketOrderAvailableFlag: boolean;
+  /** Признак доступности выставления bestprice заявки по инструменту. */
+  bestpriceOrderAvailableFlag: boolean;
+  /** Возможность покупки/продажи на ИИС. */
+  forIisFlag: boolean;
+  /** Флаг отображающий доступность торговли инструментом только для квалифицированных инвесторов. */
+  forQualInvestorFlag: boolean;
+  /** Тип актива. Возможные значения: credit_portfolio_dfa, debt_dfa. */
+  type: string;
+  /** Базовые активы, входящие в ЦФА. */
+  basicAssets: DfaResponse_BasicAsset[];
+  /** Прогнозная доходность смарт-портфелей, в виде интервала в %. */
+  forecastYield?:
+    | DfaResponse_ForecastYield
+    | undefined;
+  /** Доходность к погашению в %. */
+  yieldToMaturity?:
+    | Quotation
+    | undefined;
+  /** Величина купона. */
+  couponValue?:
+    | Quotation
+    | undefined;
+  /** Количество выплат в год. */
+  couponPaymentFrequency: number;
+  /** Дата выплаты купона. */
+  couponPaymentDate?:
+    | Date
+    | undefined;
+  /** Значение НКД (накопленного купонного дохода) на дату. */
+  aciValue?: Quotation | undefined;
+}
+
+/** Базовый актив. */
+export interface DfaResponse_BasicAsset {
+  /** UID базового актива */
+  uid: string;
+}
+
+/** Прогнозная доходность смарт-портфелей. */
+export interface DfaResponse_ForecastYield {
+  /** Минимальное значение прогнозной доходности в % */
+  minValue?:
+    | Quotation
+    | undefined;
+  /** Максимальное значение прогнозной доходности в % */
+  maxValue?: Quotation | undefined;
+}
+
+/** Цифровые активы */
+export interface DfasResponse {
+  /** Массив инструментов. */
+  instruments: DfaResponse[];
 }
 
 function createBaseTradingSchedulesRequest(): TradingSchedulesRequest {
@@ -4332,7 +4522,7 @@ export const InstrumentsRequest = {
 };
 
 function createBaseFilterOptionsRequest(): FilterOptionsRequest {
-  return { basicAssetUid: undefined, basicAssetPositionUid: undefined };
+  return { basicAssetUid: undefined, basicAssetPositionUid: undefined, basicInstrumentId: undefined };
 }
 
 export const FilterOptionsRequest = {
@@ -4342,6 +4532,9 @@ export const FilterOptionsRequest = {
     }
     if (message.basicAssetPositionUid !== undefined) {
       writer.uint32(18).string(message.basicAssetPositionUid);
+    }
+    if (message.basicInstrumentId !== undefined) {
+      writer.uint32(26).string(message.basicInstrumentId);
     }
     return writer;
   },
@@ -4367,6 +4560,13 @@ export const FilterOptionsRequest = {
 
           message.basicAssetPositionUid = reader.string();
           continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.basicInstrumentId = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -4382,6 +4582,7 @@ export const FilterOptionsRequest = {
       basicAssetPositionUid: isSet(object.basicAssetPositionUid)
         ? globalThis.String(object.basicAssetPositionUid)
         : undefined,
+      basicInstrumentId: isSet(object.basicInstrumentId) ? globalThis.String(object.basicInstrumentId) : undefined,
     };
   },
 
@@ -4392,6 +4593,73 @@ export const FilterOptionsRequest = {
     }
     if (message.basicAssetPositionUid !== undefined) {
       obj.basicAssetPositionUid = message.basicAssetPositionUid;
+    }
+    if (message.basicInstrumentId !== undefined) {
+      obj.basicInstrumentId = message.basicInstrumentId;
+    }
+    return obj;
+  },
+};
+
+function createBaseNewsRequest(): NewsRequest {
+  return { cursor: undefined, limit: undefined };
+}
+
+export const NewsRequest = {
+  encode(message: NewsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.cursor !== undefined) {
+      writer.uint32(8).int64(message.cursor);
+    }
+    if (message.limit !== undefined) {
+      writer.uint32(16).int32(message.limit);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): NewsRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseNewsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.cursor = longToNumber(reader.int64() as Long);
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.limit = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): NewsRequest {
+    return {
+      cursor: isSet(object.cursor) ? globalThis.Number(object.cursor) : undefined,
+      limit: isSet(object.limit) ? globalThis.Number(object.limit) : undefined,
+    };
+  },
+
+  toJSON(message: NewsRequest): unknown {
+    const obj: any = {};
+    if (message.cursor !== undefined) {
+      obj.cursor = Math.round(message.cursor);
+    }
+    if (message.limit !== undefined) {
+      obj.limit = Math.round(message.limit);
     }
     return obj;
   },
@@ -6672,6 +6940,432 @@ export const StructuredNotesResponse = {
   },
 };
 
+function createBaseNewsResponse(): NewsResponse {
+  return { hasNext: false, nextCursor: undefined, items: [] };
+}
+
+export const NewsResponse = {
+  encode(message: NewsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.hasNext === true) {
+      writer.uint32(8).bool(message.hasNext);
+    }
+    if (message.nextCursor !== undefined) {
+      writer.uint32(16).int64(message.nextCursor);
+    }
+    for (const v of message.items) {
+      NewsItem.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): NewsResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseNewsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.hasNext = reader.bool();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.nextCursor = longToNumber(reader.int64() as Long);
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.items.push(NewsItem.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): NewsResponse {
+    return {
+      hasNext: isSet(object.hasNext) ? globalThis.Boolean(object.hasNext) : false,
+      nextCursor: isSet(object.nextCursor) ? globalThis.Number(object.nextCursor) : undefined,
+      items: globalThis.Array.isArray(object?.items) ? object.items.map((e: any) => NewsItem.fromJSON(e)) : [],
+    };
+  },
+
+  toJSON(message: NewsResponse): unknown {
+    const obj: any = {};
+    if (message.hasNext === true) {
+      obj.hasNext = message.hasNext;
+    }
+    if (message.nextCursor !== undefined) {
+      obj.nextCursor = Math.round(message.nextCursor);
+    }
+    if (message.items?.length) {
+      obj.items = message.items.map((e) => NewsItem.toJSON(e));
+    }
+    return obj;
+  },
+};
+
+function createBaseNewsItem(): NewsItem {
+  return {
+    id: 0,
+    source: "",
+    title: "",
+    content: "",
+    summary: undefined,
+    tables: [],
+    instrumentId: [],
+    priority: false,
+    ts: undefined,
+  };
+}
+
+export const NewsItem = {
+  encode(message: NewsItem, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).int64(message.id);
+    }
+    if (message.source !== "") {
+      writer.uint32(18).string(message.source);
+    }
+    if (message.title !== "") {
+      writer.uint32(26).string(message.title);
+    }
+    if (message.content !== "") {
+      writer.uint32(34).string(message.content);
+    }
+    if (message.summary !== undefined) {
+      writer.uint32(42).string(message.summary);
+    }
+    for (const v of message.tables) {
+      Table.encode(v!, writer.uint32(50).fork()).ldelim();
+    }
+    for (const v of message.instrumentId) {
+      NewsInstrument.encode(v!, writer.uint32(58).fork()).ldelim();
+    }
+    if (message.priority === true) {
+      writer.uint32(64).bool(message.priority);
+    }
+    if (message.ts !== undefined) {
+      Timestamp.encode(toTimestamp(message.ts), writer.uint32(74).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): NewsItem {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseNewsItem();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.id = longToNumber(reader.int64() as Long);
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.source = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.title = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.content = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.summary = reader.string();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.tables.push(Table.decode(reader, reader.uint32()));
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.instrumentId.push(NewsInstrument.decode(reader, reader.uint32()));
+          continue;
+        case 8:
+          if (tag !== 64) {
+            break;
+          }
+
+          message.priority = reader.bool();
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.ts = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): NewsItem {
+    return {
+      id: isSet(object.id) ? globalThis.Number(object.id) : 0,
+      source: isSet(object.source) ? globalThis.String(object.source) : "",
+      title: isSet(object.title) ? globalThis.String(object.title) : "",
+      content: isSet(object.content) ? globalThis.String(object.content) : "",
+      summary: isSet(object.summary) ? globalThis.String(object.summary) : undefined,
+      tables: globalThis.Array.isArray(object?.tables) ? object.tables.map((e: any) => Table.fromJSON(e)) : [],
+      instrumentId: globalThis.Array.isArray(object?.instrumentId)
+        ? object.instrumentId.map((e: any) => NewsInstrument.fromJSON(e))
+        : [],
+      priority: isSet(object.priority) ? globalThis.Boolean(object.priority) : false,
+      ts: isSet(object.ts) ? fromJsonTimestamp(object.ts) : undefined,
+    };
+  },
+
+  toJSON(message: NewsItem): unknown {
+    const obj: any = {};
+    if (message.id !== 0) {
+      obj.id = Math.round(message.id);
+    }
+    if (message.source !== "") {
+      obj.source = message.source;
+    }
+    if (message.title !== "") {
+      obj.title = message.title;
+    }
+    if (message.content !== "") {
+      obj.content = message.content;
+    }
+    if (message.summary !== undefined) {
+      obj.summary = message.summary;
+    }
+    if (message.tables?.length) {
+      obj.tables = message.tables.map((e) => Table.toJSON(e));
+    }
+    if (message.instrumentId?.length) {
+      obj.instrumentId = message.instrumentId.map((e) => NewsInstrument.toJSON(e));
+    }
+    if (message.priority === true) {
+      obj.priority = message.priority;
+    }
+    if (message.ts !== undefined) {
+      obj.ts = message.ts.toISOString();
+    }
+    return obj;
+  },
+};
+
+function createBaseTable(): Table {
+  return { table: "" };
+}
+
+export const Table = {
+  encode(message: Table, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.table !== "") {
+      writer.uint32(10).string(message.table);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Table {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTable();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.table = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Table {
+    return { table: isSet(object.table) ? globalThis.String(object.table) : "" };
+  },
+
+  toJSON(message: Table): unknown {
+    const obj: any = {};
+    if (message.table !== "") {
+      obj.table = message.table;
+    }
+    return obj;
+  },
+};
+
+function createBaseNewsInstrument(): NewsInstrument {
+  return { instrument: undefined };
+}
+
+export const NewsInstrument = {
+  encode(message: NewsInstrument, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.instrument !== undefined) {
+      NewsInstrumentInfo.encode(message.instrument, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): NewsInstrument {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseNewsInstrument();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.instrument = NewsInstrumentInfo.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): NewsInstrument {
+    return { instrument: isSet(object.instrument) ? NewsInstrumentInfo.fromJSON(object.instrument) : undefined };
+  },
+
+  toJSON(message: NewsInstrument): unknown {
+    const obj: any = {};
+    if (message.instrument !== undefined) {
+      obj.instrument = NewsInstrumentInfo.toJSON(message.instrument);
+    }
+    return obj;
+  },
+};
+
+function createBaseNewsInstrumentInfo(): NewsInstrumentInfo {
+  return { instrumentUid: "", ticker: "", classCode: "" };
+}
+
+export const NewsInstrumentInfo = {
+  encode(message: NewsInstrumentInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.instrumentUid !== "") {
+      writer.uint32(10).string(message.instrumentUid);
+    }
+    if (message.ticker !== "") {
+      writer.uint32(18).string(message.ticker);
+    }
+    if (message.classCode !== "") {
+      writer.uint32(26).string(message.classCode);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): NewsInstrumentInfo {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseNewsInstrumentInfo();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.instrumentUid = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.ticker = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.classCode = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): NewsInstrumentInfo {
+    return {
+      instrumentUid: isSet(object.instrumentUid) ? globalThis.String(object.instrumentUid) : "",
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
+    };
+  },
+
+  toJSON(message: NewsInstrumentInfo): unknown {
+    const obj: any = {};
+    if (message.instrumentUid !== "") {
+      obj.instrumentUid = message.instrumentUid;
+    }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
+    }
+    return obj;
+  },
+};
+
 function createBaseBond(): Bond {
   return {
     figi: "",
@@ -7603,6 +8297,7 @@ function createBaseCurrency(): Currency {
     realExchange: 0,
     positionUid: "",
     requiredTests: [],
+    assetUid: "",
     forIisFlag: false,
     forQualInvestorFlag: false,
     weekendFlag: false,
@@ -7703,6 +8398,9 @@ export const Currency = {
     }
     for (const v of message.requiredTests) {
       writer.uint32(242).string(v!);
+    }
+    if (message.assetUid !== "") {
+      writer.uint32(250).string(message.assetUid);
     }
     if (message.forIisFlag === true) {
       writer.uint32(328).bool(message.forIisFlag);
@@ -7944,6 +8642,13 @@ export const Currency = {
 
           message.requiredTests.push(reader.string());
           continue;
+        case 31:
+          if (tag !== 250) {
+            break;
+          }
+
+          message.assetUid = reader.string();
+          continue;
         case 41:
           if (tag !== 328) {
             break;
@@ -8051,6 +8756,7 @@ export const Currency = {
       requiredTests: globalThis.Array.isArray(object?.requiredTests)
         ? object.requiredTests.map((e: any) => globalThis.String(e))
         : [],
+      assetUid: isSet(object.assetUid) ? globalThis.String(object.assetUid) : "",
       forIisFlag: isSet(object.forIisFlag) ? globalThis.Boolean(object.forIisFlag) : false,
       forQualInvestorFlag: isSet(object.forQualInvestorFlag) ? globalThis.Boolean(object.forQualInvestorFlag) : false,
       weekendFlag: isSet(object.weekendFlag) ? globalThis.Boolean(object.weekendFlag) : false,
@@ -8155,6 +8861,9 @@ export const Currency = {
     }
     if (message.requiredTests?.length) {
       obj.requiredTests = message.requiredTests;
+    }
+    if (message.assetUid !== "") {
+      obj.assetUid = message.assetUid;
     }
     if (message.forIisFlag === true) {
       obj.forIisFlag = message.forIisFlag;
@@ -16574,6 +17283,7 @@ function createBaseIndicativeResponse(): IndicativeResponse {
     uid: "",
     buyAvailableFlag: false,
     sellAvailableFlag: false,
+    indexComposition: [],
   };
 }
 
@@ -16608,6 +17318,9 @@ export const IndicativeResponse = {
     }
     if (message.sellAvailableFlag === true) {
       writer.uint32(3240).bool(message.sellAvailableFlag);
+    }
+    for (const v of message.indexComposition) {
+      IndexInstrument.encode(v!, writer.uint32(3250).fork()).ldelim();
     }
     return writer;
   },
@@ -16689,6 +17402,13 @@ export const IndicativeResponse = {
 
           message.sellAvailableFlag = reader.bool();
           continue;
+        case 406:
+          if (tag !== 3250) {
+            break;
+          }
+
+          message.indexComposition.push(IndexInstrument.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -16710,6 +17430,9 @@ export const IndicativeResponse = {
       uid: isSet(object.uid) ? globalThis.String(object.uid) : "",
       buyAvailableFlag: isSet(object.buyAvailableFlag) ? globalThis.Boolean(object.buyAvailableFlag) : false,
       sellAvailableFlag: isSet(object.sellAvailableFlag) ? globalThis.Boolean(object.sellAvailableFlag) : false,
+      indexComposition: globalThis.Array.isArray(object?.indexComposition)
+        ? object.indexComposition.map((e: any) => IndexInstrument.fromJSON(e))
+        : [],
     };
   },
 
@@ -16744,6 +17467,73 @@ export const IndicativeResponse = {
     }
     if (message.sellAvailableFlag === true) {
       obj.sellAvailableFlag = message.sellAvailableFlag;
+    }
+    if (message.indexComposition?.length) {
+      obj.indexComposition = message.indexComposition.map((e) => IndexInstrument.toJSON(e));
+    }
+    return obj;
+  },
+};
+
+function createBaseIndexInstrument(): IndexInstrument {
+  return { uid: "", weight: undefined };
+}
+
+export const IndexInstrument = {
+  encode(message: IndexInstrument, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.uid !== "") {
+      writer.uint32(10).string(message.uid);
+    }
+    if (message.weight !== undefined) {
+      Quotation.encode(message.weight, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): IndexInstrument {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseIndexInstrument();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.uid = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.weight = Quotation.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): IndexInstrument {
+    return {
+      uid: isSet(object.uid) ? globalThis.String(object.uid) : "",
+      weight: isSet(object.weight) ? Quotation.fromJSON(object.weight) : undefined,
+    };
+  },
+
+  toJSON(message: IndexInstrument): unknown {
+    const obj: any = {};
+    if (message.uid !== "") {
+      obj.uid = message.uid;
+    }
+    if (message.weight !== undefined) {
+      obj.weight = Quotation.toJSON(message.weight);
     }
     return obj;
   },
@@ -20337,6 +21127,644 @@ export const GetInsiderDealsResponse_InsiderDeal = {
   },
 };
 
+function createBaseDfasRequest(): DfasRequest {
+  return {};
+}
+
+export const DfasRequest = {
+  encode(_: DfasRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DfasRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDfasRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): DfasRequest {
+    return {};
+  },
+
+  toJSON(_: DfasRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+};
+
+function createBaseDfaResponse(): DfaResponse {
+  return {
+    uid: "",
+    ticker: "",
+    name: "",
+    positionUid: "",
+    minPriceIncrement: undefined,
+    lot: 0,
+    nominal: undefined,
+    currency: "",
+    maturityDate: undefined,
+    shortEnabledFlag: false,
+    apiTradeAvailableFlag: false,
+    buyAvailableFlag: false,
+    sellAvailableFlag: false,
+    limitOrderAvailableFlag: false,
+    marketOrderAvailableFlag: false,
+    bestpriceOrderAvailableFlag: false,
+    forIisFlag: false,
+    forQualInvestorFlag: false,
+    type: "",
+    basicAssets: [],
+    forecastYield: undefined,
+    yieldToMaturity: undefined,
+    couponValue: undefined,
+    couponPaymentFrequency: 0,
+    couponPaymentDate: undefined,
+    aciValue: undefined,
+  };
+}
+
+export const DfaResponse = {
+  encode(message: DfaResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.uid !== "") {
+      writer.uint32(10).string(message.uid);
+    }
+    if (message.ticker !== "") {
+      writer.uint32(18).string(message.ticker);
+    }
+    if (message.name !== "") {
+      writer.uint32(26).string(message.name);
+    }
+    if (message.positionUid !== "") {
+      writer.uint32(34).string(message.positionUid);
+    }
+    if (message.minPriceIncrement !== undefined) {
+      Quotation.encode(message.minPriceIncrement, writer.uint32(42).fork()).ldelim();
+    }
+    if (message.lot !== 0) {
+      writer.uint32(48).int32(message.lot);
+    }
+    if (message.nominal !== undefined) {
+      MoneyValue.encode(message.nominal, writer.uint32(58).fork()).ldelim();
+    }
+    if (message.currency !== "") {
+      writer.uint32(66).string(message.currency);
+    }
+    if (message.maturityDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.maturityDate), writer.uint32(74).fork()).ldelim();
+    }
+    if (message.shortEnabledFlag === true) {
+      writer.uint32(80).bool(message.shortEnabledFlag);
+    }
+    if (message.apiTradeAvailableFlag === true) {
+      writer.uint32(88).bool(message.apiTradeAvailableFlag);
+    }
+    if (message.buyAvailableFlag === true) {
+      writer.uint32(96).bool(message.buyAvailableFlag);
+    }
+    if (message.sellAvailableFlag === true) {
+      writer.uint32(104).bool(message.sellAvailableFlag);
+    }
+    if (message.limitOrderAvailableFlag === true) {
+      writer.uint32(112).bool(message.limitOrderAvailableFlag);
+    }
+    if (message.marketOrderAvailableFlag === true) {
+      writer.uint32(120).bool(message.marketOrderAvailableFlag);
+    }
+    if (message.bestpriceOrderAvailableFlag === true) {
+      writer.uint32(128).bool(message.bestpriceOrderAvailableFlag);
+    }
+    if (message.forIisFlag === true) {
+      writer.uint32(136).bool(message.forIisFlag);
+    }
+    if (message.forQualInvestorFlag === true) {
+      writer.uint32(144).bool(message.forQualInvestorFlag);
+    }
+    if (message.type !== "") {
+      writer.uint32(154).string(message.type);
+    }
+    for (const v of message.basicAssets) {
+      DfaResponse_BasicAsset.encode(v!, writer.uint32(162).fork()).ldelim();
+    }
+    if (message.forecastYield !== undefined) {
+      DfaResponse_ForecastYield.encode(message.forecastYield, writer.uint32(170).fork()).ldelim();
+    }
+    if (message.yieldToMaturity !== undefined) {
+      Quotation.encode(message.yieldToMaturity, writer.uint32(178).fork()).ldelim();
+    }
+    if (message.couponValue !== undefined) {
+      Quotation.encode(message.couponValue, writer.uint32(186).fork()).ldelim();
+    }
+    if (message.couponPaymentFrequency !== 0) {
+      writer.uint32(192).int32(message.couponPaymentFrequency);
+    }
+    if (message.couponPaymentDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.couponPaymentDate), writer.uint32(202).fork()).ldelim();
+    }
+    if (message.aciValue !== undefined) {
+      Quotation.encode(message.aciValue, writer.uint32(210).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DfaResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDfaResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.uid = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.ticker = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.positionUid = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.minPriceIncrement = Quotation.decode(reader, reader.uint32());
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.lot = reader.int32();
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.nominal = MoneyValue.decode(reader, reader.uint32());
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.currency = reader.string();
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.maturityDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 10:
+          if (tag !== 80) {
+            break;
+          }
+
+          message.shortEnabledFlag = reader.bool();
+          continue;
+        case 11:
+          if (tag !== 88) {
+            break;
+          }
+
+          message.apiTradeAvailableFlag = reader.bool();
+          continue;
+        case 12:
+          if (tag !== 96) {
+            break;
+          }
+
+          message.buyAvailableFlag = reader.bool();
+          continue;
+        case 13:
+          if (tag !== 104) {
+            break;
+          }
+
+          message.sellAvailableFlag = reader.bool();
+          continue;
+        case 14:
+          if (tag !== 112) {
+            break;
+          }
+
+          message.limitOrderAvailableFlag = reader.bool();
+          continue;
+        case 15:
+          if (tag !== 120) {
+            break;
+          }
+
+          message.marketOrderAvailableFlag = reader.bool();
+          continue;
+        case 16:
+          if (tag !== 128) {
+            break;
+          }
+
+          message.bestpriceOrderAvailableFlag = reader.bool();
+          continue;
+        case 17:
+          if (tag !== 136) {
+            break;
+          }
+
+          message.forIisFlag = reader.bool();
+          continue;
+        case 18:
+          if (tag !== 144) {
+            break;
+          }
+
+          message.forQualInvestorFlag = reader.bool();
+          continue;
+        case 19:
+          if (tag !== 154) {
+            break;
+          }
+
+          message.type = reader.string();
+          continue;
+        case 20:
+          if (tag !== 162) {
+            break;
+          }
+
+          message.basicAssets.push(DfaResponse_BasicAsset.decode(reader, reader.uint32()));
+          continue;
+        case 21:
+          if (tag !== 170) {
+            break;
+          }
+
+          message.forecastYield = DfaResponse_ForecastYield.decode(reader, reader.uint32());
+          continue;
+        case 22:
+          if (tag !== 178) {
+            break;
+          }
+
+          message.yieldToMaturity = Quotation.decode(reader, reader.uint32());
+          continue;
+        case 23:
+          if (tag !== 186) {
+            break;
+          }
+
+          message.couponValue = Quotation.decode(reader, reader.uint32());
+          continue;
+        case 24:
+          if (tag !== 192) {
+            break;
+          }
+
+          message.couponPaymentFrequency = reader.int32();
+          continue;
+        case 25:
+          if (tag !== 202) {
+            break;
+          }
+
+          message.couponPaymentDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 26:
+          if (tag !== 210) {
+            break;
+          }
+
+          message.aciValue = Quotation.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DfaResponse {
+    return {
+      uid: isSet(object.uid) ? globalThis.String(object.uid) : "",
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      positionUid: isSet(object.positionUid) ? globalThis.String(object.positionUid) : "",
+      minPriceIncrement: isSet(object.minPriceIncrement) ? Quotation.fromJSON(object.minPriceIncrement) : undefined,
+      lot: isSet(object.lot) ? globalThis.Number(object.lot) : 0,
+      nominal: isSet(object.nominal) ? MoneyValue.fromJSON(object.nominal) : undefined,
+      currency: isSet(object.currency) ? globalThis.String(object.currency) : "",
+      maturityDate: isSet(object.maturityDate) ? fromJsonTimestamp(object.maturityDate) : undefined,
+      shortEnabledFlag: isSet(object.shortEnabledFlag) ? globalThis.Boolean(object.shortEnabledFlag) : false,
+      apiTradeAvailableFlag: isSet(object.apiTradeAvailableFlag)
+        ? globalThis.Boolean(object.apiTradeAvailableFlag)
+        : false,
+      buyAvailableFlag: isSet(object.buyAvailableFlag) ? globalThis.Boolean(object.buyAvailableFlag) : false,
+      sellAvailableFlag: isSet(object.sellAvailableFlag) ? globalThis.Boolean(object.sellAvailableFlag) : false,
+      limitOrderAvailableFlag: isSet(object.limitOrderAvailableFlag)
+        ? globalThis.Boolean(object.limitOrderAvailableFlag)
+        : false,
+      marketOrderAvailableFlag: isSet(object.marketOrderAvailableFlag)
+        ? globalThis.Boolean(object.marketOrderAvailableFlag)
+        : false,
+      bestpriceOrderAvailableFlag: isSet(object.bestpriceOrderAvailableFlag)
+        ? globalThis.Boolean(object.bestpriceOrderAvailableFlag)
+        : false,
+      forIisFlag: isSet(object.forIisFlag) ? globalThis.Boolean(object.forIisFlag) : false,
+      forQualInvestorFlag: isSet(object.forQualInvestorFlag) ? globalThis.Boolean(object.forQualInvestorFlag) : false,
+      type: isSet(object.type) ? globalThis.String(object.type) : "",
+      basicAssets: globalThis.Array.isArray(object?.basicAssets)
+        ? object.basicAssets.map((e: any) => DfaResponse_BasicAsset.fromJSON(e))
+        : [],
+      forecastYield: isSet(object.forecastYield) ? DfaResponse_ForecastYield.fromJSON(object.forecastYield) : undefined,
+      yieldToMaturity: isSet(object.yieldToMaturity) ? Quotation.fromJSON(object.yieldToMaturity) : undefined,
+      couponValue: isSet(object.couponValue) ? Quotation.fromJSON(object.couponValue) : undefined,
+      couponPaymentFrequency: isSet(object.couponPaymentFrequency)
+        ? globalThis.Number(object.couponPaymentFrequency)
+        : 0,
+      couponPaymentDate: isSet(object.couponPaymentDate) ? fromJsonTimestamp(object.couponPaymentDate) : undefined,
+      aciValue: isSet(object.aciValue) ? Quotation.fromJSON(object.aciValue) : undefined,
+    };
+  },
+
+  toJSON(message: DfaResponse): unknown {
+    const obj: any = {};
+    if (message.uid !== "") {
+      obj.uid = message.uid;
+    }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.positionUid !== "") {
+      obj.positionUid = message.positionUid;
+    }
+    if (message.minPriceIncrement !== undefined) {
+      obj.minPriceIncrement = Quotation.toJSON(message.minPriceIncrement);
+    }
+    if (message.lot !== 0) {
+      obj.lot = Math.round(message.lot);
+    }
+    if (message.nominal !== undefined) {
+      obj.nominal = MoneyValue.toJSON(message.nominal);
+    }
+    if (message.currency !== "") {
+      obj.currency = message.currency;
+    }
+    if (message.maturityDate !== undefined) {
+      obj.maturityDate = message.maturityDate.toISOString();
+    }
+    if (message.shortEnabledFlag === true) {
+      obj.shortEnabledFlag = message.shortEnabledFlag;
+    }
+    if (message.apiTradeAvailableFlag === true) {
+      obj.apiTradeAvailableFlag = message.apiTradeAvailableFlag;
+    }
+    if (message.buyAvailableFlag === true) {
+      obj.buyAvailableFlag = message.buyAvailableFlag;
+    }
+    if (message.sellAvailableFlag === true) {
+      obj.sellAvailableFlag = message.sellAvailableFlag;
+    }
+    if (message.limitOrderAvailableFlag === true) {
+      obj.limitOrderAvailableFlag = message.limitOrderAvailableFlag;
+    }
+    if (message.marketOrderAvailableFlag === true) {
+      obj.marketOrderAvailableFlag = message.marketOrderAvailableFlag;
+    }
+    if (message.bestpriceOrderAvailableFlag === true) {
+      obj.bestpriceOrderAvailableFlag = message.bestpriceOrderAvailableFlag;
+    }
+    if (message.forIisFlag === true) {
+      obj.forIisFlag = message.forIisFlag;
+    }
+    if (message.forQualInvestorFlag === true) {
+      obj.forQualInvestorFlag = message.forQualInvestorFlag;
+    }
+    if (message.type !== "") {
+      obj.type = message.type;
+    }
+    if (message.basicAssets?.length) {
+      obj.basicAssets = message.basicAssets.map((e) => DfaResponse_BasicAsset.toJSON(e));
+    }
+    if (message.forecastYield !== undefined) {
+      obj.forecastYield = DfaResponse_ForecastYield.toJSON(message.forecastYield);
+    }
+    if (message.yieldToMaturity !== undefined) {
+      obj.yieldToMaturity = Quotation.toJSON(message.yieldToMaturity);
+    }
+    if (message.couponValue !== undefined) {
+      obj.couponValue = Quotation.toJSON(message.couponValue);
+    }
+    if (message.couponPaymentFrequency !== 0) {
+      obj.couponPaymentFrequency = Math.round(message.couponPaymentFrequency);
+    }
+    if (message.couponPaymentDate !== undefined) {
+      obj.couponPaymentDate = message.couponPaymentDate.toISOString();
+    }
+    if (message.aciValue !== undefined) {
+      obj.aciValue = Quotation.toJSON(message.aciValue);
+    }
+    return obj;
+  },
+};
+
+function createBaseDfaResponse_BasicAsset(): DfaResponse_BasicAsset {
+  return { uid: "" };
+}
+
+export const DfaResponse_BasicAsset = {
+  encode(message: DfaResponse_BasicAsset, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.uid !== "") {
+      writer.uint32(10).string(message.uid);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DfaResponse_BasicAsset {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDfaResponse_BasicAsset();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.uid = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DfaResponse_BasicAsset {
+    return { uid: isSet(object.uid) ? globalThis.String(object.uid) : "" };
+  },
+
+  toJSON(message: DfaResponse_BasicAsset): unknown {
+    const obj: any = {};
+    if (message.uid !== "") {
+      obj.uid = message.uid;
+    }
+    return obj;
+  },
+};
+
+function createBaseDfaResponse_ForecastYield(): DfaResponse_ForecastYield {
+  return { minValue: undefined, maxValue: undefined };
+}
+
+export const DfaResponse_ForecastYield = {
+  encode(message: DfaResponse_ForecastYield, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.minValue !== undefined) {
+      Quotation.encode(message.minValue, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.maxValue !== undefined) {
+      Quotation.encode(message.maxValue, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DfaResponse_ForecastYield {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDfaResponse_ForecastYield();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.minValue = Quotation.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.maxValue = Quotation.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DfaResponse_ForecastYield {
+    return {
+      minValue: isSet(object.minValue) ? Quotation.fromJSON(object.minValue) : undefined,
+      maxValue: isSet(object.maxValue) ? Quotation.fromJSON(object.maxValue) : undefined,
+    };
+  },
+
+  toJSON(message: DfaResponse_ForecastYield): unknown {
+    const obj: any = {};
+    if (message.minValue !== undefined) {
+      obj.minValue = Quotation.toJSON(message.minValue);
+    }
+    if (message.maxValue !== undefined) {
+      obj.maxValue = Quotation.toJSON(message.maxValue);
+    }
+    return obj;
+  },
+};
+
+function createBaseDfasResponse(): DfasResponse {
+  return { instruments: [] };
+}
+
+export const DfasResponse = {
+  encode(message: DfasResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.instruments) {
+      DfaResponse.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DfasResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDfasResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.instruments.push(DfaResponse.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DfasResponse {
+    return {
+      instruments: globalThis.Array.isArray(object?.instruments)
+        ? object.instruments.map((e: any) => DfaResponse.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: DfasResponse): unknown {
+    const obj: any = {};
+    if (message.instruments?.length) {
+      obj.instruments = message.instruments.map((e) => DfaResponse.toJSON(e));
+    }
+    return obj;
+  },
+};
+
 /**
  * Методы сервиса предназначены для получения:<br/>1. Информации об инструментах.<br/>2.
  * Расписания торговых сессий.<br/>3. Календаря выплат купонов по облигациям.<br/>4.
@@ -20492,6 +21920,24 @@ export const InstrumentsServiceDefinition = {
       requestType: InstrumentsRequest,
       requestStream: false,
       responseType: SharesResponse,
+      responseStream: false,
+      options: {},
+    },
+    /** DfaBy — получить цифровой актив по его идентификатору */
+    dfaBy: {
+      name: "DfaBy",
+      requestType: InstrumentRequest,
+      requestStream: false,
+      responseType: DfaResponse,
+      responseStream: false,
+      options: {},
+    },
+    /** Dfas — список цифровых активов */
+    dfas: {
+      name: "Dfas",
+      requestType: DfasRequest,
+      requestStream: false,
+      responseType: DfasResponse,
       responseStream: false,
       options: {},
     },
@@ -20714,6 +22160,15 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
+    /** News — получение актуальных новостей */
+    news: {
+      name: "News",
+      requestType: NewsRequest,
+      requestStream: false,
+      responseType: NewsResponse,
+      responseStream: false,
+      options: {},
+    },
   },
 } as const;
 
@@ -20760,6 +22215,10 @@ export interface InstrumentsServiceImplementation<CallContextExt = {}> {
   shareBy(request: InstrumentRequest, context: CallContext & CallContextExt): Promise<ShareResponse>;
   /** Shares — список акций */
   shares(request: InstrumentsRequest, context: CallContext & CallContextExt): Promise<SharesResponse>;
+  /** DfaBy — получить цифровой актив по его идентификатору */
+  dfaBy(request: InstrumentRequest, context: CallContext & CallContextExt): Promise<DfaResponse>;
+  /** Dfas — список цифровых активов */
+  dfas(request: DfasRequest, context: CallContext & CallContextExt): Promise<DfasResponse>;
   /** Indicatives — индикативные инструменты — индексы, товары и другие */
   indicatives(request: IndicativesRequest, context: CallContext & CallContextExt): Promise<IndicativesResponse>;
   /** GetAccruedInterests — накопленный купонный доход по облигации */
@@ -20841,6 +22300,8 @@ export interface InstrumentsServiceImplementation<CallContextExt = {}> {
   structuredNoteBy(request: InstrumentRequest, context: CallContext & CallContextExt): Promise<StructuredNoteResponse>;
   /** StructuredNotes — список структурных нот */
   structuredNotes(request: InstrumentsRequest, context: CallContext & CallContextExt): Promise<StructuredNotesResponse>;
+  /** News — получение актуальных новостей */
+  news(request: NewsRequest, context: CallContext & CallContextExt): Promise<NewsResponse>;
 }
 
 export interface InstrumentsServiceClient<CallOptionsExt = {}> {
@@ -20886,6 +22347,10 @@ export interface InstrumentsServiceClient<CallOptionsExt = {}> {
   shareBy(request: InstrumentRequest, options?: CallOptions & CallOptionsExt): Promise<ShareResponse>;
   /** Shares — список акций */
   shares(request: InstrumentsRequest, options?: CallOptions & CallOptionsExt): Promise<SharesResponse>;
+  /** DfaBy — получить цифровой актив по его идентификатору */
+  dfaBy(request: InstrumentRequest, options?: CallOptions & CallOptionsExt): Promise<DfaResponse>;
+  /** Dfas — список цифровых активов */
+  dfas(request: DfasRequest, options?: CallOptions & CallOptionsExt): Promise<DfasResponse>;
   /** Indicatives — индикативные инструменты — индексы, товары и другие */
   indicatives(request: IndicativesRequest, options?: CallOptions & CallOptionsExt): Promise<IndicativesResponse>;
   /** GetAccruedInterests — накопленный купонный доход по облигации */
@@ -20970,6 +22435,8 @@ export interface InstrumentsServiceClient<CallOptionsExt = {}> {
     request: InstrumentsRequest,
     options?: CallOptions & CallOptionsExt,
   ): Promise<StructuredNotesResponse>;
+  /** News — получение актуальных новостей */
+  news(request: NewsRequest, options?: CallOptions & CallOptionsExt): Promise<NewsResponse>;
 }
 
 function toTimestamp(date: Date): Timestamp {
