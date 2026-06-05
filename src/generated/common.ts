@@ -107,7 +107,7 @@ export function instrumentTypeToJSON(object: InstrumentType): string {
 export enum InstrumentStatus {
   /** INSTRUMENT_STATUS_UNSPECIFIED - Значение не определено. */
   INSTRUMENT_STATUS_UNSPECIFIED = 0,
-  /** INSTRUMENT_STATUS_BASE - Базовый список инструментов (по умолчанию). Инструменты, доступные для торговли через T-Invest API. Cейчас списки бумаг, которые доступны из API и других интерфейсах совпадают — кроме внебиржевых бумаг. Но в будущем возможны ситуации, когда списки инструментов будут отличаться. */
+  /** INSTRUMENT_STATUS_BASE - По умолчанию — базовый список инструментов, которыми можно торговать через T-Invest API. Сейчас списки доступных бумаг в API и других интерфейсах совпадают — кроме внебиржевых бумаг, но в будущем списки могут различаться. */
   INSTRUMENT_STATUS_BASE = 1,
   /** INSTRUMENT_STATUS_ALL - Список всех инструментов. */
   INSTRUMENT_STATUS_ALL = 2,
@@ -148,7 +148,7 @@ export function instrumentStatusToJSON(object: InstrumentStatus): string {
 
 /** Режим торгов инструмента */
 export enum SecurityTradingStatus {
-  /** SECURITY_TRADING_STATUS_UNSPECIFIED - Торговый статус не определён. */
+  /** SECURITY_TRADING_STATUS_UNSPECIFIED - Торговый статус не определен. */
   SECURITY_TRADING_STATUS_UNSPECIFIED = 0,
   /** SECURITY_TRADING_STATUS_NOT_AVAILABLE_FOR_TRADING - Недоступен для торгов. */
   SECURITY_TRADING_STATUS_NOT_AVAILABLE_FOR_TRADING = 1,
@@ -293,7 +293,7 @@ export enum PriceType {
   PRICE_TYPE_UNSPECIFIED = 0,
   /** PRICE_TYPE_POINT - Цена в пунктах (только для фьючерсов и облигаций). */
   PRICE_TYPE_POINT = 1,
-  /** PRICE_TYPE_CURRENCY - Цена в валюте расчётов по инструменту. */
+  /** PRICE_TYPE_CURRENCY - Цена в валюте расчетов по инструменту. */
   PRICE_TYPE_CURRENCY = 2,
   UNRECOGNIZED = -1,
 }
@@ -372,7 +372,64 @@ export function resultSubscriptionStatusToJSON(object: ResultSubscriptionStatus)
   }
 }
 
-/** Денежная сумма в определённой валюте. */
+/** Реальная площадка исполнения расчетов. */
+export enum RealExchange {
+  /** REAL_EXCHANGE_UNSPECIFIED - Тип не определен. */
+  REAL_EXCHANGE_UNSPECIFIED = 0,
+  /** REAL_EXCHANGE_MOEX - Московская биржа. */
+  REAL_EXCHANGE_MOEX = 1,
+  /** REAL_EXCHANGE_RTS - Санкт-Петербургская биржа. */
+  REAL_EXCHANGE_RTS = 2,
+  /** REAL_EXCHANGE_OTC - Внебиржевой инструмент. */
+  REAL_EXCHANGE_OTC = 3,
+  /** REAL_EXCHANGE_DEALER - Инструмент, торгуемый на площадке брокера. */
+  REAL_EXCHANGE_DEALER = 4,
+  UNRECOGNIZED = -1,
+}
+
+export function realExchangeFromJSON(object: any): RealExchange {
+  switch (object) {
+    case 0:
+    case "REAL_EXCHANGE_UNSPECIFIED":
+      return RealExchange.REAL_EXCHANGE_UNSPECIFIED;
+    case 1:
+    case "REAL_EXCHANGE_MOEX":
+      return RealExchange.REAL_EXCHANGE_MOEX;
+    case 2:
+    case "REAL_EXCHANGE_RTS":
+      return RealExchange.REAL_EXCHANGE_RTS;
+    case 3:
+    case "REAL_EXCHANGE_OTC":
+      return RealExchange.REAL_EXCHANGE_OTC;
+    case 4:
+    case "REAL_EXCHANGE_DEALER":
+      return RealExchange.REAL_EXCHANGE_DEALER;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return RealExchange.UNRECOGNIZED;
+  }
+}
+
+export function realExchangeToJSON(object: RealExchange): string {
+  switch (object) {
+    case RealExchange.REAL_EXCHANGE_UNSPECIFIED:
+      return "REAL_EXCHANGE_UNSPECIFIED";
+    case RealExchange.REAL_EXCHANGE_MOEX:
+      return "REAL_EXCHANGE_MOEX";
+    case RealExchange.REAL_EXCHANGE_RTS:
+      return "REAL_EXCHANGE_RTS";
+    case RealExchange.REAL_EXCHANGE_OTC:
+      return "REAL_EXCHANGE_OTC";
+    case RealExchange.REAL_EXCHANGE_DEALER:
+      return "REAL_EXCHANGE_DEALER";
+    case RealExchange.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+/** Денежная сумма в определенной валюте. */
 export interface MoneyValue {
   /** Строковый ISO-код валюты. */
   currency: string;
@@ -391,12 +448,12 @@ export interface Quotation {
 }
 
 export interface PingRequest {
-  /** Время формирования запроса */
+  /** Время формирования запроса. */
   time?: Date | undefined;
 }
 
 export interface PingDelaySettings {
-  /** Задержка пинг сообщений milliseconds 5000-180000, default 120000 */
+  /** Задержка (пинг) сообщений:  5000–180 000 миллисекунд. Значение по умолчанию — 120 000. */
   pingDelayMs?: number | undefined;
 }
 
@@ -408,7 +465,7 @@ export interface Ping {
     | undefined;
   /** Идентификатор соединения. */
   streamId: string;
-  /** Время формирования запроса */
+  /** Время формирования запроса. */
   pingRequestTime?: Date | undefined;
 }
 

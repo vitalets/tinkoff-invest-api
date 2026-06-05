@@ -21,7 +21,7 @@ describe('stream', () => {
     subscribeCandlesResponse: {
       trackingId: 'xxx',
       candlesSubscriptions: [
-        { streamId, subscriptionId, figi, instrumentUid: figi, interval, subscriptionStatus: SubscriptionStatus.SUBSCRIPTION_STATUS_SUCCESS, waitingClose: false, candleSourceType: 0 }
+        { streamId, subscriptionId, figi, instrumentUid: figi, interval, subscriptionStatus: SubscriptionStatus.SUBSCRIPTION_STATUS_SUCCESS, waitingClose: false, candleSourceType: 0, subscriptionAction: 0, ticker: '', classCode: '' }
       ]
     }
   };
@@ -54,14 +54,14 @@ describe('stream', () => {
     assert.deepEqual(getNonEmptyKeys(res1), []);
     assert.deepEqual(getNonEmptyKeys(res2), [ 'subscribeCandlesResponse' ]);
     assert.deepEqual(extractSubscriptions(res2), [
-      { figi, instrumentUid, interval: 1, subscriptionStatus: 1, waitingClose: false, candleSourceType: 0 },
+      { figi, instrumentUid, interval: 1, subscriptionStatus: 1, waitingClose: false, candleSourceType: 0, ticker: 'SBER', classCode: 'TQBR', subscriptionAction: 0 },
     ]);
     assert.deepEqual(extractSubscriptions(res3), [
-      { figi, instrumentUid, interval: 1, subscriptionStatus: 1, waitingClose: false, candleSourceType: 0 },
-      { figi: figi2, instrumentUid: instrumentUid2, interval: 1, subscriptionStatus: 1, waitingClose: false, candleSourceType: 0 },
+      { figi, instrumentUid, interval: 1, subscriptionStatus: 1, waitingClose: false, candleSourceType: 0, ticker: 'SBER', classCode: 'TQBR', subscriptionAction: 0 },
+      { figi: figi2, instrumentUid: instrumentUid2, interval: 1, subscriptionStatus: 1, waitingClose: false, candleSourceType: 0, ticker: 'USD000UTSTOM', classCode: 'CETS', subscriptionAction: 0 },
     ]);
     assert.deepEqual(extractSubscriptions(res4), [
-      { figi: figi2, instrumentUid: instrumentUid2, interval: 1, subscriptionStatus: 1, waitingClose: false, candleSourceType: 0 },
+      { figi: figi2, instrumentUid: instrumentUid2, interval: 1, subscriptionStatus: 1, waitingClose: false, candleSourceType: 0, ticker: 'USD000UTSTOM', classCode: 'CETS', subscriptionAction: 0 },
     ]);
   });
 
@@ -75,18 +75,18 @@ describe('stream', () => {
     ]);
 
     // нужный figi и interval
-    const ownFigiAndInterval = { candle: { streamId, subscriptionId, figi, instrumentUid: figi, interval, volume: 1, waitingClose: false, candleSourceType: 0 } };
+    const ownFigiAndInterval = { candle: { streamId, subscriptionId, figi, instrumentUid: figi, interval, volume: 1, waitingClose: false, candleSourceType: 0, ticker: '', classCode: '', volumeBuy: 0, volumeSell: 0 } };
     await Promise.all([ stream.emulate(ownFigiAndInterval), waitMarketStreamEvent(stream, 'data') ]);
 
     assert.equal(calls.length, 1);
-    assert.deepEqual(calls[ 0 ], { streamId, subscriptionId, figi, instrumentUid: figi, interval, volume: 1, waitingClose: false, candleSourceType: 0 });
+    assert.deepEqual(calls[ 0 ], { streamId, subscriptionId, figi, instrumentUid: figi, interval, volume: 1, waitingClose: false, candleSourceType: 0, ticker: '', classCode: '', volumeBuy: 0, volumeSell: 0 });
 
     // другой figi
-    const anotherFigi = { candle: { streamId, subscriptionId, figi: 'another_figi', instrumentUid: 'another_figi', interval, volume: 2, waitingClose: false, candleSourceType: 0 } };
+    const anotherFigi = { candle: { streamId, subscriptionId, figi: 'another_figi', instrumentUid: 'another_figi', interval, volume: 2, waitingClose: false, candleSourceType: 0, ticker: '', classCode: '', volumeBuy: 0, volumeSell: 0 } };
     await Promise.all([ stream.emulate(anotherFigi), waitMarketStreamEvent(stream, 'data') ]);
 
     // другой interval
-    const anotherInterval = { candle: { streamId, subscriptionId, figi, instrumentUid: figi, interval: 2, volume: 3, waitingClose: false, candleSourceType: 0 } };
+    const anotherInterval = { candle: { streamId, subscriptionId, figi, instrumentUid: figi, interval: 2, volume: 3, waitingClose: false, candleSourceType: 0, ticker: '', classCode: '', volumeBuy: 0, volumeSell: 0 } };
     await Promise.all([ stream.emulate(anotherInterval), waitMarketStreamEvent(stream, 'data') ]);
 
     assert.equal(calls.length, 1);
@@ -110,7 +110,7 @@ describe('stream', () => {
     await testApi.stream.market.cancel();
     const closeError = await closePromise;
     assert.deepEqual(extractSubscriptions(data), [
-      { figi, instrumentUid, interval: 1, subscriptionStatus: 1, waitingClose: false, candleSourceType: 0 },
+      { figi, instrumentUid, interval: 1, subscriptionStatus: 1, waitingClose: false, candleSourceType: 0, ticker: 'SBER', classCode: 'TQBR', subscriptionAction: 1 },
     ]);
     assert.equal(testApi.stream.market.connected, false);
     assert.equal(closeError, undefined);

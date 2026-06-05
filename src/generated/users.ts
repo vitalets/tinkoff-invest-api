@@ -6,11 +6,11 @@ import { Timestamp } from "./google/protobuf/timestamp.js";
 
 export const protobufPackage = "tinkoff.public.invest.api.contract.v1";
 
-/** Тип счёта. */
+/** Тип счeта. */
 export enum AccountType {
-  /** ACCOUNT_TYPE_UNSPECIFIED - Тип аккаунта не определён. */
+  /** ACCOUNT_TYPE_UNSPECIFIED - Тип аккаунта не определeн. */
   ACCOUNT_TYPE_UNSPECIFIED = 0,
-  /** ACCOUNT_TYPE_TINKOFF - Брокерский счёт Т-Инвестиций. */
+  /** ACCOUNT_TYPE_TINKOFF - Брокерский счeт Т-Инвестиций. */
   ACCOUNT_TYPE_TINKOFF = 1,
   /** ACCOUNT_TYPE_TINKOFF_IIS - ИИС. */
   ACCOUNT_TYPE_TINKOFF_IIS = 2,
@@ -18,6 +18,10 @@ export enum AccountType {
   ACCOUNT_TYPE_INVEST_BOX = 3,
   /** ACCOUNT_TYPE_INVEST_FUND - Фонд денежного рынка. */
   ACCOUNT_TYPE_INVEST_FUND = 4,
+  /** ACCOUNT_TYPE_DEBIT - Дебетовый карточный счeт. */
+  ACCOUNT_TYPE_DEBIT = 5,
+  /** ACCOUNT_TYPE_SAVING - Накопительный счeт. */
+  ACCOUNT_TYPE_SAVING = 6,
   UNRECOGNIZED = -1,
 }
 
@@ -38,6 +42,12 @@ export function accountTypeFromJSON(object: any): AccountType {
     case 4:
     case "ACCOUNT_TYPE_INVEST_FUND":
       return AccountType.ACCOUNT_TYPE_INVEST_FUND;
+    case 5:
+    case "ACCOUNT_TYPE_DEBIT":
+      return AccountType.ACCOUNT_TYPE_DEBIT;
+    case 6:
+    case "ACCOUNT_TYPE_SAVING":
+      return AccountType.ACCOUNT_TYPE_SAVING;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -57,21 +67,25 @@ export function accountTypeToJSON(object: AccountType): string {
       return "ACCOUNT_TYPE_INVEST_BOX";
     case AccountType.ACCOUNT_TYPE_INVEST_FUND:
       return "ACCOUNT_TYPE_INVEST_FUND";
+    case AccountType.ACCOUNT_TYPE_DEBIT:
+      return "ACCOUNT_TYPE_DEBIT";
+    case AccountType.ACCOUNT_TYPE_SAVING:
+      return "ACCOUNT_TYPE_SAVING";
     case AccountType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
   }
 }
 
-/** Статус счёта. */
+/** Статус счeта. */
 export enum AccountStatus {
-  /** ACCOUNT_STATUS_UNSPECIFIED - Статус счёта не определён. */
+  /** ACCOUNT_STATUS_UNSPECIFIED - Статус счeта не определeн. */
   ACCOUNT_STATUS_UNSPECIFIED = 0,
   /** ACCOUNT_STATUS_NEW - Новый, в процессе открытия. */
   ACCOUNT_STATUS_NEW = 1,
-  /** ACCOUNT_STATUS_OPEN - Открытый и активный счёт. */
+  /** ACCOUNT_STATUS_OPEN - Открытый и активный счeт. */
   ACCOUNT_STATUS_OPEN = 2,
-  /** ACCOUNT_STATUS_CLOSED - Закрытый счёт. */
+  /** ACCOUNT_STATUS_CLOSED - Закрытый счeт. */
   ACCOUNT_STATUS_CLOSED = 3,
   /** ACCOUNT_STATUS_ALL - Все счета. */
   ACCOUNT_STATUS_ALL = 4,
@@ -120,11 +134,11 @@ export function accountStatusToJSON(object: AccountStatus): string {
   }
 }
 
-/** Уровень доступа к счёту. */
+/** Уровень доступа к счeту. */
 export enum AccessLevel {
-  /** ACCOUNT_ACCESS_LEVEL_UNSPECIFIED - Уровень доступа не определён. */
+  /** ACCOUNT_ACCESS_LEVEL_UNSPECIFIED - Уровень доступа не определeн. */
   ACCOUNT_ACCESS_LEVEL_UNSPECIFIED = 0,
-  /** ACCOUNT_ACCESS_LEVEL_FULL_ACCESS - Полный доступ к счёту. */
+  /** ACCOUNT_ACCESS_LEVEL_FULL_ACCESS - Полный доступ к счeту. */
   ACCOUNT_ACCESS_LEVEL_FULL_ACCESS = 1,
   /** ACCOUNT_ACCESS_LEVEL_READ_ONLY - Доступ с уровнем прав «только чтение». */
   ACCOUNT_ACCESS_LEVEL_READ_ONLY = 2,
@@ -182,45 +196,45 @@ export interface GetAccountsResponse {
   accounts: Account[];
 }
 
-/** Информация о счёте. */
+/** Информация о счeте. */
 export interface Account {
-  /** Идентификатор счёта. */
+  /** Идентификатор счeта. */
   id: string;
-  /** Тип счёта. */
+  /** Тип счeта. */
   type: AccountType;
-  /** Название счёта. */
+  /** Название счeта. */
   name: string;
-  /** Статус счёта. */
+  /** Статус счeта. */
   status: AccountStatus;
-  /** Дата открытия счёта в часовом поясе UTC. */
+  /** Дата открытия счeта в часовом поясе UTC. */
   openedDate?:
     | Date
     | undefined;
-  /** Дата закрытия счёта в часовом поясе UTC. */
+  /** Дата закрытия счeта в часовом поясе UTC. */
   closedDate?:
     | Date
     | undefined;
-  /** Уровень доступа к текущему счёту (определяется токеном). */
+  /** Уровень доступа к текущему счeту (определяется токеном). */
   accessLevel: AccessLevel;
 }
 
-/** Запрос маржинальных показателей по счёту. */
+/** Запрос маржинальных показателей по счeту. */
 export interface GetMarginAttributesRequest {
-  /** Идентификатор счёта пользователя. */
+  /** Идентификатор счeта пользователя. */
   accountId: string;
 }
 
-/** Маржинальные показатели по счёту. */
+/** Маржинальные показатели по счeту. */
 export interface GetMarginAttributesResponse {
-  /** Ликвидная стоимость портфеля. [Подробнее про ликвидный портфель](https://help.tbank.ru/margin-trade/short/liquid-portfolio/). */
+  /** Ликвидная стоимость портфеля. [Подробнее про ликвидный портфель](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q4). */
   liquidPortfolio?:
     | MoneyValue
     | undefined;
-  /** Начальная маржа — начальное обеспечение для совершения новой сделки. [Подробнее про начальную и минимальную маржу](https://help.tbank.ru/margin-trade/short/initial-and-maintenance-margin/). */
+  /** Начальная маржа — начальное обеспечение для совершения новой сделки. [Подробнее про начальную и минимальную маржу](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q6). */
   startingMargin?:
     | MoneyValue
     | undefined;
-  /** Минимальная маржа — это минимальное обеспечение для поддержания позиции, которую вы уже открыли. [Подробнее про начальную и минимальную маржу](https://help.tbank.ru/margin-trade/short/initial-and-maintenance-margin/). */
+  /** Минимальная маржа — это минимальное обеспечение для поддержания позиции, которую вы уже открыли. [Подробнее про начальную и минимальную маржу](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q6). */
   minimalMargin?:
     | MoneyValue
     | undefined;
@@ -232,7 +246,7 @@ export interface GetMarginAttributesResponse {
   amountOfMissingFunds?:
     | MoneyValue
     | undefined;
-  /** Скорректированная маржа. Начальная маржа, в которой плановые позиции рассчитываются с учётом активных заявок на покупку позиций лонг или продажу позиций шорт. */
+  /** Скорректированная маржа. Начальная маржа, в которой плановые позиции рассчитываются с учeтом активных заявок на покупку позиций лонг или продажу позиций шорт. */
   correctedMargin?: MoneyValue | undefined;
 }
 
@@ -254,6 +268,8 @@ export interface UnaryLimit {
   limitPerMinute: number;
   /** Названия методов. */
   methods: string[];
+  /** Количество unary-запросов в секунду. */
+  limitPerSecond?: number | undefined;
 }
 
 /** Лимит stream-соединений. */
@@ -276,10 +292,56 @@ export interface GetInfoResponse {
   premStatus: boolean;
   /** Признак квалифицированного инвестора. */
   qualStatus: boolean;
-  /** Набор требующих тестирования инструментов и возможностей, с которыми может работать пользователь. [Подробнее](https://russianinvestments.github.io/investAPI/faq_users/). */
+  /** Набор требующих тестирования инструментов и возможностей, с которыми может работать пользователь. [Подробнее](/invest/services/accounts/faq_users). */
   qualifiedForWorkWith: string[];
   /** Наименование тарифа пользователя. */
   tariff: string;
+  /** Идентификатор пользователя. */
+  userId: string;
+  /** Категория риска. */
+  riskLevelCode: string;
+}
+
+/** Запрос списка банковских счетов пользователя. */
+export interface GetBankAccountsRequest {
+}
+
+/** Список банковских счетов пользователя. */
+export interface GetBankAccountsResponse {
+  /** Массив банковских счетов. */
+  bankAccounts: BankAccount[];
+}
+
+/** Банковский счeт. */
+export interface BankAccount {
+  /** Идентификатор счeта. */
+  id: string;
+  /** Название счeта. */
+  name: string;
+  /** Список валютных позиций на счeте. */
+  money: MoneyValue[];
+  /** Дата открытия счeта в часовом поясе UTC. */
+  openedDate?:
+    | Date
+    | undefined;
+  /** Тип счeта. */
+  type: AccountType;
+}
+
+export interface CurrencyTransferRequest {
+  /** Номер счета списания. */
+  fromAccountId: string;
+  /** Номер счета зачисления. */
+  toAccountId: string;
+  /** Сумма перевода с указанием валюты. */
+  amount?:
+    | MoneyValue
+    | undefined;
+  /** Идентификатор запроса выставления поручения для целей идемпотентности в формате UUID. */
+  transactionId: string;
+}
+
+export interface CurrencyTransferResponse {
 }
 
 function createBaseGetAccountsRequest(): GetAccountsRequest {
@@ -797,7 +859,7 @@ export const GetUserTariffResponse = {
 };
 
 function createBaseUnaryLimit(): UnaryLimit {
-  return { limitPerMinute: 0, methods: [] };
+  return { limitPerMinute: 0, methods: [], limitPerSecond: undefined };
 }
 
 export const UnaryLimit = {
@@ -807,6 +869,9 @@ export const UnaryLimit = {
     }
     for (const v of message.methods) {
       writer.uint32(18).string(v!);
+    }
+    if (message.limitPerSecond !== undefined) {
+      writer.uint32(24).int32(message.limitPerSecond);
     }
     return writer;
   },
@@ -832,6 +897,13 @@ export const UnaryLimit = {
 
           message.methods.push(reader.string());
           continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.limitPerSecond = reader.int32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -845,6 +917,7 @@ export const UnaryLimit = {
     return {
       limitPerMinute: isSet(object.limitPerMinute) ? globalThis.Number(object.limitPerMinute) : 0,
       methods: globalThis.Array.isArray(object?.methods) ? object.methods.map((e: any) => globalThis.String(e)) : [],
+      limitPerSecond: isSet(object.limitPerSecond) ? globalThis.Number(object.limitPerSecond) : undefined,
     };
   },
 
@@ -855,6 +928,9 @@ export const UnaryLimit = {
     }
     if (message.methods?.length) {
       obj.methods = message.methods;
+    }
+    if (message.limitPerSecond !== undefined) {
+      obj.limitPerSecond = Math.round(message.limitPerSecond);
     }
     return obj;
   },
@@ -974,7 +1050,7 @@ export const GetInfoRequest = {
 };
 
 function createBaseGetInfoResponse(): GetInfoResponse {
-  return { premStatus: false, qualStatus: false, qualifiedForWorkWith: [], tariff: "" };
+  return { premStatus: false, qualStatus: false, qualifiedForWorkWith: [], tariff: "", userId: "", riskLevelCode: "" };
 }
 
 export const GetInfoResponse = {
@@ -990,6 +1066,12 @@ export const GetInfoResponse = {
     }
     if (message.tariff !== "") {
       writer.uint32(34).string(message.tariff);
+    }
+    if (message.userId !== "") {
+      writer.uint32(74).string(message.userId);
+    }
+    if (message.riskLevelCode !== "") {
+      writer.uint32(98).string(message.riskLevelCode);
     }
     return writer;
   },
@@ -1029,6 +1111,20 @@ export const GetInfoResponse = {
 
           message.tariff = reader.string();
           continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        case 12:
+          if (tag !== 98) {
+            break;
+          }
+
+          message.riskLevelCode = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1046,6 +1142,8 @@ export const GetInfoResponse = {
         ? object.qualifiedForWorkWith.map((e: any) => globalThis.String(e))
         : [],
       tariff: isSet(object.tariff) ? globalThis.String(object.tariff) : "",
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      riskLevelCode: isSet(object.riskLevelCode) ? globalThis.String(object.riskLevelCode) : "",
     };
   },
 
@@ -1063,20 +1161,349 @@ export const GetInfoResponse = {
     if (message.tariff !== "") {
       obj.tariff = message.tariff;
     }
+    if (message.userId !== "") {
+      obj.userId = message.userId;
+    }
+    if (message.riskLevelCode !== "") {
+      obj.riskLevelCode = message.riskLevelCode;
+    }
+    return obj;
+  },
+};
+
+function createBaseGetBankAccountsRequest(): GetBankAccountsRequest {
+  return {};
+}
+
+export const GetBankAccountsRequest = {
+  encode(_: GetBankAccountsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetBankAccountsRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetBankAccountsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): GetBankAccountsRequest {
+    return {};
+  },
+
+  toJSON(_: GetBankAccountsRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+};
+
+function createBaseGetBankAccountsResponse(): GetBankAccountsResponse {
+  return { bankAccounts: [] };
+}
+
+export const GetBankAccountsResponse = {
+  encode(message: GetBankAccountsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.bankAccounts) {
+      BankAccount.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetBankAccountsResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetBankAccountsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.bankAccounts.push(BankAccount.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetBankAccountsResponse {
+    return {
+      bankAccounts: globalThis.Array.isArray(object?.bankAccounts)
+        ? object.bankAccounts.map((e: any) => BankAccount.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetBankAccountsResponse): unknown {
+    const obj: any = {};
+    if (message.bankAccounts?.length) {
+      obj.bankAccounts = message.bankAccounts.map((e) => BankAccount.toJSON(e));
+    }
+    return obj;
+  },
+};
+
+function createBaseBankAccount(): BankAccount {
+  return { id: "", name: "", money: [], openedDate: undefined, type: 0 };
+}
+
+export const BankAccount = {
+  encode(message: BankAccount, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.name !== "") {
+      writer.uint32(18).string(message.name);
+    }
+    for (const v of message.money) {
+      MoneyValue.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.openedDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.openedDate), writer.uint32(34).fork()).ldelim();
+    }
+    if (message.type !== 0) {
+      writer.uint32(40).int32(message.type);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): BankAccount {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseBankAccount();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.money.push(MoneyValue.decode(reader, reader.uint32()));
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.openedDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.type = reader.int32() as any;
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): BankAccount {
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      money: globalThis.Array.isArray(object?.money) ? object.money.map((e: any) => MoneyValue.fromJSON(e)) : [],
+      openedDate: isSet(object.openedDate) ? fromJsonTimestamp(object.openedDate) : undefined,
+      type: isSet(object.type) ? accountTypeFromJSON(object.type) : 0,
+    };
+  },
+
+  toJSON(message: BankAccount): unknown {
+    const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.money?.length) {
+      obj.money = message.money.map((e) => MoneyValue.toJSON(e));
+    }
+    if (message.openedDate !== undefined) {
+      obj.openedDate = message.openedDate.toISOString();
+    }
+    if (message.type !== 0) {
+      obj.type = accountTypeToJSON(message.type);
+    }
+    return obj;
+  },
+};
+
+function createBaseCurrencyTransferRequest(): CurrencyTransferRequest {
+  return { fromAccountId: "", toAccountId: "", amount: undefined, transactionId: "" };
+}
+
+export const CurrencyTransferRequest = {
+  encode(message: CurrencyTransferRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.fromAccountId !== "") {
+      writer.uint32(10).string(message.fromAccountId);
+    }
+    if (message.toAccountId !== "") {
+      writer.uint32(18).string(message.toAccountId);
+    }
+    if (message.amount !== undefined) {
+      MoneyValue.encode(message.amount, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.transactionId !== "") {
+      writer.uint32(34).string(message.transactionId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CurrencyTransferRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCurrencyTransferRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.fromAccountId = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.toAccountId = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.amount = MoneyValue.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.transactionId = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CurrencyTransferRequest {
+    return {
+      fromAccountId: isSet(object.fromAccountId) ? globalThis.String(object.fromAccountId) : "",
+      toAccountId: isSet(object.toAccountId) ? globalThis.String(object.toAccountId) : "",
+      amount: isSet(object.amount) ? MoneyValue.fromJSON(object.amount) : undefined,
+      transactionId: isSet(object.transactionId) ? globalThis.String(object.transactionId) : "",
+    };
+  },
+
+  toJSON(message: CurrencyTransferRequest): unknown {
+    const obj: any = {};
+    if (message.fromAccountId !== "") {
+      obj.fromAccountId = message.fromAccountId;
+    }
+    if (message.toAccountId !== "") {
+      obj.toAccountId = message.toAccountId;
+    }
+    if (message.amount !== undefined) {
+      obj.amount = MoneyValue.toJSON(message.amount);
+    }
+    if (message.transactionId !== "") {
+      obj.transactionId = message.transactionId;
+    }
+    return obj;
+  },
+};
+
+function createBaseCurrencyTransferResponse(): CurrencyTransferResponse {
+  return {};
+}
+
+export const CurrencyTransferResponse = {
+  encode(_: CurrencyTransferResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CurrencyTransferResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCurrencyTransferResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): CurrencyTransferResponse {
+    return {};
+  },
+
+  toJSON(_: CurrencyTransferResponse): unknown {
+    const obj: any = {};
     return obj;
   },
 };
 
 /**
- * С помощью сервиса можно получить: </br> 1.
- * список счетов пользователя; </br> 2. маржинальные показатели по счёту.
+ * С помощью сервиса можно получить: <br/> 1.
+ * список счетов пользователя; <br/> 2. маржинальные показатели по счeту.
  */
 export type UsersServiceDefinition = typeof UsersServiceDefinition;
 export const UsersServiceDefinition = {
   name: "UsersService",
   fullName: "tinkoff.public.invest.api.contract.v1.UsersService",
   methods: {
-    /** Получить счета пользователя. */
+    /**
+     * GetAccounts — счета пользователя
+     * Получить список счетов.
+     */
     getAccounts: {
       name: "GetAccounts",
       requestType: GetAccountsRequest,
@@ -1085,7 +1512,10 @@ export const UsersServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Рассчитать маржинальные показатели по счёту. */
+    /**
+     * GetMarginAttributes — маржинальные показатели по счeту
+     * Метод позволяет получить маржинальные показатели и ликвидность по заданному счeту.
+     */
     getMarginAttributes: {
       name: "GetMarginAttributes",
       requestType: GetMarginAttributesRequest,
@@ -1094,7 +1524,10 @@ export const UsersServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Запросить тариф пользователя. */
+    /**
+     * GetUserTariff — тариф пользователя
+     * Получить информацию о текущих лимитах на подклчение, согласно текущему тарифу пользователя.
+     */
     getUserTariff: {
       name: "GetUserTariff",
       requestType: GetUserTariffRequest,
@@ -1103,7 +1536,10 @@ export const UsersServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить информацию о пользователе. */
+    /**
+     * GetInfo — информация о пользователе
+     * Получить информацию о пользователе: тариф, признак квалификации, пройденные тесты и др.
+     */
     getInfo: {
       name: "GetInfo",
       requestType: GetInfoRequest,
@@ -1112,35 +1548,115 @@ export const UsersServiceDefinition = {
       responseStream: false,
       options: {},
     },
+    /**
+     * GetBankAccounts — банковские счета пользователя
+     * Получить список счетов пользователя, в том числе и банковских.
+     */
+    getBankAccounts: {
+      name: "GetBankAccounts",
+      requestType: GetBankAccountsRequest,
+      requestStream: false,
+      responseType: GetBankAccountsResponse,
+      responseStream: false,
+      options: {},
+    },
+    /**
+     * CurrencyTransfer — перевод денежных средств между счетами
+     * Перевести денежные средства между брокерскими счетами
+     */
+    currencyTransfer: {
+      name: "CurrencyTransfer",
+      requestType: CurrencyTransferRequest,
+      requestStream: false,
+      responseType: CurrencyTransferResponse,
+      responseStream: false,
+      options: {},
+    },
   },
 } as const;
 
 export interface UsersServiceImplementation<CallContextExt = {}> {
-  /** Получить счета пользователя. */
+  /**
+   * GetAccounts — счета пользователя
+   * Получить список счетов.
+   */
   getAccounts(request: GetAccountsRequest, context: CallContext & CallContextExt): Promise<GetAccountsResponse>;
-  /** Рассчитать маржинальные показатели по счёту. */
+  /**
+   * GetMarginAttributes — маржинальные показатели по счeту
+   * Метод позволяет получить маржинальные показатели и ликвидность по заданному счeту.
+   */
   getMarginAttributes(
     request: GetMarginAttributesRequest,
     context: CallContext & CallContextExt,
   ): Promise<GetMarginAttributesResponse>;
-  /** Запросить тариф пользователя. */
+  /**
+   * GetUserTariff — тариф пользователя
+   * Получить информацию о текущих лимитах на подклчение, согласно текущему тарифу пользователя.
+   */
   getUserTariff(request: GetUserTariffRequest, context: CallContext & CallContextExt): Promise<GetUserTariffResponse>;
-  /** Получить информацию о пользователе. */
+  /**
+   * GetInfo — информация о пользователе
+   * Получить информацию о пользователе: тариф, признак квалификации, пройденные тесты и др.
+   */
   getInfo(request: GetInfoRequest, context: CallContext & CallContextExt): Promise<GetInfoResponse>;
+  /**
+   * GetBankAccounts — банковские счета пользователя
+   * Получить список счетов пользователя, в том числе и банковских.
+   */
+  getBankAccounts(
+    request: GetBankAccountsRequest,
+    context: CallContext & CallContextExt,
+  ): Promise<GetBankAccountsResponse>;
+  /**
+   * CurrencyTransfer — перевод денежных средств между счетами
+   * Перевести денежные средства между брокерскими счетами
+   */
+  currencyTransfer(
+    request: CurrencyTransferRequest,
+    context: CallContext & CallContextExt,
+  ): Promise<CurrencyTransferResponse>;
 }
 
 export interface UsersServiceClient<CallOptionsExt = {}> {
-  /** Получить счета пользователя. */
+  /**
+   * GetAccounts — счета пользователя
+   * Получить список счетов.
+   */
   getAccounts(request: GetAccountsRequest, options?: CallOptions & CallOptionsExt): Promise<GetAccountsResponse>;
-  /** Рассчитать маржинальные показатели по счёту. */
+  /**
+   * GetMarginAttributes — маржинальные показатели по счeту
+   * Метод позволяет получить маржинальные показатели и ликвидность по заданному счeту.
+   */
   getMarginAttributes(
     request: GetMarginAttributesRequest,
     options?: CallOptions & CallOptionsExt,
   ): Promise<GetMarginAttributesResponse>;
-  /** Запросить тариф пользователя. */
+  /**
+   * GetUserTariff — тариф пользователя
+   * Получить информацию о текущих лимитах на подклчение, согласно текущему тарифу пользователя.
+   */
   getUserTariff(request: GetUserTariffRequest, options?: CallOptions & CallOptionsExt): Promise<GetUserTariffResponse>;
-  /** Получить информацию о пользователе. */
+  /**
+   * GetInfo — информация о пользователе
+   * Получить информацию о пользователе: тариф, признак квалификации, пройденные тесты и др.
+   */
   getInfo(request: GetInfoRequest, options?: CallOptions & CallOptionsExt): Promise<GetInfoResponse>;
+  /**
+   * GetBankAccounts — банковские счета пользователя
+   * Получить список счетов пользователя, в том числе и банковских.
+   */
+  getBankAccounts(
+    request: GetBankAccountsRequest,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<GetBankAccountsResponse>;
+  /**
+   * CurrencyTransfer — перевод денежных средств между счетами
+   * Перевести денежные средства между брокерскими счетами
+   */
+  currencyTransfer(
+    request: CurrencyTransferRequest,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<CurrencyTransferResponse>;
 }
 
 function toTimestamp(date: Date): Timestamp {

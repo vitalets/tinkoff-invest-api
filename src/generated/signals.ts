@@ -145,7 +145,7 @@ export function signalStateToJSON(object: SignalState): string {
 
 /** Запрос стратегий. */
 export interface GetStrategiesRequest {
-  /** Идентификатор стратегии */
+  /** Идентификатор стратегии. */
   strategyId?: string | undefined;
 }
 
@@ -206,15 +206,15 @@ export interface GetSignalsRequest {
   strategyType?:
     | StrategyType
     | undefined;
-  /** Идентификатор бумаги */
+  /** Идентификатор бумаги. */
   instrumentUid?:
     | string
     | undefined;
-  /** Дата начала запрашиваемого интервала в часовом поясе UTC. */
+  /** Дата начала запрашиваемого интервала по UTC. */
   from?:
     | Date
     | undefined;
-  /** Дата конца запрашиваемого интервала  в часовом поясе UTC. */
+  /** Дата конца запрашиваемого интервала по UTC. */
   to?:
     | Date
     | undefined;
@@ -248,13 +248,13 @@ export interface Signal {
   strategyName: string;
   /** Идентификатор бумаги. */
   instrumentUid: string;
-  /** Дата и время создания сигнала  в часовом поясе UTC. */
+  /** Дата и время создания сигнала по UTC. */
   createDt?:
     | Date
     | undefined;
-  /** Направление сигнала */
+  /** Направление сигнала. */
   direction: SignalDirection;
-  /** Цена бумаги на момент формирования сигнала */
+  /** Цена бумаги на момент формирования сигнала. */
   initialPrice?:
     | Quotation
     | undefined;
@@ -268,7 +268,7 @@ export interface Signal {
   targetPrice?:
     | Quotation
     | undefined;
-  /** Дата и время дедлайна сигнала в часовом поясе UTC. */
+  /** Дата и время дедлайна сигнала по UTC. */
   endDt?:
     | Date
     | undefined;
@@ -284,7 +284,7 @@ export interface Signal {
   closePrice?:
     | Quotation
     | undefined;
-  /** Дата и время закрытия сигнала в часовом поясе UTC. */
+  /** Дата и время закрытия сигнала по UTC. */
   closeDt?: Date | undefined;
 }
 
@@ -1107,13 +1107,13 @@ export const Signal = {
   },
 };
 
-/** Сервис для получения технических сигналов и мнений аналитиков по инструментам */
+/** Сервис для получения технических сигналов и мнений аналитиков по инструментам. */
 export type SignalServiceDefinition = typeof SignalServiceDefinition;
 export const SignalServiceDefinition = {
   name: "SignalService",
   fullName: "tinkoff.public.invest.api.contract.v1.SignalService",
   methods: {
-    /** Запросить стратегии. */
+    /** GetStrategies — стратегии */
     getStrategies: {
       name: "GetStrategies",
       requestType: GetStrategiesRequest,
@@ -1122,7 +1122,7 @@ export const SignalServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Запросить сигналы. */
+    /** GetSignals — сигналы */
     getSignals: {
       name: "GetSignals",
       requestType: GetSignalsRequest,
@@ -1135,16 +1135,16 @@ export const SignalServiceDefinition = {
 } as const;
 
 export interface SignalServiceImplementation<CallContextExt = {}> {
-  /** Запросить стратегии. */
+  /** GetStrategies — стратегии */
   getStrategies(request: GetStrategiesRequest, context: CallContext & CallContextExt): Promise<GetStrategiesResponse>;
-  /** Запросить сигналы. */
+  /** GetSignals — сигналы */
   getSignals(request: GetSignalsRequest, context: CallContext & CallContextExt): Promise<GetSignalsResponse>;
 }
 
 export interface SignalServiceClient<CallOptionsExt = {}> {
-  /** Запросить стратегии. */
+  /** GetStrategies — стратегии */
   getStrategies(request: GetStrategiesRequest, options?: CallOptions & CallOptionsExt): Promise<GetStrategiesResponse>;
-  /** Запросить сигналы. */
+  /** GetSignals — сигналы */
   getSignals(request: GetSignalsRequest, options?: CallOptions & CallOptionsExt): Promise<GetSignalsResponse>;
 }
 

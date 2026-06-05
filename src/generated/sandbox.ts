@@ -19,51 +19,63 @@ import {
   CancelOrderResponse,
   GetMaxLotsRequest,
   GetMaxLotsResponse,
+  GetOrderPriceRequest,
+  GetOrderPriceResponse,
   GetOrdersRequest,
   GetOrdersResponse,
   GetOrderStateRequest,
   OrderState,
+  PostOrderAsyncRequest,
+  PostOrderAsyncResponse,
   PostOrderRequest,
   PostOrderResponse,
   ReplaceOrderRequest,
 } from "./orders.js";
+import {
+  CancelStopOrderRequest,
+  CancelStopOrderResponse,
+  GetStopOrdersRequest,
+  GetStopOrdersResponse,
+  PostStopOrderRequest,
+  PostStopOrderResponse,
+} from "./stoporders.js";
 import { GetAccountsRequest, GetAccountsResponse } from "./users.js";
 
 export const protobufPackage = "tinkoff.public.invest.api.contract.v1";
 
-/** Запрос открытия счёта в песочнице. */
+/** Запрос открытия счета в песочнице. */
 export interface OpenSandboxAccountRequest {
-  /** Название счёта */
+  /** Название счета */
   name?: string | undefined;
 }
 
-/** Номер открытого счёта в песочнице. */
+/** Номер открытого счета в песочнице. */
 export interface OpenSandboxAccountResponse {
-  /** Номер счёта */
+  /** Номер счета */
   accountId: string;
 }
 
-/** Запрос закрытия счёта в песочнице. */
+/** Запрос закрытия счета в песочнице. */
 export interface CloseSandboxAccountRequest {
-  /** Номер счёта */
+  /** Номер счета */
   accountId: string;
 }
 
-/** Результат закрытия счёта в песочнице. */
+/** Результат закрытия счета в песочнице. */
 export interface CloseSandboxAccountResponse {
 }
 
-/** Запрос пополнения счёта в песочнице. */
+/** Запрос пополнения счета в песочнице. */
 export interface SandboxPayInRequest {
-  /** Номер счёта */
+  /** Номер счета */
   accountId: string;
-  /** Сумма пополнения счёта в рублях */
+  /** Сумма пополнения счета в рублях */
   amount?: MoneyValue | undefined;
 }
 
-/** Результат пополнения счёта, текущий баланс. */
+/** Результат пополнения счета, текущий баланс. */
 export interface SandboxPayInResponse {
-  /** Текущий баланс счёта */
+  /** Текущий баланс счета */
   balance?: MoneyValue | undefined;
 }
 
@@ -364,7 +376,7 @@ export const SandboxServiceDefinition = {
   name: "SandboxService",
   fullName: "tinkoff.public.invest.api.contract.v1.SandboxService",
   methods: {
-    /** Зарегистрировать счёт. */
+    /** OpenSandboxAccount — зарегистрировать счет */
     openSandboxAccount: {
       name: "OpenSandboxAccount",
       requestType: OpenSandboxAccountRequest,
@@ -373,7 +385,7 @@ export const SandboxServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить счета. */
+    /** GetSandboxAccounts — счета пользователя */
     getSandboxAccounts: {
       name: "GetSandboxAccounts",
       requestType: GetAccountsRequest,
@@ -382,7 +394,7 @@ export const SandboxServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Закрыть счёт. */
+    /** CloseSandboxAccount — закрыть счет */
     closeSandboxAccount: {
       name: "CloseSandboxAccount",
       requestType: CloseSandboxAccountRequest,
@@ -391,7 +403,7 @@ export const SandboxServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Выставить торговое поручение. */
+    /** PostSandboxOrder — выставить заявку */
     postSandboxOrder: {
       name: "PostSandboxOrder",
       requestType: PostOrderRequest,
@@ -400,7 +412,19 @@ export const SandboxServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Изменить выставленную заявку. */
+    /**
+     * PostSandboxOrderAsync — выставить заявку асинхронным методом
+     * Особенности работы приведены в [статье](/invest/services/orders/async).
+     */
+    postSandboxOrderAsync: {
+      name: "PostSandboxOrderAsync",
+      requestType: PostOrderAsyncRequest,
+      requestStream: false,
+      responseType: PostOrderAsyncResponse,
+      responseStream: false,
+      options: {},
+    },
+    /** ReplaceSandboxOrder — изменить выставленную заявку */
     replaceSandboxOrder: {
       name: "ReplaceSandboxOrder",
       requestType: ReplaceOrderRequest,
@@ -409,7 +433,7 @@ export const SandboxServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить список активных заявок по счёту. */
+    /** GetSandboxOrders — получить список активных заявок по счету */
     getSandboxOrders: {
       name: "GetSandboxOrders",
       requestType: GetOrdersRequest,
@@ -418,7 +442,7 @@ export const SandboxServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Отменить торговое поручение. */
+    /** CancelSandboxOrder — отменить заявку */
     cancelSandboxOrder: {
       name: "CancelSandboxOrder",
       requestType: CancelOrderRequest,
@@ -427,7 +451,7 @@ export const SandboxServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Поулчить статус заявки в песочнице. Заявки хранятся в таблице 7 дней. */
+    /** GetSandboxOrderState — получить статус торгового поручения */
     getSandboxOrderState: {
       name: "GetSandboxOrderState",
       requestType: GetOrderStateRequest,
@@ -436,7 +460,16 @@ export const SandboxServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить позиции по виртуальному счёту. */
+    /** GetSandboxOrderPrice — получить предварительную стоимость для лимитной заявки */
+    getSandboxOrderPrice: {
+      name: "GetSandboxOrderPrice",
+      requestType: GetOrderPriceRequest,
+      requestStream: false,
+      responseType: GetOrderPriceResponse,
+      responseStream: false,
+      options: {},
+    },
+    /** GetSandboxPositions — список позиций по счету */
     getSandboxPositions: {
       name: "GetSandboxPositions",
       requestType: PositionsRequest,
@@ -445,7 +478,10 @@ export const SandboxServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить операции по номеру счёта. */
+    /**
+     * GetSandboxOperations — список операций по счету
+     * При работе с методом учитывайте [особенности взаимодействия](/invest/services/operations/operations_problems).
+     */
     getSandboxOperations: {
       name: "GetSandboxOperations",
       requestType: OperationsRequest,
@@ -454,7 +490,10 @@ export const SandboxServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить операции по номеру счёта с пагинацией. */
+    /**
+     * GetSandboxOperationsByCursor — список операций по счету с пагинацией
+     * При работе с методом учитывайте [особенности взаимодействия](/invest/services/operations/operations_problems).
+     */
     getSandboxOperationsByCursor: {
       name: "GetSandboxOperationsByCursor",
       requestType: GetOperationsByCursorRequest,
@@ -463,7 +502,7 @@ export const SandboxServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить портфель. */
+    /** GetSandboxPortfolio — портфель по счету */
     getSandboxPortfolio: {
       name: "GetSandboxPortfolio",
       requestType: PortfolioRequest,
@@ -472,7 +511,7 @@ export const SandboxServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Пополнить счёт. */
+    /** SandboxPayIn — пополнить счет. */
     sandboxPayIn: {
       name: "SandboxPayIn",
       requestType: SandboxPayInRequest,
@@ -481,7 +520,7 @@ export const SandboxServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить доступный остаток для вывода средств. */
+    /** GetSandboxWithdrawLimits — доступный остаток для вывода средств */
     getSandboxWithdrawLimits: {
       name: "GetSandboxWithdrawLimits",
       requestType: WithdrawLimitsRequest,
@@ -490,7 +529,7 @@ export const SandboxServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Расчёт количества доступных для покупки/продажи лотов в песочнице. */
+    /** GetSandboxMaxLots — расчет количества доступных для покупки/продажи лотов */
     getSandboxMaxLots: {
       name: "GetSandboxMaxLots",
       requestType: GetMaxLotsRequest,
@@ -499,97 +538,192 @@ export const SandboxServiceDefinition = {
       responseStream: false,
       options: {},
     },
+    /** PostSandboxStopOrder — выставить стоп-заявку */
+    postSandboxStopOrder: {
+      name: "PostSandboxStopOrder",
+      requestType: PostStopOrderRequest,
+      requestStream: false,
+      responseType: PostStopOrderResponse,
+      responseStream: false,
+      options: {},
+    },
+    /** GetSandboxStopOrders — получить список активных стоп-заявок по счету */
+    getSandboxStopOrders: {
+      name: "GetSandboxStopOrders",
+      requestType: GetStopOrdersRequest,
+      requestStream: false,
+      responseType: GetStopOrdersResponse,
+      responseStream: false,
+      options: {},
+    },
+    /** CancelSandboxStopOrder — отменить стоп-заявку */
+    cancelSandboxStopOrder: {
+      name: "CancelSandboxStopOrder",
+      requestType: CancelStopOrderRequest,
+      requestStream: false,
+      responseType: CancelStopOrderResponse,
+      responseStream: false,
+      options: {},
+    },
   },
 } as const;
 
 export interface SandboxServiceImplementation<CallContextExt = {}> {
-  /** Зарегистрировать счёт. */
+  /** OpenSandboxAccount — зарегистрировать счет */
   openSandboxAccount(
     request: OpenSandboxAccountRequest,
     context: CallContext & CallContextExt,
   ): Promise<OpenSandboxAccountResponse>;
-  /** Получить счета. */
+  /** GetSandboxAccounts — счета пользователя */
   getSandboxAccounts(request: GetAccountsRequest, context: CallContext & CallContextExt): Promise<GetAccountsResponse>;
-  /** Закрыть счёт. */
+  /** CloseSandboxAccount — закрыть счет */
   closeSandboxAccount(
     request: CloseSandboxAccountRequest,
     context: CallContext & CallContextExt,
   ): Promise<CloseSandboxAccountResponse>;
-  /** Выставить торговое поручение. */
+  /** PostSandboxOrder — выставить заявку */
   postSandboxOrder(request: PostOrderRequest, context: CallContext & CallContextExt): Promise<PostOrderResponse>;
-  /** Изменить выставленную заявку. */
+  /**
+   * PostSandboxOrderAsync — выставить заявку асинхронным методом
+   * Особенности работы приведены в [статье](/invest/services/orders/async).
+   */
+  postSandboxOrderAsync(
+    request: PostOrderAsyncRequest,
+    context: CallContext & CallContextExt,
+  ): Promise<PostOrderAsyncResponse>;
+  /** ReplaceSandboxOrder — изменить выставленную заявку */
   replaceSandboxOrder(request: ReplaceOrderRequest, context: CallContext & CallContextExt): Promise<PostOrderResponse>;
-  /** Получить список активных заявок по счёту. */
+  /** GetSandboxOrders — получить список активных заявок по счету */
   getSandboxOrders(request: GetOrdersRequest, context: CallContext & CallContextExt): Promise<GetOrdersResponse>;
-  /** Отменить торговое поручение. */
+  /** CancelSandboxOrder — отменить заявку */
   cancelSandboxOrder(request: CancelOrderRequest, context: CallContext & CallContextExt): Promise<CancelOrderResponse>;
-  /** Поулчить статус заявки в песочнице. Заявки хранятся в таблице 7 дней. */
+  /** GetSandboxOrderState — получить статус торгового поручения */
   getSandboxOrderState(request: GetOrderStateRequest, context: CallContext & CallContextExt): Promise<OrderState>;
-  /** Получить позиции по виртуальному счёту. */
+  /** GetSandboxOrderPrice — получить предварительную стоимость для лимитной заявки */
+  getSandboxOrderPrice(
+    request: GetOrderPriceRequest,
+    context: CallContext & CallContextExt,
+  ): Promise<GetOrderPriceResponse>;
+  /** GetSandboxPositions — список позиций по счету */
   getSandboxPositions(request: PositionsRequest, context: CallContext & CallContextExt): Promise<PositionsResponse>;
-  /** Получить операции по номеру счёта. */
+  /**
+   * GetSandboxOperations — список операций по счету
+   * При работе с методом учитывайте [особенности взаимодействия](/invest/services/operations/operations_problems).
+   */
   getSandboxOperations(request: OperationsRequest, context: CallContext & CallContextExt): Promise<OperationsResponse>;
-  /** Получить операции по номеру счёта с пагинацией. */
+  /**
+   * GetSandboxOperationsByCursor — список операций по счету с пагинацией
+   * При работе с методом учитывайте [особенности взаимодействия](/invest/services/operations/operations_problems).
+   */
   getSandboxOperationsByCursor(
     request: GetOperationsByCursorRequest,
     context: CallContext & CallContextExt,
   ): Promise<GetOperationsByCursorResponse>;
-  /** Получить портфель. */
+  /** GetSandboxPortfolio — портфель по счету */
   getSandboxPortfolio(request: PortfolioRequest, context: CallContext & CallContextExt): Promise<PortfolioResponse>;
-  /** Пополнить счёт. */
+  /** SandboxPayIn — пополнить счет. */
   sandboxPayIn(request: SandboxPayInRequest, context: CallContext & CallContextExt): Promise<SandboxPayInResponse>;
-  /** Получить доступный остаток для вывода средств. */
+  /** GetSandboxWithdrawLimits — доступный остаток для вывода средств */
   getSandboxWithdrawLimits(
     request: WithdrawLimitsRequest,
     context: CallContext & CallContextExt,
   ): Promise<WithdrawLimitsResponse>;
-  /** Расчёт количества доступных для покупки/продажи лотов в песочнице. */
+  /** GetSandboxMaxLots — расчет количества доступных для покупки/продажи лотов */
   getSandboxMaxLots(request: GetMaxLotsRequest, context: CallContext & CallContextExt): Promise<GetMaxLotsResponse>;
+  /** PostSandboxStopOrder — выставить стоп-заявку */
+  postSandboxStopOrder(
+    request: PostStopOrderRequest,
+    context: CallContext & CallContextExt,
+  ): Promise<PostStopOrderResponse>;
+  /** GetSandboxStopOrders — получить список активных стоп-заявок по счету */
+  getSandboxStopOrders(
+    request: GetStopOrdersRequest,
+    context: CallContext & CallContextExt,
+  ): Promise<GetStopOrdersResponse>;
+  /** CancelSandboxStopOrder — отменить стоп-заявку */
+  cancelSandboxStopOrder(
+    request: CancelStopOrderRequest,
+    context: CallContext & CallContextExt,
+  ): Promise<CancelStopOrderResponse>;
 }
 
 export interface SandboxServiceClient<CallOptionsExt = {}> {
-  /** Зарегистрировать счёт. */
+  /** OpenSandboxAccount — зарегистрировать счет */
   openSandboxAccount(
     request: OpenSandboxAccountRequest,
     options?: CallOptions & CallOptionsExt,
   ): Promise<OpenSandboxAccountResponse>;
-  /** Получить счета. */
+  /** GetSandboxAccounts — счета пользователя */
   getSandboxAccounts(request: GetAccountsRequest, options?: CallOptions & CallOptionsExt): Promise<GetAccountsResponse>;
-  /** Закрыть счёт. */
+  /** CloseSandboxAccount — закрыть счет */
   closeSandboxAccount(
     request: CloseSandboxAccountRequest,
     options?: CallOptions & CallOptionsExt,
   ): Promise<CloseSandboxAccountResponse>;
-  /** Выставить торговое поручение. */
+  /** PostSandboxOrder — выставить заявку */
   postSandboxOrder(request: PostOrderRequest, options?: CallOptions & CallOptionsExt): Promise<PostOrderResponse>;
-  /** Изменить выставленную заявку. */
+  /**
+   * PostSandboxOrderAsync — выставить заявку асинхронным методом
+   * Особенности работы приведены в [статье](/invest/services/orders/async).
+   */
+  postSandboxOrderAsync(
+    request: PostOrderAsyncRequest,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<PostOrderAsyncResponse>;
+  /** ReplaceSandboxOrder — изменить выставленную заявку */
   replaceSandboxOrder(request: ReplaceOrderRequest, options?: CallOptions & CallOptionsExt): Promise<PostOrderResponse>;
-  /** Получить список активных заявок по счёту. */
+  /** GetSandboxOrders — получить список активных заявок по счету */
   getSandboxOrders(request: GetOrdersRequest, options?: CallOptions & CallOptionsExt): Promise<GetOrdersResponse>;
-  /** Отменить торговое поручение. */
+  /** CancelSandboxOrder — отменить заявку */
   cancelSandboxOrder(request: CancelOrderRequest, options?: CallOptions & CallOptionsExt): Promise<CancelOrderResponse>;
-  /** Поулчить статус заявки в песочнице. Заявки хранятся в таблице 7 дней. */
+  /** GetSandboxOrderState — получить статус торгового поручения */
   getSandboxOrderState(request: GetOrderStateRequest, options?: CallOptions & CallOptionsExt): Promise<OrderState>;
-  /** Получить позиции по виртуальному счёту. */
+  /** GetSandboxOrderPrice — получить предварительную стоимость для лимитной заявки */
+  getSandboxOrderPrice(
+    request: GetOrderPriceRequest,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<GetOrderPriceResponse>;
+  /** GetSandboxPositions — список позиций по счету */
   getSandboxPositions(request: PositionsRequest, options?: CallOptions & CallOptionsExt): Promise<PositionsResponse>;
-  /** Получить операции по номеру счёта. */
+  /**
+   * GetSandboxOperations — список операций по счету
+   * При работе с методом учитывайте [особенности взаимодействия](/invest/services/operations/operations_problems).
+   */
   getSandboxOperations(request: OperationsRequest, options?: CallOptions & CallOptionsExt): Promise<OperationsResponse>;
-  /** Получить операции по номеру счёта с пагинацией. */
+  /**
+   * GetSandboxOperationsByCursor — список операций по счету с пагинацией
+   * При работе с методом учитывайте [особенности взаимодействия](/invest/services/operations/operations_problems).
+   */
   getSandboxOperationsByCursor(
     request: GetOperationsByCursorRequest,
     options?: CallOptions & CallOptionsExt,
   ): Promise<GetOperationsByCursorResponse>;
-  /** Получить портфель. */
+  /** GetSandboxPortfolio — портфель по счету */
   getSandboxPortfolio(request: PortfolioRequest, options?: CallOptions & CallOptionsExt): Promise<PortfolioResponse>;
-  /** Пополнить счёт. */
+  /** SandboxPayIn — пополнить счет. */
   sandboxPayIn(request: SandboxPayInRequest, options?: CallOptions & CallOptionsExt): Promise<SandboxPayInResponse>;
-  /** Получить доступный остаток для вывода средств. */
+  /** GetSandboxWithdrawLimits — доступный остаток для вывода средств */
   getSandboxWithdrawLimits(
     request: WithdrawLimitsRequest,
     options?: CallOptions & CallOptionsExt,
   ): Promise<WithdrawLimitsResponse>;
-  /** Расчёт количества доступных для покупки/продажи лотов в песочнице. */
+  /** GetSandboxMaxLots — расчет количества доступных для покупки/продажи лотов */
   getSandboxMaxLots(request: GetMaxLotsRequest, options?: CallOptions & CallOptionsExt): Promise<GetMaxLotsResponse>;
+  /** PostSandboxStopOrder — выставить стоп-заявку */
+  postSandboxStopOrder(
+    request: PostStopOrderRequest,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<PostStopOrderResponse>;
+  /** GetSandboxStopOrders — получить список активных стоп-заявок по счету */
+  getSandboxStopOrders(
+    request: GetStopOrdersRequest,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<GetStopOrdersResponse>;
+  /** CancelSandboxStopOrder — отменить стоп-заявку */
+  cancelSandboxStopOrder(
+    request: CancelStopOrderRequest,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<CancelStopOrderResponse>;
 }
 
 function isSet(value: any): boolean {

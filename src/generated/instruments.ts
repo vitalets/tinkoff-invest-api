@@ -14,6 +14,9 @@ import {
   Page,
   PageResponse,
   Quotation,
+  RealExchange,
+  realExchangeFromJSON,
+  realExchangeToJSON,
   SecurityTradingStatus,
   securityTradingStatusFromJSON,
   securityTradingStatusToJSON,
@@ -24,7 +27,7 @@ export const protobufPackage = "tinkoff.public.invest.api.contract.v1";
 
 /** Тип купонов. */
 export enum CouponType {
-  /** COUPON_TYPE_UNSPECIFIED - Неопределённое значение. */
+  /** COUPON_TYPE_UNSPECIFIED - Неопределенное значение. */
   COUPON_TYPE_UNSPECIFIED = 0,
   /** COUPON_TYPE_CONSTANT - Постоянный. */
   COUPON_TYPE_CONSTANT = 1,
@@ -102,7 +105,7 @@ export function couponTypeToJSON(object: CouponType): string {
 
 /** Тип опциона по направлению сделки. */
 export enum OptionDirection {
-  /** OPTION_DIRECTION_UNSPECIFIED - Тип не определён. */
+  /** OPTION_DIRECTION_UNSPECIFIED - Тип не определен. */
   OPTION_DIRECTION_UNSPECIFIED = 0,
   /** OPTION_DIRECTION_PUT - Опцион на продажу. */
   OPTION_DIRECTION_PUT = 1,
@@ -143,11 +146,11 @@ export function optionDirectionToJSON(object: OptionDirection): string {
   }
 }
 
-/** Тип расчётов по опциону. */
+/** Тип расчетов по опциону. */
 export enum OptionPaymentType {
-  /** OPTION_PAYMENT_TYPE_UNSPECIFIED - Тип не определён. */
+  /** OPTION_PAYMENT_TYPE_UNSPECIFIED - Тип не определен. */
   OPTION_PAYMENT_TYPE_UNSPECIFIED = 0,
-  /** OPTION_PAYMENT_TYPE_PREMIUM - Опционы с использованием премии в расчётах. */
+  /** OPTION_PAYMENT_TYPE_PREMIUM - Опционы с использованием премии в расчетах. */
   OPTION_PAYMENT_TYPE_PREMIUM = 1,
   /** OPTION_PAYMENT_TYPE_MARGINAL - Маржируемые опционы. */
   OPTION_PAYMENT_TYPE_MARGINAL = 2,
@@ -188,7 +191,7 @@ export function optionPaymentTypeToJSON(object: OptionPaymentType): string {
 
 /** Тип опциона по стилю. */
 export enum OptionStyle {
-  /** OPTION_STYLE_UNSPECIFIED - Тип не определён. */
+  /** OPTION_STYLE_UNSPECIFIED - Тип не определен. */
   OPTION_STYLE_UNSPECIFIED = 0,
   /** OPTION_STYLE_AMERICAN - Американский опцион. */
   OPTION_STYLE_AMERICAN = 1,
@@ -231,11 +234,11 @@ export function optionStyleToJSON(object: OptionStyle): string {
 
 /** Тип опциона по способу исполнения. */
 export enum OptionSettlementType {
-  /** OPTION_EXECUTION_TYPE_UNSPECIFIED - Тип не определён. */
+  /** OPTION_EXECUTION_TYPE_UNSPECIFIED - Тип не определен. */
   OPTION_EXECUTION_TYPE_UNSPECIFIED = 0,
   /** OPTION_EXECUTION_TYPE_PHYSICAL_DELIVERY - Поставочный тип опциона. */
   OPTION_EXECUTION_TYPE_PHYSICAL_DELIVERY = 1,
-  /** OPTION_EXECUTION_TYPE_CASH_SETTLEMENT - Расчётный тип опциона. */
+  /** OPTION_EXECUTION_TYPE_CASH_SETTLEMENT - Расчетный тип опциона. */
   OPTION_EXECUTION_TYPE_CASH_SETTLEMENT = 2,
   UNRECOGNIZED = -1,
 }
@@ -272,7 +275,7 @@ export function optionSettlementTypeToJSON(object: OptionSettlementType): string
   }
 }
 
-/** Тип идентификатора инструмента. [Подробнее об идентификации инструментов](https://russianinvestments.github.io/investAPI/faq_identification/). */
+/** Тип идентификатора инструмента. [Подробнее об идентификации инструментов](./faq_identification/). */
 export enum InstrumentIdType {
   /** INSTRUMENT_ID_UNSPECIFIED - Значение не определено. */
   INSTRUMENT_ID_UNSPECIFIED = 0,
@@ -416,7 +419,7 @@ export function shareTypeToJSON(object: ShareType): string {
 
 /** Тип актива. */
 export enum AssetType {
-  /** ASSET_TYPE_UNSPECIFIED - Тип не определён. */
+  /** ASSET_TYPE_UNSPECIFIED - Тип не определен. */
   ASSET_TYPE_UNSPECIFIED = 0,
   /** ASSET_TYPE_CURRENCY - Валюта. */
   ASSET_TYPE_CURRENCY = 1,
@@ -473,7 +476,7 @@ export function assetTypeToJSON(object: AssetType): string {
 
 /** Тип структурной ноты. */
 export enum StructuredProductType {
-  /** SP_TYPE_UNSPECIFIED - Тип не определён. */
+  /** SP_TYPE_UNSPECIFIED - Тип не определен. */
   SP_TYPE_UNSPECIFIED = 0,
   /** SP_TYPE_DELIVERABLE - Поставочный. */
   SP_TYPE_DELIVERABLE = 1,
@@ -516,7 +519,7 @@ export function structuredProductTypeToJSON(object: StructuredProductType): stri
 
 /** Тип действия со списком избранных инструментов. */
 export enum EditFavoritesActionType {
-  /** EDIT_FAVORITES_ACTION_TYPE_UNSPECIFIED - Тип не определён. */
+  /** EDIT_FAVORITES_ACTION_TYPE_UNSPECIFIED - Тип не определен. */
   EDIT_FAVORITES_ACTION_TYPE_UNSPECIFIED = 0,
   /** EDIT_FAVORITES_ACTION_TYPE_ADD - Добавить в список. */
   EDIT_FAVORITES_ACTION_TYPE_ADD = 1,
@@ -552,63 +555,6 @@ export function editFavoritesActionTypeToJSON(object: EditFavoritesActionType): 
     case EditFavoritesActionType.EDIT_FAVORITES_ACTION_TYPE_DEL:
       return "EDIT_FAVORITES_ACTION_TYPE_DEL";
     case EditFavoritesActionType.UNRECOGNIZED:
-    default:
-      return "UNRECOGNIZED";
-  }
-}
-
-/** Реальная площадка исполнения расчётов. */
-export enum RealExchange {
-  /** REAL_EXCHANGE_UNSPECIFIED - Тип не определён. */
-  REAL_EXCHANGE_UNSPECIFIED = 0,
-  /** REAL_EXCHANGE_MOEX - Московская биржа. */
-  REAL_EXCHANGE_MOEX = 1,
-  /** REAL_EXCHANGE_RTS - Санкт-Петербургская биржа. */
-  REAL_EXCHANGE_RTS = 2,
-  /** REAL_EXCHANGE_OTC - Внебиржевой инструмент. */
-  REAL_EXCHANGE_OTC = 3,
-  /** REAL_EXCHANGE_DEALER - Инструмент, торгуемый на площадке брокера. */
-  REAL_EXCHANGE_DEALER = 4,
-  UNRECOGNIZED = -1,
-}
-
-export function realExchangeFromJSON(object: any): RealExchange {
-  switch (object) {
-    case 0:
-    case "REAL_EXCHANGE_UNSPECIFIED":
-      return RealExchange.REAL_EXCHANGE_UNSPECIFIED;
-    case 1:
-    case "REAL_EXCHANGE_MOEX":
-      return RealExchange.REAL_EXCHANGE_MOEX;
-    case 2:
-    case "REAL_EXCHANGE_RTS":
-      return RealExchange.REAL_EXCHANGE_RTS;
-    case 3:
-    case "REAL_EXCHANGE_OTC":
-      return RealExchange.REAL_EXCHANGE_OTC;
-    case 4:
-    case "REAL_EXCHANGE_DEALER":
-      return RealExchange.REAL_EXCHANGE_DEALER;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return RealExchange.UNRECOGNIZED;
-  }
-}
-
-export function realExchangeToJSON(object: RealExchange): string {
-  switch (object) {
-    case RealExchange.REAL_EXCHANGE_UNSPECIFIED:
-      return "REAL_EXCHANGE_UNSPECIFIED";
-    case RealExchange.REAL_EXCHANGE_MOEX:
-      return "REAL_EXCHANGE_MOEX";
-    case RealExchange.REAL_EXCHANGE_RTS:
-      return "REAL_EXCHANGE_RTS";
-    case RealExchange.REAL_EXCHANGE_OTC:
-      return "REAL_EXCHANGE_OTC";
-    case RealExchange.REAL_EXCHANGE_DEALER:
-      return "REAL_EXCHANGE_DEALER";
-    case RealExchange.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
   }
@@ -714,7 +660,7 @@ export function riskLevelToJSON(object: RiskLevel): string {
 }
 
 export enum BondType {
-  /** BOND_TYPE_UNSPECIFIED - Тип облигации не определён. */
+  /** BOND_TYPE_UNSPECIFIED - Тип облигации не определен. */
   BOND_TYPE_UNSPECIFIED = 0,
   /** BOND_TYPE_REPLACED - Замещающая облигация. */
   BOND_TYPE_REPLACED = 1,
@@ -786,7 +732,7 @@ export function instrumentExchangeTypeToJSON(object: InstrumentExchangeType): st
 
 /** Запрос расписания торгов. */
 export interface TradingSchedulesRequest {
-  /** Наименование биржи или расчетного календаря. </br>Если не передаётся, возвращается информация по всем доступным торговым площадкам. */
+  /** Наименование биржи или расчетного календаря. <br/>Если не передается, возвращается информация по всем доступным торговым площадкам. */
   exchange?:
     | string
     | undefined;
@@ -878,7 +824,7 @@ export interface TradingDay {
 
 /** Запрос получения инструмента по идентификатору. */
 export interface InstrumentRequest {
-  /** Тип идентификатора инструмента. Возможные значения — `figi`, `ticker`. [Подробнее об идентификации инструментов](https://russianinvestments.github.io/investAPI/faq_identification/). */
+  /** Тип идентификатора инструмента. Возможные значения — `figi`, `ticker`. [Подробнее об идентификации инструментов](./faq_identification/). */
   idType: InstrumentIdType;
   /** Идентификатор `class_code`. Обязательный, если `id_type = ticker`. */
   classCode?:
@@ -962,7 +908,7 @@ export interface GetBondEventsRequest {
 }
 
 export enum GetBondEventsRequest_EventType {
-  /** EVENT_TYPE_UNSPECIFIED - Неопределённое значение. */
+  /** EVENT_TYPE_UNSPECIFIED - Неопределенное значение. */
   EVENT_TYPE_UNSPECIFIED = 0,
   /** EVENT_TYPE_CPN - Купон. */
   EVENT_TYPE_CPN = 1,
@@ -1185,11 +1131,11 @@ export interface Option {
   basicAssetPositionUid: string;
   /** Текущий режим торгов инструмента. */
   tradingStatus: SecurityTradingStatus;
-  /** Реальная площадка исполнения расчётов (биржа). */
+  /** Реальная площадка исполнения расчетов (биржа). */
   realExchange: RealExchange;
   /** Направление опциона. */
   direction: OptionDirection;
-  /** Тип расчётов по опциону. */
+  /** Тип расчетов по опциону. */
   paymentType: OptionPaymentType;
   /** Стиль опциона. */
   style: OptionStyle;
@@ -1223,43 +1169,35 @@ export interface Option {
   basicAssetSize?:
     | Quotation
     | undefined;
-  /** Коэффициент ставки риска длинной позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР); 1 – клиент с повышенным уровнем риска (КПУР). */
+  /**
+   * Коэффициент ставки риска длинной позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР); 1 – клиент с повышенным уровнем риска (КПУР).
+   *
+   * @deprecated
+   */
   klong?:
     | Quotation
     | undefined;
-  /** Коэффициент ставки риска короткой позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР); 1 – клиент с повышенным уровнем риска (КПУР). */
+  /**
+   * Коэффициент ставки риска короткой позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР); 1 – клиент с повышенным уровнем риска (КПУР).
+   *
+   * @deprecated
+   */
   kshort?:
     | Quotation
     | undefined;
-  /**
-   * Ставка риска начальной маржи для КСУР лонг. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5).
-   *
-   * @deprecated
-   */
+  /** Ставка риска начальной маржи для КСУР лонг. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dlong?:
     | Quotation
     | undefined;
-  /**
-   * Ставка риска начальной маржи для КСУР шорт. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5).
-   *
-   * @deprecated
-   */
+  /** Ставка риска начальной маржи для КСУР шорт. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dshort?:
     | Quotation
     | undefined;
-  /**
-   * Ставка риска начальной маржи для КПУР лонг. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5).
-   *
-   * @deprecated
-   */
+  /** Ставка риска начальной маржи для КПУР лонг. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dlongMin?:
     | Quotation
     | undefined;
-  /**
-   * Ставка риска начальной маржи для КПУР шорт. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5).
-   *
-   * @deprecated
-   */
+  /** Ставка риска начальной маржи для КПУР шорт. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dshortMin?:
     | Quotation
     | undefined;
@@ -1271,11 +1209,11 @@ export interface Option {
   strikePrice?:
     | MoneyValue
     | undefined;
-  /** Ставка риска в лонг, с учетом текущего уровня риска портфеля клиента. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
+  /** Ставка риска в лонг с учетом текущего уровня риска портфеля клиента. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dlongClient?:
     | Quotation
     | undefined;
-  /** Ставка риска в шорт, с учетом текущего уровня риска портфеля клиента. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
+  /** Ставка риска в шорт с учетом текущего уровня риска портфеля клиента. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dshortClient?:
     | Quotation
     | undefined;
@@ -1317,6 +1255,8 @@ export interface Option {
   blockedTcaFlag: boolean;
   /** Возможность торговать инструментом через API. */
   apiTradeAvailableFlag: boolean;
+  /** Тесты, которые необходимо пройти клиенту, чтобы совершать сделки по инструменту. */
+  requiredTests: string[];
 }
 
 /** Данные по акции. */
@@ -1331,6 +1271,18 @@ export interface SharesResponse {
   instruments: Share[];
 }
 
+/** Данные по структурной ноте. */
+export interface StructuredNoteResponse {
+  /** Информация о структурной ноте. */
+  instrument?: StructuredNote | undefined;
+}
+
+/** Данные по структурным нотам. */
+export interface StructuredNotesResponse {
+  /** Массив структурных нот. */
+  instruments: StructuredNote[];
+}
+
 /** Объект передачи информации об облигации. */
 export interface Bond {
   /** FIGI-идентификатор инструмента. */
@@ -1341,47 +1293,39 @@ export interface Bond {
   classCode: string;
   /** ISIN-идентификатор инструмента. */
   isin: string;
-  /** Лотность инструмента. Возможно совершение операций только на количества ценной бумаги, кратные параметру `lot`. [Подробнее](https://russianinvestments.github.io/investAPI/glossary#lot). */
+  /** Лотность инструмента. Возможно совершение операций только на количества ценной бумаги, кратные параметру `lot`. [Подробнее](./glossary#lot). */
   lot: number;
-  /** Валюта расчётов. */
+  /** Валюта расчетов. */
   currency: string;
-  /** Коэффициент ставки риска длинной позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР); 1 – клиент с повышенным уровнем риска (КПУР). */
+  /**
+   * Коэффициент ставки риска длинной позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР); 1 – клиент с повышенным уровнем риска (КПУР).
+   *
+   * @deprecated
+   */
   klong?:
     | Quotation
     | undefined;
-  /** Коэффициент ставки риска короткой позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР); 1 – клиент с повышенным уровнем риска (КПУР). */
+  /**
+   * Коэффициент ставки риска короткой позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР); 1 – клиент с повышенным уровнем риска (КПУР).
+   *
+   * @deprecated
+   */
   kshort?:
     | Quotation
     | undefined;
-  /**
-   * Ставка риска начальной маржи для КСУР лонг. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5).
-   *
-   * @deprecated
-   */
+  /** Ставка риска начальной маржи для КСУР лонг. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dlong?:
     | Quotation
     | undefined;
-  /**
-   * Ставка риска начальной маржи для КСУР шорт. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5).
-   *
-   * @deprecated
-   */
+  /** Ставка риска начальной маржи для КСУР шорт. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dshort?:
     | Quotation
     | undefined;
-  /**
-   * Ставка риска начальной маржи для КПУР лонг. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5).
-   *
-   * @deprecated
-   */
+  /** Ставка риска начальной маржи для КПУР лонг. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dlongMin?:
     | Quotation
     | undefined;
-  /**
-   * Ставка риска начальной маржи для КПУР шорт. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5).
-   *
-   * @deprecated
-   */
+  /** Ставка риска начальной маржи для КПУР шорт. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dshortMin?:
     | Quotation
     | undefined;
@@ -1421,13 +1365,13 @@ export interface Bond {
   aciValue?:
     | MoneyValue
     | undefined;
-  /** Код страны риска — то есть страны, в которой компания ведёт основной бизнес. */
+  /** Код страны риска — то есть страны, в которой компания ведет основной бизнес. */
   countryOfRisk: string;
-  /** Наименование страны риска — то есть страны, в которой компания ведёт основной бизнес. */
+  /** Наименование страны риска — то есть страны, в которой компания ведет основной бизнес. */
   countryOfRiskName: string;
   /** Сектор экономики. */
   sector: string;
-  /** Форма выпуска. Возможные значения: </br>**documentary** — документарная; </br>**non_documentary** — бездокументарная. */
+  /** Форма выпуска. Возможные значения: <br/>**documentary** — документарная; <br/>**non_documentary** — бездокументарная. */
   issueKind: string;
   /** Размер выпуска. */
   issueSize: number;
@@ -1455,12 +1399,14 @@ export interface Bond {
   apiTradeAvailableFlag: boolean;
   /** Уникальный идентификатор инструмента. */
   uid: string;
-  /** Реальная площадка исполнения расчётов. (биржа) */
+  /** Реальная площадка исполнения расчетов. (биржа) */
   realExchange: RealExchange;
   /** Уникальный идентификатор позиции инструмента. */
   positionUid: string;
   /** Уникальный идентификатор актива. */
   assetUid: string;
+  /** Тесты, которые необходимо пройти клиенту, чтобы совершать сделки по инструменту. */
+  requiredTests: string[];
   /** Признак доступности для ИИС. */
   forIisFlag: boolean;
   /** Флаг, отображающий доступность торговли инструментом только для квалифицированных инвесторов. */
@@ -1493,11 +1439,11 @@ export interface Bond {
   callDate?:
     | Date
     | undefined;
-  /** Ставка риска в лонг, с учетом текущего уровня риска портфеля клиента. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
+  /** Ставка риска в лонг с учетом текущего уровня риска портфеля клиента. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dlongClient?:
     | Quotation
     | undefined;
-  /** Ставка риска в шорт, с учетом текущего уровня риска портфеля клиента. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
+  /** Ставка риска в шорт с учетом текущего уровня риска портфеля клиента. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dshortClient?: Quotation | undefined;
 }
 
@@ -1511,47 +1457,39 @@ export interface Currency {
   classCode: string;
   /** ISIN-идентификатор инструмента. */
   isin: string;
-  /** Лотность инструмента. Возможно совершение операций только на количества ценной бумаги, кратные параметру `lot`. [Подробнее](https://russianinvestments.github.io/investAPI/glossary#lot). */
+  /** Лотность инструмента. Возможно совершение операций только на количества ценной бумаги, кратные параметру `lot`. [Подробнее](./glossary#lot). */
   lot: number;
-  /** Валюта расчётов. */
+  /** Валюта расчетов. */
   currency: string;
-  /** Коэффициент ставки риска длинной позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР); 1 – клиент с повышенным уровнем риска (КПУР). */
+  /**
+   * Коэффициент ставки риска длинной позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР); 1 – клиент с повышенным уровнем риска (КПУР).
+   *
+   * @deprecated
+   */
   klong?:
     | Quotation
     | undefined;
-  /** Коэффициент ставки риска короткой позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР); 1 – клиент с повышенным уровнем риска (КПУР). */
+  /**
+   * Коэффициент ставки риска короткой позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР); 1 – клиент с повышенным уровнем риска (КПУР).
+   *
+   * @deprecated
+   */
   kshort?:
     | Quotation
     | undefined;
-  /**
-   * Ставка риска начальной маржи для КСУР лонг. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5).
-   *
-   * @deprecated
-   */
+  /** Ставка риска начальной маржи для КСУР лонг. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dlong?:
     | Quotation
     | undefined;
-  /**
-   * Ставка риска начальной маржи для КСУР шорт. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5).
-   *
-   * @deprecated
-   */
+  /** Ставка риска начальной маржи для КСУР шорт. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dshort?:
     | Quotation
     | undefined;
-  /**
-   * Ставка риска начальной маржи для КПУР лонг. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5).
-   *
-   * @deprecated
-   */
+  /** Ставка риска начальной маржи для КПУР лонг. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dlongMin?:
     | Quotation
     | undefined;
-  /**
-   * Ставка риска начальной маржи для КПУР шорт. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5).
-   *
-   * @deprecated
-   */
+  /** Ставка риска начальной маржи для КПУР шорт. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dshortMin?:
     | Quotation
     | undefined;
@@ -1565,9 +1503,9 @@ export interface Currency {
   nominal?:
     | MoneyValue
     | undefined;
-  /** Код страны риска — то есть страны, в которой компания ведёт основной бизнес. */
+  /** Код страны риска — то есть страны, в которой компания ведет основной бизнес. */
   countryOfRisk: string;
-  /** Наименование страны риска — то есть страны, в которой компания ведёт основной бизнес. */
+  /** Наименование страны риска — то есть страны, в которой компания ведет основной бизнес. */
   countryOfRiskName: string;
   /** Текущий режим торгов инструмента. */
   tradingStatus: SecurityTradingStatus;
@@ -1587,10 +1525,12 @@ export interface Currency {
   apiTradeAvailableFlag: boolean;
   /** Уникальный идентификатор инструмента. */
   uid: string;
-  /** Реальная площадка исполнения расчётов (биржа). */
+  /** Реальная площадка исполнения расчетов (биржа). */
   realExchange: RealExchange;
   /** Уникальный идентификатор позиции инструмента. */
   positionUid: string;
+  /** Тесты, которые необходимо пройти клиенту, чтобы совершать сделки по инструменту. */
+  requiredTests: string[];
   /** Признак доступности для ИИС. */
   forIisFlag: boolean;
   /** Флаг, отображающий доступность торговли инструментом только для квалифицированных инвесторов. */
@@ -1611,11 +1551,11 @@ export interface Currency {
   brand?:
     | BrandData
     | undefined;
-  /** Ставка риска в лонг, с учетом текущего уровня риска портфеля клиента. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
+  /** Ставка риска в лонг с учетом текущего уровня риска портфеля клиента. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dlongClient?:
     | Quotation
     | undefined;
-  /** Ставка риска в шорт, с учетом текущего уровня риска портфеля клиента. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
+  /** Ставка риска в шорт с учетом текущего уровня риска портфеля клиента. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dshortClient?: Quotation | undefined;
 }
 
@@ -1629,47 +1569,39 @@ export interface Etf {
   classCode: string;
   /** ISIN-идентификатор инструмента. */
   isin: string;
-  /** Лотность инструмента. Возможно совершение операций только на количества ценной бумаги, кратные параметру `lot`. [Подробнее](https://russianinvestments.github.io/investAPI/glossary#lot). */
+  /** Лотность инструмента. Возможно совершение операций только на количества ценной бумаги, кратные параметру `lot`. [Подробнее](./glossary#lot). */
   lot: number;
-  /** Валюта расчётов. */
+  /** Валюта расчетов. */
   currency: string;
-  /** Коэффициент ставки риска длинной позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР); 1 – клиент с повышенным уровнем риска (КПУР). */
+  /**
+   * Коэффициент ставки риска длинной позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР); 1 – клиент с повышенным уровнем риска (КПУР).
+   *
+   * @deprecated
+   */
   klong?:
     | Quotation
     | undefined;
-  /** Коэффициент ставки риска короткой позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР); 1 – клиент с повышенным уровнем риска (КПУР). */
+  /**
+   * Коэффициент ставки риска короткой позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР); 1 – клиент с повышенным уровнем риска (КПУР).
+   *
+   * @deprecated
+   */
   kshort?:
     | Quotation
     | undefined;
-  /**
-   * Ставка риска начальной маржи для КСУР лонг. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5).
-   *
-   * @deprecated
-   */
+  /** Ставка риска начальной маржи для КСУР лонг. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dlong?:
     | Quotation
     | undefined;
-  /**
-   * Ставка риска начальной маржи для КСУР шорт. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5).
-   *
-   * @deprecated
-   */
+  /** Ставка риска начальной маржи для КСУР шорт. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dshort?:
     | Quotation
     | undefined;
-  /**
-   * Ставка риска начальной маржи для КПУР лонг. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5).
-   *
-   * @deprecated
-   */
+  /** Ставка риска начальной маржи для КПУР лонг. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dlongMin?:
     | Quotation
     | undefined;
-  /**
-   * Ставка риска начальной маржи для КПУР шорт. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5).
-   *
-   * @deprecated
-   */
+  /** Ставка риска начальной маржи для КПУР шорт. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dshortMin?:
     | Quotation
     | undefined;
@@ -1683,7 +1615,7 @@ export interface Etf {
   fixedCommission?:
     | Quotation
     | undefined;
-  /** Возможные значения: </br>**equity** — акции;</br>**fixed_income** — облигации;</br>**mixed_allocation** — смешанный;</br>**money_market** — денежный рынок;</br>**real_estate** — недвижимость;</br>**commodity** — товары;</br>**specialty** — специальный;</br>**private_equity** — private equity;</br>**alternative_investment** — альтернативные инвестиции. */
+  /** Возможные значения: <br/>**equity** — акции;<br/>**fixed_income** — облигации;<br/>**mixed_allocation** — смешанный;<br/>**money_market** — денежный рынок;<br/>**real_estate** — недвижимость;<br/>**commodity** — товары;<br/>**specialty** — специальный;<br/>**private_equity** — private equity;<br/>**alternative_investment** — альтернативные инвестиции. */
   focusType: string;
   /** Дата выпуска по UTC. */
   releasedDate?:
@@ -1693,9 +1625,9 @@ export interface Etf {
   numShares?:
     | Quotation
     | undefined;
-  /** Код страны риска — то есть страны, в которой компания ведёт основной бизнес. */
+  /** Код страны риска — то есть страны, в которой компания ведет основной бизнес. */
   countryOfRisk: string;
-  /** Наименование страны риска — то есть страны, в которой компания ведёт основной бизнес. */
+  /** Наименование страны риска — то есть страны, в которой компания ведет основной бизнес. */
   countryOfRiskName: string;
   /** Сектор экономики. */
   sector: string;
@@ -1717,7 +1649,7 @@ export interface Etf {
   apiTradeAvailableFlag: boolean;
   /** Уникальный идентификатор инструмента. */
   uid: string;
-  /** Реальная площадка исполнения расчётов (биржа). */
+  /** Реальная площадка исполнения расчетов (биржа). */
   realExchange: RealExchange;
   /** Уникальный идентификатор позиции инструмента. */
   positionUid: string;
@@ -1725,6 +1657,8 @@ export interface Etf {
   assetUid: string;
   /** Тип площадки торговли. */
   instrumentExchange: InstrumentExchangeType;
+  /** Тесты, которые необходимо пройти клиенту, чтобы совершать сделки по инструменту. */
+  requiredTests: string[];
   /** Признак доступности для ИИС. */
   forIisFlag: boolean;
   /** Флаг, отображающий доступность торговли инструментом только для квалифицированных инвесторов. */
@@ -1747,11 +1681,11 @@ export interface Etf {
   brand?:
     | BrandData
     | undefined;
-  /** Ставка риска в лонг, с учетом текущего уровня риска портфеля клиента. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
+  /** Ставка риска в лонг с учетом текущего уровня риска портфеля клиента. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dlongClient?:
     | Quotation
     | undefined;
-  /** Ставка риска в шорт, с учетом текущего уровня риска портфеля клиента. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
+  /** Ставка риска в шорт с учетом текущего уровня риска портфеля клиента. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dshortClient?: Quotation | undefined;
 }
 
@@ -1763,47 +1697,39 @@ export interface Future {
   ticker: string;
   /** Класс-код (секция торгов). */
   classCode: string;
-  /** Лотность инструмента. Возможно совершение операций только на количества ценной бумаги, кратные параметру `lot`. [Подробнее](https://russianinvestments.github.io/investAPI/glossary#lot). */
+  /** Лотность инструмента. Возможно совершение операций только на количества ценной бумаги, кратные параметру `lot`. [Подробнее](./glossary#lot). */
   lot: number;
-  /** Валюта расчётов. */
+  /** Валюта расчетов. */
   currency: string;
-  /** Коэффициент ставки риска длинной позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР); 1 – клиент с повышенным уровнем риска (КПУР). */
+  /**
+   * Коэффициент ставки риска длинной позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР); 1 – клиент с повышенным уровнем риска (КПУР).
+   *
+   * @deprecated
+   */
   klong?:
     | Quotation
     | undefined;
-  /** Коэффициент ставки риска короткой позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР); 1 – клиент с повышенным уровнем риска (КПУР). */
+  /**
+   * Коэффициент ставки риска короткой позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР); 1 – клиент с повышенным уровнем риска (КПУР).
+   *
+   * @deprecated
+   */
   kshort?:
     | Quotation
     | undefined;
-  /**
-   * Ставка риска начальной маржи для КСУР лонг. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5).
-   *
-   * @deprecated
-   */
+  /** Ставка риска начальной маржи для КСУР лонг. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dlong?:
     | Quotation
     | undefined;
-  /**
-   * Ставка риска начальной маржи для КСУР шорт. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5).
-   *
-   * @deprecated
-   */
+  /** Ставка риска начальной маржи для КСУР шорт. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dshort?:
     | Quotation
     | undefined;
-  /**
-   * Ставка риска начальной маржи для КПУР лонг. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5).
-   *
-   * @deprecated
-   */
+  /** Ставка риска начальной маржи для КПУР лонг. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dlongMin?:
     | Quotation
     | undefined;
-  /**
-   * Ставка риска начальной маржи для КПУР шорт. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5).
-   *
-   * @deprecated
-   */
+  /** Ставка риска начальной маржи для КПУР шорт. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dshortMin?:
     | Quotation
     | undefined;
@@ -1821,9 +1747,9 @@ export interface Future {
   lastTradeDate?:
     | Date
     | undefined;
-  /** Тип фьючерса. Возможные значения: </br>**physical_delivery** — физические поставки; </br>**cash_settlement** — денежный эквивалент. */
+  /** Тип фьючерса. Возможные значения: <br/>**physical_delivery** — физические поставки; <br/>**cash_settlement** — денежный эквивалент. */
   futuresType: string;
-  /** Тип актива. Возможные значения: </br>**commodity** — товар; </br>**currency** — валюта; </br>**security** — ценная бумага; </br>**index** — индекс. */
+  /** Тип актива. Возможные значения: <br/>**commodity** — товар; <br/>**currency** — валюта; <br/>**security** — ценная бумага; <br/>**index** — индекс. */
   assetType: string;
   /** Основной актив. */
   basicAsset: string;
@@ -1831,9 +1757,9 @@ export interface Future {
   basicAssetSize?:
     | Quotation
     | undefined;
-  /** Код страны риска — то есть страны, в которой компания ведёт основной бизнес. */
+  /** Код страны риска — то есть страны, в которой компания ведет основной бизнес. */
   countryOfRisk: string;
-  /** Наименование страны риска — то есть страны, в которой компания ведёт основной бизнес. */
+  /** Наименование страны риска — то есть страны, в которой компания ведет основной бизнес. */
   countryOfRiskName: string;
   /** Сектор экономики. */
   sector: string;
@@ -1857,12 +1783,14 @@ export interface Future {
   apiTradeAvailableFlag: boolean;
   /** Уникальный идентификатор инструмента. */
   uid: string;
-  /** Реальная площадка исполнения расчётов (биржа). */
+  /** Реальная площадка исполнения расчетов (биржа). */
   realExchange: RealExchange;
   /** Уникальный идентификатор позиции инструмента. */
   positionUid: string;
   /** Уникальный идентификатор позиции основного инструмента. */
   basicAssetPositionUid: string;
+  /** Тесты, которые необходимо пройти клиенту, чтобы совершать сделки по инструменту. */
+  requiredTests: string[];
   /** Признак доступности для ИИС. */
   forIisFlag: boolean;
   /** Флаг, отображающий доступность торговли инструментом только для квалифицированных инвесторов. */
@@ -1895,11 +1823,11 @@ export interface Future {
   brand?:
     | BrandData
     | undefined;
-  /** Ставка риска в лонг, с учетом текущего уровня риска портфеля клиента. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
+  /** Ставка риска в лонг с учетом текущего уровня риска портфеля клиента. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dlongClient?:
     | Quotation
     | undefined;
-  /** Ставка риска в шорт, с учетом текущего уровня риска портфеля клиента. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
+  /** Ставка риска в шорт с учетом текущего уровня риска портфеля клиента. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dshortClient?: Quotation | undefined;
 }
 
@@ -1913,47 +1841,39 @@ export interface Share {
   classCode: string;
   /** ISIN-идентификатор инструмента. */
   isin: string;
-  /** Лотность инструмента. Возможно совершение операций только на количества ценной бумаги, кратные параметру `lot`. [Подробнее](https://russianinvestments.github.io/investAPI/glossary#lot) */
+  /** Лотность инструмента. Возможно совершение операций только на количества ценной бумаги, кратные параметру `lot`. [Подробнее](./glossary#lot) */
   lot: number;
-  /** Валюта расчётов. */
+  /** Валюта расчетов. */
   currency: string;
-  /** Коэффициент ставки риска длинной позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР); 1 – клиент с повышенным уровнем риска (КПУР). */
+  /**
+   * Коэффициент ставки риска длинной позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР); 1 – клиент с повышенным уровнем риска (КПУР).
+   *
+   * @deprecated
+   */
   klong?:
     | Quotation
     | undefined;
-  /** Коэффициент ставки риска короткой позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР); 1 – клиент с повышенным уровнем риска (КПУР). */
+  /**
+   * Коэффициент ставки риска короткой позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР); 1 – клиент с повышенным уровнем риска (КПУР).
+   *
+   * @deprecated
+   */
   kshort?:
     | Quotation
     | undefined;
-  /**
-   * Ставка риска начальной маржи для КСУР лонг. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5).
-   *
-   * @deprecated
-   */
+  /** Ставка риска начальной маржи для КСУР лонг. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dlong?:
     | Quotation
     | undefined;
-  /**
-   * Ставка риска начальной маржи для КСУР шорт. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5).
-   *
-   * @deprecated
-   */
+  /** Ставка риска начальной маржи для КСУР шорт. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dshort?:
     | Quotation
     | undefined;
-  /**
-   * Ставка риска начальной маржи для КПУР лонг. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5).
-   *
-   * @deprecated
-   */
+  /** Ставка риска начальной маржи для КПУР лонг. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dlongMin?:
     | Quotation
     | undefined;
-  /**
-   * Ставка риска начальной маржи для КПУР шорт. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5).
-   *
-   * @deprecated
-   */
+  /** Ставка риска начальной маржи для КПУР шорт. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dshortMin?:
     | Quotation
     | undefined;
@@ -1969,9 +1889,9 @@ export interface Share {
     | undefined;
   /** Размер выпуска. */
   issueSize: number;
-  /** Код страны риска — то есть страны, в которой компания ведёт основной бизнес. */
+  /** Код страны риска — то есть страны, в которой компания ведет основной бизнес. */
   countryOfRisk: string;
-  /** Наименование страны риска — то есть страны, в которой компания ведёт основной бизнес. */
+  /** Наименование страны риска — то есть страны, в которой компания ведет основной бизнес. */
   countryOfRiskName: string;
   /** Сектор экономики. */
   sector: string;
@@ -1991,7 +1911,7 @@ export interface Share {
   sellAvailableFlag: boolean;
   /** Признак наличия дивидендной доходности. */
   divYieldFlag: boolean;
-  /** Тип акции. Возможные значения — `[ShareType](https://russianinvestments.github.io/investAPI/instruments#sharetype)`. */
+  /** Тип акции. Возможные значения — `[ShareType](./instruments#sharetype)`. */
   shareType: ShareType;
   /** Шаг цены. */
   minPriceIncrement?:
@@ -2001,7 +1921,7 @@ export interface Share {
   apiTradeAvailableFlag: boolean;
   /** Уникальный идентификатор инструмента. */
   uid: string;
-  /** Реальная площадка исполнения расчётов (биржа). */
+  /** Реальная площадка исполнения расчетов (биржа). */
   realExchange: RealExchange;
   /** Уникальный идентификатор позиции инструмента. */
   positionUid: string;
@@ -2009,6 +1929,8 @@ export interface Share {
   assetUid: string;
   /** Тип площадки торговли. */
   instrumentExchange: InstrumentExchangeType;
+  /** Тесты, которые необходимо пройти клиенту, чтобы совершать сделки по инструменту. */
+  requiredTests: string[];
   /** Признак доступности для ИИС. */
   forIisFlag: boolean;
   /** Флаг, отображающий доступность торговли инструментом только для квалифицированных инвесторов. */
@@ -2031,12 +1953,310 @@ export interface Share {
   brand?:
     | BrandData
     | undefined;
-  /** Ставка риска в лонг, с учетом текущего уровня риска портфеля клиента. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
+  /** Ставка риска в лонг с учетом текущего уровня риска портфеля клиента. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dlongClient?:
     | Quotation
     | undefined;
-  /** Ставка риска в шорт, с учетом текущего уровня риска портфеля клиента. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
+  /** Ставка риска в шорт с учетом текущего уровня риска портфеля клиента. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dshortClient?: Quotation | undefined;
+}
+
+/** Объект передачи информации о структурной ноте. */
+export interface StructuredNote {
+  /** Уникальный идентификатор инструмента. */
+  uid: string;
+  /** FIGI-идентификатор инструмента. */
+  figi: string;
+  /** Тикер инструмента. */
+  ticker: string;
+  /** Класс-код (секция торгов). */
+  classCode: string;
+  /** ISIN-идентификатор инструмента. */
+  isin: string;
+  /** Название инструмента. */
+  name: string;
+  /** Уникальный идентификатор актива. */
+  assetUid: string;
+  /** Уникальный идентификатор позиции. */
+  positionUid: string;
+  /** Шаг цены. */
+  minPriceIncrement?:
+    | Quotation
+    | undefined;
+  /** Лотность инструмента. */
+  lot: number;
+  /** Номинал. */
+  nominal?:
+    | MoneyValue
+    | undefined;
+  /** Валюта расчетов. */
+  currency: string;
+  /** Дата погашения облигации в формате UTC. */
+  maturityDate?:
+    | Date
+    | undefined;
+  /** Дата размещения в формате UTC. */
+  placementDate?:
+    | Date
+    | undefined;
+  /** Форма выпуска. */
+  issueKind: string;
+  /** Размер выпуска. */
+  issueSize: number;
+  /** Плановый размер выпуска. */
+  issueSizePlan: number;
+  /** Ставка риска клиента по инструменту лонг. */
+  dlongClient?:
+    | Quotation
+    | undefined;
+  /** Ставка риска клиента по инструменту шорт. */
+  dshortClient?:
+    | Quotation
+    | undefined;
+  /** Признак доступности для операций в шорт. */
+  shortEnabledFlag: boolean;
+  /** Торговая площадка (секция биржи). */
+  exchange: string;
+  /** Текущий режим торгов инструмента. */
+  tradingStatus: SecurityTradingStatus;
+  /** Признак доступности торгов по бумаге через API. */
+  apiTradeAvailableFlag: boolean;
+  /** Признак доступности для покупки. */
+  buyAvailableFlag: boolean;
+  /** Признак доступности для продажи. */
+  sellAvailableFlag: boolean;
+  /** Признак доступности выставления лимитной заявки по инструменту. */
+  limitOrderAvailableFlag: boolean;
+  /** Признак доступности выставления рыночной заявки по инструменту. */
+  marketOrderAvailableFlag: boolean;
+  /** Признак доступности выставления bestprice заявки по инструменту. */
+  bestpriceOrderAvailableFlag: boolean;
+  /** Флаг отображающий доступность торговли инструментом по выходным. */
+  weekendFlag: boolean;
+  /** Флаг достаточной ликвидности. */
+  liquidityFlag: boolean;
+  /** Возможность покупки/продажи на ИИС. */
+  forIisFlag: boolean;
+  /** Флаг отображающий доступность торговли инструментом только для квалифицированных инвесторов. */
+  forQualInvestorFlag: boolean;
+  /** Признак ФИ, включенного в ломбардный список. */
+  pawnshopListFlag: boolean;
+  /** Реальная площадка исполнения расчётов. */
+  realExchange: RealExchange;
+  /** Дата первой минутной свечи. */
+  first1minCandleDate?:
+    | Date
+    | undefined;
+  /** Дата первой дневной свечи. */
+  first1dayCandleDate?:
+    | Date
+    | undefined;
+  /** Название заемщика. */
+  borrowName: string;
+  /** Тип структурной ноты. */
+  type: string;
+  /** Стратегия портфеля. */
+  logicPortfolio: StructuredNote_LogicPortfolio;
+  /** Тип базового актива. */
+  assetType: AssetType;
+  /** Базовые активы, входящие в ноту. */
+  basicAssets: StructuredNote_BasicAsset[];
+  /** Барьер сохранности (в процентах). */
+  safetyBarrier?:
+    | Quotation
+    | undefined;
+  /** Базис расчета НКД. */
+  couponPeriodBase: string;
+  /** Принцип наблюдений. */
+  observationPrinciple: StructuredNote_ObservationPrinciple;
+  /** Частота наблюдений. */
+  observationFrequency: string;
+  /** Дата фиксации цен базовых активов. */
+  initialPriceFixingDate?:
+    | Date
+    | undefined;
+  /** Доходность по ноте в годовом выражении. */
+  yield: StructuredNote_Yield[];
+  /** Признак сохранения купонов. */
+  couponSavingFlag: boolean;
+  /** Сектор экономики. */
+  sector: string;
+  /** Код страны рисков. */
+  countryOfRisk: string;
+  /** Наименование страны рисков. */
+  countryOfRiskName: string;
+  /** Имя файла логотипа эмитента. */
+  logoName: string;
+  /** Тесты, которые необходимо пройти клиенту, чтобы совершать покупки по бумаге. */
+  requiredTests: string[];
+}
+
+/** Стратегия портфеля. */
+export enum StructuredNote_LogicPortfolio {
+  /** LOGIC_PORTFOLIO_UNSPECIFIED - Стратегия портфеля не определена. */
+  LOGIC_PORTFOLIO_UNSPECIFIED = 0,
+  /** LOGIC_PORTFOLIO_VOLATILITY - Волатильность. */
+  LOGIC_PORTFOLIO_VOLATILITY = 1,
+  /** LOGIC_PORTFOLIO_CORRELATION - Корреляция. */
+  LOGIC_PORTFOLIO_CORRELATION = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function structuredNote_LogicPortfolioFromJSON(object: any): StructuredNote_LogicPortfolio {
+  switch (object) {
+    case 0:
+    case "LOGIC_PORTFOLIO_UNSPECIFIED":
+      return StructuredNote_LogicPortfolio.LOGIC_PORTFOLIO_UNSPECIFIED;
+    case 1:
+    case "LOGIC_PORTFOLIO_VOLATILITY":
+      return StructuredNote_LogicPortfolio.LOGIC_PORTFOLIO_VOLATILITY;
+    case 2:
+    case "LOGIC_PORTFOLIO_CORRELATION":
+      return StructuredNote_LogicPortfolio.LOGIC_PORTFOLIO_CORRELATION;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return StructuredNote_LogicPortfolio.UNRECOGNIZED;
+  }
+}
+
+export function structuredNote_LogicPortfolioToJSON(object: StructuredNote_LogicPortfolio): string {
+  switch (object) {
+    case StructuredNote_LogicPortfolio.LOGIC_PORTFOLIO_UNSPECIFIED:
+      return "LOGIC_PORTFOLIO_UNSPECIFIED";
+    case StructuredNote_LogicPortfolio.LOGIC_PORTFOLIO_VOLATILITY:
+      return "LOGIC_PORTFOLIO_VOLATILITY";
+    case StructuredNote_LogicPortfolio.LOGIC_PORTFOLIO_CORRELATION:
+      return "LOGIC_PORTFOLIO_CORRELATION";
+    case StructuredNote_LogicPortfolio.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+/** Принцип наблюдений. */
+export enum StructuredNote_ObservationPrinciple {
+  /** OBSERVATION_PRINCIPLE_UNSPECIFIED - Принцип наблюдений не определен. */
+  OBSERVATION_PRINCIPLE_UNSPECIFIED = 0,
+  /** OBSERVATION_PRINCIPLE_WORST_BASIC_ASSET - По худшему базовому активу. */
+  OBSERVATION_PRINCIPLE_WORST_BASIC_ASSET = 1,
+  /** OBSERVATION_PRINCIPLE_BEST_BASIC_ASSET - По лучшему базовому активу. */
+  OBSERVATION_PRINCIPLE_BEST_BASIC_ASSET = 2,
+  /** OBSERVATION_PRINCIPLE_AVERAGE_OF_BASIC_ASSETS - Среднее значение по базовым активам. */
+  OBSERVATION_PRINCIPLE_AVERAGE_OF_BASIC_ASSETS = 3,
+  /** OBSERVATION_PRINCIPLE_SINGLE_BASIC_ASSET_PERFORMANCE - Динамика актива (только если у ноты один базовый актив). */
+  OBSERVATION_PRINCIPLE_SINGLE_BASIC_ASSET_PERFORMANCE = 4,
+  UNRECOGNIZED = -1,
+}
+
+export function structuredNote_ObservationPrincipleFromJSON(object: any): StructuredNote_ObservationPrinciple {
+  switch (object) {
+    case 0:
+    case "OBSERVATION_PRINCIPLE_UNSPECIFIED":
+      return StructuredNote_ObservationPrinciple.OBSERVATION_PRINCIPLE_UNSPECIFIED;
+    case 1:
+    case "OBSERVATION_PRINCIPLE_WORST_BASIC_ASSET":
+      return StructuredNote_ObservationPrinciple.OBSERVATION_PRINCIPLE_WORST_BASIC_ASSET;
+    case 2:
+    case "OBSERVATION_PRINCIPLE_BEST_BASIC_ASSET":
+      return StructuredNote_ObservationPrinciple.OBSERVATION_PRINCIPLE_BEST_BASIC_ASSET;
+    case 3:
+    case "OBSERVATION_PRINCIPLE_AVERAGE_OF_BASIC_ASSETS":
+      return StructuredNote_ObservationPrinciple.OBSERVATION_PRINCIPLE_AVERAGE_OF_BASIC_ASSETS;
+    case 4:
+    case "OBSERVATION_PRINCIPLE_SINGLE_BASIC_ASSET_PERFORMANCE":
+      return StructuredNote_ObservationPrinciple.OBSERVATION_PRINCIPLE_SINGLE_BASIC_ASSET_PERFORMANCE;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return StructuredNote_ObservationPrinciple.UNRECOGNIZED;
+  }
+}
+
+export function structuredNote_ObservationPrincipleToJSON(object: StructuredNote_ObservationPrinciple): string {
+  switch (object) {
+    case StructuredNote_ObservationPrinciple.OBSERVATION_PRINCIPLE_UNSPECIFIED:
+      return "OBSERVATION_PRINCIPLE_UNSPECIFIED";
+    case StructuredNote_ObservationPrinciple.OBSERVATION_PRINCIPLE_WORST_BASIC_ASSET:
+      return "OBSERVATION_PRINCIPLE_WORST_BASIC_ASSET";
+    case StructuredNote_ObservationPrinciple.OBSERVATION_PRINCIPLE_BEST_BASIC_ASSET:
+      return "OBSERVATION_PRINCIPLE_BEST_BASIC_ASSET";
+    case StructuredNote_ObservationPrinciple.OBSERVATION_PRINCIPLE_AVERAGE_OF_BASIC_ASSETS:
+      return "OBSERVATION_PRINCIPLE_AVERAGE_OF_BASIC_ASSETS";
+    case StructuredNote_ObservationPrinciple.OBSERVATION_PRINCIPLE_SINGLE_BASIC_ASSET_PERFORMANCE:
+      return "OBSERVATION_PRINCIPLE_SINGLE_BASIC_ASSET_PERFORMANCE";
+    case StructuredNote_ObservationPrinciple.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+/** Тип доходности. */
+export enum StructuredNote_YieldType {
+  /** YIELD_TYPE_UNSPECIFIED - Тип доходности не определен. */
+  YIELD_TYPE_UNSPECIFIED = 0,
+  /** YIELD_TYPE_GUARANTED_COUPON - Гарантированный купон. */
+  YIELD_TYPE_GUARANTED_COUPON = 1,
+  /** YIELD_TYPE_CONDITIONAL_COUPON - Условный купон. */
+  YIELD_TYPE_CONDITIONAL_COUPON = 2,
+  /** YIELD_TYPE_PARTICIPATION - Участие в росте. */
+  YIELD_TYPE_PARTICIPATION = 3,
+  UNRECOGNIZED = -1,
+}
+
+export function structuredNote_YieldTypeFromJSON(object: any): StructuredNote_YieldType {
+  switch (object) {
+    case 0:
+    case "YIELD_TYPE_UNSPECIFIED":
+      return StructuredNote_YieldType.YIELD_TYPE_UNSPECIFIED;
+    case 1:
+    case "YIELD_TYPE_GUARANTED_COUPON":
+      return StructuredNote_YieldType.YIELD_TYPE_GUARANTED_COUPON;
+    case 2:
+    case "YIELD_TYPE_CONDITIONAL_COUPON":
+      return StructuredNote_YieldType.YIELD_TYPE_CONDITIONAL_COUPON;
+    case 3:
+    case "YIELD_TYPE_PARTICIPATION":
+      return StructuredNote_YieldType.YIELD_TYPE_PARTICIPATION;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return StructuredNote_YieldType.UNRECOGNIZED;
+  }
+}
+
+export function structuredNote_YieldTypeToJSON(object: StructuredNote_YieldType): string {
+  switch (object) {
+    case StructuredNote_YieldType.YIELD_TYPE_UNSPECIFIED:
+      return "YIELD_TYPE_UNSPECIFIED";
+    case StructuredNote_YieldType.YIELD_TYPE_GUARANTED_COUPON:
+      return "YIELD_TYPE_GUARANTED_COUPON";
+    case StructuredNote_YieldType.YIELD_TYPE_CONDITIONAL_COUPON:
+      return "YIELD_TYPE_CONDITIONAL_COUPON";
+    case StructuredNote_YieldType.YIELD_TYPE_PARTICIPATION:
+      return "YIELD_TYPE_PARTICIPATION";
+    case StructuredNote_YieldType.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+/** Базовый актив. */
+export interface StructuredNote_BasicAsset {
+  /** Уникальный идентификатор базового актива. */
+  uid: string;
+  /** Тип базового актива. */
+  type: AssetType;
+  /** Начальная цена базового актива. */
+  initialPrice?: Quotation | undefined;
+}
+
+/** Доходность. */
+export interface StructuredNote_Yield {
+  /** Тип доходности. */
+  type: StructuredNote_YieldType;
+  /** Значение доходности. */
+  value?: Quotation | undefined;
 }
 
 /** Запрос НКД по облигации. */
@@ -2129,47 +2349,39 @@ export interface Instrument {
   classCode: string;
   /** ISIN-идентификатор инструмента. */
   isin: string;
-  /** Лотность инструмента. Возможно совершение операций только на количества ценной бумаги, кратные параметру `lot`. [Подробнее](https://russianinvestments.github.io/investAPI/glossary#lot). */
+  /** Лотность инструмента. Возможно совершение операций только на количества ценной бумаги, кратные параметру `lot`. [Подробнее](./glossary#lot). */
   lot: number;
-  /** Валюта расчётов. */
+  /** Валюта расчетов. */
   currency: string;
-  /** Коэффициент ставки риска длинной позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР); 1 – клиент с повышенным уровнем риска (КПУР). */
+  /**
+   * Коэффициент ставки риска длинной позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР); 1 – клиент с повышенным уровнем риска (КПУР).
+   *
+   * @deprecated
+   */
   klong?:
     | Quotation
     | undefined;
-  /** Коэффициент ставки риска короткой позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР); 1 – клиент с повышенным уровнем риска (КПУР). */
+  /**
+   * Коэффициент ставки риска короткой позиции по клиенту. 2 – клиент со стандартным уровнем риска (КСУР); 1 – клиент с повышенным уровнем риска (КПУР).
+   *
+   * @deprecated
+   */
   kshort?:
     | Quotation
     | undefined;
-  /**
-   * Ставка риска начальной маржи для КСУР лонг. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5).
-   *
-   * @deprecated
-   */
+  /** Ставка риска начальной маржи для КСУР лонг. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dlong?:
     | Quotation
     | undefined;
-  /**
-   * Ставка риска начальной маржи для КСУР шорт. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5).
-   *
-   * @deprecated
-   */
+  /** Ставка риска начальной маржи для КСУР шорт. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dshort?:
     | Quotation
     | undefined;
-  /**
-   * Ставка риска начальной маржи для КПУР лонг. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5).
-   *
-   * @deprecated
-   */
+  /** Ставка риска начальной маржи для КПУР лонг. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dlongMin?:
     | Quotation
     | undefined;
-  /**
-   * Ставка риска начальной маржи для КПУР шорт. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5).
-   *
-   * @deprecated
-   */
+  /** Ставка риска начальной маржи для КПУР шорт. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dshortMin?:
     | Quotation
     | undefined;
@@ -2179,9 +2391,9 @@ export interface Instrument {
   name: string;
   /** Tорговая площадка (секция биржи). */
   exchange: string;
-  /** Код страны риска — то есть страны, в которой компания ведёт основной бизнес. */
+  /** Код страны риска — то есть страны, в которой компания ведет основной бизнес. */
   countryOfRisk: string;
-  /** Наименование страны риска — то есть страны, в которой компания ведёт основной бизнес. */
+  /** Наименование страны риска — то есть страны, в которой компания ведет основной бизнес. */
   countryOfRiskName: string;
   /** Тип инструмента. */
   instrumentType: string;
@@ -2201,12 +2413,14 @@ export interface Instrument {
   apiTradeAvailableFlag: boolean;
   /** Уникальный идентификатор инструмента. */
   uid: string;
-  /** Реальная площадка исполнения расчётов (биржа). */
+  /** Реальная площадка исполнения расчетов (биржа). */
   realExchange: RealExchange;
   /** Уникальный идентификатор позиции инструмента. */
   positionUid: string;
   /** Уникальный идентификатор актива. */
   assetUid: string;
+  /** Тесты, которые необходимо пройти клиенту, чтобы совершать сделки по инструменту. */
+  requiredTests: string[];
   /** Признак доступности для ИИС. */
   forIisFlag: boolean;
   /** Флаг, отображающий доступность торговли инструментом только для квалифицированных инвесторов. */
@@ -2229,11 +2443,11 @@ export interface Instrument {
   brand?:
     | BrandData
     | undefined;
-  /** Ставка риска в лонг, с учетом текущего уровня риска портфеля клиента. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
+  /** Ставка риска в лонг с учетом текущего уровня риска портфеля клиента. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dlongClient?:
     | Quotation
     | undefined;
-  /** Ставка риска в шорт, с учетом текущего уровня риска портфеля клиента. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
+  /** Ставка риска в шорт с учетом текущего уровня риска портфеля клиента. [Подробнее про ставки риска](https://www.tbank.ru/invest/help/brokerage/account/margin/about/#q5). */
   dshortClient?: Quotation | undefined;
 }
 
@@ -2532,7 +2746,7 @@ export interface AssetBond {
 
 /** Структурная нота. */
 export interface AssetStructuredProduct {
-  /** Наименование заёмщика. */
+  /** Наименование заемщика. */
   borrowName: string;
   /** Номинал. */
   nominal?:
@@ -2560,7 +2774,7 @@ export interface AssetStructuredProduct {
   issueSizePlan?:
     | Quotation
     | undefined;
-  /** Объём размещения. */
+  /** Объем размещения. */
   issueSize?:
     | Quotation
     | undefined;
@@ -2722,12 +2936,16 @@ export interface InstrumentLink {
 
 /** Запрос списка избранных инструментов, входные параметры не требуются. */
 export interface GetFavoritesRequest {
+  /** Уникальный идентификатор группы. */
+  groupId?: string | undefined;
 }
 
-/** В ответ передаётся список избранных инструментов в качестве массива. */
+/** В ответ передается список избранных инструментов в качестве массива. */
 export interface GetFavoritesResponse {
   /** Массив инструментов. */
   favoriteInstruments: FavoriteInstrument[];
+  /** Уникальный идентификатор группы. */
+  groupId?: string | undefined;
 }
 
 /** Массив избранных инструментов. */
@@ -2760,6 +2978,8 @@ export interface EditFavoritesRequest {
   instruments: EditFavoritesRequestInstrument[];
   /** Тип действия со списком. */
   actionType: EditFavoritesActionType;
+  /** Уникальный идентификатор группы. */
+  groupId?: string | undefined;
 }
 
 /** Массив инструментов для редактирования списка избранных инструментов. */
@@ -2780,6 +3000,62 @@ export interface EditFavoritesRequestInstrument {
 export interface EditFavoritesResponse {
   /** Массив инструментов. */
   favoriteInstruments: FavoriteInstrument[];
+  /** Уникальный идентификатор группы. */
+  groupId?: string | undefined;
+}
+
+/** Запрос создания новой группы избранных инструментов. */
+export interface CreateFavoriteGroupRequest {
+  /** Название группы, не более 255 символов. */
+  groupName: string;
+  /** Цвет группы. Принимает значения в HEX-формате, от "000000" до "FFFFFF" */
+  groupColor: string;
+  /** Описание */
+  note?: string | undefined;
+}
+
+export interface CreateFavoriteGroupResponse {
+  /** Уникальный идентификатор группы. */
+  groupId: string;
+  /** Название группы. */
+  groupName: string;
+}
+
+/** Запрос удаления избранной группы */
+export interface DeleteFavoriteGroupRequest {
+  /** Уникальный идентификатор группы. */
+  groupId: string;
+}
+
+export interface DeleteFavoriteGroupResponse {
+}
+
+/** Запрос получения списка избранных групп */
+export interface GetFavoriteGroupsRequest {
+  /** Массив идентификаторов инструментов. Принимает значение `figi` или `instrument_uid`. Если в группе будет хотя бы один из инструментов массива, то в ответе у группы вернется признак `containsInstrument = true`. */
+  instrumentId: string[];
+  /** Массив идентификаторов групп, которые необходимо исключить из ответа. */
+  excludedGroupId: string[];
+}
+
+/** Избранные группы */
+export interface GetFavoriteGroupsResponse {
+  /** Массив групп избранных списков инструментов. */
+  groups: GetFavoriteGroupsResponse_FavoriteGroup[];
+}
+
+/** Избранная группа */
+export interface GetFavoriteGroupsResponse_FavoriteGroup {
+  /** Уникальный идентификатор группы. */
+  groupId: string;
+  /** Название группы. */
+  groupName: string;
+  /** Цвет группы в HEX-формате. */
+  color: string;
+  /** Количество инструментов в группе. */
+  size: number;
+  /** Признак наличия в группе хотя бы одного инструмента из запроса. */
+  containsInstrument?: boolean | undefined;
 }
 
 /** Запрос справочника стран. */
@@ -2810,7 +3086,7 @@ export interface IndicativeResponse {
   ticker: string;
   /** Класс-код инструмента. */
   classCode: string;
-  /** Валюта расчётов. */
+  /** Валюта расчетов. */
   currency: string;
   /** Тип инструмента. */
   instrumentKind: InstrumentType;
@@ -2830,7 +3106,7 @@ export interface IndicativeResponse {
 export interface CountryResponse {
   /** Двухбуквенный код страны. */
   alfaTwo: string;
-  /** Трёхбуквенный код страны. */
+  /** Трехбуквенный код страны. */
   alfaThree: string;
   /** Наименование страны. */
   name: string;
@@ -2941,9 +3217,9 @@ export interface GetAssetFundamentalsResponse_StatisticResponse {
   highPriceLast52Weeks: number;
   /** Минимум за год. */
   lowPriceLast52Weeks: number;
-  /** Средний объём торгов за 10 дней. */
+  /** Средний объем торгов за 10 дней. */
   averageDailyVolumeLast10Days: number;
-  /** Средний объём торгов за месяц. */
+  /** Средний объем торгов за месяц. */
   averageDailyVolumeLast4Weeks: number;
   beta: number;
   /** Доля акций в свободном обращении. */
@@ -2968,13 +3244,13 @@ export interface GetAssetFundamentalsResponse_StatisticResponse {
   fiveYearAnnualRevenueGrowthRate: number;
   /** Среднегодовой  рocт выручки за 3 года. */
   threeYearAnnualRevenueGrowthRate: number;
-  /** Соотношение рыночной капитализации компании к её чистой прибыли. */
+  /** Соотношение рыночной капитализации компании к ее чистой прибыли. */
   peRatioTtm: number;
-  /** Соотношение рыночной капитализации компании к её выручке. */
+  /** Соотношение рыночной капитализации компании к ее выручке. */
   priceToSalesTtm: number;
-  /** Соотношение рыночной капитализации компании к её балансовой стоимости. */
+  /** Соотношение рыночной капитализации компании к ее балансовой стоимости. */
   priceToBookTtm: number;
-  /** Соотношение рыночной капитализации компании к её свободному денежному потоку. */
+  /** Соотношение рыночной капитализации компании к ее свободному денежному потоку. */
   priceToFreeCashFlowTtm: number;
   /** Рыночная стоимость компании. */
   totalEnterpriseValueMrq: number;
@@ -3124,7 +3400,7 @@ export function getAssetReportsResponse_AssetReportPeriodTypeToJSON(
 export interface GetAssetReportsResponse_GetAssetReportsEvent {
   /** Идентификатор инструмента. */
   instrumentId: string;
-  /** Дата публикации отчёта. */
+  /** Дата публикации отчета. */
   reportDate?:
     | Date
     | undefined;
@@ -3132,7 +3408,7 @@ export interface GetAssetReportsResponse_GetAssetReportsEvent {
   periodYear: number;
   /** Номер периода. */
   periodNum: number;
-  /** Тип отчёта. */
+  /** Тип отчета. */
   periodType: GetAssetReportsResponse_AssetReportPeriodType;
   /** Дата создания записи. */
   createdAt?: Date | undefined;
@@ -3272,6 +3548,42 @@ export interface GetForecastResponse_ConsensusItem {
   priceChangeRel?: Quotation | undefined;
 }
 
+/** Запрос ставок риска */
+export interface RiskRatesRequest {
+  /** Идентификаторы инструментов. */
+  instrumentId: string[];
+}
+
+/** Ставки риска */
+export interface RiskRatesResponse {
+  instrumentRiskRates: RiskRatesResponse_RiskRateResult[];
+}
+
+export interface RiskRatesResponse_RiskRateResult {
+  instrumentUid: string;
+  /** Ставка риска пользователя  в шорт */
+  shortRiskRate?:
+    | RiskRatesResponse_RiskRate
+    | undefined;
+  /** Ставка риска пользователя в лонг */
+  longRiskRate?:
+    | RiskRatesResponse_RiskRate
+    | undefined;
+  /** Доступные ставки риска в шорт */
+  shortRiskRates: RiskRatesResponse_RiskRate[];
+  /** Доступные ставки риска в лонг */
+  longRiskRates: RiskRatesResponse_RiskRate[];
+  /** Ошибка. */
+  error?: string | undefined;
+}
+
+export interface RiskRatesResponse_RiskRate {
+  /** Категория риска. */
+  riskLevelCode: string;
+  /** Значение ставки риска. */
+  value?: Quotation | undefined;
+}
+
 export interface TradingInterval {
   /** Название интервала. */
   type: string;
@@ -3286,6 +3598,110 @@ export interface TradingInterval_TimeInterval {
     | undefined;
   /** Время окончания интервала. */
   endTs?: Date | undefined;
+}
+
+/** Запрос сделок по инсайдерам */
+export interface GetInsiderDealsRequest {
+  instrumentId: string;
+  limit: number;
+  nextCursor?: string | undefined;
+}
+
+/** сделки инсайдеров */
+export interface GetInsiderDealsResponse {
+  /** Массив сделок. */
+  insiderDeals: GetInsiderDealsResponse_InsiderDeal[];
+  /** Курсор для получения следующей страницы. */
+  nextCursor?: string | undefined;
+}
+
+export enum GetInsiderDealsResponse_TradeDirection {
+  /** TRADE_DIRECTION_UNSPECIFIED - Не определено. */
+  TRADE_DIRECTION_UNSPECIFIED = 0,
+  /** TRADE_DIRECTION_BUY - Покупка. */
+  TRADE_DIRECTION_BUY = 1,
+  /** TRADE_DIRECTION_SELL - Продажа. */
+  TRADE_DIRECTION_SELL = 2,
+  /** TRADE_DIRECTION_INCREASE - Увеличение доли. */
+  TRADE_DIRECTION_INCREASE = 3,
+  /** TRADE_DIRECTION_DECREASE - Уменьшение доли. */
+  TRADE_DIRECTION_DECREASE = 4,
+  UNRECOGNIZED = -1,
+}
+
+export function getInsiderDealsResponse_TradeDirectionFromJSON(object: any): GetInsiderDealsResponse_TradeDirection {
+  switch (object) {
+    case 0:
+    case "TRADE_DIRECTION_UNSPECIFIED":
+      return GetInsiderDealsResponse_TradeDirection.TRADE_DIRECTION_UNSPECIFIED;
+    case 1:
+    case "TRADE_DIRECTION_BUY":
+      return GetInsiderDealsResponse_TradeDirection.TRADE_DIRECTION_BUY;
+    case 2:
+    case "TRADE_DIRECTION_SELL":
+      return GetInsiderDealsResponse_TradeDirection.TRADE_DIRECTION_SELL;
+    case 3:
+    case "TRADE_DIRECTION_INCREASE":
+      return GetInsiderDealsResponse_TradeDirection.TRADE_DIRECTION_INCREASE;
+    case 4:
+    case "TRADE_DIRECTION_DECREASE":
+      return GetInsiderDealsResponse_TradeDirection.TRADE_DIRECTION_DECREASE;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return GetInsiderDealsResponse_TradeDirection.UNRECOGNIZED;
+  }
+}
+
+export function getInsiderDealsResponse_TradeDirectionToJSON(object: GetInsiderDealsResponse_TradeDirection): string {
+  switch (object) {
+    case GetInsiderDealsResponse_TradeDirection.TRADE_DIRECTION_UNSPECIFIED:
+      return "TRADE_DIRECTION_UNSPECIFIED";
+    case GetInsiderDealsResponse_TradeDirection.TRADE_DIRECTION_BUY:
+      return "TRADE_DIRECTION_BUY";
+    case GetInsiderDealsResponse_TradeDirection.TRADE_DIRECTION_SELL:
+      return "TRADE_DIRECTION_SELL";
+    case GetInsiderDealsResponse_TradeDirection.TRADE_DIRECTION_INCREASE:
+      return "TRADE_DIRECTION_INCREASE";
+    case GetInsiderDealsResponse_TradeDirection.TRADE_DIRECTION_DECREASE:
+      return "TRADE_DIRECTION_DECREASE";
+    case GetInsiderDealsResponse_TradeDirection.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export interface GetInsiderDealsResponse_InsiderDeal {
+  /** Уникальный идентификатор сделки. */
+  tradeId: number;
+  /** Направление сделки. */
+  direction: GetInsiderDealsResponse_TradeDirection;
+  /** Валюта сделки. */
+  currency: string;
+  /** Дата сделки. */
+  date?:
+    | Date
+    | undefined;
+  /** Количество. */
+  quantity: number;
+  /** Цена. */
+  price?:
+    | Quotation
+    | undefined;
+  /** Уникальный идентификатор инструмента. */
+  instrumentUid: string;
+  /** Тикер инструмента. */
+  ticker: string;
+  /** Имя инвестора. */
+  investorName: string;
+  /** Какое отношение покупатель/продавец имеет к эмитенту */
+  investorPosition: string;
+  /** Купленный/проданный объём от общего количества ценных бумаг на рынке */
+  percentage: number;
+  /** Признак является ли сделка реализацией опциона */
+  isOptionExecution: boolean;
+  /** Дата раскрытия сделки. */
+  disclosureDate?: Date | undefined;
 }
 
 function createBaseTradingSchedulesRequest(): TradingSchedulesRequest {
@@ -5340,6 +5756,7 @@ function createBaseOption(): Option {
     weekendFlag: false,
     blockedTcaFlag: false,
     apiTradeAvailableFlag: false,
+    requiredTests: [],
   };
 }
 
@@ -5485,6 +5902,9 @@ export const Option = {
     }
     if (message.apiTradeAvailableFlag === true) {
       writer.uint32(3272).bool(message.apiTradeAvailableFlag);
+    }
+    for (const v of message.requiredTests) {
+      writer.uint32(3282).string(v!);
     }
     return writer;
   },
@@ -5825,6 +6245,13 @@ export const Option = {
 
           message.apiTradeAvailableFlag = reader.bool();
           continue;
+        case 410:
+          if (tag !== 3282) {
+            break;
+          }
+
+          message.requiredTests.push(reader.string());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -5889,6 +6316,9 @@ export const Option = {
       apiTradeAvailableFlag: isSet(object.apiTradeAvailableFlag)
         ? globalThis.Boolean(object.apiTradeAvailableFlag)
         : false,
+      requiredTests: globalThis.Array.isArray(object?.requiredTests)
+        ? object.requiredTests.map((e: any) => globalThis.String(e))
+        : [],
     };
   },
 
@@ -6035,6 +6465,9 @@ export const Option = {
     if (message.apiTradeAvailableFlag === true) {
       obj.apiTradeAvailableFlag = message.apiTradeAvailableFlag;
     }
+    if (message.requiredTests?.length) {
+      obj.requiredTests = message.requiredTests;
+    }
     return obj;
   },
 };
@@ -6139,6 +6572,106 @@ export const SharesResponse = {
   },
 };
 
+function createBaseStructuredNoteResponse(): StructuredNoteResponse {
+  return { instrument: undefined };
+}
+
+export const StructuredNoteResponse = {
+  encode(message: StructuredNoteResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.instrument !== undefined) {
+      StructuredNote.encode(message.instrument, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): StructuredNoteResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStructuredNoteResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.instrument = StructuredNote.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StructuredNoteResponse {
+    return { instrument: isSet(object.instrument) ? StructuredNote.fromJSON(object.instrument) : undefined };
+  },
+
+  toJSON(message: StructuredNoteResponse): unknown {
+    const obj: any = {};
+    if (message.instrument !== undefined) {
+      obj.instrument = StructuredNote.toJSON(message.instrument);
+    }
+    return obj;
+  },
+};
+
+function createBaseStructuredNotesResponse(): StructuredNotesResponse {
+  return { instruments: [] };
+}
+
+export const StructuredNotesResponse = {
+  encode(message: StructuredNotesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.instruments) {
+      StructuredNote.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): StructuredNotesResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStructuredNotesResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.instruments.push(StructuredNote.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StructuredNotesResponse {
+    return {
+      instruments: globalThis.Array.isArray(object?.instruments)
+        ? object.instruments.map((e: any) => StructuredNote.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: StructuredNotesResponse): unknown {
+    const obj: any = {};
+    if (message.instruments?.length) {
+      obj.instruments = message.instruments.map((e) => StructuredNote.toJSON(e));
+    }
+    return obj;
+  },
+};
+
 function createBaseBond(): Bond {
   return {
     figi: "",
@@ -6183,6 +6716,7 @@ function createBaseBond(): Bond {
     realExchange: 0,
     positionUid: "",
     assetUid: "",
+    requiredTests: [],
     forIisFlag: false,
     forQualInvestorFlag: false,
     weekendFlag: false,
@@ -6327,6 +6861,9 @@ export const Bond = {
     }
     if (message.assetUid !== "") {
       writer.uint32(346).string(message.assetUid);
+    }
+    for (const v of message.requiredTests) {
+      writer.uint32(354).string(v!);
     }
     if (message.forIisFlag === true) {
       writer.uint32(408).bool(message.forIisFlag);
@@ -6674,6 +7211,13 @@ export const Bond = {
 
           message.assetUid = reader.string();
           continue;
+        case 44:
+          if (tag !== 354) {
+            break;
+          }
+
+          message.requiredTests.push(reader.string());
+          continue;
         case 51:
           if (tag !== 408) {
             break;
@@ -6827,6 +7371,9 @@ export const Bond = {
       realExchange: isSet(object.realExchange) ? realExchangeFromJSON(object.realExchange) : 0,
       positionUid: isSet(object.positionUid) ? globalThis.String(object.positionUid) : "",
       assetUid: isSet(object.assetUid) ? globalThis.String(object.assetUid) : "",
+      requiredTests: globalThis.Array.isArray(object?.requiredTests)
+        ? object.requiredTests.map((e: any) => globalThis.String(e))
+        : [],
       forIisFlag: isSet(object.forIisFlag) ? globalThis.Boolean(object.forIisFlag) : false,
       forQualInvestorFlag: isSet(object.forQualInvestorFlag) ? globalThis.Boolean(object.forQualInvestorFlag) : false,
       weekendFlag: isSet(object.weekendFlag) ? globalThis.Boolean(object.weekendFlag) : false,
@@ -6976,6 +7523,9 @@ export const Bond = {
     if (message.assetUid !== "") {
       obj.assetUid = message.assetUid;
     }
+    if (message.requiredTests?.length) {
+      obj.requiredTests = message.requiredTests;
+    }
     if (message.forIisFlag === true) {
       obj.forIisFlag = message.forIisFlag;
     }
@@ -7052,6 +7602,7 @@ function createBaseCurrency(): Currency {
     uid: "",
     realExchange: 0,
     positionUid: "",
+    requiredTests: [],
     forIisFlag: false,
     forQualInvestorFlag: false,
     weekendFlag: false,
@@ -7149,6 +7700,9 @@ export const Currency = {
     }
     if (message.positionUid !== "") {
       writer.uint32(234).string(message.positionUid);
+    }
+    for (const v of message.requiredTests) {
+      writer.uint32(242).string(v!);
     }
     if (message.forIisFlag === true) {
       writer.uint32(328).bool(message.forIisFlag);
@@ -7383,6 +7937,13 @@ export const Currency = {
 
           message.positionUid = reader.string();
           continue;
+        case 30:
+          if (tag !== 242) {
+            break;
+          }
+
+          message.requiredTests.push(reader.string());
+          continue;
         case 41:
           if (tag !== 328) {
             break;
@@ -7487,6 +8048,9 @@ export const Currency = {
       uid: isSet(object.uid) ? globalThis.String(object.uid) : "",
       realExchange: isSet(object.realExchange) ? realExchangeFromJSON(object.realExchange) : 0,
       positionUid: isSet(object.positionUid) ? globalThis.String(object.positionUid) : "",
+      requiredTests: globalThis.Array.isArray(object?.requiredTests)
+        ? object.requiredTests.map((e: any) => globalThis.String(e))
+        : [],
       forIisFlag: isSet(object.forIisFlag) ? globalThis.Boolean(object.forIisFlag) : false,
       forQualInvestorFlag: isSet(object.forQualInvestorFlag) ? globalThis.Boolean(object.forQualInvestorFlag) : false,
       weekendFlag: isSet(object.weekendFlag) ? globalThis.Boolean(object.weekendFlag) : false,
@@ -7589,6 +8153,9 @@ export const Currency = {
     if (message.positionUid !== "") {
       obj.positionUid = message.positionUid;
     }
+    if (message.requiredTests?.length) {
+      obj.requiredTests = message.requiredTests;
+    }
     if (message.forIisFlag === true) {
       obj.forIisFlag = message.forIisFlag;
     }
@@ -7656,6 +8223,7 @@ function createBaseEtf(): Etf {
     positionUid: "",
     assetUid: "",
     instrumentExchange: 0,
+    requiredTests: [],
     forIisFlag: false,
     forQualInvestorFlag: false,
     weekendFlag: false,
@@ -7772,6 +8340,9 @@ export const Etf = {
     }
     if (message.instrumentExchange !== 0) {
       writer.uint32(280).int32(message.instrumentExchange);
+    }
+    for (const v of message.requiredTests) {
+      writer.uint32(290).string(v!);
     }
     if (message.forIisFlag === true) {
       writer.uint32(328).bool(message.forIisFlag);
@@ -8051,6 +8622,13 @@ export const Etf = {
 
           message.instrumentExchange = reader.int32() as any;
           continue;
+        case 36:
+          if (tag !== 290) {
+            break;
+          }
+
+          message.requiredTests.push(reader.string());
+          continue;
         case 41:
           if (tag !== 328) {
             break;
@@ -8170,6 +8748,9 @@ export const Etf = {
       instrumentExchange: isSet(object.instrumentExchange)
         ? instrumentExchangeTypeFromJSON(object.instrumentExchange)
         : 0,
+      requiredTests: globalThis.Array.isArray(object?.requiredTests)
+        ? object.requiredTests.map((e: any) => globalThis.String(e))
+        : [],
       forIisFlag: isSet(object.forIisFlag) ? globalThis.Boolean(object.forIisFlag) : false,
       forQualInvestorFlag: isSet(object.forQualInvestorFlag) ? globalThis.Boolean(object.forQualInvestorFlag) : false,
       weekendFlag: isSet(object.weekendFlag) ? globalThis.Boolean(object.weekendFlag) : false,
@@ -8291,6 +8872,9 @@ export const Etf = {
     if (message.instrumentExchange !== 0) {
       obj.instrumentExchange = instrumentExchangeTypeToJSON(message.instrumentExchange);
     }
+    if (message.requiredTests?.length) {
+      obj.requiredTests = message.requiredTests;
+    }
     if (message.forIisFlag === true) {
       obj.forIisFlag = message.forIisFlag;
     }
@@ -8361,6 +8945,7 @@ function createBaseFuture(): Future {
     realExchange: 0,
     positionUid: "",
     basicAssetPositionUid: "",
+    requiredTests: [],
     forIisFlag: false,
     forQualInvestorFlag: false,
     weekendFlag: false,
@@ -8479,6 +9064,9 @@ export const Future = {
     }
     if (message.basicAssetPositionUid !== "") {
       writer.uint32(274).string(message.basicAssetPositionUid);
+    }
+    for (const v of message.requiredTests) {
+      writer.uint32(282).string(v!);
     }
     if (message.forIisFlag === true) {
       writer.uint32(328).bool(message.forIisFlag);
@@ -8764,6 +9352,13 @@ export const Future = {
 
           message.basicAssetPositionUid = reader.string();
           continue;
+        case 35:
+          if (tag !== 282) {
+            break;
+          }
+
+          message.requiredTests.push(reader.string());
+          continue;
         case 41:
           if (tag !== 328) {
             break;
@@ -8895,6 +9490,9 @@ export const Future = {
       realExchange: isSet(object.realExchange) ? realExchangeFromJSON(object.realExchange) : 0,
       positionUid: isSet(object.positionUid) ? globalThis.String(object.positionUid) : "",
       basicAssetPositionUid: isSet(object.basicAssetPositionUid) ? globalThis.String(object.basicAssetPositionUid) : "",
+      requiredTests: globalThis.Array.isArray(object?.requiredTests)
+        ? object.requiredTests.map((e: any) => globalThis.String(e))
+        : [],
       forIisFlag: isSet(object.forIisFlag) ? globalThis.Boolean(object.forIisFlag) : false,
       forQualInvestorFlag: isSet(object.forQualInvestorFlag) ? globalThis.Boolean(object.forQualInvestorFlag) : false,
       weekendFlag: isSet(object.weekendFlag) ? globalThis.Boolean(object.weekendFlag) : false,
@@ -9022,6 +9620,9 @@ export const Future = {
     if (message.basicAssetPositionUid !== "") {
       obj.basicAssetPositionUid = message.basicAssetPositionUid;
     }
+    if (message.requiredTests?.length) {
+      obj.requiredTests = message.requiredTests;
+    }
     if (message.forIisFlag === true) {
       obj.forIisFlag = message.forIisFlag;
     }
@@ -9099,6 +9700,7 @@ function createBaseShare(): Share {
     positionUid: "",
     assetUid: "",
     instrumentExchange: 0,
+    requiredTests: [],
     forIisFlag: false,
     forQualInvestorFlag: false,
     weekendFlag: false,
@@ -9218,6 +9820,9 @@ export const Share = {
     }
     if (message.instrumentExchange !== 0) {
       writer.uint32(296).int32(message.instrumentExchange);
+    }
+    for (const v of message.requiredTests) {
+      writer.uint32(306).string(v!);
     }
     if (message.forIisFlag === true) {
       writer.uint32(368).bool(message.forIisFlag);
@@ -9504,6 +10109,13 @@ export const Share = {
 
           message.instrumentExchange = reader.int32() as any;
           continue;
+        case 38:
+          if (tag !== 306) {
+            break;
+          }
+
+          message.requiredTests.push(reader.string());
+          continue;
         case 46:
           if (tag !== 368) {
             break;
@@ -9624,6 +10236,9 @@ export const Share = {
       instrumentExchange: isSet(object.instrumentExchange)
         ? instrumentExchangeTypeFromJSON(object.instrumentExchange)
         : 0,
+      requiredTests: globalThis.Array.isArray(object?.requiredTests)
+        ? object.requiredTests.map((e: any) => globalThis.String(e))
+        : [],
       forIisFlag: isSet(object.forIisFlag) ? globalThis.Boolean(object.forIisFlag) : false,
       forQualInvestorFlag: isSet(object.forQualInvestorFlag) ? globalThis.Boolean(object.forQualInvestorFlag) : false,
       weekendFlag: isSet(object.weekendFlag) ? globalThis.Boolean(object.weekendFlag) : false,
@@ -9748,6 +10363,9 @@ export const Share = {
     if (message.instrumentExchange !== 0) {
       obj.instrumentExchange = instrumentExchangeTypeToJSON(message.instrumentExchange);
     }
+    if (message.requiredTests?.length) {
+      obj.requiredTests = message.requiredTests;
+    }
     if (message.forIisFlag === true) {
       obj.forIisFlag = message.forIisFlag;
     }
@@ -9777,6 +10395,1002 @@ export const Share = {
     }
     if (message.dshortClient !== undefined) {
       obj.dshortClient = Quotation.toJSON(message.dshortClient);
+    }
+    return obj;
+  },
+};
+
+function createBaseStructuredNote(): StructuredNote {
+  return {
+    uid: "",
+    figi: "",
+    ticker: "",
+    classCode: "",
+    isin: "",
+    name: "",
+    assetUid: "",
+    positionUid: "",
+    minPriceIncrement: undefined,
+    lot: 0,
+    nominal: undefined,
+    currency: "",
+    maturityDate: undefined,
+    placementDate: undefined,
+    issueKind: "",
+    issueSize: 0,
+    issueSizePlan: 0,
+    dlongClient: undefined,
+    dshortClient: undefined,
+    shortEnabledFlag: false,
+    exchange: "",
+    tradingStatus: 0,
+    apiTradeAvailableFlag: false,
+    buyAvailableFlag: false,
+    sellAvailableFlag: false,
+    limitOrderAvailableFlag: false,
+    marketOrderAvailableFlag: false,
+    bestpriceOrderAvailableFlag: false,
+    weekendFlag: false,
+    liquidityFlag: false,
+    forIisFlag: false,
+    forQualInvestorFlag: false,
+    pawnshopListFlag: false,
+    realExchange: 0,
+    first1minCandleDate: undefined,
+    first1dayCandleDate: undefined,
+    borrowName: "",
+    type: "",
+    logicPortfolio: 0,
+    assetType: 0,
+    basicAssets: [],
+    safetyBarrier: undefined,
+    couponPeriodBase: "",
+    observationPrinciple: 0,
+    observationFrequency: "",
+    initialPriceFixingDate: undefined,
+    yield: [],
+    couponSavingFlag: false,
+    sector: "",
+    countryOfRisk: "",
+    countryOfRiskName: "",
+    logoName: "",
+    requiredTests: [],
+  };
+}
+
+export const StructuredNote = {
+  encode(message: StructuredNote, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.uid !== "") {
+      writer.uint32(10).string(message.uid);
+    }
+    if (message.figi !== "") {
+      writer.uint32(18).string(message.figi);
+    }
+    if (message.ticker !== "") {
+      writer.uint32(26).string(message.ticker);
+    }
+    if (message.classCode !== "") {
+      writer.uint32(34).string(message.classCode);
+    }
+    if (message.isin !== "") {
+      writer.uint32(42).string(message.isin);
+    }
+    if (message.name !== "") {
+      writer.uint32(50).string(message.name);
+    }
+    if (message.assetUid !== "") {
+      writer.uint32(58).string(message.assetUid);
+    }
+    if (message.positionUid !== "") {
+      writer.uint32(66).string(message.positionUid);
+    }
+    if (message.minPriceIncrement !== undefined) {
+      Quotation.encode(message.minPriceIncrement, writer.uint32(74).fork()).ldelim();
+    }
+    if (message.lot !== 0) {
+      writer.uint32(80).int32(message.lot);
+    }
+    if (message.nominal !== undefined) {
+      MoneyValue.encode(message.nominal, writer.uint32(90).fork()).ldelim();
+    }
+    if (message.currency !== "") {
+      writer.uint32(98).string(message.currency);
+    }
+    if (message.maturityDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.maturityDate), writer.uint32(106).fork()).ldelim();
+    }
+    if (message.placementDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.placementDate), writer.uint32(114).fork()).ldelim();
+    }
+    if (message.issueKind !== "") {
+      writer.uint32(122).string(message.issueKind);
+    }
+    if (message.issueSize !== 0) {
+      writer.uint32(128).int32(message.issueSize);
+    }
+    if (message.issueSizePlan !== 0) {
+      writer.uint32(136).int32(message.issueSizePlan);
+    }
+    if (message.dlongClient !== undefined) {
+      Quotation.encode(message.dlongClient, writer.uint32(146).fork()).ldelim();
+    }
+    if (message.dshortClient !== undefined) {
+      Quotation.encode(message.dshortClient, writer.uint32(154).fork()).ldelim();
+    }
+    if (message.shortEnabledFlag === true) {
+      writer.uint32(160).bool(message.shortEnabledFlag);
+    }
+    if (message.exchange !== "") {
+      writer.uint32(170).string(message.exchange);
+    }
+    if (message.tradingStatus !== 0) {
+      writer.uint32(176).int32(message.tradingStatus);
+    }
+    if (message.apiTradeAvailableFlag === true) {
+      writer.uint32(184).bool(message.apiTradeAvailableFlag);
+    }
+    if (message.buyAvailableFlag === true) {
+      writer.uint32(192).bool(message.buyAvailableFlag);
+    }
+    if (message.sellAvailableFlag === true) {
+      writer.uint32(200).bool(message.sellAvailableFlag);
+    }
+    if (message.limitOrderAvailableFlag === true) {
+      writer.uint32(208).bool(message.limitOrderAvailableFlag);
+    }
+    if (message.marketOrderAvailableFlag === true) {
+      writer.uint32(216).bool(message.marketOrderAvailableFlag);
+    }
+    if (message.bestpriceOrderAvailableFlag === true) {
+      writer.uint32(224).bool(message.bestpriceOrderAvailableFlag);
+    }
+    if (message.weekendFlag === true) {
+      writer.uint32(232).bool(message.weekendFlag);
+    }
+    if (message.liquidityFlag === true) {
+      writer.uint32(240).bool(message.liquidityFlag);
+    }
+    if (message.forIisFlag === true) {
+      writer.uint32(248).bool(message.forIisFlag);
+    }
+    if (message.forQualInvestorFlag === true) {
+      writer.uint32(256).bool(message.forQualInvestorFlag);
+    }
+    if (message.pawnshopListFlag === true) {
+      writer.uint32(264).bool(message.pawnshopListFlag);
+    }
+    if (message.realExchange !== 0) {
+      writer.uint32(272).int32(message.realExchange);
+    }
+    if (message.first1minCandleDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.first1minCandleDate), writer.uint32(282).fork()).ldelim();
+    }
+    if (message.first1dayCandleDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.first1dayCandleDate), writer.uint32(290).fork()).ldelim();
+    }
+    if (message.borrowName !== "") {
+      writer.uint32(298).string(message.borrowName);
+    }
+    if (message.type !== "") {
+      writer.uint32(306).string(message.type);
+    }
+    if (message.logicPortfolio !== 0) {
+      writer.uint32(312).int32(message.logicPortfolio);
+    }
+    if (message.assetType !== 0) {
+      writer.uint32(320).int32(message.assetType);
+    }
+    for (const v of message.basicAssets) {
+      StructuredNote_BasicAsset.encode(v!, writer.uint32(330).fork()).ldelim();
+    }
+    if (message.safetyBarrier !== undefined) {
+      Quotation.encode(message.safetyBarrier, writer.uint32(338).fork()).ldelim();
+    }
+    if (message.couponPeriodBase !== "") {
+      writer.uint32(346).string(message.couponPeriodBase);
+    }
+    if (message.observationPrinciple !== 0) {
+      writer.uint32(352).int32(message.observationPrinciple);
+    }
+    if (message.observationFrequency !== "") {
+      writer.uint32(362).string(message.observationFrequency);
+    }
+    if (message.initialPriceFixingDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.initialPriceFixingDate), writer.uint32(370).fork()).ldelim();
+    }
+    for (const v of message.yield) {
+      StructuredNote_Yield.encode(v!, writer.uint32(378).fork()).ldelim();
+    }
+    if (message.couponSavingFlag === true) {
+      writer.uint32(384).bool(message.couponSavingFlag);
+    }
+    if (message.sector !== "") {
+      writer.uint32(394).string(message.sector);
+    }
+    if (message.countryOfRisk !== "") {
+      writer.uint32(402).string(message.countryOfRisk);
+    }
+    if (message.countryOfRiskName !== "") {
+      writer.uint32(410).string(message.countryOfRiskName);
+    }
+    if (message.logoName !== "") {
+      writer.uint32(418).string(message.logoName);
+    }
+    for (const v of message.requiredTests) {
+      writer.uint32(426).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): StructuredNote {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStructuredNote();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.uid = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.figi = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.ticker = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.classCode = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.isin = reader.string();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.assetUid = reader.string();
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.positionUid = reader.string();
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.minPriceIncrement = Quotation.decode(reader, reader.uint32());
+          continue;
+        case 10:
+          if (tag !== 80) {
+            break;
+          }
+
+          message.lot = reader.int32();
+          continue;
+        case 11:
+          if (tag !== 90) {
+            break;
+          }
+
+          message.nominal = MoneyValue.decode(reader, reader.uint32());
+          continue;
+        case 12:
+          if (tag !== 98) {
+            break;
+          }
+
+          message.currency = reader.string();
+          continue;
+        case 13:
+          if (tag !== 106) {
+            break;
+          }
+
+          message.maturityDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 14:
+          if (tag !== 114) {
+            break;
+          }
+
+          message.placementDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 15:
+          if (tag !== 122) {
+            break;
+          }
+
+          message.issueKind = reader.string();
+          continue;
+        case 16:
+          if (tag !== 128) {
+            break;
+          }
+
+          message.issueSize = reader.int32();
+          continue;
+        case 17:
+          if (tag !== 136) {
+            break;
+          }
+
+          message.issueSizePlan = reader.int32();
+          continue;
+        case 18:
+          if (tag !== 146) {
+            break;
+          }
+
+          message.dlongClient = Quotation.decode(reader, reader.uint32());
+          continue;
+        case 19:
+          if (tag !== 154) {
+            break;
+          }
+
+          message.dshortClient = Quotation.decode(reader, reader.uint32());
+          continue;
+        case 20:
+          if (tag !== 160) {
+            break;
+          }
+
+          message.shortEnabledFlag = reader.bool();
+          continue;
+        case 21:
+          if (tag !== 170) {
+            break;
+          }
+
+          message.exchange = reader.string();
+          continue;
+        case 22:
+          if (tag !== 176) {
+            break;
+          }
+
+          message.tradingStatus = reader.int32() as any;
+          continue;
+        case 23:
+          if (tag !== 184) {
+            break;
+          }
+
+          message.apiTradeAvailableFlag = reader.bool();
+          continue;
+        case 24:
+          if (tag !== 192) {
+            break;
+          }
+
+          message.buyAvailableFlag = reader.bool();
+          continue;
+        case 25:
+          if (tag !== 200) {
+            break;
+          }
+
+          message.sellAvailableFlag = reader.bool();
+          continue;
+        case 26:
+          if (tag !== 208) {
+            break;
+          }
+
+          message.limitOrderAvailableFlag = reader.bool();
+          continue;
+        case 27:
+          if (tag !== 216) {
+            break;
+          }
+
+          message.marketOrderAvailableFlag = reader.bool();
+          continue;
+        case 28:
+          if (tag !== 224) {
+            break;
+          }
+
+          message.bestpriceOrderAvailableFlag = reader.bool();
+          continue;
+        case 29:
+          if (tag !== 232) {
+            break;
+          }
+
+          message.weekendFlag = reader.bool();
+          continue;
+        case 30:
+          if (tag !== 240) {
+            break;
+          }
+
+          message.liquidityFlag = reader.bool();
+          continue;
+        case 31:
+          if (tag !== 248) {
+            break;
+          }
+
+          message.forIisFlag = reader.bool();
+          continue;
+        case 32:
+          if (tag !== 256) {
+            break;
+          }
+
+          message.forQualInvestorFlag = reader.bool();
+          continue;
+        case 33:
+          if (tag !== 264) {
+            break;
+          }
+
+          message.pawnshopListFlag = reader.bool();
+          continue;
+        case 34:
+          if (tag !== 272) {
+            break;
+          }
+
+          message.realExchange = reader.int32() as any;
+          continue;
+        case 35:
+          if (tag !== 282) {
+            break;
+          }
+
+          message.first1minCandleDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 36:
+          if (tag !== 290) {
+            break;
+          }
+
+          message.first1dayCandleDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 37:
+          if (tag !== 298) {
+            break;
+          }
+
+          message.borrowName = reader.string();
+          continue;
+        case 38:
+          if (tag !== 306) {
+            break;
+          }
+
+          message.type = reader.string();
+          continue;
+        case 39:
+          if (tag !== 312) {
+            break;
+          }
+
+          message.logicPortfolio = reader.int32() as any;
+          continue;
+        case 40:
+          if (tag !== 320) {
+            break;
+          }
+
+          message.assetType = reader.int32() as any;
+          continue;
+        case 41:
+          if (tag !== 330) {
+            break;
+          }
+
+          message.basicAssets.push(StructuredNote_BasicAsset.decode(reader, reader.uint32()));
+          continue;
+        case 42:
+          if (tag !== 338) {
+            break;
+          }
+
+          message.safetyBarrier = Quotation.decode(reader, reader.uint32());
+          continue;
+        case 43:
+          if (tag !== 346) {
+            break;
+          }
+
+          message.couponPeriodBase = reader.string();
+          continue;
+        case 44:
+          if (tag !== 352) {
+            break;
+          }
+
+          message.observationPrinciple = reader.int32() as any;
+          continue;
+        case 45:
+          if (tag !== 362) {
+            break;
+          }
+
+          message.observationFrequency = reader.string();
+          continue;
+        case 46:
+          if (tag !== 370) {
+            break;
+          }
+
+          message.initialPriceFixingDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 47:
+          if (tag !== 378) {
+            break;
+          }
+
+          message.yield.push(StructuredNote_Yield.decode(reader, reader.uint32()));
+          continue;
+        case 48:
+          if (tag !== 384) {
+            break;
+          }
+
+          message.couponSavingFlag = reader.bool();
+          continue;
+        case 49:
+          if (tag !== 394) {
+            break;
+          }
+
+          message.sector = reader.string();
+          continue;
+        case 50:
+          if (tag !== 402) {
+            break;
+          }
+
+          message.countryOfRisk = reader.string();
+          continue;
+        case 51:
+          if (tag !== 410) {
+            break;
+          }
+
+          message.countryOfRiskName = reader.string();
+          continue;
+        case 52:
+          if (tag !== 418) {
+            break;
+          }
+
+          message.logoName = reader.string();
+          continue;
+        case 53:
+          if (tag !== 426) {
+            break;
+          }
+
+          message.requiredTests.push(reader.string());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StructuredNote {
+    return {
+      uid: isSet(object.uid) ? globalThis.String(object.uid) : "",
+      figi: isSet(object.figi) ? globalThis.String(object.figi) : "",
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      classCode: isSet(object.classCode) ? globalThis.String(object.classCode) : "",
+      isin: isSet(object.isin) ? globalThis.String(object.isin) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      assetUid: isSet(object.assetUid) ? globalThis.String(object.assetUid) : "",
+      positionUid: isSet(object.positionUid) ? globalThis.String(object.positionUid) : "",
+      minPriceIncrement: isSet(object.minPriceIncrement) ? Quotation.fromJSON(object.minPriceIncrement) : undefined,
+      lot: isSet(object.lot) ? globalThis.Number(object.lot) : 0,
+      nominal: isSet(object.nominal) ? MoneyValue.fromJSON(object.nominal) : undefined,
+      currency: isSet(object.currency) ? globalThis.String(object.currency) : "",
+      maturityDate: isSet(object.maturityDate) ? fromJsonTimestamp(object.maturityDate) : undefined,
+      placementDate: isSet(object.placementDate) ? fromJsonTimestamp(object.placementDate) : undefined,
+      issueKind: isSet(object.issueKind) ? globalThis.String(object.issueKind) : "",
+      issueSize: isSet(object.issueSize) ? globalThis.Number(object.issueSize) : 0,
+      issueSizePlan: isSet(object.issueSizePlan) ? globalThis.Number(object.issueSizePlan) : 0,
+      dlongClient: isSet(object.dlongClient) ? Quotation.fromJSON(object.dlongClient) : undefined,
+      dshortClient: isSet(object.dshortClient) ? Quotation.fromJSON(object.dshortClient) : undefined,
+      shortEnabledFlag: isSet(object.shortEnabledFlag) ? globalThis.Boolean(object.shortEnabledFlag) : false,
+      exchange: isSet(object.exchange) ? globalThis.String(object.exchange) : "",
+      tradingStatus: isSet(object.tradingStatus) ? securityTradingStatusFromJSON(object.tradingStatus) : 0,
+      apiTradeAvailableFlag: isSet(object.apiTradeAvailableFlag)
+        ? globalThis.Boolean(object.apiTradeAvailableFlag)
+        : false,
+      buyAvailableFlag: isSet(object.buyAvailableFlag) ? globalThis.Boolean(object.buyAvailableFlag) : false,
+      sellAvailableFlag: isSet(object.sellAvailableFlag) ? globalThis.Boolean(object.sellAvailableFlag) : false,
+      limitOrderAvailableFlag: isSet(object.limitOrderAvailableFlag)
+        ? globalThis.Boolean(object.limitOrderAvailableFlag)
+        : false,
+      marketOrderAvailableFlag: isSet(object.marketOrderAvailableFlag)
+        ? globalThis.Boolean(object.marketOrderAvailableFlag)
+        : false,
+      bestpriceOrderAvailableFlag: isSet(object.bestpriceOrderAvailableFlag)
+        ? globalThis.Boolean(object.bestpriceOrderAvailableFlag)
+        : false,
+      weekendFlag: isSet(object.weekendFlag) ? globalThis.Boolean(object.weekendFlag) : false,
+      liquidityFlag: isSet(object.liquidityFlag) ? globalThis.Boolean(object.liquidityFlag) : false,
+      forIisFlag: isSet(object.forIisFlag) ? globalThis.Boolean(object.forIisFlag) : false,
+      forQualInvestorFlag: isSet(object.forQualInvestorFlag) ? globalThis.Boolean(object.forQualInvestorFlag) : false,
+      pawnshopListFlag: isSet(object.pawnshopListFlag) ? globalThis.Boolean(object.pawnshopListFlag) : false,
+      realExchange: isSet(object.realExchange) ? realExchangeFromJSON(object.realExchange) : 0,
+      first1minCandleDate: isSet(object.first1minCandleDate)
+        ? fromJsonTimestamp(object.first1minCandleDate)
+        : undefined,
+      first1dayCandleDate: isSet(object.first1dayCandleDate)
+        ? fromJsonTimestamp(object.first1dayCandleDate)
+        : undefined,
+      borrowName: isSet(object.borrowName) ? globalThis.String(object.borrowName) : "",
+      type: isSet(object.type) ? globalThis.String(object.type) : "",
+      logicPortfolio: isSet(object.logicPortfolio) ? structuredNote_LogicPortfolioFromJSON(object.logicPortfolio) : 0,
+      assetType: isSet(object.assetType) ? assetTypeFromJSON(object.assetType) : 0,
+      basicAssets: globalThis.Array.isArray(object?.basicAssets)
+        ? object.basicAssets.map((e: any) => StructuredNote_BasicAsset.fromJSON(e))
+        : [],
+      safetyBarrier: isSet(object.safetyBarrier) ? Quotation.fromJSON(object.safetyBarrier) : undefined,
+      couponPeriodBase: isSet(object.couponPeriodBase) ? globalThis.String(object.couponPeriodBase) : "",
+      observationPrinciple: isSet(object.observationPrinciple)
+        ? structuredNote_ObservationPrincipleFromJSON(object.observationPrinciple)
+        : 0,
+      observationFrequency: isSet(object.observationFrequency) ? globalThis.String(object.observationFrequency) : "",
+      initialPriceFixingDate: isSet(object.initialPriceFixingDate)
+        ? fromJsonTimestamp(object.initialPriceFixingDate)
+        : undefined,
+      yield: globalThis.Array.isArray(object?.yield)
+        ? object.yield.map((e: any) => StructuredNote_Yield.fromJSON(e))
+        : [],
+      couponSavingFlag: isSet(object.couponSavingFlag) ? globalThis.Boolean(object.couponSavingFlag) : false,
+      sector: isSet(object.sector) ? globalThis.String(object.sector) : "",
+      countryOfRisk: isSet(object.countryOfRisk) ? globalThis.String(object.countryOfRisk) : "",
+      countryOfRiskName: isSet(object.countryOfRiskName) ? globalThis.String(object.countryOfRiskName) : "",
+      logoName: isSet(object.logoName) ? globalThis.String(object.logoName) : "",
+      requiredTests: globalThis.Array.isArray(object?.requiredTests)
+        ? object.requiredTests.map((e: any) => globalThis.String(e))
+        : [],
+    };
+  },
+
+  toJSON(message: StructuredNote): unknown {
+    const obj: any = {};
+    if (message.uid !== "") {
+      obj.uid = message.uid;
+    }
+    if (message.figi !== "") {
+      obj.figi = message.figi;
+    }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.classCode !== "") {
+      obj.classCode = message.classCode;
+    }
+    if (message.isin !== "") {
+      obj.isin = message.isin;
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.assetUid !== "") {
+      obj.assetUid = message.assetUid;
+    }
+    if (message.positionUid !== "") {
+      obj.positionUid = message.positionUid;
+    }
+    if (message.minPriceIncrement !== undefined) {
+      obj.minPriceIncrement = Quotation.toJSON(message.minPriceIncrement);
+    }
+    if (message.lot !== 0) {
+      obj.lot = Math.round(message.lot);
+    }
+    if (message.nominal !== undefined) {
+      obj.nominal = MoneyValue.toJSON(message.nominal);
+    }
+    if (message.currency !== "") {
+      obj.currency = message.currency;
+    }
+    if (message.maturityDate !== undefined) {
+      obj.maturityDate = message.maturityDate.toISOString();
+    }
+    if (message.placementDate !== undefined) {
+      obj.placementDate = message.placementDate.toISOString();
+    }
+    if (message.issueKind !== "") {
+      obj.issueKind = message.issueKind;
+    }
+    if (message.issueSize !== 0) {
+      obj.issueSize = Math.round(message.issueSize);
+    }
+    if (message.issueSizePlan !== 0) {
+      obj.issueSizePlan = Math.round(message.issueSizePlan);
+    }
+    if (message.dlongClient !== undefined) {
+      obj.dlongClient = Quotation.toJSON(message.dlongClient);
+    }
+    if (message.dshortClient !== undefined) {
+      obj.dshortClient = Quotation.toJSON(message.dshortClient);
+    }
+    if (message.shortEnabledFlag === true) {
+      obj.shortEnabledFlag = message.shortEnabledFlag;
+    }
+    if (message.exchange !== "") {
+      obj.exchange = message.exchange;
+    }
+    if (message.tradingStatus !== 0) {
+      obj.tradingStatus = securityTradingStatusToJSON(message.tradingStatus);
+    }
+    if (message.apiTradeAvailableFlag === true) {
+      obj.apiTradeAvailableFlag = message.apiTradeAvailableFlag;
+    }
+    if (message.buyAvailableFlag === true) {
+      obj.buyAvailableFlag = message.buyAvailableFlag;
+    }
+    if (message.sellAvailableFlag === true) {
+      obj.sellAvailableFlag = message.sellAvailableFlag;
+    }
+    if (message.limitOrderAvailableFlag === true) {
+      obj.limitOrderAvailableFlag = message.limitOrderAvailableFlag;
+    }
+    if (message.marketOrderAvailableFlag === true) {
+      obj.marketOrderAvailableFlag = message.marketOrderAvailableFlag;
+    }
+    if (message.bestpriceOrderAvailableFlag === true) {
+      obj.bestpriceOrderAvailableFlag = message.bestpriceOrderAvailableFlag;
+    }
+    if (message.weekendFlag === true) {
+      obj.weekendFlag = message.weekendFlag;
+    }
+    if (message.liquidityFlag === true) {
+      obj.liquidityFlag = message.liquidityFlag;
+    }
+    if (message.forIisFlag === true) {
+      obj.forIisFlag = message.forIisFlag;
+    }
+    if (message.forQualInvestorFlag === true) {
+      obj.forQualInvestorFlag = message.forQualInvestorFlag;
+    }
+    if (message.pawnshopListFlag === true) {
+      obj.pawnshopListFlag = message.pawnshopListFlag;
+    }
+    if (message.realExchange !== 0) {
+      obj.realExchange = realExchangeToJSON(message.realExchange);
+    }
+    if (message.first1minCandleDate !== undefined) {
+      obj.first1minCandleDate = message.first1minCandleDate.toISOString();
+    }
+    if (message.first1dayCandleDate !== undefined) {
+      obj.first1dayCandleDate = message.first1dayCandleDate.toISOString();
+    }
+    if (message.borrowName !== "") {
+      obj.borrowName = message.borrowName;
+    }
+    if (message.type !== "") {
+      obj.type = message.type;
+    }
+    if (message.logicPortfolio !== 0) {
+      obj.logicPortfolio = structuredNote_LogicPortfolioToJSON(message.logicPortfolio);
+    }
+    if (message.assetType !== 0) {
+      obj.assetType = assetTypeToJSON(message.assetType);
+    }
+    if (message.basicAssets?.length) {
+      obj.basicAssets = message.basicAssets.map((e) => StructuredNote_BasicAsset.toJSON(e));
+    }
+    if (message.safetyBarrier !== undefined) {
+      obj.safetyBarrier = Quotation.toJSON(message.safetyBarrier);
+    }
+    if (message.couponPeriodBase !== "") {
+      obj.couponPeriodBase = message.couponPeriodBase;
+    }
+    if (message.observationPrinciple !== 0) {
+      obj.observationPrinciple = structuredNote_ObservationPrincipleToJSON(message.observationPrinciple);
+    }
+    if (message.observationFrequency !== "") {
+      obj.observationFrequency = message.observationFrequency;
+    }
+    if (message.initialPriceFixingDate !== undefined) {
+      obj.initialPriceFixingDate = message.initialPriceFixingDate.toISOString();
+    }
+    if (message.yield?.length) {
+      obj.yield = message.yield.map((e) => StructuredNote_Yield.toJSON(e));
+    }
+    if (message.couponSavingFlag === true) {
+      obj.couponSavingFlag = message.couponSavingFlag;
+    }
+    if (message.sector !== "") {
+      obj.sector = message.sector;
+    }
+    if (message.countryOfRisk !== "") {
+      obj.countryOfRisk = message.countryOfRisk;
+    }
+    if (message.countryOfRiskName !== "") {
+      obj.countryOfRiskName = message.countryOfRiskName;
+    }
+    if (message.logoName !== "") {
+      obj.logoName = message.logoName;
+    }
+    if (message.requiredTests?.length) {
+      obj.requiredTests = message.requiredTests;
+    }
+    return obj;
+  },
+};
+
+function createBaseStructuredNote_BasicAsset(): StructuredNote_BasicAsset {
+  return { uid: "", type: 0, initialPrice: undefined };
+}
+
+export const StructuredNote_BasicAsset = {
+  encode(message: StructuredNote_BasicAsset, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.uid !== "") {
+      writer.uint32(10).string(message.uid);
+    }
+    if (message.type !== 0) {
+      writer.uint32(16).int32(message.type);
+    }
+    if (message.initialPrice !== undefined) {
+      Quotation.encode(message.initialPrice, writer.uint32(26).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): StructuredNote_BasicAsset {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStructuredNote_BasicAsset();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.uid = reader.string();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.type = reader.int32() as any;
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.initialPrice = Quotation.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StructuredNote_BasicAsset {
+    return {
+      uid: isSet(object.uid) ? globalThis.String(object.uid) : "",
+      type: isSet(object.type) ? assetTypeFromJSON(object.type) : 0,
+      initialPrice: isSet(object.initialPrice) ? Quotation.fromJSON(object.initialPrice) : undefined,
+    };
+  },
+
+  toJSON(message: StructuredNote_BasicAsset): unknown {
+    const obj: any = {};
+    if (message.uid !== "") {
+      obj.uid = message.uid;
+    }
+    if (message.type !== 0) {
+      obj.type = assetTypeToJSON(message.type);
+    }
+    if (message.initialPrice !== undefined) {
+      obj.initialPrice = Quotation.toJSON(message.initialPrice);
+    }
+    return obj;
+  },
+};
+
+function createBaseStructuredNote_Yield(): StructuredNote_Yield {
+  return { type: 0, value: undefined };
+}
+
+export const StructuredNote_Yield = {
+  encode(message: StructuredNote_Yield, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.type !== 0) {
+      writer.uint32(8).int32(message.type);
+    }
+    if (message.value !== undefined) {
+      Quotation.encode(message.value, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): StructuredNote_Yield {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStructuredNote_Yield();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.type = reader.int32() as any;
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.value = Quotation.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StructuredNote_Yield {
+    return {
+      type: isSet(object.type) ? structuredNote_YieldTypeFromJSON(object.type) : 0,
+      value: isSet(object.value) ? Quotation.fromJSON(object.value) : undefined,
+    };
+  },
+
+  toJSON(message: StructuredNote_Yield): unknown {
+    const obj: any = {};
+    if (message.type !== 0) {
+      obj.type = structuredNote_YieldTypeToJSON(message.type);
+    }
+    if (message.value !== undefined) {
+      obj.value = Quotation.toJSON(message.value);
     }
     return obj;
   },
@@ -10261,6 +11875,7 @@ function createBaseInstrument(): Instrument {
     realExchange: 0,
     positionUid: "",
     assetUid: "",
+    requiredTests: [],
     forIisFlag: false,
     forQualInvestorFlag: false,
     weekendFlag: false,
@@ -10359,6 +11974,9 @@ export const Instrument = {
     }
     if (message.assetUid !== "") {
       writer.uint32(226).string(message.assetUid);
+    }
+    for (const v of message.requiredTests) {
+      writer.uint32(234).string(v!);
     }
     if (message.forIisFlag === true) {
       writer.uint32(288).bool(message.forIisFlag);
@@ -10596,6 +12214,13 @@ export const Instrument = {
 
           message.assetUid = reader.string();
           continue;
+        case 29:
+          if (tag !== 234) {
+            break;
+          }
+
+          message.requiredTests.push(reader.string());
+          continue;
         case 36:
           if (tag !== 288) {
             break;
@@ -10707,6 +12332,9 @@ export const Instrument = {
       realExchange: isSet(object.realExchange) ? realExchangeFromJSON(object.realExchange) : 0,
       positionUid: isSet(object.positionUid) ? globalThis.String(object.positionUid) : "",
       assetUid: isSet(object.assetUid) ? globalThis.String(object.assetUid) : "",
+      requiredTests: globalThis.Array.isArray(object?.requiredTests)
+        ? object.requiredTests.map((e: any) => globalThis.String(e))
+        : [],
       forIisFlag: isSet(object.forIisFlag) ? globalThis.Boolean(object.forIisFlag) : false,
       forQualInvestorFlag: isSet(object.forQualInvestorFlag) ? globalThis.Boolean(object.forQualInvestorFlag) : false,
       weekendFlag: isSet(object.weekendFlag) ? globalThis.Boolean(object.weekendFlag) : false,
@@ -10809,6 +12437,9 @@ export const Instrument = {
     }
     if (message.assetUid !== "") {
       obj.assetUid = message.assetUid;
+    }
+    if (message.requiredTests?.length) {
+      obj.requiredTests = message.requiredTests;
     }
     if (message.forIisFlag === true) {
       obj.forIisFlag = message.forIisFlag;
@@ -13794,11 +15425,14 @@ export const InstrumentLink = {
 };
 
 function createBaseGetFavoritesRequest(): GetFavoritesRequest {
-  return {};
+  return { groupId: undefined };
 }
 
 export const GetFavoritesRequest = {
-  encode(_: GetFavoritesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: GetFavoritesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.groupId !== undefined) {
+      writer.uint32(10).string(message.groupId);
+    }
     return writer;
   },
 
@@ -13809,6 +15443,13 @@ export const GetFavoritesRequest = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.groupId = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -13818,24 +15459,30 @@ export const GetFavoritesRequest = {
     return message;
   },
 
-  fromJSON(_: any): GetFavoritesRequest {
-    return {};
+  fromJSON(object: any): GetFavoritesRequest {
+    return { groupId: isSet(object.groupId) ? globalThis.String(object.groupId) : undefined };
   },
 
-  toJSON(_: GetFavoritesRequest): unknown {
+  toJSON(message: GetFavoritesRequest): unknown {
     const obj: any = {};
+    if (message.groupId !== undefined) {
+      obj.groupId = message.groupId;
+    }
     return obj;
   },
 };
 
 function createBaseGetFavoritesResponse(): GetFavoritesResponse {
-  return { favoriteInstruments: [] };
+  return { favoriteInstruments: [], groupId: undefined };
 }
 
 export const GetFavoritesResponse = {
   encode(message: GetFavoritesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.favoriteInstruments) {
       FavoriteInstrument.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.groupId !== undefined) {
+      writer.uint32(18).string(message.groupId);
     }
     return writer;
   },
@@ -13854,6 +15501,13 @@ export const GetFavoritesResponse = {
 
           message.favoriteInstruments.push(FavoriteInstrument.decode(reader, reader.uint32()));
           continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.groupId = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -13868,6 +15522,7 @@ export const GetFavoritesResponse = {
       favoriteInstruments: globalThis.Array.isArray(object?.favoriteInstruments)
         ? object.favoriteInstruments.map((e: any) => FavoriteInstrument.fromJSON(e))
         : [],
+      groupId: isSet(object.groupId) ? globalThis.String(object.groupId) : undefined,
     };
   },
 
@@ -13875,6 +15530,9 @@ export const GetFavoritesResponse = {
     const obj: any = {};
     if (message.favoriteInstruments?.length) {
       obj.favoriteInstruments = message.favoriteInstruments.map((e) => FavoriteInstrument.toJSON(e));
+    }
+    if (message.groupId !== undefined) {
+      obj.groupId = message.groupId;
     }
     return obj;
   },
@@ -14070,7 +15728,7 @@ export const FavoriteInstrument = {
 };
 
 function createBaseEditFavoritesRequest(): EditFavoritesRequest {
-  return { instruments: [], actionType: 0 };
+  return { instruments: [], actionType: 0, groupId: undefined };
 }
 
 export const EditFavoritesRequest = {
@@ -14080,6 +15738,9 @@ export const EditFavoritesRequest = {
     }
     if (message.actionType !== 0) {
       writer.uint32(48).int32(message.actionType);
+    }
+    if (message.groupId !== undefined) {
+      writer.uint32(58).string(message.groupId);
     }
     return writer;
   },
@@ -14105,6 +15766,13 @@ export const EditFavoritesRequest = {
 
           message.actionType = reader.int32() as any;
           continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.groupId = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -14120,6 +15788,7 @@ export const EditFavoritesRequest = {
         ? object.instruments.map((e: any) => EditFavoritesRequestInstrument.fromJSON(e))
         : [],
       actionType: isSet(object.actionType) ? editFavoritesActionTypeFromJSON(object.actionType) : 0,
+      groupId: isSet(object.groupId) ? globalThis.String(object.groupId) : undefined,
     };
   },
 
@@ -14130,6 +15799,9 @@ export const EditFavoritesRequest = {
     }
     if (message.actionType !== 0) {
       obj.actionType = editFavoritesActionTypeToJSON(message.actionType);
+    }
+    if (message.groupId !== undefined) {
+      obj.groupId = message.groupId;
     }
     return obj;
   },
@@ -14200,13 +15872,16 @@ export const EditFavoritesRequestInstrument = {
 };
 
 function createBaseEditFavoritesResponse(): EditFavoritesResponse {
-  return { favoriteInstruments: [] };
+  return { favoriteInstruments: [], groupId: undefined };
 }
 
 export const EditFavoritesResponse = {
   encode(message: EditFavoritesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.favoriteInstruments) {
       FavoriteInstrument.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.groupId !== undefined) {
+      writer.uint32(18).string(message.groupId);
     }
     return writer;
   },
@@ -14225,6 +15900,13 @@ export const EditFavoritesResponse = {
 
           message.favoriteInstruments.push(FavoriteInstrument.decode(reader, reader.uint32()));
           continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.groupId = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -14239,6 +15921,7 @@ export const EditFavoritesResponse = {
       favoriteInstruments: globalThis.Array.isArray(object?.favoriteInstruments)
         ? object.favoriteInstruments.map((e: any) => FavoriteInstrument.fromJSON(e))
         : [],
+      groupId: isSet(object.groupId) ? globalThis.String(object.groupId) : undefined,
     };
   },
 
@@ -14246,6 +15929,460 @@ export const EditFavoritesResponse = {
     const obj: any = {};
     if (message.favoriteInstruments?.length) {
       obj.favoriteInstruments = message.favoriteInstruments.map((e) => FavoriteInstrument.toJSON(e));
+    }
+    if (message.groupId !== undefined) {
+      obj.groupId = message.groupId;
+    }
+    return obj;
+  },
+};
+
+function createBaseCreateFavoriteGroupRequest(): CreateFavoriteGroupRequest {
+  return { groupName: "", groupColor: "", note: undefined };
+}
+
+export const CreateFavoriteGroupRequest = {
+  encode(message: CreateFavoriteGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.groupName !== "") {
+      writer.uint32(10).string(message.groupName);
+    }
+    if (message.groupColor !== "") {
+      writer.uint32(18).string(message.groupColor);
+    }
+    if (message.note !== undefined) {
+      writer.uint32(26).string(message.note);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreateFavoriteGroupRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateFavoriteGroupRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.groupName = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.groupColor = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.note = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateFavoriteGroupRequest {
+    return {
+      groupName: isSet(object.groupName) ? globalThis.String(object.groupName) : "",
+      groupColor: isSet(object.groupColor) ? globalThis.String(object.groupColor) : "",
+      note: isSet(object.note) ? globalThis.String(object.note) : undefined,
+    };
+  },
+
+  toJSON(message: CreateFavoriteGroupRequest): unknown {
+    const obj: any = {};
+    if (message.groupName !== "") {
+      obj.groupName = message.groupName;
+    }
+    if (message.groupColor !== "") {
+      obj.groupColor = message.groupColor;
+    }
+    if (message.note !== undefined) {
+      obj.note = message.note;
+    }
+    return obj;
+  },
+};
+
+function createBaseCreateFavoriteGroupResponse(): CreateFavoriteGroupResponse {
+  return { groupId: "", groupName: "" };
+}
+
+export const CreateFavoriteGroupResponse = {
+  encode(message: CreateFavoriteGroupResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.groupId !== "") {
+      writer.uint32(10).string(message.groupId);
+    }
+    if (message.groupName !== "") {
+      writer.uint32(18).string(message.groupName);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreateFavoriteGroupResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateFavoriteGroupResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.groupId = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.groupName = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateFavoriteGroupResponse {
+    return {
+      groupId: isSet(object.groupId) ? globalThis.String(object.groupId) : "",
+      groupName: isSet(object.groupName) ? globalThis.String(object.groupName) : "",
+    };
+  },
+
+  toJSON(message: CreateFavoriteGroupResponse): unknown {
+    const obj: any = {};
+    if (message.groupId !== "") {
+      obj.groupId = message.groupId;
+    }
+    if (message.groupName !== "") {
+      obj.groupName = message.groupName;
+    }
+    return obj;
+  },
+};
+
+function createBaseDeleteFavoriteGroupRequest(): DeleteFavoriteGroupRequest {
+  return { groupId: "" };
+}
+
+export const DeleteFavoriteGroupRequest = {
+  encode(message: DeleteFavoriteGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.groupId !== "") {
+      writer.uint32(10).string(message.groupId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DeleteFavoriteGroupRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteFavoriteGroupRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.groupId = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteFavoriteGroupRequest {
+    return { groupId: isSet(object.groupId) ? globalThis.String(object.groupId) : "" };
+  },
+
+  toJSON(message: DeleteFavoriteGroupRequest): unknown {
+    const obj: any = {};
+    if (message.groupId !== "") {
+      obj.groupId = message.groupId;
+    }
+    return obj;
+  },
+};
+
+function createBaseDeleteFavoriteGroupResponse(): DeleteFavoriteGroupResponse {
+  return {};
+}
+
+export const DeleteFavoriteGroupResponse = {
+  encode(_: DeleteFavoriteGroupResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DeleteFavoriteGroupResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteFavoriteGroupResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): DeleteFavoriteGroupResponse {
+    return {};
+  },
+
+  toJSON(_: DeleteFavoriteGroupResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+};
+
+function createBaseGetFavoriteGroupsRequest(): GetFavoriteGroupsRequest {
+  return { instrumentId: [], excludedGroupId: [] };
+}
+
+export const GetFavoriteGroupsRequest = {
+  encode(message: GetFavoriteGroupsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.instrumentId) {
+      writer.uint32(10).string(v!);
+    }
+    for (const v of message.excludedGroupId) {
+      writer.uint32(18).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetFavoriteGroupsRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetFavoriteGroupsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.instrumentId.push(reader.string());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.excludedGroupId.push(reader.string());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetFavoriteGroupsRequest {
+    return {
+      instrumentId: globalThis.Array.isArray(object?.instrumentId)
+        ? object.instrumentId.map((e: any) => globalThis.String(e))
+        : [],
+      excludedGroupId: globalThis.Array.isArray(object?.excludedGroupId)
+        ? object.excludedGroupId.map((e: any) => globalThis.String(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetFavoriteGroupsRequest): unknown {
+    const obj: any = {};
+    if (message.instrumentId?.length) {
+      obj.instrumentId = message.instrumentId;
+    }
+    if (message.excludedGroupId?.length) {
+      obj.excludedGroupId = message.excludedGroupId;
+    }
+    return obj;
+  },
+};
+
+function createBaseGetFavoriteGroupsResponse(): GetFavoriteGroupsResponse {
+  return { groups: [] };
+}
+
+export const GetFavoriteGroupsResponse = {
+  encode(message: GetFavoriteGroupsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.groups) {
+      GetFavoriteGroupsResponse_FavoriteGroup.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetFavoriteGroupsResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetFavoriteGroupsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.groups.push(GetFavoriteGroupsResponse_FavoriteGroup.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetFavoriteGroupsResponse {
+    return {
+      groups: globalThis.Array.isArray(object?.groups)
+        ? object.groups.map((e: any) => GetFavoriteGroupsResponse_FavoriteGroup.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetFavoriteGroupsResponse): unknown {
+    const obj: any = {};
+    if (message.groups?.length) {
+      obj.groups = message.groups.map((e) => GetFavoriteGroupsResponse_FavoriteGroup.toJSON(e));
+    }
+    return obj;
+  },
+};
+
+function createBaseGetFavoriteGroupsResponse_FavoriteGroup(): GetFavoriteGroupsResponse_FavoriteGroup {
+  return { groupId: "", groupName: "", color: "", size: 0, containsInstrument: undefined };
+}
+
+export const GetFavoriteGroupsResponse_FavoriteGroup = {
+  encode(message: GetFavoriteGroupsResponse_FavoriteGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.groupId !== "") {
+      writer.uint32(10).string(message.groupId);
+    }
+    if (message.groupName !== "") {
+      writer.uint32(18).string(message.groupName);
+    }
+    if (message.color !== "") {
+      writer.uint32(26).string(message.color);
+    }
+    if (message.size !== 0) {
+      writer.uint32(32).int32(message.size);
+    }
+    if (message.containsInstrument !== undefined) {
+      writer.uint32(40).bool(message.containsInstrument);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetFavoriteGroupsResponse_FavoriteGroup {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetFavoriteGroupsResponse_FavoriteGroup();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.groupId = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.groupName = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.color = reader.string();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.size = reader.int32();
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.containsInstrument = reader.bool();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetFavoriteGroupsResponse_FavoriteGroup {
+    return {
+      groupId: isSet(object.groupId) ? globalThis.String(object.groupId) : "",
+      groupName: isSet(object.groupName) ? globalThis.String(object.groupName) : "",
+      color: isSet(object.color) ? globalThis.String(object.color) : "",
+      size: isSet(object.size) ? globalThis.Number(object.size) : 0,
+      containsInstrument: isSet(object.containsInstrument) ? globalThis.Boolean(object.containsInstrument) : undefined,
+    };
+  },
+
+  toJSON(message: GetFavoriteGroupsResponse_FavoriteGroup): unknown {
+    const obj: any = {};
+    if (message.groupId !== "") {
+      obj.groupId = message.groupId;
+    }
+    if (message.groupName !== "") {
+      obj.groupName = message.groupName;
+    }
+    if (message.color !== "") {
+      obj.color = message.color;
+    }
+    if (message.size !== 0) {
+      obj.size = Math.round(message.size);
+    }
+    if (message.containsInstrument !== undefined) {
+      obj.containsInstrument = message.containsInstrument;
     }
     return obj;
   },
@@ -17395,6 +19532,307 @@ export const GetForecastResponse_ConsensusItem = {
   },
 };
 
+function createBaseRiskRatesRequest(): RiskRatesRequest {
+  return { instrumentId: [] };
+}
+
+export const RiskRatesRequest = {
+  encode(message: RiskRatesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.instrumentId) {
+      writer.uint32(10).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): RiskRatesRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseRiskRatesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.instrumentId.push(reader.string());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RiskRatesRequest {
+    return {
+      instrumentId: globalThis.Array.isArray(object?.instrumentId)
+        ? object.instrumentId.map((e: any) => globalThis.String(e))
+        : [],
+    };
+  },
+
+  toJSON(message: RiskRatesRequest): unknown {
+    const obj: any = {};
+    if (message.instrumentId?.length) {
+      obj.instrumentId = message.instrumentId;
+    }
+    return obj;
+  },
+};
+
+function createBaseRiskRatesResponse(): RiskRatesResponse {
+  return { instrumentRiskRates: [] };
+}
+
+export const RiskRatesResponse = {
+  encode(message: RiskRatesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.instrumentRiskRates) {
+      RiskRatesResponse_RiskRateResult.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): RiskRatesResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseRiskRatesResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.instrumentRiskRates.push(RiskRatesResponse_RiskRateResult.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RiskRatesResponse {
+    return {
+      instrumentRiskRates: globalThis.Array.isArray(object?.instrumentRiskRates)
+        ? object.instrumentRiskRates.map((e: any) => RiskRatesResponse_RiskRateResult.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: RiskRatesResponse): unknown {
+    const obj: any = {};
+    if (message.instrumentRiskRates?.length) {
+      obj.instrumentRiskRates = message.instrumentRiskRates.map((e) => RiskRatesResponse_RiskRateResult.toJSON(e));
+    }
+    return obj;
+  },
+};
+
+function createBaseRiskRatesResponse_RiskRateResult(): RiskRatesResponse_RiskRateResult {
+  return {
+    instrumentUid: "",
+    shortRiskRate: undefined,
+    longRiskRate: undefined,
+    shortRiskRates: [],
+    longRiskRates: [],
+    error: undefined,
+  };
+}
+
+export const RiskRatesResponse_RiskRateResult = {
+  encode(message: RiskRatesResponse_RiskRateResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.instrumentUid !== "") {
+      writer.uint32(10).string(message.instrumentUid);
+    }
+    if (message.shortRiskRate !== undefined) {
+      RiskRatesResponse_RiskRate.encode(message.shortRiskRate, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.longRiskRate !== undefined) {
+      RiskRatesResponse_RiskRate.encode(message.longRiskRate, writer.uint32(26).fork()).ldelim();
+    }
+    for (const v of message.shortRiskRates) {
+      RiskRatesResponse_RiskRate.encode(v!, writer.uint32(42).fork()).ldelim();
+    }
+    for (const v of message.longRiskRates) {
+      RiskRatesResponse_RiskRate.encode(v!, writer.uint32(50).fork()).ldelim();
+    }
+    if (message.error !== undefined) {
+      writer.uint32(74).string(message.error);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): RiskRatesResponse_RiskRateResult {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseRiskRatesResponse_RiskRateResult();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.instrumentUid = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.shortRiskRate = RiskRatesResponse_RiskRate.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.longRiskRate = RiskRatesResponse_RiskRate.decode(reader, reader.uint32());
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.shortRiskRates.push(RiskRatesResponse_RiskRate.decode(reader, reader.uint32()));
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.longRiskRates.push(RiskRatesResponse_RiskRate.decode(reader, reader.uint32()));
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.error = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RiskRatesResponse_RiskRateResult {
+    return {
+      instrumentUid: isSet(object.instrumentUid) ? globalThis.String(object.instrumentUid) : "",
+      shortRiskRate: isSet(object.shortRiskRate)
+        ? RiskRatesResponse_RiskRate.fromJSON(object.shortRiskRate)
+        : undefined,
+      longRiskRate: isSet(object.longRiskRate) ? RiskRatesResponse_RiskRate.fromJSON(object.longRiskRate) : undefined,
+      shortRiskRates: globalThis.Array.isArray(object?.shortRiskRates)
+        ? object.shortRiskRates.map((e: any) => RiskRatesResponse_RiskRate.fromJSON(e))
+        : [],
+      longRiskRates: globalThis.Array.isArray(object?.longRiskRates)
+        ? object.longRiskRates.map((e: any) => RiskRatesResponse_RiskRate.fromJSON(e))
+        : [],
+      error: isSet(object.error) ? globalThis.String(object.error) : undefined,
+    };
+  },
+
+  toJSON(message: RiskRatesResponse_RiskRateResult): unknown {
+    const obj: any = {};
+    if (message.instrumentUid !== "") {
+      obj.instrumentUid = message.instrumentUid;
+    }
+    if (message.shortRiskRate !== undefined) {
+      obj.shortRiskRate = RiskRatesResponse_RiskRate.toJSON(message.shortRiskRate);
+    }
+    if (message.longRiskRate !== undefined) {
+      obj.longRiskRate = RiskRatesResponse_RiskRate.toJSON(message.longRiskRate);
+    }
+    if (message.shortRiskRates?.length) {
+      obj.shortRiskRates = message.shortRiskRates.map((e) => RiskRatesResponse_RiskRate.toJSON(e));
+    }
+    if (message.longRiskRates?.length) {
+      obj.longRiskRates = message.longRiskRates.map((e) => RiskRatesResponse_RiskRate.toJSON(e));
+    }
+    if (message.error !== undefined) {
+      obj.error = message.error;
+    }
+    return obj;
+  },
+};
+
+function createBaseRiskRatesResponse_RiskRate(): RiskRatesResponse_RiskRate {
+  return { riskLevelCode: "", value: undefined };
+}
+
+export const RiskRatesResponse_RiskRate = {
+  encode(message: RiskRatesResponse_RiskRate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.riskLevelCode !== "") {
+      writer.uint32(18).string(message.riskLevelCode);
+    }
+    if (message.value !== undefined) {
+      Quotation.encode(message.value, writer.uint32(42).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): RiskRatesResponse_RiskRate {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseRiskRatesResponse_RiskRate();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.riskLevelCode = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.value = Quotation.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RiskRatesResponse_RiskRate {
+    return {
+      riskLevelCode: isSet(object.riskLevelCode) ? globalThis.String(object.riskLevelCode) : "",
+      value: isSet(object.value) ? Quotation.fromJSON(object.value) : undefined,
+    };
+  },
+
+  toJSON(message: RiskRatesResponse_RiskRate): unknown {
+    const obj: any = {};
+    if (message.riskLevelCode !== "") {
+      obj.riskLevelCode = message.riskLevelCode;
+    }
+    if (message.value !== undefined) {
+      obj.value = Quotation.toJSON(message.value);
+    }
+    return obj;
+  },
+};
+
 function createBaseTradingInterval(): TradingInterval {
   return { type: "", interval: undefined };
 }
@@ -17523,17 +19961,393 @@ export const TradingInterval_TimeInterval = {
   },
 };
 
+function createBaseGetInsiderDealsRequest(): GetInsiderDealsRequest {
+  return { instrumentId: "", limit: 0, nextCursor: undefined };
+}
+
+export const GetInsiderDealsRequest = {
+  encode(message: GetInsiderDealsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.instrumentId !== "") {
+      writer.uint32(10).string(message.instrumentId);
+    }
+    if (message.limit !== 0) {
+      writer.uint32(16).int32(message.limit);
+    }
+    if (message.nextCursor !== undefined) {
+      writer.uint32(26).string(message.nextCursor);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetInsiderDealsRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetInsiderDealsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.instrumentId = reader.string();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.limit = reader.int32();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.nextCursor = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetInsiderDealsRequest {
+    return {
+      instrumentId: isSet(object.instrumentId) ? globalThis.String(object.instrumentId) : "",
+      limit: isSet(object.limit) ? globalThis.Number(object.limit) : 0,
+      nextCursor: isSet(object.nextCursor) ? globalThis.String(object.nextCursor) : undefined,
+    };
+  },
+
+  toJSON(message: GetInsiderDealsRequest): unknown {
+    const obj: any = {};
+    if (message.instrumentId !== "") {
+      obj.instrumentId = message.instrumentId;
+    }
+    if (message.limit !== 0) {
+      obj.limit = Math.round(message.limit);
+    }
+    if (message.nextCursor !== undefined) {
+      obj.nextCursor = message.nextCursor;
+    }
+    return obj;
+  },
+};
+
+function createBaseGetInsiderDealsResponse(): GetInsiderDealsResponse {
+  return { insiderDeals: [], nextCursor: undefined };
+}
+
+export const GetInsiderDealsResponse = {
+  encode(message: GetInsiderDealsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.insiderDeals) {
+      GetInsiderDealsResponse_InsiderDeal.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.nextCursor !== undefined) {
+      writer.uint32(18).string(message.nextCursor);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetInsiderDealsResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetInsiderDealsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.insiderDeals.push(GetInsiderDealsResponse_InsiderDeal.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.nextCursor = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetInsiderDealsResponse {
+    return {
+      insiderDeals: globalThis.Array.isArray(object?.insiderDeals)
+        ? object.insiderDeals.map((e: any) => GetInsiderDealsResponse_InsiderDeal.fromJSON(e))
+        : [],
+      nextCursor: isSet(object.nextCursor) ? globalThis.String(object.nextCursor) : undefined,
+    };
+  },
+
+  toJSON(message: GetInsiderDealsResponse): unknown {
+    const obj: any = {};
+    if (message.insiderDeals?.length) {
+      obj.insiderDeals = message.insiderDeals.map((e) => GetInsiderDealsResponse_InsiderDeal.toJSON(e));
+    }
+    if (message.nextCursor !== undefined) {
+      obj.nextCursor = message.nextCursor;
+    }
+    return obj;
+  },
+};
+
+function createBaseGetInsiderDealsResponse_InsiderDeal(): GetInsiderDealsResponse_InsiderDeal {
+  return {
+    tradeId: 0,
+    direction: 0,
+    currency: "",
+    date: undefined,
+    quantity: 0,
+    price: undefined,
+    instrumentUid: "",
+    ticker: "",
+    investorName: "",
+    investorPosition: "",
+    percentage: 0,
+    isOptionExecution: false,
+    disclosureDate: undefined,
+  };
+}
+
+export const GetInsiderDealsResponse_InsiderDeal = {
+  encode(message: GetInsiderDealsResponse_InsiderDeal, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.tradeId !== 0) {
+      writer.uint32(8).int64(message.tradeId);
+    }
+    if (message.direction !== 0) {
+      writer.uint32(16).int32(message.direction);
+    }
+    if (message.currency !== "") {
+      writer.uint32(26).string(message.currency);
+    }
+    if (message.date !== undefined) {
+      Timestamp.encode(toTimestamp(message.date), writer.uint32(34).fork()).ldelim();
+    }
+    if (message.quantity !== 0) {
+      writer.uint32(40).int64(message.quantity);
+    }
+    if (message.price !== undefined) {
+      Quotation.encode(message.price, writer.uint32(50).fork()).ldelim();
+    }
+    if (message.instrumentUid !== "") {
+      writer.uint32(58).string(message.instrumentUid);
+    }
+    if (message.ticker !== "") {
+      writer.uint32(66).string(message.ticker);
+    }
+    if (message.investorName !== "") {
+      writer.uint32(74).string(message.investorName);
+    }
+    if (message.investorPosition !== "") {
+      writer.uint32(82).string(message.investorPosition);
+    }
+    if (message.percentage !== 0) {
+      writer.uint32(93).float(message.percentage);
+    }
+    if (message.isOptionExecution === true) {
+      writer.uint32(96).bool(message.isOptionExecution);
+    }
+    if (message.disclosureDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.disclosureDate), writer.uint32(106).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetInsiderDealsResponse_InsiderDeal {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetInsiderDealsResponse_InsiderDeal();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.tradeId = longToNumber(reader.int64() as Long);
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.direction = reader.int32() as any;
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.currency = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.quantity = longToNumber(reader.int64() as Long);
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.price = Quotation.decode(reader, reader.uint32());
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.instrumentUid = reader.string();
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.ticker = reader.string();
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.investorName = reader.string();
+          continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.investorPosition = reader.string();
+          continue;
+        case 11:
+          if (tag !== 93) {
+            break;
+          }
+
+          message.percentage = reader.float();
+          continue;
+        case 12:
+          if (tag !== 96) {
+            break;
+          }
+
+          message.isOptionExecution = reader.bool();
+          continue;
+        case 13:
+          if (tag !== 106) {
+            break;
+          }
+
+          message.disclosureDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetInsiderDealsResponse_InsiderDeal {
+    return {
+      tradeId: isSet(object.tradeId) ? globalThis.Number(object.tradeId) : 0,
+      direction: isSet(object.direction) ? getInsiderDealsResponse_TradeDirectionFromJSON(object.direction) : 0,
+      currency: isSet(object.currency) ? globalThis.String(object.currency) : "",
+      date: isSet(object.date) ? fromJsonTimestamp(object.date) : undefined,
+      quantity: isSet(object.quantity) ? globalThis.Number(object.quantity) : 0,
+      price: isSet(object.price) ? Quotation.fromJSON(object.price) : undefined,
+      instrumentUid: isSet(object.instrumentUid) ? globalThis.String(object.instrumentUid) : "",
+      ticker: isSet(object.ticker) ? globalThis.String(object.ticker) : "",
+      investorName: isSet(object.investorName) ? globalThis.String(object.investorName) : "",
+      investorPosition: isSet(object.investorPosition) ? globalThis.String(object.investorPosition) : "",
+      percentage: isSet(object.percentage) ? globalThis.Number(object.percentage) : 0,
+      isOptionExecution: isSet(object.isOptionExecution) ? globalThis.Boolean(object.isOptionExecution) : false,
+      disclosureDate: isSet(object.disclosureDate) ? fromJsonTimestamp(object.disclosureDate) : undefined,
+    };
+  },
+
+  toJSON(message: GetInsiderDealsResponse_InsiderDeal): unknown {
+    const obj: any = {};
+    if (message.tradeId !== 0) {
+      obj.tradeId = Math.round(message.tradeId);
+    }
+    if (message.direction !== 0) {
+      obj.direction = getInsiderDealsResponse_TradeDirectionToJSON(message.direction);
+    }
+    if (message.currency !== "") {
+      obj.currency = message.currency;
+    }
+    if (message.date !== undefined) {
+      obj.date = message.date.toISOString();
+    }
+    if (message.quantity !== 0) {
+      obj.quantity = Math.round(message.quantity);
+    }
+    if (message.price !== undefined) {
+      obj.price = Quotation.toJSON(message.price);
+    }
+    if (message.instrumentUid !== "") {
+      obj.instrumentUid = message.instrumentUid;
+    }
+    if (message.ticker !== "") {
+      obj.ticker = message.ticker;
+    }
+    if (message.investorName !== "") {
+      obj.investorName = message.investorName;
+    }
+    if (message.investorPosition !== "") {
+      obj.investorPosition = message.investorPosition;
+    }
+    if (message.percentage !== 0) {
+      obj.percentage = message.percentage;
+    }
+    if (message.isOptionExecution === true) {
+      obj.isOptionExecution = message.isOptionExecution;
+    }
+    if (message.disclosureDate !== undefined) {
+      obj.disclosureDate = message.disclosureDate.toISOString();
+    }
+    return obj;
+  },
+};
+
 /**
- * Методы сервиса предназначены для получения:</br>1. Информации об инструментах.</br>2.
- * Расписания торговых сессий.</br>3. Календаря выплат купонов по облигациям.</br>4.
- * Размера гарантийного обеспечения по фьючерсам.</br>5. Дивидендов по ценной бумаге.
+ * Методы сервиса предназначены для получения:<br/>1. Информации об инструментах.<br/>2.
+ * Расписания торговых сессий.<br/>3. Календаря выплат купонов по облигациям.<br/>4.
+ * Размера гарантийного обеспечения по фьючерсам.<br/>5. Дивидендов по ценной бумаге.
  */
 export type InstrumentsServiceDefinition = typeof InstrumentsServiceDefinition;
 export const InstrumentsServiceDefinition = {
   name: "InstrumentsService",
   fullName: "tinkoff.public.invest.api.contract.v1.InstrumentsService",
   methods: {
-    /** Получить расписания торгов торговых площадок. */
+    /** TradingSchedules — расписания торговых площадок */
     tradingSchedules: {
       name: "TradingSchedules",
       requestType: TradingSchedulesRequest,
@@ -17542,7 +20356,7 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить облигации по её идентификатору. */
+    /** BondBy — получить облигацию по ее идентификатору */
     bondBy: {
       name: "BondBy",
       requestType: InstrumentRequest,
@@ -17551,7 +20365,7 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить список облигаций. */
+    /** Bonds — список облигаций */
     bonds: {
       name: "Bonds",
       requestType: InstrumentsRequest,
@@ -17560,7 +20374,7 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить график выплат купонов по облигации. */
+    /** GetBondCoupons — график выплат купонов по облигации */
     getBondCoupons: {
       name: "GetBondCoupons",
       requestType: GetBondCouponsRequest,
@@ -17569,7 +20383,7 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить события по облигации */
+    /** GetBondEvents — события по облигации */
     getBondEvents: {
       name: "GetBondEvents",
       requestType: GetBondEventsRequest,
@@ -17578,7 +20392,7 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить валюту по её идентификатору. */
+    /** CurrencyBy — получить валюту по ее идентификатору */
     currencyBy: {
       name: "CurrencyBy",
       requestType: InstrumentRequest,
@@ -17587,7 +20401,7 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить список валют. */
+    /** Currencies — список валют */
     currencies: {
       name: "Currencies",
       requestType: InstrumentsRequest,
@@ -17596,7 +20410,7 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить инвестиционный фонд по его идентификатору. */
+    /** EtfBy — получить инвестиционный фонд по его идентификатору */
     etfBy: {
       name: "EtfBy",
       requestType: InstrumentRequest,
@@ -17605,7 +20419,7 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить список инвестиционных фондов. */
+    /** Etfs — список инвестиционных фондов */
     etfs: {
       name: "Etfs",
       requestType: InstrumentsRequest,
@@ -17614,7 +20428,7 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить фьючерс по его идентификатору. */
+    /** FutureBy — получить фьючерс по его идентификатору */
     futureBy: {
       name: "FutureBy",
       requestType: InstrumentRequest,
@@ -17623,7 +20437,7 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить список фьючерсов. */
+    /** Futures — список фьючерсов */
     futures: {
       name: "Futures",
       requestType: InstrumentsRequest,
@@ -17632,7 +20446,7 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить опцион по его идентификатору. */
+    /** OptionBy — получить опцион по его идентификатору */
     optionBy: {
       name: "OptionBy",
       requestType: InstrumentRequest,
@@ -17642,7 +20456,7 @@ export const InstrumentsServiceDefinition = {
       options: {},
     },
     /**
-     * Deprecated Получить списка опционов.
+     * Deprecated Options — список опционов
      *
      * @deprecated
      */
@@ -17654,7 +20468,7 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить список опционов. */
+    /** OptionsBy — список опционов */
     optionsBy: {
       name: "OptionsBy",
       requestType: FilterOptionsRequest,
@@ -17663,7 +20477,7 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить акцию по её идентификатору. */
+    /** ShareBy — получить акцию по ее идентификатору */
     shareBy: {
       name: "ShareBy",
       requestType: InstrumentRequest,
@@ -17672,7 +20486,7 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить список акций. */
+    /** Shares — список акций */
     shares: {
       name: "Shares",
       requestType: InstrumentsRequest,
@@ -17681,7 +20495,7 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить индикативные инструменты — индексы, товары и другие. */
+    /** Indicatives — индикативные инструменты — индексы, товары и другие */
     indicatives: {
       name: "Indicatives",
       requestType: IndicativesRequest,
@@ -17690,7 +20504,7 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить накопленный купонный доход по облигации. */
+    /** GetAccruedInterests — накопленный купонный доход по облигации */
     getAccruedInterests: {
       name: "GetAccruedInterests",
       requestType: GetAccruedInterestsRequest,
@@ -17699,7 +20513,7 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить размера гарантийного обеспечения по фьючерсам. */
+    /** GetFuturesMargin — размера гарантийного обеспечения по фьючерсам */
     getFuturesMargin: {
       name: "GetFuturesMargin",
       requestType: GetFuturesMarginRequest,
@@ -17708,7 +20522,7 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить основную информацию об инструменте. */
+    /** GetInstrumentBy — основная информация об инструменте */
     getInstrumentBy: {
       name: "GetInstrumentBy",
       requestType: InstrumentRequest,
@@ -17717,7 +20531,7 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить события выплаты дивидендов по инструменту. */
+    /** GetDividends — события выплаты дивидендов по инструменту */
     getDividends: {
       name: "GetDividends",
       requestType: GetDividendsRequest,
@@ -17726,7 +20540,7 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить актив по его идентификатору. */
+    /** GetAssetBy — получить актив по его идентификатору */
     getAssetBy: {
       name: "GetAssetBy",
       requestType: AssetRequest,
@@ -17735,7 +20549,10 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить список активов. Метод работает для всех инструментов, кроме срочных — фьючерсов и опционов. */
+    /**
+     * GetAssets — список активов
+     * Метод работает для всех инструментов, кроме срочных — фьючерсов и опционов
+     */
     getAssets: {
       name: "GetAssets",
       requestType: AssetsRequest,
@@ -17744,7 +20561,7 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить список избранных инструментов. */
+    /** GetFavorites — получить список избранных инструментов */
     getFavorites: {
       name: "GetFavorites",
       requestType: GetFavoritesRequest,
@@ -17753,7 +20570,7 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Отредактировать список избранных инструментов. */
+    /** EditFavorites — отредактировать список избранных инструментов */
     editFavorites: {
       name: "EditFavorites",
       requestType: EditFavoritesRequest,
@@ -17762,7 +20579,34 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить список стран. */
+    /** CreateFavoriteGroup — создать новую группу избранных инструментов */
+    createFavoriteGroup: {
+      name: "CreateFavoriteGroup",
+      requestType: CreateFavoriteGroupRequest,
+      requestStream: false,
+      responseType: CreateFavoriteGroupResponse,
+      responseStream: false,
+      options: {},
+    },
+    /** DeleteFavoriteGroup — удалить группу избранных инструментов */
+    deleteFavoriteGroup: {
+      name: "DeleteFavoriteGroup",
+      requestType: DeleteFavoriteGroupRequest,
+      requestStream: false,
+      responseType: DeleteFavoriteGroupResponse,
+      responseStream: false,
+      options: {},
+    },
+    /** GetFavoriteGroups — список групп избранных инструментов */
+    getFavoriteGroups: {
+      name: "GetFavoriteGroups",
+      requestType: GetFavoriteGroupsRequest,
+      requestStream: false,
+      responseType: GetFavoriteGroupsResponse,
+      responseStream: false,
+      options: {},
+    },
+    /** GetCountries — список стран */
     getCountries: {
       name: "GetCountries",
       requestType: GetCountriesRequest,
@@ -17771,7 +20615,7 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Найти инструмент. */
+    /** FindInstrument — найти инструмент */
     findInstrument: {
       name: "FindInstrument",
       requestType: FindInstrumentRequest,
@@ -17780,7 +20624,7 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить список брендов. */
+    /** GetBrands — список брендов */
     getBrands: {
       name: "GetBrands",
       requestType: GetBrandsRequest,
@@ -17789,7 +20633,7 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить бренд по его идентификатору. */
+    /** GetBrandBy — получить бренд по его идентификатору */
     getBrandBy: {
       name: "GetBrandBy",
       requestType: GetBrandRequest,
@@ -17798,7 +20642,7 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить фундаментальные показатели по активу. */
+    /** GetAssetFundamentals — фундаментальные показатели по активу */
     getAssetFundamentals: {
       name: "GetAssetFundamentals",
       requestType: GetAssetFundamentalsRequest,
@@ -17807,7 +20651,7 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить расписания выхода отчётностей эмитентов. */
+    /** GetAssetReports — расписания выхода отчетностей эмитентов */
     getAssetReports: {
       name: "GetAssetReports",
       requestType: GetAssetReportsRequest,
@@ -17816,7 +20660,7 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить мнения аналитиков по инструменту. */
+    /** GetConsensusForecasts — мнения аналитиков по инструменту */
     getConsensusForecasts: {
       name: "GetConsensusForecasts",
       requestType: GetConsensusForecastsRequest,
@@ -17825,7 +20669,7 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Получить прогнозов инвестдомов по инструменту. */
+    /** GetForecastBy — прогнозы инвестдомов по инструменту */
     getForecastBy: {
       name: "GetForecastBy",
       requestType: GetForecastRequest,
@@ -17834,201 +20678,298 @@ export const InstrumentsServiceDefinition = {
       responseStream: false,
       options: {},
     },
+    /** GetRiskRates — ставки риска по инструменту */
+    getRiskRates: {
+      name: "GetRiskRates",
+      requestType: RiskRatesRequest,
+      requestStream: false,
+      responseType: RiskRatesResponse,
+      responseStream: false,
+      options: {},
+    },
+    /** GetInsiderDeals —  сделки инсайдеров по инструментам */
+    getInsiderDeals: {
+      name: "GetInsiderDeals",
+      requestType: GetInsiderDealsRequest,
+      requestStream: false,
+      responseType: GetInsiderDealsResponse,
+      responseStream: false,
+      options: {},
+    },
+    /** StructuredNoteBy — получить структурную ноту по ее идентификатору */
+    structuredNoteBy: {
+      name: "StructuredNoteBy",
+      requestType: InstrumentRequest,
+      requestStream: false,
+      responseType: StructuredNoteResponse,
+      responseStream: false,
+      options: {},
+    },
+    /** StructuredNotes — список структурных нот */
+    structuredNotes: {
+      name: "StructuredNotes",
+      requestType: InstrumentsRequest,
+      requestStream: false,
+      responseType: StructuredNotesResponse,
+      responseStream: false,
+      options: {},
+    },
   },
 } as const;
 
 export interface InstrumentsServiceImplementation<CallContextExt = {}> {
-  /** Получить расписания торгов торговых площадок. */
+  /** TradingSchedules — расписания торговых площадок */
   tradingSchedules(
     request: TradingSchedulesRequest,
     context: CallContext & CallContextExt,
   ): Promise<TradingSchedulesResponse>;
-  /** Получить облигации по её идентификатору. */
+  /** BondBy — получить облигацию по ее идентификатору */
   bondBy(request: InstrumentRequest, context: CallContext & CallContextExt): Promise<BondResponse>;
-  /** Получить список облигаций. */
+  /** Bonds — список облигаций */
   bonds(request: InstrumentsRequest, context: CallContext & CallContextExt): Promise<BondsResponse>;
-  /** Получить график выплат купонов по облигации. */
+  /** GetBondCoupons — график выплат купонов по облигации */
   getBondCoupons(
     request: GetBondCouponsRequest,
     context: CallContext & CallContextExt,
   ): Promise<GetBondCouponsResponse>;
-  /** Получить события по облигации */
+  /** GetBondEvents — события по облигации */
   getBondEvents(request: GetBondEventsRequest, context: CallContext & CallContextExt): Promise<GetBondEventsResponse>;
-  /** Получить валюту по её идентификатору. */
+  /** CurrencyBy — получить валюту по ее идентификатору */
   currencyBy(request: InstrumentRequest, context: CallContext & CallContextExt): Promise<CurrencyResponse>;
-  /** Получить список валют. */
+  /** Currencies — список валют */
   currencies(request: InstrumentsRequest, context: CallContext & CallContextExt): Promise<CurrenciesResponse>;
-  /** Получить инвестиционный фонд по его идентификатору. */
+  /** EtfBy — получить инвестиционный фонд по его идентификатору */
   etfBy(request: InstrumentRequest, context: CallContext & CallContextExt): Promise<EtfResponse>;
-  /** Получить список инвестиционных фондов. */
+  /** Etfs — список инвестиционных фондов */
   etfs(request: InstrumentsRequest, context: CallContext & CallContextExt): Promise<EtfsResponse>;
-  /** Получить фьючерс по его идентификатору. */
+  /** FutureBy — получить фьючерс по его идентификатору */
   futureBy(request: InstrumentRequest, context: CallContext & CallContextExt): Promise<FutureResponse>;
-  /** Получить список фьючерсов. */
+  /** Futures — список фьючерсов */
   futures(request: InstrumentsRequest, context: CallContext & CallContextExt): Promise<FuturesResponse>;
-  /** Получить опцион по его идентификатору. */
+  /** OptionBy — получить опцион по его идентификатору */
   optionBy(request: InstrumentRequest, context: CallContext & CallContextExt): Promise<OptionResponse>;
   /**
-   * Deprecated Получить списка опционов.
+   * Deprecated Options — список опционов
    *
    * @deprecated
    */
   options(request: InstrumentsRequest, context: CallContext & CallContextExt): Promise<OptionsResponse>;
-  /** Получить список опционов. */
+  /** OptionsBy — список опционов */
   optionsBy(request: FilterOptionsRequest, context: CallContext & CallContextExt): Promise<OptionsResponse>;
-  /** Получить акцию по её идентификатору. */
+  /** ShareBy — получить акцию по ее идентификатору */
   shareBy(request: InstrumentRequest, context: CallContext & CallContextExt): Promise<ShareResponse>;
-  /** Получить список акций. */
+  /** Shares — список акций */
   shares(request: InstrumentsRequest, context: CallContext & CallContextExt): Promise<SharesResponse>;
-  /** Получить индикативные инструменты — индексы, товары и другие. */
+  /** Indicatives — индикативные инструменты — индексы, товары и другие */
   indicatives(request: IndicativesRequest, context: CallContext & CallContextExt): Promise<IndicativesResponse>;
-  /** Получить накопленный купонный доход по облигации. */
+  /** GetAccruedInterests — накопленный купонный доход по облигации */
   getAccruedInterests(
     request: GetAccruedInterestsRequest,
     context: CallContext & CallContextExt,
   ): Promise<GetAccruedInterestsResponse>;
-  /** Получить размера гарантийного обеспечения по фьючерсам. */
+  /** GetFuturesMargin — размера гарантийного обеспечения по фьючерсам */
   getFuturesMargin(
     request: GetFuturesMarginRequest,
     context: CallContext & CallContextExt,
   ): Promise<GetFuturesMarginResponse>;
-  /** Получить основную информацию об инструменте. */
+  /** GetInstrumentBy — основная информация об инструменте */
   getInstrumentBy(request: InstrumentRequest, context: CallContext & CallContextExt): Promise<InstrumentResponse>;
-  /** Получить события выплаты дивидендов по инструменту. */
+  /** GetDividends — события выплаты дивидендов по инструменту */
   getDividends(request: GetDividendsRequest, context: CallContext & CallContextExt): Promise<GetDividendsResponse>;
-  /** Получить актив по его идентификатору. */
+  /** GetAssetBy — получить актив по его идентификатору */
   getAssetBy(request: AssetRequest, context: CallContext & CallContextExt): Promise<AssetResponse>;
-  /** Получить список активов. Метод работает для всех инструментов, кроме срочных — фьючерсов и опционов. */
+  /**
+   * GetAssets — список активов
+   * Метод работает для всех инструментов, кроме срочных — фьючерсов и опционов
+   */
   getAssets(request: AssetsRequest, context: CallContext & CallContextExt): Promise<AssetsResponse>;
-  /** Получить список избранных инструментов. */
+  /** GetFavorites — получить список избранных инструментов */
   getFavorites(request: GetFavoritesRequest, context: CallContext & CallContextExt): Promise<GetFavoritesResponse>;
-  /** Отредактировать список избранных инструментов. */
+  /** EditFavorites — отредактировать список избранных инструментов */
   editFavorites(request: EditFavoritesRequest, context: CallContext & CallContextExt): Promise<EditFavoritesResponse>;
-  /** Получить список стран. */
+  /** CreateFavoriteGroup — создать новую группу избранных инструментов */
+  createFavoriteGroup(
+    request: CreateFavoriteGroupRequest,
+    context: CallContext & CallContextExt,
+  ): Promise<CreateFavoriteGroupResponse>;
+  /** DeleteFavoriteGroup — удалить группу избранных инструментов */
+  deleteFavoriteGroup(
+    request: DeleteFavoriteGroupRequest,
+    context: CallContext & CallContextExt,
+  ): Promise<DeleteFavoriteGroupResponse>;
+  /** GetFavoriteGroups — список групп избранных инструментов */
+  getFavoriteGroups(
+    request: GetFavoriteGroupsRequest,
+    context: CallContext & CallContextExt,
+  ): Promise<GetFavoriteGroupsResponse>;
+  /** GetCountries — список стран */
   getCountries(request: GetCountriesRequest, context: CallContext & CallContextExt): Promise<GetCountriesResponse>;
-  /** Найти инструмент. */
+  /** FindInstrument — найти инструмент */
   findInstrument(
     request: FindInstrumentRequest,
     context: CallContext & CallContextExt,
   ): Promise<FindInstrumentResponse>;
-  /** Получить список брендов. */
+  /** GetBrands — список брендов */
   getBrands(request: GetBrandsRequest, context: CallContext & CallContextExt): Promise<GetBrandsResponse>;
-  /** Получить бренд по его идентификатору. */
+  /** GetBrandBy — получить бренд по его идентификатору */
   getBrandBy(request: GetBrandRequest, context: CallContext & CallContextExt): Promise<Brand>;
-  /** Получить фундаментальные показатели по активу. */
+  /** GetAssetFundamentals — фундаментальные показатели по активу */
   getAssetFundamentals(
     request: GetAssetFundamentalsRequest,
     context: CallContext & CallContextExt,
   ): Promise<GetAssetFundamentalsResponse>;
-  /** Получить расписания выхода отчётностей эмитентов. */
+  /** GetAssetReports — расписания выхода отчетностей эмитентов */
   getAssetReports(
     request: GetAssetReportsRequest,
     context: CallContext & CallContextExt,
   ): Promise<GetAssetReportsResponse>;
-  /** Получить мнения аналитиков по инструменту. */
+  /** GetConsensusForecasts — мнения аналитиков по инструменту */
   getConsensusForecasts(
     request: GetConsensusForecastsRequest,
     context: CallContext & CallContextExt,
   ): Promise<GetConsensusForecastsResponse>;
-  /** Получить прогнозов инвестдомов по инструменту. */
+  /** GetForecastBy — прогнозы инвестдомов по инструменту */
   getForecastBy(request: GetForecastRequest, context: CallContext & CallContextExt): Promise<GetForecastResponse>;
+  /** GetRiskRates — ставки риска по инструменту */
+  getRiskRates(request: RiskRatesRequest, context: CallContext & CallContextExt): Promise<RiskRatesResponse>;
+  /** GetInsiderDeals —  сделки инсайдеров по инструментам */
+  getInsiderDeals(
+    request: GetInsiderDealsRequest,
+    context: CallContext & CallContextExt,
+  ): Promise<GetInsiderDealsResponse>;
+  /** StructuredNoteBy — получить структурную ноту по ее идентификатору */
+  structuredNoteBy(request: InstrumentRequest, context: CallContext & CallContextExt): Promise<StructuredNoteResponse>;
+  /** StructuredNotes — список структурных нот */
+  structuredNotes(request: InstrumentsRequest, context: CallContext & CallContextExt): Promise<StructuredNotesResponse>;
 }
 
 export interface InstrumentsServiceClient<CallOptionsExt = {}> {
-  /** Получить расписания торгов торговых площадок. */
+  /** TradingSchedules — расписания торговых площадок */
   tradingSchedules(
     request: TradingSchedulesRequest,
     options?: CallOptions & CallOptionsExt,
   ): Promise<TradingSchedulesResponse>;
-  /** Получить облигации по её идентификатору. */
+  /** BondBy — получить облигацию по ее идентификатору */
   bondBy(request: InstrumentRequest, options?: CallOptions & CallOptionsExt): Promise<BondResponse>;
-  /** Получить список облигаций. */
+  /** Bonds — список облигаций */
   bonds(request: InstrumentsRequest, options?: CallOptions & CallOptionsExt): Promise<BondsResponse>;
-  /** Получить график выплат купонов по облигации. */
+  /** GetBondCoupons — график выплат купонов по облигации */
   getBondCoupons(
     request: GetBondCouponsRequest,
     options?: CallOptions & CallOptionsExt,
   ): Promise<GetBondCouponsResponse>;
-  /** Получить события по облигации */
+  /** GetBondEvents — события по облигации */
   getBondEvents(request: GetBondEventsRequest, options?: CallOptions & CallOptionsExt): Promise<GetBondEventsResponse>;
-  /** Получить валюту по её идентификатору. */
+  /** CurrencyBy — получить валюту по ее идентификатору */
   currencyBy(request: InstrumentRequest, options?: CallOptions & CallOptionsExt): Promise<CurrencyResponse>;
-  /** Получить список валют. */
+  /** Currencies — список валют */
   currencies(request: InstrumentsRequest, options?: CallOptions & CallOptionsExt): Promise<CurrenciesResponse>;
-  /** Получить инвестиционный фонд по его идентификатору. */
+  /** EtfBy — получить инвестиционный фонд по его идентификатору */
   etfBy(request: InstrumentRequest, options?: CallOptions & CallOptionsExt): Promise<EtfResponse>;
-  /** Получить список инвестиционных фондов. */
+  /** Etfs — список инвестиционных фондов */
   etfs(request: InstrumentsRequest, options?: CallOptions & CallOptionsExt): Promise<EtfsResponse>;
-  /** Получить фьючерс по его идентификатору. */
+  /** FutureBy — получить фьючерс по его идентификатору */
   futureBy(request: InstrumentRequest, options?: CallOptions & CallOptionsExt): Promise<FutureResponse>;
-  /** Получить список фьючерсов. */
+  /** Futures — список фьючерсов */
   futures(request: InstrumentsRequest, options?: CallOptions & CallOptionsExt): Promise<FuturesResponse>;
-  /** Получить опцион по его идентификатору. */
+  /** OptionBy — получить опцион по его идентификатору */
   optionBy(request: InstrumentRequest, options?: CallOptions & CallOptionsExt): Promise<OptionResponse>;
   /**
-   * Deprecated Получить списка опционов.
+   * Deprecated Options — список опционов
    *
    * @deprecated
    */
   options(request: InstrumentsRequest, options?: CallOptions & CallOptionsExt): Promise<OptionsResponse>;
-  /** Получить список опционов. */
+  /** OptionsBy — список опционов */
   optionsBy(request: FilterOptionsRequest, options?: CallOptions & CallOptionsExt): Promise<OptionsResponse>;
-  /** Получить акцию по её идентификатору. */
+  /** ShareBy — получить акцию по ее идентификатору */
   shareBy(request: InstrumentRequest, options?: CallOptions & CallOptionsExt): Promise<ShareResponse>;
-  /** Получить список акций. */
+  /** Shares — список акций */
   shares(request: InstrumentsRequest, options?: CallOptions & CallOptionsExt): Promise<SharesResponse>;
-  /** Получить индикативные инструменты — индексы, товары и другие. */
+  /** Indicatives — индикативные инструменты — индексы, товары и другие */
   indicatives(request: IndicativesRequest, options?: CallOptions & CallOptionsExt): Promise<IndicativesResponse>;
-  /** Получить накопленный купонный доход по облигации. */
+  /** GetAccruedInterests — накопленный купонный доход по облигации */
   getAccruedInterests(
     request: GetAccruedInterestsRequest,
     options?: CallOptions & CallOptionsExt,
   ): Promise<GetAccruedInterestsResponse>;
-  /** Получить размера гарантийного обеспечения по фьючерсам. */
+  /** GetFuturesMargin — размера гарантийного обеспечения по фьючерсам */
   getFuturesMargin(
     request: GetFuturesMarginRequest,
     options?: CallOptions & CallOptionsExt,
   ): Promise<GetFuturesMarginResponse>;
-  /** Получить основную информацию об инструменте. */
+  /** GetInstrumentBy — основная информация об инструменте */
   getInstrumentBy(request: InstrumentRequest, options?: CallOptions & CallOptionsExt): Promise<InstrumentResponse>;
-  /** Получить события выплаты дивидендов по инструменту. */
+  /** GetDividends — события выплаты дивидендов по инструменту */
   getDividends(request: GetDividendsRequest, options?: CallOptions & CallOptionsExt): Promise<GetDividendsResponse>;
-  /** Получить актив по его идентификатору. */
+  /** GetAssetBy — получить актив по его идентификатору */
   getAssetBy(request: AssetRequest, options?: CallOptions & CallOptionsExt): Promise<AssetResponse>;
-  /** Получить список активов. Метод работает для всех инструментов, кроме срочных — фьючерсов и опционов. */
+  /**
+   * GetAssets — список активов
+   * Метод работает для всех инструментов, кроме срочных — фьючерсов и опционов
+   */
   getAssets(request: AssetsRequest, options?: CallOptions & CallOptionsExt): Promise<AssetsResponse>;
-  /** Получить список избранных инструментов. */
+  /** GetFavorites — получить список избранных инструментов */
   getFavorites(request: GetFavoritesRequest, options?: CallOptions & CallOptionsExt): Promise<GetFavoritesResponse>;
-  /** Отредактировать список избранных инструментов. */
+  /** EditFavorites — отредактировать список избранных инструментов */
   editFavorites(request: EditFavoritesRequest, options?: CallOptions & CallOptionsExt): Promise<EditFavoritesResponse>;
-  /** Получить список стран. */
+  /** CreateFavoriteGroup — создать новую группу избранных инструментов */
+  createFavoriteGroup(
+    request: CreateFavoriteGroupRequest,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<CreateFavoriteGroupResponse>;
+  /** DeleteFavoriteGroup — удалить группу избранных инструментов */
+  deleteFavoriteGroup(
+    request: DeleteFavoriteGroupRequest,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<DeleteFavoriteGroupResponse>;
+  /** GetFavoriteGroups — список групп избранных инструментов */
+  getFavoriteGroups(
+    request: GetFavoriteGroupsRequest,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<GetFavoriteGroupsResponse>;
+  /** GetCountries — список стран */
   getCountries(request: GetCountriesRequest, options?: CallOptions & CallOptionsExt): Promise<GetCountriesResponse>;
-  /** Найти инструмент. */
+  /** FindInstrument — найти инструмент */
   findInstrument(
     request: FindInstrumentRequest,
     options?: CallOptions & CallOptionsExt,
   ): Promise<FindInstrumentResponse>;
-  /** Получить список брендов. */
+  /** GetBrands — список брендов */
   getBrands(request: GetBrandsRequest, options?: CallOptions & CallOptionsExt): Promise<GetBrandsResponse>;
-  /** Получить бренд по его идентификатору. */
+  /** GetBrandBy — получить бренд по его идентификатору */
   getBrandBy(request: GetBrandRequest, options?: CallOptions & CallOptionsExt): Promise<Brand>;
-  /** Получить фундаментальные показатели по активу. */
+  /** GetAssetFundamentals — фундаментальные показатели по активу */
   getAssetFundamentals(
     request: GetAssetFundamentalsRequest,
     options?: CallOptions & CallOptionsExt,
   ): Promise<GetAssetFundamentalsResponse>;
-  /** Получить расписания выхода отчётностей эмитентов. */
+  /** GetAssetReports — расписания выхода отчетностей эмитентов */
   getAssetReports(
     request: GetAssetReportsRequest,
     options?: CallOptions & CallOptionsExt,
   ): Promise<GetAssetReportsResponse>;
-  /** Получить мнения аналитиков по инструменту. */
+  /** GetConsensusForecasts — мнения аналитиков по инструменту */
   getConsensusForecasts(
     request: GetConsensusForecastsRequest,
     options?: CallOptions & CallOptionsExt,
   ): Promise<GetConsensusForecastsResponse>;
-  /** Получить прогнозов инвестдомов по инструменту. */
+  /** GetForecastBy — прогнозы инвестдомов по инструменту */
   getForecastBy(request: GetForecastRequest, options?: CallOptions & CallOptionsExt): Promise<GetForecastResponse>;
+  /** GetRiskRates — ставки риска по инструменту */
+  getRiskRates(request: RiskRatesRequest, options?: CallOptions & CallOptionsExt): Promise<RiskRatesResponse>;
+  /** GetInsiderDeals —  сделки инсайдеров по инструментам */
+  getInsiderDeals(
+    request: GetInsiderDealsRequest,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<GetInsiderDealsResponse>;
+  /** StructuredNoteBy — получить структурную ноту по ее идентификатору */
+  structuredNoteBy(request: InstrumentRequest, options?: CallOptions & CallOptionsExt): Promise<StructuredNoteResponse>;
+  /** StructuredNotes — список структурных нот */
+  structuredNotes(
+    request: InstrumentsRequest,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<StructuredNotesResponse>;
 }
 
 function toTimestamp(date: Date): Timestamp {
