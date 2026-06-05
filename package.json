@@ -25,8 +25,7 @@
     "build:esm": "rm -rf dist && tsc -p tsconfig.build.json",
     "build:cjs": "rm -rf cjs && tsc -p tsconfig.build.cjs.json && echo '{\"type\":\"commonjs\"}' > cjs/package.json",
     "build": "npm run build:esm && npm run build:cjs",
-    "deps": "npx npm-check-updates -i --format group,dep,repo --cooldown 5",
-    "release": "npm run lint && npm t && npm run build && npm run test:modules && np --yolo --no-release-draft"
+    "deps": "npx npm-check-updates -i --format group,dep,repo --cooldown 5"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": "eslint --ext .ts"
